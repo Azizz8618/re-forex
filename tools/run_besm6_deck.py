@@ -32,8 +32,8 @@ EMULATOR = SIMH / "BIN/besm6"
 ACPU_ANALYZER = Path("/home/azizz/Yandex.Disk/re-dispak/acpu_analyze.pl")
 
 HELLO = """ШИФР 410300 ЗС5^
-ОЗУ 16^АЦП 32^
-ЕЕВ1А3
+ОЗУ 32^АЦП 32^
+EEВ1А3
 *NAME HELLO
 *FTN
       PROGRAM MAIN
@@ -68,9 +68,20 @@ def pane(session, history=2000):
 
 
 def send(session, text, enter=True):
-    tmux("send-keys", "-t", session, text)
-    if enter:
-        tmux("send-keys", "-t", session, "Enter")
+    """Подать команду в панель терминала.
+
+    Кириллические директивы ОС (ДАЙ, НОМ, ВЦП, ВЫБ) надёжно идут только
+    через pipe-buffer (см. ВВОД_АНАЛИЗ.md §3.4а); send-keys с кириллицей
+    искажает символы. Чтение ответа — только через capture-pane (pane()).
+    """
+    payload = text + ("\r" if enter else "")
+    r = subprocess.run(["tmux", "pipe-buffer", "-t", session, "-"],
+                       input=payload, text=True, capture_output=True)
+    if r.returncode != 0:
+        # fallback для ASCII-команд SIMH на старых tmux без pipe-buffer
+        tmux("send-keys", "-t", session, text)
+        if enter:
+            tmux("send-keys", "-t", session, "Enter")
 
 
 def make_ini(work: Path, prn_path: Path, vu_path: Path) -> Path:
@@ -108,8 +119,8 @@ def build_deck(args) -> str:
     body = "\n".join("      " + l.strip() if l.strip() else "" for l in src.splitlines())
     return (
         f"ШИФР {args.cipher} ЗС5^\n"
-        f"ОЗУ 16^АЦП {args.acpu}^\n"
-        f"ЕЕВ1А3\n"
+        f"ОЗУ 32^АЦП {args.acpu}^\n"
+        f"EEВ1А3\n"
         f"*NAME {args.name}\n"
         f"*FTN\n{body}\n"
         f"*EXECUTE\n"
@@ -189,6 +200,50 @@ def main():
             time.sleep(1.0)
         if not done:
             log("ВНИМАНИЕ: КОНЕЦ ЗАДАЧИ не появился — см. transcript ниже")
+
+        # Диагностика состояния (ВЦП): «ЗНЕТ» — задач в решении нет,
+        # терминал свободен; список — система ещё занята. ВЦП <N канала>
+        # дополнительно показывает обмен с МД/МГ (ЗП/ЧТ, зона, бобина).
+        # re-dispak/Dispak-operator-guide.md §4.3.1, ВВОД_АНАЛИЗ.md §3.4а.
+        if "sim>" in pane(args.session).splitlines()[-1]:
+            send(args.session, "go")
+            time.sleep(1.0)
+        send(args.session, "ВЦП")
+        time.sleep(2.0)
+        vcp = pane(args.session)
+        if re.search(r"ЗНЕТ", vcp):
+            log("ВЦП: задач в решении НЕТ (ЗНЕТ) — терминал свободен")
+        else:
+            log("ВЦП: задачи в решении:")
+            for line in vcp.splitlines():
+                if re.search(r"ВЦПП|410300|\d{12}|ЗНЕТ", line):
+                    log("  " + line.strip())
+        send(args.session, "ВЦП Р")
+        time.sleep(2.0)
+        log("ВЦП Р (ресурсы):")
+        for line in pane(args.session).splitlines()[-25:]:
+            if re.search(r"ВЦПП|ОЗУ|ТРАКТ|410300|\d{12}", line, re.I):
+                log("  " + line.strip())
+
+        # Освобождение буфера вывода (указание пользователя): результат
+        # выталкивается из буфера командами НОМ (список задач) и ВЫБ <N>
+        # (исключить задачу с буфера, re-dispak/Dispak-operator-guide.md §4.4.5,
+        # §5.6). Номер задачи берём из строки КЗ/ОЗ/ЧП вида КЗ(075).
+        if "sim>" in pane(args.session).splitlines()[-1]:
+            send(args.session, "go")  # вернуть CPU из останова в ОС
+            time.sleep(1.0)
+        send(args.session, "НОМ")
+        time.sleep(2.0)
+        status = pane(args.session)
+        nums = re.findall(r"[ЧК]З\((\d{1,3})\)|ЧП\((\d{1,3})\)", status)
+        targets = [a or b for a, b in nums]
+        log(f"НОМ: задачи на буфере: {targets}")
+        for n in targets:
+            send(args.session, f"ВЫБ {int(n)}")
+            time.sleep(2.0)
+        if targets:
+            send(args.session, "НОМ")
+            time.sleep(2.0)
 
         # АЦПУ — барабанный принтер: запись в файл асинхронна, дать стечь
         time.sleep(5)
