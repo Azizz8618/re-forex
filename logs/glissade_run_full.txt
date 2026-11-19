@@ -1,5 +1,5 @@
 === glissade / reconstructed FOREX from PERSO 0o2300 ===
-date      : 2026-11-19T08:54:04Z
+date      : 2026-11-19T08:56:29Z
 dispak    : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
 image     : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
 etalon    : /usr/local/share/besm6/2348
@@ -24,8 +24,8 @@ raw bytes : 29423 (gold 31920)
         FD*642   Е 02072        LUN*МОN    03606
 
 --- full normalized diff (gold / fact) ---
---- /tmp/.private/azizz/glissade-forex.SWoNBr/gold.norm	2026-11-19 11:54:04.345291949 +0300
-+++ /tmp/.private/azizz/glissade-forex.SWoNBr/output.norm	2026-11-19 11:54:04.343291926 +0300
+--- /tmp/.private/azizz/glissade-forex.1L1ill/gold.norm	2026-11-19 11:56:29.834987087 +0300
++++ /tmp/.private/azizz/glissade-forex.1L1ill/output.norm	2026-11-19 11:56:29.833987075 +0300
 @@ -8,13 +8,13 @@
  
  
@@ -145,8 +145,8 @@ raw bytes : 29423 (gold 31920)
 -        РRОGRАМ  Е 01000        КОNV1*   Е 03506        АНID/*   Е 05100
 -        *SВSЕЕD* С 01164        SWRIТТ     03602        IОSКIР*  С 05105
 --- различия в блоке результата: gold / fact ---
---- /tmp/.private/azizz/glissade-forex.SWoNBr/gold.res	2026-11-19 11:54:04.349291996 +0300
-+++ /tmp/.private/azizz/glissade-forex.SWoNBr/out.res	2026-11-19 11:54:04.353292043 +0300
+--- /tmp/.private/azizz/glissade-forex.1L1ill/gold.res	2026-11-19 11:56:29.838987133 +0300
++++ /tmp/.private/azizz/glissade-forex.1L1ill/out.res	2026-11-19 11:56:29.842987180 +0300
 @@ -1,14 +1,14 @@
 -  1  0.00      1.9000      0.6250      7.5290
 -  2  0.30      2.7502      3.5760     35.0000
