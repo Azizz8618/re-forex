@@ -1,0 +1,69 @@
+ИСПРАВЛЕНИЕ РАСШИФРОВКИ ТЕКСТОВЫХ КОНСТАНТ: src/lib21/*.mad
+========================================================================
+
+Задача: убрать FAIL проверки tests/check-text-decoded.sh путём добавления
+явной DEKOD-аннотации с кодировкой и непустой расшифровкой в кавычках.
+
+Методика декодирования (все кодировки TEXT/GOST/ISO/УПП/KOI/ITM):
+  - tools/besm6_text_scan.py  — 6-бит TEXT/GOST6 и 8-бит GOST8/UPP/ISO/KOI/ITM/COSY;
+  - tools/dtran_text.py --audit и --word (dtran -D text/gost/iso/itm);
+  - gost10859.h (6-битная графика ГОСТ), besm6tape.py (форматы слов),
+  - для литералов nH — 8-битная ISO-интерпретация слова + 6-битная альтернатива
+    (как в уже существующих аннотациях модулей DECODER/EXECUTE/LFSCAN);
+  - для восьмеричных литералов =: — исходное восьмеричное значение.
+
+Формат добавленной аннотации:
+  ; DEKOD GOST6 '...' / ISO '...' [источник: src/lib21/ФАЙЛ.mad:СТРОКА; confidence: high]
+  ; DEKOD TEXT '=:...' / OCT '=:...' [источник: ...; восьмеричный литерал из исходника]
+
+ИСПРАВЛЕНО ПО ФАЙЛАМ:
+------------------------------------------------------------------------
+  BEMSH_.mad                 1
+  CHEKJOB_.mad               2
+  CRELIB.mad                 1
+  DECODER.mad                6
+  DISPAC.mad                 1
+  EXECUTE.mad                3
+  FOREX_.mad                 3
+  FT_REGIM.mad               2
+  GIV#PG.mad                 3
+  INPUT_.mad                 1
+  LIBDRU_.mad                3
+  LIBTAP_.mad                6
+  LINK#IPM.mad               8
+  LOADLIBR.mad              10
+  LUNTYP.mad                 2
+  MAKELIBT.mad               7
+  OCATALOG.mad               1
+  OVERLOAD.mad               1
+  PRINT80.mad                1
+  PUNCHA.mad                 1
+  READ1.mad                  1
+  READ2.mad                  1
+  SWRITE.mad                 2
+  TCATALOG.mad              10
+  TEMP##.mad                 2
+  WRITE1.mad                 2
+------------------------------------------------------------------------
+  ИТОГО                     81
+
+Пропущено (уже аннотировано параллельно):
+  УЖЕ АННОТИРОВАНО src/lib21/EXECUTE.mad:121 — пропуск
+  УЖЕ АННОТИРОВАНО src/lib21/EXECUTE.mad:147 — пропуск
+  УЖЕ АННОТИРОВАНО src/lib21/EXECUTE.mad:262 — пропуск
+  УЖЕ АННОТИРОВАНО src/lib21/FT_REGIM.mad:112 — пропуск
+  УЖЕ АННОТИРОВАНО src/lib21/LINK#IPM.mad:196 — пропуск
+  УЖЕ АННОТИРОВАНО src/lib21/LINK#IPM.mad:219 — пропуск
+
+ОБНОВЛЁННЫЕ XREF (раздел «Текстовые константы» / Decode):
+  include/lib21/BEMSH_.xref.md, include/lib21/GIV#PG.xref.md, include/lib21/LUNTYP.xref.md
+  (остальные 24 затронутых xref уже содержат такой раздел)
+
+РЕЗУЛЬТАТЫ ПРОВЕРОК:
+  bash tests/check-text-decoded.sh ......... rc=0, ИТОГО констант: 539  OK: 539  FAIL: 0
+  check-source-words.py            rc=0  OK LO*GEN: все 1024 слова совпадают с дампом
+  check-label-semantics.sh         rc=0  OK: нарушений семантики имён не найдено
+  check-constants.sh               rc=0  OK: все файлы вынесли литералы в ,EQU, (уник <= 20)
+  check-lib21.sh                   rc=0  OK: библиотека 21 разобрана и аннотирована
+  check-extract-codes.sh           rc=0  OK dtran -D cross-check: TEXT/GOST-константы совпадают
+
