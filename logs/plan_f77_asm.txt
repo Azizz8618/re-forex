@@ -1,0 +1,82 @@
+=== plan_f77_asm.txt — лог субагента «ассемблерный путь расширения ФОРЭКС» ===
+дата      : 19.11.2026
+репозиторий: /tmp/.private/azizz/opencode/re-forex (ветка main)
+режим     : только чтение + один выходной документ
+выход     : docs/plan-f77/04-assembler-path.md
+
+--- 1. Прочитанные источники (факты, использованные в дизайне) ---
+docs/PLAN.md                 карта носителя: LO*SYN зона 0120 / 0o241500,
+                             LO*GEN зона 0137 / 0o277500; LOADANGO → 0o22654
+docs/05-roundtrip.md         ADRSEK: все КОП совпали, 27 слов — только поля
+                             операндов/символов; байтовая идентичность без
+                             исходной симтаблицы невозможна
+docs/06-address-map.md       адреса в оверлеях — готовые абсолютные (0o4x/5x/6x/
+                             77xxx, LINK 0o74000..74077); LO*GEN не имеет
+                             внутренних переходов; LO*SYN — 25 internal целей;
+                             *21 22654(12) в monsys.9:0o774467
+docs/07-runtime.md           FORMAT/FORTLIBR/DATAPR*/OCTTDEC: источники Дубны;
+                             11 пар FT* → 0o77xxx из S1:15565-15586
+docs/10-naming-conventions.md §5 внешние адреса не переименовывать; §6 лимит 6 знаков
+docs/14-perso-write.md      формат PERSO, запись каталога, «новые записи только
+                             в конец», последняя загрузка побеждает
+docs/15-perso-build.md       запись каталога f1/f2/f3, transfer vector; состав
+                             9 модулей; SHA256 FOREX_PERSO_2300.bin aab191de…
+docs/16-glissade-run.md      конфликт имён OCTTDEC → псевдоним OCTTDE*; 14/14 строк
+checklist/STATUS.md          7/7 сценариев, 16 проверок semantics rc=0
+tools/dtran_wrap.py          синтетический DMS, sym_len=0o7777, числовые метки NNNNNB
+tools/extract_words.py       t6-декодер, 6 Б/слово big-endian
+tools/build_forex_perso.py   compiled-модули обёрнуты в [1,0,N]+words+[name];
+                             assemble_source() → dispak *assembler → siprod_lib
+tests/check-source-words.py  1024/1024 побайтовая сверка (PAT_SYN / PAT_GEN)
+tests/install-forex-perso.sh зона 0o2300=1216(10), 5 зон, PLCATALOG без ИСПОРЧЕН
+tests/run-glissade-forex.sh  нормализация даты + 14 строк результата
+src/LO_GEN.mad:503-531       29 TEXT-констант таблицы операторов 0533..0623,
+                             дескриптор FMT_NAME_LEN в 0532; зона 23..1777 — код
+src/LO_SYN.mad               25 внутренних целей, таблицы автомата Э36 «втбрз»
+include/LO_GEN.labels.md     WT0533..WT0623 = TEXT_POWER … TEXT_STOP
+logs/plan_f77_probes.txt     15 зондов F77 (см. снимок ниже)
+tests/plan-f77/probe.sh      decks BASE..LOGICAL
+
+--- 2. Снимок baseline (системный ФОРЭКС 2.02, диск 2048) ---
+OK   BASE, DOLOOP, BLOCKIF, CHARSTAR, DOUBLPR, COMPLEX, DATAST,
+     PARAMETER, INTRINSIC, EXTERNAL, LOGICAL        (11)
+FAIL LISTDIR   ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+FAIL IMPLICIT  НЕДОПУСТИМ КЛЮЧ СЛОВО
+FAIL ENDREAD   НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+FAIL SAVE      НЕДОПУСТИМ КЛЮЧ СЛОВО                 (4)
+→ цели правок: list-directed I/O, IMPLICIT, END=, SAVE.
+
+--- 3. Ключевые решения дизайна ---
+1. Подмена точечная: SYN → LO*SYN (зона 1517..1777), GEN → LO*GEN (таблица
+   0532..0623 + inline-кодогенерация), диспетчер → FORMAT ( новая пара FT* ).
+   FOREX*, DATAPR*, GIV/PG, TAK/PG, OCTTDE* не трогаем; F77LIBR — новая зона
+   в конец каталога.
+2. Оверлеи грузятся по одному адресу 0o22654 без релокации → каждый patched
+   оверлей обязан остаться ровно 1024 словами; рост = перекомпоновка либо
+   вынос в рантайм.
+3. Проверка при изменённой симтаблице — слои L0..L5:
+   golden SHA256 → сравнение поля КОП → homeomorphic mapping меток →
+   функциональные тесты → manifest разрешённых диапазонов слов →
+   воспроизводимость сборки. Manifest заменяет жёсткий 1024/1024 только для
+  patched-модулей.
+4. Гибрид: ассемблер — только точка входа (ориентир: ~10–25 слов на LO*GEN,
+   30–60 на LO*SYN, 3–6 на FORMAT), вся семантика F77 — Fortran-модуль
+   F77LIBR (~150–300 слов в отдельной зоне). Одна VJM на редкую
+   F77-конструкцию вместо inline-роста в плотных таблицах.
+5. Тесты: 16 сценариев (15 decks из tests/plan-f77 + GLISSADE 14/14), 4 новых
+   позитивных F77-теста, контрольные векторы (слова/вывод/каталог/сборка),
+   sliding-window (W=3, порог 0.95) сравнение с Фортраном-ГДР, помечаемое
+   SKIP при отсутствии эталона.
+
+--- 4. Оценки трудоёмкости (слов внутри 1024-словных оверлеев) ---
+имя оператора в 0532..0623 : 2–5 слов, риск ВЫСОКИЙ (таблица упакована)
+inline-кодогенерация LO*GEN : 10–40 слов, риск ВЫСОКИЙ
+ключ+обработчик LO_SYN      : 30–90 слов, риск ВЫСОКИЙ (176 слов на 1517..1777)
+FT* в FORMAT                 : 3–6 слов, риск СРЕДНИЙ/НИЗКИЙ (LINK 0o74014..077)
+Fortran F77LIBR              : 50–150 слов новой зоны, риск НИЗКИЙ
+
+--- 5. Ограничения ---
+Новый инструмент (compare_opcodes.py, check-label-mapping.py, режим
+check-source-words.py --manifest) в этом задании НЕ создавался — только
+спроектирован. Ни один существующий файл исходников/тестов/эталонов не
+изменён. Записаны только docs/plan-f77/04-assembler-path.md и этот лог.

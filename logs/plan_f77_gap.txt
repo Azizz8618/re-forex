@@ -1,0 +1,62 @@
+Лог исследования: расхождения ФОРЭКС ↔ FORTRAN 77
+Дата: 19.11.2026. Режим: только чтение; создан один выходной файл docs/plan-f77/01-gap-analysis.md.
+
+1. ПРОЧИТАНО (первичные доказательства)
+   - tests/plan-f77/probe.sh, logs/plan_f77_probes.txt — 15 проб ФОРЭКС 2.02 (dispak, диск 2048):
+     10 OK (BASE, DOLOOP, BLOCKIF, DOUBLPR, COMPLEX, DATAST, PARAMETER,
+     INTRINSIC, EXTERNAL, LOGICAL), 5 FAIL (CHARSTAR, LISTDIR, IMPLICIT NONE,
+     ENDREAD, SAVE).
+   - КОРРЕКТУРА: исходный фильтр ошибок в probe.sh искал только ERROR/ОШИБКА/
+     НЕДОПУСТИМ и ложно пометил CHARSTAR как OK. Фильтр исправлен (учитывает
+     АТТ …, ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ, ERR … ПК K); повторный прогон:
+     CHARSTAR → FAIL «ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ» (даже с ' ' и FORMAT(1X,A4)).
+   - tests/plan-f77/work/{CHARSTAR,LISTDIR,IMPLICIT,SAVE,ENDREAD}/out.txt — точные диагностики.
+   - tests/forex-glissade/glkern.b6, docs/16-glissade-run.md — BLOCK DATA, COMMON,
+     2D-массивы, **, AMOD/EXP, DATA; full-прогон rc=0, 14/14 строк.
+   - docs/plan-f77/00-index.md — границы применимости проб.
+
+2. ПРОЧИТАНО (версии и 4.13)
+   - besm6.net/docs/dubna-languages.md:9-37,106-134,240-275,362-377,403-857
+     (подмена *forex -> *fortran в старых пробах; CHARACTER*30/IF/COMMON/Dhrystone;
+     6-символьная коллизия).
+   - besm6.net/examples/dhrystone-forex.dub:1-373 (21 подтверждённая конструкция;
+     CHARACTER*30 отдельно — только 4.13; 5A6; временные для печати; 18+4 контролей).
+   - besm6.net/docs/articles/besm6-performance/article.md:133,155,221-232,258-309
+     (4.12/4.13, 48 прогонов прошли проверки).
+   - dubna/tests/expect_forex.txt:28,42-55; expect_whatis_monsys.txt:33
+     (баннеры 4.13 и 412).
+   - dispak/tests/forex/output.txt:36 (баннер 2.02 15.07.80).
+
+3. ПРОЧИТАНО (структура компилятора, косвенные свидетельства)
+   - docs/08-forex3.md:139-148,190-199; docs/03-symbols.md:99-116 — расслоение версий.
+   - docs/09-crossrefs.md:5510 — 11 entry FT*nnn в рантайме FORMAT.
+   - src/LO_GEN.mad:503-531 — таблица имён операторов 0o533..0o623:
+     POWER, A/RHOCHI, A/NOT, A/AND, FT*621…FT*611, *REWIN, *BACKS, *ENDFI, STOP*.
+   - besm6.github.io/sources/dubna/besml21/kermit.ftn (2844 стр.) — IMPLICIT
+     INTEGER(A-Z), CHARACTER*6144, PARAMETER, COMMON со строками, BIT/IBIT/BAND/BOR.
+     Проверено: RECORD, SAVE, ARM, END=, list-directed PRINT как операторы ОТСУТСТВУЮТ
+     (SAVECT/SAVEDCR и PARMS — имена, END= найден только в PARAMETER).
+   - besm6.github.io/sources/dubna/d_besm6/swhet.for:47-48,130-321 — DO…REPEAT и
+     READ(*,*) без лога исполнения.
+   - besm6.net/examples/whetstone-longbottom-forex.dub:1-25 — сознательно узкое
+     подмножество F77 в порте.
+
+4. РЕЗУЛЬТАТ (после корректуры)
+   - 21 позиция подтверждена исполнением; 5 позиций confirmed не работают
+     (CHARACTER в 2.02, PRINT *, READ(*,*,END=), IMPLICIT NONE, SAVE);
+     3 позиции нестабильны (~); 17 позиций требуют пробы (?).
+   - CHARACTER — версионная зависимость: NO в 2.02 (§2.1) / OK в 4.13
+     (Dhrystone CHARACTER*30, 18+4 контролей) → убрано из §1, добавлено в P1 плана.
+   - Ключевое противоречие источников: старые таблицы §3/§6 dubna-languages.md
+     приписывают ФОРЭКСУ «ч» для блок IF и − для многомерных массивов — артефакт
+     подмены *forex -> *fortran, опровергнут пробами 2.02 и 4.13. Для строк
+     старый «−» частично совпадает с 2.02, но опровергнут 4.13.
+   - Приоритеты: P0 — 6-символьная коллизия имён и SAVE; P1 — версионная
+     зависимость CHARACTER, list-directed I/O, IMPLICIT NONE, READ с END=;
+     P2/P3 — остальное. Dhrystone (4.13)/Whetstone/glissade используют только
+     подтверждённое для своей версии подмножество.
+
+5. ОГРАНИЧЕНИЯ
+   - NO установлено только для базовых форм 2.02; не экстраполируется на 4.13.
+   - Корпус kermit.ftn/swhet.for не имеет логов исполнения — косвенное свидетельство.
+   - src/, include/, reference/ и эталонные носители не изменялись.

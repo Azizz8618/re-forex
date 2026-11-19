@@ -1,0 +1,63 @@
+Лог разведки: точки расширения ФОРЭКС (субагент, 19.11.2026)
+Репозиторий: /tmp/.private/azizz/opencode/re-forex, ветка main.
+Режим: только чтение + 2 выходных файла (docs/plan-f77/02-extension-points.md,
+этот лог). Доп. пробы выполнялись в /tmp/.private/azizz/opencode/, не в репозитории.
+
+--- ПРОЧИТАННЫЕ ИСТОЧНИКИ ---
+docs/00-charter.md, docs/PLAN.md, docs/04-register-conventions.md,
+docs/05-roundtrip.md, docs/06-address-map.md, docs/07-runtime.md,
+docs/08-forex3.md, docs/09-crossrefs.md,
+docs/plan-f77/00-index.md
+src/FOREX_CORE.mad (647 строк: ENTRY/COMMON/SUBP + дамп 96 слов),
+src/FOREX_RUNTIME.mad (568 строк: FORMAT/FORTLIBR/DATAPR*/OCTTDEC),
+src/LO_SYN.mad (3846 строк: EQU + слова 0000..1777),
+src/LO_GEN.mad (3565 строк: EQU + слова 0000..1777),
+include/FOREX_ROOT.mad, include/FOREX_CORE.xref.md,
+include/FOREX_RUNTIME.xref.md, include/LO_SYN.xref.md,
+include/LO_GEN.xref.md
+logs/plan_f77_probes.txt, tests/plan-f77/probe.sh
+
+--- КЛЮЧЕВЫЕ НАХОДКИ ---
+1. INITFO 0o510303 сохраняет возврат из M13 (RETLR) в RET=0o4023;
+   LODOVL 0o510315/316 грузит LO*SYN (TEXT 0o4031) и LO*GEN (TEXT 0o4032)
+   через LOADANGO VJM 74022(15) по адресу 0o22654.
+2. LO*SYN: код 0000..1516 + таблица переходов/диспетчера 1517..1777
+   (0o243017..0o243477); выборка лексемы через экстракоды Э20/Э36.
+3. LO*GEN: таблица имён операторов 0532..0623 (0o300232..0o300323),
+   29 пар «дескриптор NMLN5D=0o...20005 + TEXT-имя»:
+   POWER A/RHOCHI A/NOT A/AND, FT*/FD*/FC* (17 имен),
+   *REWIN *BACKS *ENDFI STOP*. Свободных слотов нет.
+4. FORMAT/FTDISP строит таблицу передач в 0o77xxx (база 0o77766);
+   FORTLIBR/FTLIO = PRINT8 + WRTLBR; LINK-ячейки 0o74000..0o74077.
+5. Соглашение вызова: аргументы через блок по M16/M14/M7;
+   возврат M13 (RETLR) для процедур МАДЛЕН/Fortran и M15 для VJM(15);
+   MODA → ITS 16 → VJM proc(15) → 13,UJ.
+6. Внешние Fortran-вызовы уже работают без правки генератора
+   (эмпирика: FOO/MYFUN/VERYLONGNAME/SQRT/ABS/SIN/MOD/EXP OK).
+
+--- ДОПОЛНИТЕЛЬНЫЕ ПРОБЫ (в /tmp, в репозиторий не писалось) ---
+DISPAK=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+deck: шифр 419999 зс5^ / лен 41(2048)^ / *call yesmemory / *no list / *forex
+
+DOWHILE  'N=0; DO WHILE (N .LT. 3); N=N+1; ENDDO'  -> ОШИБКА В ЗАГОЛОВКЕ ЦИКЛА
+MYFUN    'X=MYFUN(2.0)'                             -> КОНЕЦ ЗАДАЧИ (OK)
+LONGNAME 'X=VERYLONGNAME(2.0)'                      -> КОНЕЦ ЗАДАЧИ (OK)
+SINMOD   'X=SIN(1.0); Y=MOD(7.0,3.0); Z=EXP(1.0)'   -> КОНЕЦ ЗАДАЧИ (OK)
+EXTERNAL 'X=FOO(2.0)'                               -> КОНЕЦ ЗАДАЧИ (OK)
+
+(первая попытка с однострочным heredoc дала ложный «ЧУЖОЙ СИМВОЛ» —
+причина: склейка строк через "$@"; исправлено на multiline %b.)
+
+--- ВЕРДИКТЫ (кратко) ---
+а) intrinsic в форме функции ............ Fortran-процедуры достаточно
+а2) новый внутренний оператор/тип ....... и MADLEN, и Fortran
+б) CHARACTER / END IF / COMPLEX ......... уже работают, правка не нужна
+б2) DO WHILE ............................ MADLEN (LO*SYN+LO*GEN) или preprocessor
+в) новая реализация в существующем FT* .. Fortran-процедуры достаточно
+в2) новый синтаксис I/O (PRINT *) ....... и MADLEN, и (при необходимости) Fortran
+корень FOREX* .......................... только MADLEN
+
+--- ЗАПИСАННЫЕ ФАЙЛЫ ---
+docs/plan-f77/02-extension-points.md  (основной отчёт)
+logs/plan_f77_points.txt              (этот лог)
+Не изменены: src/, include/, docs/PLAN.md, reference/, эталонные образы.

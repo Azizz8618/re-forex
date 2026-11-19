@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
-"""Парсер таблицы системных вызовов (экстракодов) из rukava.be.
+"""Парсер таблицы системных вызовов (экстракодов) из rukava.be и книги Тюрина.
 
-Источник: /home/azizz/Yandex.Disk/re-dispak/rukava.be,
+Первичный источник: /home/azizz/Yandex.Disk/re-dispak/rukava.be,
 раздел 1.4 «ПЕРЕЧЕНЬ СИСТЕМНЫХ ВЫЗВОВ (ЭКСТРАКОДОВ)».
+
+Вторичный источник: /home/azizz/Yandex.Disk/re-dispak/docs/tyurin1985/extract-codes.json
+(описания экстракодов из OCR книги В. Ф. Тюрина «Операционная система
+ДИСПАК», 1985, Приложение П и §2.4).  Приоритет: rukava.be, затем Тюрин.
+
+Выбор источника: ``--source rukava|tyurin|all`` (по умолчанию ``all``).
 
 Строки таблицы имеют вид::
 
@@ -17,9 +23,11 @@
 Примеры::
 
     python3 tools/extract_codes.py --list
-    python3 tools/extract_codes.py --find Э50/0000
+    python3 tools/extract_codes.py --find Э57/1263
     python3 tools/extract_codes.py --find 'Э53 0041'
+    python3 tools/extract_codes.py --find Э57/1263 --source tyurin
     python3 tools/extract_codes.py --json
+    python3 tools/extract_codes.py --scan --source all
 """
 
 from __future__ import annotations
@@ -29,13 +37,18 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 DEFAULT_SOURCE = Path("/home/azizz/Yandex.Disk/re-dispak/rukava.be")
+DEFAULT_TYURIN = Path("/home/azizz/Yandex.Disk/re-dispak/docs/tyurin1985/extract-codes.json")
+SOURCES = ("rukava", "tyurin", "all")
 
 # Ключ: (Э50, 0131).  Значение: (описание, страница, строка файла).
 Entry = Tuple[str, str, int]
 CodeTable = Dict[Tuple[str, str], Entry]
+TyurinData = Dict[str, Any]
+# Унифицированная находка: (описание, страница, ссылка, имя_источника).
+Found = Tuple[str, str, str, str]
 
 ROW_RE = re.compile(
     r"^\*\|\s*(Э\d{2})(?:\s+([^\s|]+))?\s*\|\s*(.*?)\s*\|\s*([^|]*?)\s*\|\s*$"
@@ -124,6 +137,103 @@ def format_entry(code: str, info: str, entry: Optional[Entry]) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Второй источник: книга Тюрина (1985).
+# ---------------------------------------------------------------------------
+
+def load_tyurin(path: Path = DEFAULT_TYURIN) -> Optional[TyurinData]:
+    """Загрузить JSON с описаниями экстракодов из книги Тюрина.
+
+    Формат первого агента: ``{"Э057:0000": {"desc": ..., "page": 264,
+    "confidence": ...}, ...}``.  Возвращает ``None``, если файл отсутствует
+    или повреждён (тогда работает только rukava.be).
+    """
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    if not isinstance(data, dict):
+        return None
+    return data
+
+
+# Краткие названия экстракодов по указателю книги (используются как fallback
+# по номеру кода, когда конкретное информационное слово в книге не найдено).
+TYURIN_CODE_TITLES: Dict[str, str] = {
+    "Э50": "СЕРВИСНЫЕ ЭКСТРАКОДЫ И ЭЛЕМЕНТАРНЫЕ ФУНКЦИИ (ИР 050 A)",
+    "Э51": "COS (ИР 051 A)",
+    "Э52": "COS (ИР 052 A)",
+    "Э53": "ARCTAN / СОБЫТИЯ И СВЯЗЬ МЕЖДУ ЗАДАЧАМИ (ИР 053 A)",
+    "Э54": "ARCSIN (ИР 054 A)",
+    "Э55": "LN (ИР 055 A)",
+    "Э56": "EXP (ИР 056 A)",
+    "Э57": "ВЫДЕЛЕНИЕ ЦЕЛОЙ ЧАСТИ (ENTIER) / СИСТЕМНАЯ ОПЕРАЦИЯ (ИР 057 A)",
+    "Э62": "СИСТЕМНЫЕ ЭКСТРАКОДЫ УПРАВЛЕНИЯ ЗАДАЧАМИ И ТЕРМИНАЛАМИ (ИР 062 A)",
+    "Э63": "ЭКСТРАКОДЫ ВРЕМЕНИ РЕШЕНИЯ ЗАДАЧИ (ИР 063 A)",
+    "Э64": "УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A)",
+    "Э73": "ВВОД МАССИВА С НОМЕРОМ N+1 В ПАМЯТЬ ЗАДАЧИ (ИР 073 A)",
+    "Э76": "СВЯЗЬ БЭСМ-6 С ЭВМ М-6000 / Т-1600 (ИР 076 A)",
+}
+
+
+def _tyurin_entries(data: Optional[TyurinData]) -> Dict[Tuple[str, str], Dict[str, Any]]:
+    """Индекс записей Тюрина: (код, восьмеричное_слово) -> запись."""
+    out: Dict[Tuple[str, str], Dict[str, Any]] = {}
+    if not data:
+        return out
+    for key, val in data.items():
+        if ":" not in key or not isinstance(val, dict):
+            continue
+        raw_code, raw_info = key.split(":", 1)
+        code = "Э" + raw_code.lstrip("Э").lstrip("0")
+        info = norm_info(raw_info)
+        out[(code, info)] = val
+    return out
+
+
+def lookup_tyurin(data: Optional[TyurinData], code: str, info: str) -> Optional[Entry]:
+    """Найти описание у Тюрина: сначала пара (код/слово), затем код целиком.
+
+    Возвращает ``(описание, страница, 'tyurin1985')``.
+    """
+    if not data:
+        return None
+    code = code.strip().upper()
+    entries = _tyurin_entries(data)
+    hit = entries.get((code, norm_info(info)))
+    if hit is not None:
+        desc = str(hit.get("desc", "")).strip()
+        page = str(hit.get("page", 264))
+        if desc:
+            return (desc, page, "tyurin1985")
+    # Fallback по номеру экстракода: описание класса экстракодов из книги.
+    title = TYURIN_CODE_TITLES.get(code)
+    if title is not None:
+        pages = [str(v.get("page", 264)) for (c, _), v in sorted(entries.items())
+                 if c == code and v.get("page")]
+        return (title, pages[0] if pages else "264", "tyurin1985")
+    return None
+
+
+def lookup_all(code: str, info: str, table: CodeTable,
+               tyurin: Optional[TyurinData] = None,
+               source: str = "all") -> Optional[Found]:
+    """Унифицированный поиск с приоритетом rukava.be > Тюрин.
+
+    ``source``: ``rukava`` — только rukava.be, ``tyurin`` — только Тюрин,
+    ``all`` — оба (сначала rukava.be).
+    """
+    if source in ("rukava", "all"):
+        entry = lookup(table, code, info)
+        if entry is not None:
+            return (entry[0], entry[1], f"rukava.be:{entry[2]}", "rukava.be")
+    if source in ("tyurin", "all"):
+        entry = lookup_tyurin(tyurin, code, info)
+        if entry is not None:
+            return (entry[0], entry[1], entry[2], "tyurin1985")
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Сканирование аннотированных МАДЛЕН-текстов.
 # ---------------------------------------------------------------------------
 
@@ -193,13 +303,19 @@ def resolve_equ(name: str, equs: Dict[str, str], seen: Optional[set] = None) -> 
     return format(val, "o") if val is not None else None
 
 
-def make_comment(code: str, info: str, table: CodeTable) -> str:
-    """Построить встроенный комментарий-расшифровку для одного экстракода."""
-    entry = lookup(table, code, info)
+def make_comment(code: str, info: str, table: CodeTable,
+                 tyurin: Optional[TyurinData] = None,
+                 source: str = "all") -> str:
+    """Построить встроенный комментарий-расшифровку для одного экстракода.
+
+    Если описание найдено у Тюрина, комментарий заканчивается на
+    ``[tyurin1985]``; если в rukava.be — на ``[rukava.be:N]``.
+    """
+    entry = lookup_all(code, info, table, tyurin, source)
     if entry is None:
         return f". {code} {info} = НЕ НАЙДЕНО в rukava.be"
-    desc, page, lineno = entry
-    return f". {code} {info} = {desc}, стр.{page} [rukava.be:{lineno}]"
+    desc, page, ref, _src = entry
+    return f". {code} {info} = {desc}, стр.{page} [{ref}]"
 
 
 def scan_line(line: str, equs: Dict[str, str]) -> List[Tuple[str, str, str]]:
@@ -221,8 +337,9 @@ def scan_line(line: str, equs: Dict[str, str]) -> List[Tuple[str, str, str]]:
     return out
 
 
-def scan_sources(root: Path = Path("src"), table: Optional[CodeTable] = None
-                 ) -> List[Dict[str, object]]:
+def scan_sources(root: Path = Path("src"), table: Optional[CodeTable] = None,
+                 tyurin: Optional[TyurinData] = None,
+                 source: str = "all") -> List[Dict[str, object]]:
     """Просканировать ``src/*.mad`` и ``src/lib21/*.mad``."""
     if table is None:
         table = parse_table()
@@ -237,14 +354,15 @@ def scan_sources(root: Path = Path("src"), table: Optional[CodeTable] = None
                 equs[m.group(1)] = m.group(2)
         for lineno, line in enumerate(lines, 1):
             for code, info, raw in scan_line(line, equs):
-                entry = lookup(table, code, info)
+                entry = lookup_all(code, info, table, tyurin, source)
                 found.append({
                     "file": str(path), "line": lineno, "code": code,
                     "info": info, "token": raw,
                     "description": entry[0] if entry else None,
                     "page": entry[1] if entry else None,
                     "source_line": entry[2] if entry else None,
-                    "comment": make_comment(code, info, table),
+                    "source": entry[3] if entry else None,
+                    "comment": make_comment(code, info, table, tyurin, source),
                 })
     return found
 
@@ -259,11 +377,16 @@ def parse_query(q: str) -> Tuple[str, str]:
 
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--source", type=Path, default=DEFAULT_SOURCE,
+    ap.add_argument("--source", choices=SOURCES, default="all",
+                    help="источник расшифровок: rukava, tyurin или all "
+                         "(по умолчанию all: rukava.be, затем Тюрин)")
+    ap.add_argument("--rukava", type=Path, default=DEFAULT_SOURCE,
                     help="путь к rukava.be (по умолчанию %(default)s)")
+    ap.add_argument("--tyurin", type=Path, default=DEFAULT_TYURIN,
+                    help="путь к JSON Тюрина (по умолчанию %(default)s)")
     ap.add_argument("--list", action="store_true", help="вывести всю таблицу")
-    ap.add_argument("--find", metavar="Э50/0000",
-                    help="найти код (формы: Э50/0000, 'Э50 0000', Э50)")
+    ap.add_argument("--find", metavar="Э57/1263",
+                    help="найти код (формы: Э57/1263, 'Э53 0041', Э50)")
     ap.add_argument("--json", action="store_true", help="вывести таблицу в JSON")
     ap.add_argument("--scan", action="store_true",
                     help="просканировать src/*.mad и src/lib21/*.mad")
@@ -272,31 +395,40 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = ap.parse_args(argv)
 
     try:
-        table = parse_table(args.source)
+        table = parse_table(args.rukava)
     except OSError as exc:
-        print(f"ОШИБКА: не удалось прочитать {args.source}: {exc}", file=sys.stderr)
+        print(f"ОШИБКА: не удалось прочитать {args.rukava}: {exc}", file=sys.stderr)
         return 2
+    tyurin = load_tyurin(args.tyurin) if args.source in ("tyurin", "all") else None
 
     if args.scan:
-        rows = scan_sources(args.root, table)
+        rows = scan_sources(args.root, table, tyurin, args.source)
         if args.json:
             print(json.dumps(rows, ensure_ascii=False, indent=2))
             return 0
         hits = sum(1 for r in rows if r["description"] is not None)
         for r in rows:
             mark = "НАЙДЕНО" if r["description"] is not None else "не найдено"
+            src = r["source"] or "-"
             print(f"{r['file']}:{r['line']}: {r['code']} {r['info']} "
-                  f"[{r['token']}] -> {mark}")
+                  f"[{r['token']}] -> {mark} [{src}]")
         print(f"\nВсего вхождений: {len(rows)}, расшифровано: {hits}, "
-              f"не найдено: {len(rows) - hits}", file=sys.stderr)
+              f"не найдено: {len(rows) - hits} (источник: {args.source})",
+              file=sys.stderr)
         return 0
 
     if args.json and not args.find:
         out = [
             {"code": code, "info": info, "description": desc,
-             "page": page, "source_line": lineno}
+             "page": page, "source_line": lineno, "source": "rukava.be"}
             for (code, info), (desc, page, lineno) in sorted(table.items())
         ]
+        if tyurin:
+            for (code, info), val in sorted(_tyurin_entries(tyurin).items()):
+                out.append({"code": code, "info": info,
+                            "description": val.get("desc", ""),
+                            "page": val.get("page", 264),
+                            "source_line": None, "source": "tyurin1985"})
         print(json.dumps(out, ensure_ascii=False, indent=2))
         return 0
 
@@ -306,18 +438,27 @@ def main(argv: Optional[List[str]] = None) -> int:
         for (c, i), entry in sorted(table.items()):
             if c == code and (not info or i == info or
                               (info.lstrip("0") and i.lstrip("0") == info.lstrip("0"))):
-                found.append((c, i, entry))
+                found.append((c, i, f"{entry[0]} (стр.{entry[1]}) [rukava.be:{entry[2]}]"))
+        # Добавляем результат из Тюрина, если пара ещё не найдена в rukava.be.
+        if not found and tyurin:
+            entry = lookup_tyurin(tyurin, code, info)
+            if entry is not None:
+                found.append((code, info,
+                              f"{entry[0]} (стр.{entry[1]}) [{entry[2]}]"))
         if not found:
-            print(f"Экстракод {args.find}: не найдено в rukava.be")
+            print(f"Экстракод {args.find}: не найдено ни в rukava.be, ни у Тюрина")
             return 1
-        for c, i, entry in found:
-            print(format_entry(c, i, entry))
+        for c, i, text in found:
+            print(f"{c} {i} -> {text}")
         return 0
 
     if args.list or not args.json:
         for (code, info), entry in sorted(table.items()):
             print(format_entry(code, info, entry))
-        print(f"\nВсего записей: {len(table)}", file=sys.stderr)
+        print(f"\nВсего записей rukava.be: {len(table)}", file=sys.stderr)
+        if tyurin:
+            print(f"Записей у Тюрина: {len(_tyurin_entries(tyurin))} пар",
+                  file=sys.stderr)
     return 0
 
 

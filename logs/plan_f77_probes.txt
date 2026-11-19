@@ -1,0 +1,15 @@
+OK   BASE           compiled+ran
+OK   DOLOOP         compiled+ran
+OK   BLOCKIF        compiled+ran
+FAIL CHARSTAR       ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK   DOUBLPR        compiled+ran
+OK   COMPLEX        compiled+ran
+FAIL LISTDIR        ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+OK   DATAST         compiled+ran
+FAIL IMPLICIT       НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK   PARAMETER      compiled+ran
+OK   INTRINSIC      compiled+ran
+OK   EXTERNAL       compiled+ran
+FAIL ENDREAD        НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+FAIL SAVE           НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK   LOGICAL        compiled+ran

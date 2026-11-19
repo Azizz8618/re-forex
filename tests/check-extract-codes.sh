@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # Проверка: каждый экстракод с информационным словом в аннотированных
 # МАДЛЕН-текстах (src/*.mad, src/lib21/*.mad) имеет встроенный комментарий-
-# расшифровку вида ". Э50 0131 = ... [rukava.be:2999]" либо
-# ". Э57 6 = НЕ НАЙДЕНО в rukava.be".
+# расшифровку. Источники (по приоритету): rukava.be, затем книга Тюрина 1985.
+#
+# Ожидаемый вид комментария:
+#   ". Э50 0131 = ... [rukava.be:2999]"  — расшифровка по rukava.be
+#   ". Э57 1263 = ..., стр.264 [tyurin1985]" — расшифровка по Тюрину
+#   ". Э57 6 = НЕ НАЙДЕНО в rukava.be" — нет ни в одном источнике
 #
 # Отчёт: logs/extract_codes_check.txt
-# Выход: 0 — все вхождения прокомментированы, 1 — есть пропуски.
+# Выход: 0 — все вхождения прокомментированы, 1 — есть пропуски/неверные источники.
 set -u
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 1
@@ -17,6 +21,7 @@ REPORT="$ROOT/logs/extract_codes_check.txt"
 python3 - "$ROOT" "$REPORT" <<'PY'
 import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 root = Path(sys.argv[1])
@@ -25,7 +30,8 @@ sys.path.insert(0, str(root / 'tools'))
 import extract_codes as ec  # noqa: E402
 
 table = ec.parse_table()
-rows = ec.scan_sources(root / 'src', table)
+tyurin = ec.load_tyurin()
+rows = ec.scan_sources(root / 'src', table, tyurin, 'all')
 cache = {}
 
 def line_of(path, number):
@@ -38,13 +44,15 @@ def line_of(path, number):
 out = []
 w = out.append
 w('ПРОВЕРКА КОММЕНТАРИЕВ-РАСШИФРОВОК ЭКСТРАКОДОВ')
-w('Источник: rukava.be, раздел 1.4 (parse: tools/extract_codes.py)')
+w('Источники: rukava.be разд.1.4 (parse: tools/extract_codes.py); '
+  'Тюрин-1985 (docs/tyurin1985/extract-codes.json); приоритет rukava.be > tyurin1985')
 w('')
 
 seen = set()
+pairs_seen = set()
 missing = []
-decoded = 0
-notdecoded = 0
+wrong_source = []
+by_source = Counter()
 for r in rows:
     key = (r['file'], r['line'], r['code'], r['info'])
     if key in seen:
@@ -54,33 +62,52 @@ for r in rows:
     line = line_of(root / r['file'], r['line'])
     marker = f". {r['code']} {r['info']} = "
     ok = marker in line
-    status = 'OK' if ok else 'FAIL'
-    if r['description'] is not None:
-        decoded += 1
-    else:
-        notdecoded += 1
+    src = r['source']
+    pair_key = (r['code'], r['info'])
+    if pair_key not in pairs_seen:
+        pairs_seen.add(pair_key)
+        by_source[src] += 1
+    # Проверяем, что комментарий соответствует найденному источнику.
+    if ok:
+        if src == 'rukava.be' and f"[{r['source_line']}]" not in line:
+            wrong_source.append((r['file'], r['line'], r['code'], r['info'], 'rukava.be'))
+        elif src == 'tyurin1985' and '[tyurin1985]' not in line:
+            wrong_source.append((r['file'], r['line'], r['code'], r['info'], 'tyurin1985'))
+        elif src is None and 'НЕ НАЙДЕНО в rukava.be' not in line:
+            wrong_source.append((r['file'], r['line'], r['code'], r['info'], 'нет источника'))
     if not ok:
         missing.append((r['file'], r['line'], r['code'], r['info']))
+    status = 'OK' if ok else 'FAIL'
+    label = src or 'не найдено'
     w(f"{status:4} {r['file']}:{r['line']}: {r['code']} {r['info']} "
-      f"-> {r['description'] or 'не найдено в rukava.be'}")
+      f"-> {(r['description'] or '—')[:60]} [{label}]")
 
 w('')
 w(f'Вхождений: {len(seen)}')
-w(f'Расшифровано по rukava.be: {decoded}')
-w(f'Не найдено в rukava.be (помечено явно): {notdecoded}')
+w(f'Уникальных пар: {len(pairs_seen)}')
+w(f'Расшифровано по rukava.be: {by_source["rukava.be"]}')
+w(f'Расшифровано по Тюрину-1985: {by_source["tyurin1985"]}')
+w(f'Не расшифровано ни в одном источнике (помечено явно): {by_source[None]}')
 w(f'Без комментария-расшифровки: {len(missing)}')
+w(f'Комментарий с неверной ссылкой на источник: {len(wrong_source)}')
 if missing:
     w('')
     w('ПРОПУСКИ:')
     for f, n, c, i in missing:
         w(f'  {f}:{n}: {c} {i}')
-    w('FAIL: не у всех экстракодов есть комментарий-расшифровка')
+if wrong_source:
+    w('')
+    w('НЕСООТВЕТСТВИЕ ИСТОЧНИКА:')
+    for f, n, c, i, s in wrong_source:
+        w(f'  {f}:{n}: {c} {i} — ожидался {s}')
+if not missing and not wrong_source:
+    w('OK: все экстракоды с информационным словом имеют корректный комментарий-расшифровку')
 else:
-    w('OK: все экстракоды с информационным словом имеют комментарий-расшифровку')
+    w('FAIL: часть комментариев отсутствует или ссылается на неверный источник')
 
 report.write_text('\n'.join(out) + '\n', encoding='utf-8')
 print(f'Отчёт: {report}')
 print(out[-1])
-sys.exit(1 if missing else 0)
+sys.exit(1 if (missing or wrong_source) else 0)
 PY
 exit $?
