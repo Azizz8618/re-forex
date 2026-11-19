@@ -89,3 +89,13 @@
 |-----|----------------------|-------------|------|------------|-------|
 | Э63 | CN766 | не найдено в rukava.be | — | 2 | `src/lib21/EXECUTE.mad:120`, `src/lib21/EXECUTE.mad:261` |
 | Э72 | C | не найдено в rukava.be | — | 1 | `src/lib21/EXECUTE.mad:278` |
+
+## Текстовые константы
+
+Проверено 2 констант модуля `src/lib21/EXECUTE.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `8HFRAG TPП` | GOST `ЖТБЗ0ФРЯ` / TEXT `FRAG TP_` / ISO `·(g·L?` | `src/lib21/EXECUTE.mad:190` | добавлено |
+| `8HFRAG TPП` | GOST `ЖТБЗ0ФРЯ` / TEXT `FRAG TP_` / ISO `·(g·L?` | `src/lib21/EXECUTE.mad:507` | добавлено |
+

@@ -267,3 +267,26 @@
 | Э64 | IC029 | не найдено в rukava.be | — | 1 | `src/lib21/OCATALOG.mad:169` |
 | Э64 | IP028 | не найдено в rukava.be | — | 7 | `src/lib21/OCATALOG.mad:113`, `src/lib21/OCATALOG.mad:128`, `src/lib21/OCATALOG.mad:172`, `src/lib21/OCATALOG.mad:184`, `src/lib21/OCATALOG.mad:187`, `src/lib21/OCATALOG.mad:197`, `src/lib21/OCATALOG.mad:233` |
 | Э70 | INF048 | не найдено в rukava.be | — | 1 | `src/lib21/OCATALOG.mad:106` |
+
+## Текстовые константы
+
+Проверено 15 констант модуля `src/lib21/OCATALOG.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `=6HOVERLA` | GOST `ПЦЕТМБ00` / TEXT `OVERLA  ` / ISO `·ir···` | `src/lib21/OCATALOG.mad:20` | добавлено |
+| `=6H'17''17''16''17''17''16'` | GOST `7@[77@[7` / TEXT `'17''17'` / ISO `······` | `src/lib21/OCATALOG.mad:23` | добавлено |
+| `=6H'17''17'''''''''` | GOST `7@[77@[7` / TEXT `'17''17'` / ISO `······` | `src/lib21/OCATALOG.mad:25` | добавлено |
+| `=6H'''''14''214''214''231'` | GOST `77777@x7` / TEXT `'''''14'` / ISO `·q····` | `src/lib21/OCATALOG.mad:26` | добавлено |
+| `=6H` | GOST `` / TEXT `` / ISO `` | `src/lib21/OCATALOG.mad:48` | добавлено |
+| `9HKATAЛOГ` | GOST `КАТАЛОГ ` / TEXT `J@R@KNC/` / ISO `······` | `src/lib21/OCATALOG.mad:56` | добавлено |
+| `12H` | GOST `` / TEXT `` / ISO `` | `src/lib21/OCATALOG.mad:59` | добавлено |
+| `1H'231'` | GOST `7()@7000` / TEXT `'231'   ` / ISO `·$····` | `src/lib21/OCATALOG.mad:60` | добавлено |
+| `18HБЫЛO MAЛO M035 '133''231'` | GOST `БЫЛО МАЛ` / TEXT `A[KN/L@K` / ISO `···>·+` | `src/lib21/OCATALOG.mad:62` | добавлено |
+| `3H'214''214''231'` | GOST `7(@x77(@` / TEXT `'214''21` / ISO `·$T·t·` | `src/lib21/OCATALOG.mad:63` | добавлено |
+| `4H'214''265'4'231'` | GOST `7(@x77(;` / TEXT `'214''26` / ISO `·$T·t·` | `src/lib21/OCATALOG.mad:64` | добавлено |
+| `16HOШИБKA ПPИ OБPAЩ` | GOST `ОШИБКА П` / TEXT `NXHAJ@/O` / ISO `··!···` | `src/lib21/OCATALOG.mad:65` | добавлено |
+| `8HCBOБOДHO` | GOST `СВОБОДНО` / TEXT `QBNANDMN` / ISO `·+··Kn` | `src/lib21/OCATALOG.mad:68` | добавлено |
+| `17HTAKOГO OVERLAY'32'Я` | GOST `ТАКОГО О` / TEXT `R@JNCN/N` / ISO `······` | `src/lib21/OCATALOG.mad:69` | добавлено |
+| `6H'''' (+)` | GOST `777708-9` / TEXT `'''' (+)` / ISO `·q····` | `src/lib21/OCATALOG.mad:70` | добавлено |
+

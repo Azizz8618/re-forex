@@ -15,11 +15,11 @@ EDC004 ,EQU,4                           ; роль: десятичная кон�
 EDC005 ,EQU,6                           ; роль: десятичная константа/сдвиг; S3:5224  ; (POLN: DEC_6)
 EDC006 ,EQU,13                          ; роль: десятичная константа/сдвиг; S3:5226  ; (POLN: DEC_13)
 EDC007 ,EQU,10                          ; роль: десятичная константа/сдвиг; S3:5233  ; (POLN: DEC_10)
-ETX007 ,EQU,=6H*READ'201'               ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:5237  ; (POLN: LITERAL__6H_READ_201_)
-ETX008 ,EQU,=3HOLD                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:5240  ; (POLN: LITERAL__3HOLD)
+ETX007 ,EQU,=6H*READ'201'               ; роль: DEKOD GOST '+ТЕБД7(е' / TEXT '*READ'20' / ISO '+)a·t·' | GOST '@7000000' / TEXT '1'      ' / ISO 'Dp····' [источник: src/lib21/WRITE1.mad:18; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:5237  ; (POLN: LITERAL__6H_READ_201_)
+ETX008 ,EQU,=3HOLD                      ; роль: DEKOD GOST 'ПМД00000' / TEXT 'OLD     ' / ISO '······' [источник: src/lib21/WRITE1.mad:19; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:5240  ; (POLN: LITERAL__3HOLD)
 EDC008 ,EQU,64                          ; роль: десятичная константа/сдвиг; S3:5241  ; (POLN: DEC_64)
 EDC009 ,EQU,24                          ; роль: десятичная константа/сдвиг; S3:5241  ; (POLN: DEC_24)
-ETX009 ,EQU,=5H*READ                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:5243  ; (POLN: LITERAL__5H_READ)
+ETX009 ,EQU,=5H*READ                    ; роль: DEKOD GOST '+ТЕБД000' / TEXT '*READ   ' / ISO '+)a···' [источник: src/lib21/WRITE1.mad:22; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:5243  ; (POLN: LITERAL__5H_READ)
 ETX010 ,EQU,=377-C                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:5252  ; (POLN: LITERAL__377_C)
 ETX011 ,EQU,=12-C                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:5253  ; (POLN: LITERAL__12_C)
 ETX012 ,EQU,=1                          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:5269  ; (POLN: LITERAL__1)
@@ -108,7 +108,7 @@ U1A,CYC008  ; S3:5280
 STX  ; S3:5281
 13,UJ, . переход/возврат  ; S3:5282
 FIL012: ASN,EDC008-EDC012  ; (POLN: FILE) ; S3:5283
-12,AUX,MAS018-C  ; S3:5284; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+12,AUX,MAS018-C  ; S3:5284; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; MAS018-C = маска = TEXT/GOST слово MAS018-C [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 12,XTS,BUF013-C . считывание с модификатором  ; S3:5285
 ASN,EDC008-EDC013  ; S3:5286
 12,AEX,UN4019-C  ; S3:5287

@@ -215,3 +215,45 @@
 - Смещений `LABEL+NNNB` → десятичное: **0**.
 - Новые имена ≤6 символов, первые 6 уникальны в файле; полное имя — в `POLN:`.
 - Таблица «было → стало» и исходные восьмеричные значения: `logs/labels_semantics_lib21_sys.txt`.
+
+## Текстовые константы
+
+Проверено 34 констант модуля `src/lib21/PRINT80.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `6H014'214''201''204'` | GOST `е@x7(@x7` / TEXT `014'214'` / ISO `A··I··` | `src/lib21/PRINT80.mad:36` | добавлено |
+| `6H56+'205''206''212'` | GOST `=;-7(е=7` / TEXT `56+'205'` / ISO `Ub·I·G` | `src/lib21/PRINT80.mad:37` | добавлено |
+| `4HS00'310'` | GOST `Уее7)@е7` / TEXT `S00'310'` / ISO `···M··` | `src/lib21/PRINT80.mad:38` | добавлено |
+| `4H'231''212''133''133'` | GOST `7()@77(@` / TEXT `'231''21` / ISO `·$··t·` | `src/lib21/PRINT80.mad:39` | добавлено |
+| `4H'133''024''135''133'` | GOST `7@))77е(` / TEXT `'133''02` / ISO `····t·` | `src/lib21/PRINT80.mad:40` | добавлено |
+| `4H'133''231''133''310'` | GOST `7@))77()` / TEXT `'133''23` / ISO `····t·` | `src/lib21/PRINT80.mad:41` | добавлено |
+| `4H'117''116''231''214'` | GOST `7@@[77@@` / TEXT `'117''11` / ISO `··W·tQ` | `src/lib21/PRINT80.mad:42` | добавлено |
+| `4H'205''204''201''032'` | GOST `7(е=77(е` / TEXT `'205''20` / ISO `·$··t·` | `src/lib21/PRINT80.mad:43` | добавлено |
+| `4H'020''021''131''206'` | GOST `7е(е77е(` / TEXT `'020''02` / ISO `····t·` | `src/lib21/PRINT80.mad:44` | добавлено |
+| `4H'033''124''136''034'` | GOST `7е))77@(` / TEXT `'033''12` / ISO `····tR` | `src/lib21/PRINT80.mad:45` | добавлено |
+| `4H'123''120''125''122'` | GOST `7@()77@(` / TEXT `'123''12` / ISO `····tR` | `src/lib21/PRINT80.mad:46` | добавлено |
+| `4H'034''134''133'` | GOST `7е)x77@)` / TEXT `'034''13` / ISO `····tS` | `src/lib21/PRINT80.mad:47` | добавлено |
+| `4H'137''121''126''127'` | GOST `7@)[77@(` / TEXT `'137''12` / ISO `····tR` | `src/lib21/PRINT80.mad:48` | добавлено |
+| `4H+*)(` | GOST `-+980000` / TEXT `+*)(    ` / ISO `,·H···` | `src/lib21/PRINT80.mad:49` | добавлено |
+| `4H/` | GOST ` 0000000` / TEXT `/       ` / ISO `<·····` | `src/lib21/PRINT80.mad:50` | добавлено |
+| `4H3210` | GOST `)(@е0000` / TEXT `3210    ` / ISO `M$P···` | `src/lib21/PRINT80.mad:51` | добавлено |
+| `4H7654` | GOST `[;=x0000` / TEXT `7654    ` / ISO `]eT···` | `src/lib21/PRINT80.mad:52` | добавлено |
+| `4H'026':98` | GOST `7е(;7`*]` / TEXT `'026':98` / ISO `·····X` | `src/lib21/PRINT80.mad:53` | добавлено |
+| `4HCBA'136'` | GOST `ГВБ7@);7` / TEXT `CBA'136'` / ISO `·(GE5·` | `src/lib21/PRINT80.mad:55` | добавлено |
+| `4HGFED` | GOST `ЗЖЕД0000` / TEXT `GFED    ` / ISO `·id···` | `src/lib21/PRINT80.mad:56` | добавлено |
+| `4HKJIH` | GOST `ЛКЙИ0000` / TEXT `KJIH    ` / ISO `··h···` | `src/lib21/PRINT80.mad:57` | добавлено |
+| `4HONML` | GOST `ПОНМ0000` / TEXT `ONML    ` / ISO `··l···` | `src/lib21/PRINT80.mad:58` | добавлено |
+| `4HSRQP` | GOST `УТСР0000` / TEXT `SRQP    ` / ISO `·,p···` | `src/lib21/PRINT80.mad:59` | добавлено |
+| `4HWVUT` | GOST `ЧЦХФ0000` / TEXT `WVUT    ` / ISO `·mt···` | `src/lib21/PRINT80.mad:60` | добавлено |
+| `4H'027'ZYX` | GOST `7е([7ЪЩШ` / TEXT `'027'ZYX` / ISO `·····x` | `src/lib21/PRINT80.mad:61` | добавлено |
+| `4H'132''130''030''115'` | GOST `7@)(77@)` / TEXT `'132''13` / ISO `····tS` | `src/lib21/PRINT80.mad:62` | добавлено |
+| `4HЦБAЮ` | GOST `ЦБАЮ    ` / TEXT `VA@^////` / ISO `··><··` | `src/lib21/PRINT80.mad:63` | добавлено |
+| `4HГФEД` | GOST `ГФЕД    ` / TEXT `CTED////` / ISO `·Id<··` | `src/lib21/PRINT80.mad:64` | добавлено |
+| `4HKЙИX` | GOST `КЙИХ    ` / TEXT `JIHU////` / ISO `··5<··` | `src/lib21/PRINT80.mad:65` | добавлено |
+| `4HOHMЛ` | GOST `ОНМЛ    ` / TEXT `NMLK////` / ISO `··+<··` | `src/lib21/PRINT80.mad:66` | добавлено |
+| `4HCPЯП` | GOST `СРЯП    ` / TEXT `QP_O////` / ISO `···<··` | `src/lib21/PRINT80.mad:67` | добавлено |
+| `4HBЖYT` | GOST `ВЖУТ    ` / TEXT `BFSR////` / ISO `·l·<··` | `src/lib21/PRINT80.mad:68` | добавлено |
+| `4HШЗЫЬ` | GOST `ШЗЫЬ    ` / TEXT `XG[\////` / ISO `·~·<··` | `src/lib21/PRINT80.mad:69` | добавлено |
+| `4H'133'ЧЩЭ` | GOST `'133'ЧЩЭ` / TEXT `;!##;WY]` / ISO `l··o~}` | `src/lib21/PRINT80.mad:70` | добавлено |
+

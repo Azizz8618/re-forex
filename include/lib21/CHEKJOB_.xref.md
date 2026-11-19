@@ -508,3 +508,41 @@
 | Э65 | 761 | не найдено в rukava.be | — | 1 | `src/lib21/CHEKJOB_.mad:350` |
 | Э65 | 762 | не найдено в rukava.be | — | 1 | `src/lib21/CHEKJOB_.mad:454` |
 | Э72 | 4 | не найдено в rukava.be | — | 1 | `src/lib21/CHEKJOB_.mad:476` |
+
+## Текстовые константы
+
+Проверено 30 констант модуля `src/lib21/CHEKJOB_.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `=6H'7''7'''''''''` | GOST `7[77[777` / TEXT `'7''7'''` / ISO `·q·\q·` | `src/lib21/CHEKJOB_.mad:44` | добавлено |
+| `=6H'360'''''''''''` | GOST `7);е7777` / TEXT `'360''''` / ISO `·5··q·` | `src/lib21/CHEKJOB_.mad:51` | добавлено |
+| `=6H'060'''''''''''` | GOST `7е;е7777` / TEXT `'060''''` / ISO `····q·` | `src/lib21/CHEKJOB_.mad:52` | добавлено |
+| `=6H*CHE081` | GOST `+ГИЕе]@0` / TEXT `*CHE081 ` / ISO `*:%A·@` | `src/lib21/CHEKJOB_.mad:57` | добавлено |
+| `=6H(` | GOST `80000000` / TEXT `(       ` / ISO ` ·····` | `src/lib21/CHEKJOB_.mad:58` | добавлено |
+| `=6H` | GOST `` / TEXT `` / ISO `` | `src/lib21/CHEKJOB_.mad:61` | добавлено |
+| `=6H-MU''''''` | GOST `,НХ77777` / TEXT `-MU'''''` / ISO `6·G·q·` | `src/lib21/CHEKJOB_.mad:65` | добавлено |
+| `=6H     =` | GOST `<0000000` / TEXT `=       ` / ISO `t·····` | `src/lib21/CHEKJOB_.mad:66` | добавлено |
+| `=6H'''''''''1''7'` | GOST `77777777` / TEXT `''''''''` / ISO `·q··q·` | `src/lib21/CHEKJOB_.mad:68` | добавлено |
+| `=6H'''''1''7'''''` | GOST `77777@77` / TEXT `'''''1''` / ISO `·q····` | `src/lib21/CHEKJOB_.mad:70` | добавлено |
+| `2H '231'` | GOST `7()@7000` / TEXT `'231'   ` / ISO `·$····` | `src/lib21/CHEKJOB_.mad:86` | добавлено |
+| `8HMONITOR*` | GOST `НПОЙФПТ+` / TEXT `MONITOR*` / ISO `······` | `src/lib21/CHEKJOB_.mad:87` | добавлено |
+| `12H` | GOST `` / TEXT `` / ISO `` | `src/lib21/CHEKJOB_.mad:88` | добавлено |
+| `6HБЭCM-6` | GOST `БЭСМ-6  ` / TEXT `A]QL+&//` / ISO `··l,c·` | `src/lib21/CHEKJOB_.mad:89` | добавлено |
+| `6H/0` | GOST ` е000000` / TEXT `/0      ` / ISO `=·····` | `src/lib21/CHEKJOB_.mad:90` | добавлено |
+| `6H ШИФP-` | GOST `ШИФР-   ` / TEXT `XHTP+///` / ISO `··0,··` | `src/lib21/CHEKJOB_.mad:91` | добавлено |
+| `6H00` | GOST `ее000000` / TEXT `00      ` / ISO `A·····` | `src/lib21/CHEKJOB_.mad:92` | добавлено |
+| `36HMOHИTOPHAЯ C038ИCTEMA  '47'Д Y Б H A'47'  -` | GOST `МОНИТОРН` / TEXT `LNMHRNPM` / ISO `··h··-` | `src/lib21/CHEKJOB_.mad:93` | добавлено |
+| `6H*DOS` | GOST `+ДПУ0000` / TEXT `*DOS    ` / ISO `*K····` | `src/lib21/CHEKJOB_.mad:100` | добавлено |
+| `6H'377'00000` | GOST `7)[[7еее` / TEXT `'377'000` / ISO `·5····` | `src/lib21/CHEKJOB_.mad:101` | добавлено |
+| `6H'377''377'0000` | GOST `7)[[77)[` / TEXT `'377''37` / ISO `·5··t·` | `src/lib21/CHEKJOB_.mad:102` | добавлено |
+| `6H0000'377''377'` | GOST `ееее7)[[` / TEXT `0000'377` / ISO `A···5·` | `src/lib21/CHEKJOB_.mad:103` | добавлено |
+| `21HOTCYTCTBYET П/K *NAME` | GOST `ОТСУТСТВ` / TEXT `NRQSRQRB` / ISO `·,s···` | `src/lib21/CHEKJOB_.mad:104` | добавлено |
+| `15HOШИБKA B KAPTE-` | GOST `ОШИБКА В` / TEXT `NXHAJ@/B` / ISO `··!···` | `src/lib21/CHEKJOB_.mad:105` | добавлено |
+| `15HCHECK PAHOBATO` | GOST `ГИЕГЛ0РБ` / TEXT `CHECK PA` / ISO `··c··!` | `src/lib21/CHEKJOB_.mad:106` | добавлено |
+| `19HПOBTOPHO OПPEДEЛEHO` | GOST `ПОВТОРНО` / TEXT `ONBRNPMN` / ISO `·····n` | `src/lib21/CHEKJOB_.mad:108` | добавлено |
+| `20HHEПPABИЛЬHAЯ CCЫЛKA` | GOST `НЕПРАВИЛ` / TEXT `MEOP@BHK` / ISO `·[··*+` | `src/lib21/CHEKJOB_.mad:109` | добавлено |
+| `18HHE OБ'47'ЯBЛEH ДИCK` | GOST `НЕ ОБ'47` / TEXT `ME/NA;$'` / ISO `·S····` | `src/lib21/CHEKJOB_.mad:110` | добавлено |
+| `23HБЫЛИ OШИБKИ B YK PAБOTЫ` | GOST `БЫЛИ ОШИ` / TEXT `A[KH/NXH` / ISO `···>·(` | `src/lib21/CHEKJOB_.mad:111` | добавлено |
+| `18H <ЭKCПPECC-ЗAДAЧA>` | GOST `<ЭКСПРЕС` / TEXT `=]JQOPEQ` / ISO `w····q` | `src/lib21/CHEKJOB_.mad:112` | добавлено |
+

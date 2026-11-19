@@ -23,6 +23,26 @@
 «втбрз» — имя подпрограммы gens1.be, а не мнемоника opcode.  Источники:
 ``CmdSheet.md:48,49,40,52``, ``disbesm6.c:61,62,72,75,83,84``.
 
+АРГУМЕНТ ASN (036), ФОРМУЛИРОВКА МОНИТОР-80: ``,ASN,64+N`` — сдвиг **вправо**
+на N, ``,ASN,64−N`` — сдвиг **влево** на N.  Число в адресе — НЕ весь адрес, а
+``N = EA[7:1]`` (младшие 7 разрядов адреса, ``Besm6_Instruction_Set.md §6``):
+например ``4037B`` даёт ``N=0o37(31)=64−33`` ⇒ влево на 33.  См.
+``asn_shift()`` / ``make_asn_comment()``.
+
+ЭКСТРАКОДЫ 060/061/070/071: по ``Besm6_Instruction_Set.md §6`` (таблица
+«Extracodes») 060 = I/O control (input), 061 = output, 070 = Memory/register
+dump, 071 = Debug output.  Конкретные информационные слова наших вхождений в
+``rukava.be``/Тюрине не описаны — сохраняется пометка «НЕ НАЙДЕНО ни в
+rukava.be, ни в Тюрине-1985», к ней добавлен КЛАСС экстракода и контекстная
+интерпретация информационного слова (адрес буфера/устройства либо
+адрес/объём дампа).
+
+033 В ПОЛЬЗОВАТЕЛЬСКОМ ГЕНЕРАТОРЕ КОДА: ``EXT`` (увв) — привилегированная
+команда ОС (1-я структура); в ``LO*GEN`` то же число 033 — ``STOP`` (2-я
+структура, Format 2), останов скомпилированной программы, выдаваемый в
+объектный модуль [``Besm6_Instruction_Set.md §6; CmdSheet.md:41``].  В МАДЛЕН
+STOP пишется сырым ``,33,`` — мнемоника ``EXT`` в ``LO*GEN`` заменена на ``33``.
+
 Первичный источник: /home/azizz/Yandex.Disk/re-dispak/rukava.be,
 раздел 1.4 «ПЕРЕЧЕНЬ СИСТЕМНЫХ ВЫЗВОВ (ЭКСТРАКОДОВ)».
 
@@ -128,22 +148,187 @@ COMMAND_LABELS: Dict[str, str] = {
 
 # Значение команды и интерпретация её аргумента; источник — в ``command_ref()``.
 COMMAND_STATEMENTS: Dict[str, str] = {
-    "20": "APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л»",
-    "21": "AUX (рзб): разборка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных)",
-    "33": "EXT (увв): управление вводом-выводом; аргумент — код устройства (привилегированная операция), НЕ обычный адрес",
-    "36": "ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л",
+    "20": ("APX (сбр): упаковка битов по маске; аргумент — маска: TEXT/GOST слово, "
+           "адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; "
+           "star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л»"),
+    "21": ("AUX (рзб): разборка битов по маске; аргумент — маска: TEXT/GOST слово, "
+           "адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; "
+           "star%.masm:258,490] (НЕ адрес данных)"),
+    "33": ("EXT (увв): привилегированная команда ОС 1-й структуры, управление "
+           "вводом-выводом; в пользовательском генераторе кода (LO*GEN) 033 — "
+           "STOP (2-я структура, Format 2), останов скомпилированной программы, "
+           "выдаваемый в объектный модуль [Besm6_Instruction_Set.md §6; "
+           "CmdSheet.md:41]"),
+    "36": ("ASN (сда): сдвиг по адресу; N = EA[7:1] (младшие 7 разрядов адреса), "
+           ",ASN,64+N — сдвиг вправо, ,ASN,64−N — влево "
+           "[Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17] "
+           "(immediate, НЕ весь адрес), группа Л"),
     "46": "*46: неиспользованный код по ТО IX; аргумент не интерпретируется",
     "47": "*47: неиспользованный код по ТО IX; аргумент не интерпретируется",
 }
 
 # Интерпретация конкретного операнда (аргумента) в строке команды — для явной
-# записи в комментарий вида «; GATAD = константа сдвига N−64 (не адрес)».
+# записи в комментарий вида «; GATAD = ...».  Для 036 используется явная
+# формула Монитор-80 (см. ``make_asn_comment()``), а не общая заметка.
 ARGUMENT_NOTES: Dict[str, str] = {
     "20": "адрес слова-маски (не адрес данных)",
     "21": "адрес слова-маски (не адрес данных)",
     "33": "код устройства (привилегированная операция, не адрес)",
-    "36": "N в форме 64+n; сдвиг n = N−64 (не адрес)",
+    "36": ("N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — вправо, "
+           ",ASN,64−N — влево (не весь адрес)"),
 }
+
+# ── КЛАССЫ АРГУМЕНТОВ КОМАНД 020 (APX) / 021 (AUX) ──────────────────────────
+# Запрос пользователя (2026-11-19): «аргументы команд 020 и 021 нередко
+# работают с текстом».  Один и тот же формат «,APX,АРГ» / «,AUX,АРГ» несёт три
+# разных по природе аргумента — классификация обязательна для каждого из
+# 307 вхождений APX/AUX в src/*.mad и src/lib21/*.mad (см.
+# logs/apx_aux_args_audit.txt):
+#
+#   * ``mask-word (text)`` — НЕ адрес: 8-символьное TEXT/ISO/GOST слово,
+#     упакованное в машинное слово и используемое КАК МАСКА.  Примеры:
+#     OCT-слово ``0160 3407 0160 34`` [monitor80-re/permanent/star%.masm:490],
+#     то же слово по адресу ``*0353B`` [paramt%.masm:365], литералы
+#     ``=6H'7''7''7''7''7'''`` [edit%%%.asm:996], ``=:0000 3703``, ``=1740``.
+#   * ``immediate-code`` — код/счётчик в младших разрядах: AUX 25B, 43B, 44B
+#     в DATAPR/OCTTDEC (формат даты DD MON 7Y); символические DV043=MONTHFI,
+#     DV044=DATE2, DV025=PREPDAT (src/FOREX_DECODER_DISASM.mad:67,72,76).
+#   * ``address`` — адрес слова-маски (5-значное восьмеричное либо символи-
+#     ческая метка),content которого — маска; НЕ адрес данных.
+#     Пример: ``APX,AC153D`` [src/LO_GEN.mad:631].
+#
+# Класс вычисляется по исходному токену и его разрешённому значению (EQU):
+# литеральная форма `=...`, `6H...`, `:` или имя ETX*/TL*/*MSK*/*MAS* ⇒ текст;
+# малое восьмеричное (≤0o7777) без литеральной формы ⇒ immediate-код;
+# остальное ⇒ адрес.
+
+APX_AUX_ARG_CLASSES: Tuple[str, ...] = (
+    "mask-word (text)", "immediate-code", "address",
+)
+
+# Имена токенов, которые в исходниках явно объявлены TEXT/ISO/GOST-литералами
+# (EQU `=6H...`, `=:...`, `=NNNN NNNN`; роль «литерал (TEXT/OCT/GOST/ISO)»).
+TEXT_MASK_TOKENS: frozenset = frozenset({
+    "OXMSK", "DYMSK", "YMASK", "TMASK", "MSK",
+})
+
+# Шаблоны явной интерпретации аргумента для каждого класса.  Формулировки
+# совпадают с требованием задания: «маска = TEXT/GOST слово … [источник],
+# НЕ адрес данных» и «аргумент = код DD из даты (младшие разряды), не адрес».
+APX_AUX_ARG_NOTES: Dict[str, str] = {
+    "mask-word (text)": (
+        "маска = TEXT/GOST слово {value} "
+        "[monitor80-re/permanent/star%.masm:490; "
+        "monitor80-re/permanent/paramt%.masm:365; "
+        "monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных"
+    ),
+    "immediate-code": (
+        "аргумент = код DD из даты (младшие разряды) = {value}, не адрес "
+        "[besmmons/system1.txt:7663,7682,7700; "
+        "src/FOREX_DECODER_DISASM.mad:67,72,76,164,184,213]"
+    ),
+    "address": "адрес слова-маски (не адрес данных)",
+}
+
+_MASK_PREFIXES = ("ETX", "TL", "MAS", "MASC")
+# Имена, которые в EQU объявлены АДРЕСОМ ячейки/константы (не кодом):
+#   AC153D ,EQU, 53257B  . адрес ячейки/константы в резидентной памяти
+#   AC2254 ,EQU, 2254B   . адрес ячейки/константы в резидентной памяти
+#   CA7017 ,EQU, 7017B   . опк 20 — адрес слова-маски
+ADDR_PREFIXES = ("AC", "CA", "C")
+# Имена, которые в EQU объявлены кодом/индексом/аргументом экстракода:
+#   DV043 ,EQU, 43B  . индекс MONTHFI;  DV025 ,EQU, 25B . AUX 25B в PREPDAT
+#   AU121 ,EQU, 121B . операнд AUX (литерал); EX0326 ,EQU, 326B . аргумент экстракода
+IMMEDIATE_PREFIXES = ("DV", "SC", "EX", "AU", "AA")
+
+
+def classify_apx_aux_argument(token: str, info: str) -> str:
+    """Класс аргумента команды 020 (APX) / 021 (AUX).
+
+    См. ``APX_AUX_ARG_CLASSES``.  Решение принимается по двум признакам:
+    исходное имя ``token`` (роль из EQU) и разрешённое значение ``info``.
+    Ни один из них не является адресом данных: это либо текстовая маска,
+    либо immediate-код, либо адрес слова-маски.
+    """
+    t = str(token).strip().upper().rstrip("-")
+    i = str(info).strip()
+    # 1. Явная литеральная форма или имя TEXT/GOST-литерала → текстовая маска.
+    if i.startswith("=") or "6H" in i.upper() or i.startswith(":"):
+        return "mask-word (text)"
+    if t in TEXT_MASK_TOKENS or t.startswith(_MASK_PREFIXES):
+        return "mask-word (text)"
+    core = i[:-1] if i.endswith("B") else i
+    small = core.isdigit() and int(core, 8) <= 0o7777
+    # 2. Имена, явно объявленные адресом ячейки, — адрес слова-маски даже
+    #    если значение 4-значное (AC2254=2254B, CA7017=7017B).
+    if t.startswith(ADDR_PREFIXES):
+        return "address"
+    # 3. Код/индекс/счётчик в младших разрядах (DV043=43B, DV025=25B,
+    #    AU121=121B, EX0326=326B и т.п.), не адрес.
+    if small and t.startswith(IMMEDIATE_PREFIXES):
+        return "immediate-code"
+    # 4. Всё остальное (5-значный адрес или символическая метка) → адрес.
+    return "address"
+
+
+def apx_aux_argument_note(token: str, info: str) -> str:
+    """Явная интерпретация аргумента APX/AUX для встроенного комментария.
+
+    ``info`` может прийти как из EQU с суффиксом ``B`` (``326B``), так и
+    разрешённым ``scan_sources()`` числом (``326``) — курс восьмеричной
+    системы один и тот же, поэтому суффикс приводится к единой форме.
+    """
+    cls = classify_apx_aux_argument(token, info)
+    value = str(info).strip() or str(token).strip()
+    if value.endswith("B") and value[:-1].isdigit():
+        value = value[:-1]
+    return f"{token} = " + APX_AUX_ARG_NOTES[cls].format(value=value)
+
+
+def asn_shift(info: str) -> Tuple[str, int, int, str, str]:
+    """Разложить информационное слово ASN по правилам Монитор-80.
+
+   Возвращает ``(формула, N, k, направление)`` где формула имеет вид
+   ``N=0o37(31)=64−33 ⇒ ,ASN,64-33 — сдвиг ВЛЕВО на 33``.  ``N = EA[7:1]`` —
+   младшие 7 разрядов адреса (``Besm6_Instruction_Set.md §6``), ``k`` — величина
+   сдвига: ``,ASN,64+N`` ⇒ вправо, ``,ASN,64−N`` ⇒ влево.
+   """
+    n = int(str(info).strip(), 8) & 0o177
+    if n >= 64:
+        k, madlen, word = n - 64, f"64+{n - 64}", "ВПРАВО"
+        decomp = f"64+{k}"
+    else:
+        k, madlen, word = 64 - n, f"64-{64 - n}", "ВЛЕВО"
+        decomp = f"64\u2212{k}"  # U+2212 — минус в формулировке Монитор-80
+    formula = (f"N=0o{format(n, 'o')}({n})={decomp} ⇒ ,ASN,{madlen} "
+               f"— сдвиг {word} на {k}")
+    return formula, n, k, madlen, word
+
+
+def make_asn_comment(info: str) -> str:
+    """Явный комментарий ASN с формулой Монитор-80 для конкретного адреса."""
+    formula, *_ = asn_shift(info)
+    return (f". ASN: {info}B → {formula} "
+            f"[monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6]")
+
+
+# Класс экстракода по ``Besm6_Instruction_Set.md §6`` (таблица «Extracodes»)
+# для кодов, конкретные информационные слова которых отсутствуют в справочниках.
+EXTRACT_CLASSES: Dict[str, Tuple[str, str]] = {
+    "Э60": ("I/O control (input)", "адрес буфера/устройство (контекст)"),
+    "Э61": ("I/O control (output)", "адрес буфера/устройства вывода (контекст)"),
+    "Э70": ("Memory/register dump", "адрес/объём дампа (контекст)"),
+    "Э71": ("Debug output", "адрес/объём отладочных данных (контекст)"),
+}
+
+
+def make_extract_class_comment(code: str, info: str) -> str:
+    """Комментарий экстракода 060/061/070/071: класс +Context + уточнение."""
+    cls, context = EXTRACT_CLASSES.get(code, ("неописанный экстракод", "адрес/данные"))
+    return (f". {code} {info} = {cls} [Besm6_Instruction_Set.md §6]; "
+            f"информационное слово {info} — {context}; "
+            "НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 "
+            "(конкретное информационное слово не описано в справочниках)")
 
 def is_long_halfword(h: int) -> bool:
     """Формат 24-битного полуслова по 20-му разряду (бит 19 в 0-based).
@@ -217,6 +402,9 @@ def make_command_comment(code_octal: str, info: str = "") -> str:
     if kind != "command":
         return ""
     norm = format(int(str(code_octal).strip().lstrip("Э*"), 8), "02o")
+    # Для ASN с известным информационным словом — явная формула Монитор-80.
+    if norm == "36" and info:
+        return make_asn_comment(info)
     fmt = COMMAND_LABELS.get(norm, FORMAT_LABEL)
     statement = COMMAND_STATEMENTS.get(norm, "неизвестная команда")
     ref = command_ref(norm)
@@ -504,7 +692,11 @@ def make_comment(code: str, info: str, table: CodeTable,
         return make_command_comment(code, info)
     entry = lookup_all(code, info, table, tyurin, source)
     if entry is None:
-        return f". {code} {info} = НЕ НАЙДЕНО в rukava.be"
+        norm = "Э" + format(int(str(code).lstrip("Э*"), 8), "02o")
+        if norm in EXTRACT_CLASSES:
+            return make_extract_class_comment(norm, info)
+        return (f". {code} {info} = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 "
+                "(информационное слово — адрес/данные)")
     desc, page, ref, _src = entry
     return f". {code} {info} = {desc}, стр.{page} [{ref}]"
 
@@ -519,10 +711,10 @@ def scan_line(line: str, equs: Dict[str, str]
     ``extract`` (050..077), ``command`` (020..047) или ``unknown``.
     """
     out: List[Tuple[str, str, str, str, str, str]] = []
-    # Не сканируем собственные комментарии вида ". Э57 6 = ..." или
-    # ". опк 36 (1-я структура ТО IX, ...) = ...": иначе они сами выглядят
-    # как вхождение.
-    line = re.split(r"\s+\.\s+(?:Э[0-7]{2}|опк)\s+", line, maxsplit=1)[0]
+    # Не сканируем собственные комментарии вида ". Э57 6 = ...",
+    # ". опк 36 (...)" или ". ASN: 4037B → ..." (иначе текст ",ASN,64-33"
+    # внутри явной формулы выглядит как ещё одно вхождение команды).
+    line = re.split(r"\s+\.\s+(?:Э[0-7]{2}|опк|ASN:)\s+", line, maxsplit=1)[0]
     for rx in (OPCODE_RE, LATIN_MNEMO_RE, MNEMO_RE):
         for m in rx.finditer(line):
             raw = m.group(2).strip()
@@ -560,13 +752,20 @@ def scan_sources(root: Path = Path("src"), table: Optional[CodeTable] = None,
                 # Строки, где латинская мнёмоника уже была до правки и нет
                 # аннотации «. опк NN ...», НЕ являются объектом проверки
                 # комментариев (как и до замены *NN → APX/AUX/EXT/ASN).
-                if kind == "command" and ". опк " not in line:
+                # Явная формула Монитор-80 (". ASN: ... → ...") — тоже
+                # объект проверки, наравне с каноническим ". опк 36 ...".
+                if kind == "command" and ". опк " not in line and ". ASN: " not in line:
                     continue
                 entry = (None if kind == "command"
                          else lookup_all(code, info, table, tyurin, source))
+                arg_cls = (classify_apx_aux_argument(raw, info)
+                           if code in ("Э20", "Э21") else None)
                 found.append({
                     "file": str(path), "line": lineno, "code": code,
                     "info": info, "token": raw,
+                    "argument_class": arg_cls,
+                    "argument_note": (apx_aux_argument_note(raw, info)
+                                      if arg_cls else None),
                     "kind": kind, "mnemonic": mnemonic,
                     "opcode_mnemonic": found_mnem,
                     "command_ref": command_ref(code) if kind == "command" else None,

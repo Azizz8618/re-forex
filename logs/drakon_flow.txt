@@ -1,0 +1,81 @@
+=== ДРАКОН-схемы технологического конвейера: запись компилятора в PERSO и прогон теста ===
+date    : 2026-11-19T13:17:17Z
+repo    : /tmp/.private/azizz/opencode/re-forex (branch main)
+task    : subagent, запись только в docs/drakon/{perso_build,test_flow}.drakon,
+          docs/drakon/markup/*.txt, docs/drakon/printed/*.txt, logs/drakon_flow.txt
+
+--- ИСТОЧНИКИ (прочитаны) ---
+docs/14-perso-write.md          формат PERSO, зоны 0o2300.., transfer vector, *PERSO
+docs/15-perso-build.md          сборка образа, 9 модулей, PLCATALOG, границы 0o2277/0o2305
+docs/16-glissade-run.md         сквозной прогон, причина сбоя OCTTDEC, 14/14 строк
+tests/install-forex-perso.sh    zero->write->siprod_lib->PLCATALOG->cmp->etalon
+tests/run-glissade-forex.sh     дека, *perso:602300, EXECUTE, normalize, gold, verdict
+tests/run-f77-suite.sh          8/8 gold-пар, кросс-сверка *FTN 3/3
+checklist/STATUS.md             этап 9 (рантайм), F77/E5 (приёмка)
+docs/plan-f77/08-runtime.md     карты *perso:602300 и *perso:602310,cont
+/home/azizz/Yandex.Disk/re-siprod/tools/drakon_markup.py  эталонный генератор *RED
+/home/azizz/Yandex.Disk/re-siprod/tests/siprod/run.sh     печать на БЭСМ-6
+
+--- ВЫХОДНЫЕ ФАЙЛЫ (SHA256) ---
+8f5105e7cb2e408e9930edddd68b6ebce25d800a0e792b8f0e89a6eaa8649649  docs/drakon/perso_build.drakon       (39 икон)
+945f43338d41784f3191eb461b32b876031080bc95457537bc07db745f2ce778  docs/drakon/test_flow.drakon         (40 икон)
+d8582e2a93538ff559a1ecf60c8e7d79607de01ea2406cf8c00a68dbdfdad9b8  docs/drakon/markup/perso_build.txt
+5e9cf9e8a9a8ef59825d8fc61595bb56a4927e905750d1fe3def749d1e0f3667  docs/drakon/markup/test_flow.txt
+6d0be4825aa032d1c56df63ca2b622e7a877e4344117306e8dcb539f7e79e936  docs/drakon/printed/perso_build.txt  (4 страницы, 272 строки)
+7d65ebb157d03681a2a4344a467c4a3367708d78965e39c9b0d60a4f661b227b  docs/drakon/printed/test_flow.txt    (3 страницы, 204 строки)
+
+--- СОДЕРЖАНИЕ СХЕМ ---
+perso_build.drakon (5 ветвей, 3 вопроса ЕСЛИ, 39 икон):
+  1. Эталон и рабочая копия: /usr/local/share/besm6/2348 только чтение (SHA 97fb3196…08a8),
+     свежая work/2348, BESM6_PATH=work первым.
+  2. Подготовка зон: besmtool zero 2348 --start=1216 --length=5; проверка дампа на нули.
+  3. Сборка образа build_forex_perso.py: CORE_ROOT, LO*SYN, LO*GEN, FORMAT, FORTLIBR
+     (дампы ленты), OCTTDE* (байт-точный DMS с псевдонимом), DATAPR*/GIV/PG (*assembler
+     из МАДЛЕН), TAK/PG (точка входа); тела по 32 словам; 5 зон = 5120 слов, 9 имён.
+  4. Каталог с transfer vector: слово 0=0o2105000, слово 1=0, пары имя TEXT + запись;
+     f3=word+0o2010, f2=(зона+0o40)*0o100+L//512, f1=(L%512)*8; завершатель 0/FULWORD.
+  5. Запись и проверка: besmtool write --start=1216, cmp дампа с образом, границы
+     0o2277/0o2305, *call plcatalog:402300 → 9 модулей без ИСПОРЧЕНЫ, SHA эталона не изменился.
+
+test_flow.drakon (4 ветви, 4 вопроса ЕСЛИ, 40 икон):
+  1. Подготовка носителя: свежая work/2348, проверка образа (9 модулей, TV, 0/FULWORD),
+     besmtool write --start=1216 (зона 0o2300).
+  2. Подготовка деки: шифр/лен/ееВ1а3, *name, *call yesmemory, *perso:602300,
+     ветка *perso:602310,cont для F77LIBR, *forex, исходник glkern.b6:10..111, *execute.
+  3. Компиляция: options.txt=job.b6, dispak → output.raw/stderr.txt, проверки rc=0
+     и отсутствия ИСПОРЧЕН/ОШИБКА (конфликт имён OCTTDEC).
+  4. Нормализация и вердикт: sed DD.DD.DD→##.##.##, блок 14 строк перед КОНЕЦ ЗАДАЧИ,
+     diff -u gold.norm output.norm, вердикт OK 14/14 / FAIL, итог в лог.
+
+--- КОМАНДЫ ГЕНЕРАЦИИ ---
+python3 ~/Yandex.Disk/re-siprod/tools/drakon_markup.py docs/drakon/<n>.drakon \
+    > docs/drakon/markup/<n>.txt
+cd ~/Yandex.Disk/re-siprod && python3 tools/drakon_markup.py <repo>/docs/drakon/<n>.drakon \
+    | tests/siprod/run.sh - > <repo>/docs/drakon/printed/<n>.txt
+
+--- ПРОВЕРКИ ---
+1. Икон: perso_build=39, test_flow=40 — обе в диапазоне 20..40.
+2. Разметка *RED idempotentна: повторный запуск drakon_markup.py даёт тот же SHA256,
+   что и сохранённый файл; обе начинаются с *RED, заканчиваются *E/*END.
+3. Печать БЭСМ-6 (SIPROD/DRAKON): perso_build — 4 страницы, test_flow — 3 страницы;
+   наличны рамки икон (+----, |---, (< >), /), подписи ветвей, хвосты question-икон
+   и правые плечи ТО/ИНАЧЕ (ЗОНЫ ЧИСТЫ, КАТАЛОГ КОРРЕКТЕН, F77LIBR, 14/14, FAIL…).
+   Диагностики конвейера (ОШ. ТРАНСЛЯТОРА / КЛАЙДА / НЕДОПУСТИМ / ПРЕРВАН / ERR n)
+   при печати с -r нет; 'ОШИБКА' в test_flow — только подпись иконы-вопроса.
+4. tests/check-drakon.sh: perso_build — OK, test_flow — OK (прочие схемы в работе
+   у других субагентов: forex_root — FAIL, lo_syn — ОЖИДАЕТСЯ; не трогались).
+
+--- ИСПРАВЛЕНИЯ В ХОДЕ РАБОТЫ ---
+* Первоначальная печать показала пустые иконы вместо ветвей: ТО/ИНАЧЕ были на том же
+  уровне отступа, что и ЕСЛИ (как в старом drakon/schema.drakon). Приведено к эталону
+  03-dispetcher-SPAUD.drakon: ТО/ИНАЧЕ на 4 пробела глубже ЕСЛИ, их тела — ещё на 4.
+  После перепечатки все 3+4 вопроса имеют по два правых плеча с подписями.
+* Две строки perso_build.drakon были 83/86 знаков (лимит checker'а 80): укорочены
+  подписи эталона и каталожной пары без потери смысла (SHA и f3/f2/f1 сохранены).
+
+--- ГРАНИЦЫ ---
+src/, include/, reference/ (REFERENCE), эталонные носители, чужие .drakon
+(f77libr, f77prep, format, runtime, forex_root, lo_syn), INDEX.md,
+tests/check-drakon.sh, logs/drakon_check.txt, logs/drakon_runtime.txt — не изменялись.
+
+ИТОГ: OK — обе схемы и их разметка/печать созданы и прошли проверки.

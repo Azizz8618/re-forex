@@ -1,0 +1,74 @@
+АУДИТ АРГУМЕНТОВ КОМАНД 020 (APX) И 021 (AUX)
+==============================================================================
+
+Проверено 307 вхождений APX/AUX в src/*.mad и src/lib21/*.mad: 254 инструкции с аргументом + 3 инструкции без аргумента (+50 упоминаний в комментариях и EQU-определениях).
+Инструкций с аргументом, классифицировано: 254
+Инструкции без аргумента (класс неприменим): src/FOREX_CORE.mad:579, src/LO_GEN.mad:643, src/lib21/PT6.mad:99
+
+Классы аргументов (добавлены в tools/extract_codes.py, tests/check-extract-codes.sh, include/*.xref.md, docs/lib21/04-extract-codes.md):
+  mask-word (text) — аргумент НЕ адрес: 8-символьное TEXT/ISO/GOST слово, упакованное в машинное слово и используемое как маска
+  immediate-code   — код/счётчик в младших разрядах (DD MON 7Y), не адрес
+  address          — адрес слова-маски (НЕ адрес данных)
+
+КЛАСС → ЧИСЛО → ПРИМЕРЫ
+------------------------------------------------------------------------------
+mask-word (text): 94
+    AUX,OXMSK        = 0360741703607417                   src/FOREX_DECODER_DISASM.mad:323
+    AUX,DYMSK        =                                    src/FOREX_RUNTIME.mad:352
+    AUX,YMASK        =                                    src/FOREX_RUNTIME.mad:370
+    AUX,TMASK        =                                    src/FOREX_RUNTIME.mad:375
+    AUX,TL0018       = =6H'17''17'''''''''                src/FOREX_RUNTIME.mad:396
+    AUX,TL0021       = =6H'3''17''''17''17'''             src/FOREX_RUNTIME.mad:399
+
+immediate-code: 19
+    AUX,DV043        = 43B                                src/FOREX_DECODER_DISASM.mad:165
+    AUX,DV044        = 44B                                src/FOREX_DECODER_DISASM.mad:185
+    AUX,DV024        = 24B                                src/FOREX_DECODER_DISASM.mad:211
+    AUX,DV025        = 25B                                src/FOREX_DECODER_DISASM.mad:214
+    APX,SC0003       = 3B                                 src/LO_SYN.mad:767
+    APX,SC0322       = 322B                               src/LO_SYN.mad:3343
+
+address: 141
+    APX,CA7017       = 7017B                              src/FOREX_CORE.mad:352
+    APX,AC153D       = 53257B                             src/LO_GEN.mad:632
+    APX,AC12ZC       = 50520B                             src/LO_GEN.mad:661
+    AUX,AC0HHI       = 22662B                             src/LO_GEN.mad:662
+    APX,AC2254       = 2254B                              src/LO_GEN.mad:1363
+    APX,EX4051       = 40513B                             src/LO_SYN.mad:857
+
+ИСТОЧНИКИ КЛАССИФИКАЦИИ
+------------------------------------------------------------------------------
+  mask-word (text): monitor80-re/permanent/star%.masm:490 (масрзб = OCT 0160 3407 0160 34 — 8-символьное Text/ISO слово-маска);
+                    monitor80-re/permanent/paramt%.masm:365 (APX *0353B.=:0160 3407 0160 34);
+                    monitor80-re/permanent/edit%%%.asm:996 (AUX =6H'7''7''7''7''7'''); lib21 ETX*-литералы (=6H/=:/=NNNN NNNN)
+  immediate-code:   AUX 25B/43B/44B в DATAPR/OCTTDEC, DV043=MONTHFI (индекс месяца), DV044=DATE2, DV025=PREPDAT — src/FOREX_DECODER_DISASM.mad:67,72,76,164,184,213;
+                    код/счётчик в младших разрядах слова (DD MON 7Y; S5:7663-7700)
+  address:          APX,CA7017 (FOREX_CORE.mad:351), APX,AC153D (LO_GEN.mad:631), APX,EX4254 — адрес слова-маски, НЕ адрес данных
+
+ПО ФАЙЛАМ (только инструкции с аргументом)
+------------------------------------------------------------------------------
+  src/FOREX_CORE.mad                      1  text=0   code=0   addr=1  
+  src/FOREX_DECODER_DISASM.mad            6  text=1   code=5   addr=0  
+  src/FOREX_RUNTIME.mad                   6  text=6   code=0   addr=0  
+  src/LO_GEN.mad                          4  text=0   code=0   addr=4  
+  src/LO_SYN.mad                        129  text=0   code=12  addr=117
+  src/lib21/CHEKJOB_.mad                  4  text=4   code=0   addr=0  
+  src/lib21/CRELIB.mad                    8  text=8   code=0   addr=0  
+  src/lib21/EXECUTE.mad                   3  text=0   code=0   addr=3  
+  src/lib21/FOREX_.mad                    2  text=0   code=0   addr=2  
+  src/lib21/FTNPRT.mad                    1  text=0   code=1   addr=0  
+  src/lib21/FT_REGIM.mad                  1  text=0   code=0   addr=1  
+  src/lib21/LIBDRU_.mad                  10  text=10  code=0   addr=0  
+  src/lib21/LIBRARY_.mad                  1  text=0   code=0   addr=1  
+  src/lib21/LIBTAP_.mad                  16  text=16  code=0   addr=0  
+  src/lib21/LOADLIBR.mad                  2  text=0   code=1   addr=1  
+  src/lib21/MAKELIBT.mad                 22  text=22  code=0   addr=0  
+  src/lib21/OCATALOG.mad                  1  text=1   code=0   addr=0  
+  src/lib21/OVERLOAD.mad                  1  text=0   code=0   addr=1  
+  src/lib21/READ1.mad                     1  text=1   code=0   addr=0  
+  src/lib21/READ2.mad                     1  text=1   code=0   addr=0  
+  src/lib21/TCATALOG.mad                 29  text=23  code=0   addr=6  
+  src/lib21/WRITE1.mad                    1  text=1   code=0   addr=0  
+  src/lib21/ZONE.mad                      4  text=0   code=0   addr=4  
+
+ИТОГО: 254 инструкций с аргументом в 23 файлах; затронуто файлов правкой: 0

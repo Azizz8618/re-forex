@@ -13,8 +13,8 @@ EDC002 ,EQU,44                          ; роль: десятичная кон�
 EDC003 ,EQU,124                         ; роль: десятичная константа/сдвиг; S1:17376  ; (POLN: DEC_124)
 EDC004 ,EQU,13                          ; роль: десятичная константа/сдвиг; S1:17387  ; (POLN: DEC_13)
 ETX004 ,EQU,=:0000 0001                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17392  ; (POLN: LITERAL___0000_0001)
-ETX005 ,EQU,=6H*REA010                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17424  ; (POLN: LITERAL__6H_REA010)
-ETX006 ,EQU,=6HOLD'312''12''12'         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17426  ; (POLN: LITERAL__6HOLD_312__12__12_)
+ETX005 ,EQU,=6H*REA010                  ; роль: DEKOD GOST '+ТЕБе@е0' / TEXT '*REA010 ' / ISO '+)aA··' [источник: src/lib21/INPUT_.mad:16; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17424  ; (POLN: LITERAL__6H_REA010)
+ETX006 ,EQU,=6HOLD'312''12''12'         ; роль: DEKOD GOST 'ПМД7)@(7' / TEXT 'OLD'312'' / ISO '···M··' | GOST '7@(77@(7' / TEXT ''12''12'' / ISO '······' [источник: src/lib21/INPUT_.mad:17; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17426  ; (POLN: LITERAL__6HOLD_312__12__12_)
 EDC006 ,EQU,1                           ; роль: десятичная константа/сдвиг; S1:17427  ; (POLN: DEC_1)
 EDC007 ,EQU,14                          ; роль: десятичная константа/сдвиг; S1:17437  ; (POLN: DEC_14)
 EOC007 ,EQU,70100B                      ; роль: восьмеричная константа; S1:17439  ; (POLN: OCT_70100)
@@ -30,8 +30,8 @@ EDC013 ,EQU,23                          ; роль: десятичная кон�
 ETX013 ,EQU,=:001                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17470  ; (POLN: LITERAL___001)
 EOC013 ,EQU,27B                         ; роль: восьмеричная константа; S1:17478  ; (POLN: OCT_27)
 ETX014 ,EQU,30 0000 0000 3001           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:17479  ; (POLN: LIT_30_0000_0000_3001)
-ETX015 ,EQU,6HISCODE                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:17482  ; (POLN: LIT_6HISCODE)
-ETX016 ,EQU,6HRETSWI                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:17483  ; (POLN: LIT_6HRETSWI)
+ETX015 ,EQU,6HISCODE                    ; роль: DEKOD GOST 'ЙУГПДЕ00' / TEXT 'ISCODE  ' / ISO '·8··P·' [источник: src/lib21/INPUT_.mad:33; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:17482  ; (POLN: LIT_6HISCODE)
+ETX016 ,EQU,6HRETSWI                    ; роль: DEKOD GOST 'ТЕФУЧЙ00' / TEXT 'RETSWI  ' / ISO '·]3···' [источник: src/lib21/INPUT_.mad:34; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:17483  ; (POLN: LIT_6HRETSWI)
 ETX017 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:17484  ; (POLN: LIT_1)
 С ---- конец блока констант ----
 
@@ -80,7 +80,7 @@ WRI011: BSS . зарезервированная область  ; (POLN: WRITE)
 C,, . .....   ЗAПИCЬ KAPTЫ , CБPOC  ; S1:17403
 WTC,PROC W . HA COOTB.  ; S1:17404
 UJ, . ПPOЦEДYPY  ; S1:17405
-MAC012: *60,INC  ; (POLN: MAC 60) ; S1:17406 . Э60 INC = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э60 — внутренний/неописанный, информационное слово — адрес/данные)
+MAC012: *60,INC  ; (POLN: MAC 60) ; S1:17406 . Э60 INC = I/O control (input) [Besm6_Instruction_Set.md §6]; информационное слово INC — адрес буфера/устройство (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 000  ; S1:17407
 COD013: XTA,RET024 . HA KOДИPOBKY  ; (POLN: CODE) ; S1:17408
 CALL,DEC006 . BOЗBPAT-ПEPEKЛ.  ; S1:17409

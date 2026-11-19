@@ -17,13 +17,13 @@ EDC008 ,EQU,10                          ; роль: десятичная кон�
 ETX008 ,EQU,=60 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8455  ; (POLN: LITERAL__60_0000)
 EDC009 ,EQU,4                           ; роль: десятичная константа/сдвиг; S2:8458  ; (POLN: DEC_4)
 EOC009 ,EQU,1762B                       ; роль: восьмеричная константа; S2:8471  ; (POLN: OCT_1762)
-ETX009 ,EQU,=6HOVERLA                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8472  ; (POLN: LITERAL__6HOVERLA)
+ETX009 ,EQU,=6HOVERLA                   ; роль: DEKOD GOST 'ПЦЕТМБ00' / TEXT 'OVERLA  ' / ISO '·ir···' [источник: src/lib21/OCATALOG.mad:20; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8472  ; (POLN: LITERAL__6HOVERLA)
 ETX010 ,EQU,=2000 0000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8477  ; (POLN: LITERAL__2000_0000)
 EOC010 ,EQU,1764B                       ; роль: восьмеричная константа; S2:8482  ; (POLN: OCT_1764)
-ETX011 ,EQU,=6H'17''17''16''17''17''16' ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8483  ; (POLN: LITERAL__6H_17__17__16__17__17__16_)
+ETX011 ,EQU,=6H'17''17''16''17''17''16' ; роль: DEKOD GOST '7@[77@[7' / TEXT ''17''17'' / ISO '······' | GOST '7@;77@[7' / TEXT ''16''17'' / ISO '······' | GOST '7@[77@;7' / TEXT ''17''16'' / ISO '······' [источник: src/lib21/OCATALOG.mad:23; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8483  ; (POLN: LITERAL__6H_17__17__16__17__17__16_)
 EOC011 ,EQU,1765B                       ; роль: восьмеричная константа; S2:8485  ; (POLN: OCT_1765)
-ETX012 ,EQU,=6H'17''17'''''''''         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8486  ; (POLN: LITERAL__6H_17__17_________)
-ETX013 ,EQU,=6H'''''14''214''214''231'  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8487  ; (POLN: LITERAL__6H_____14__214__214__231_)
+ETX012 ,EQU,=6H'17''17'''''''''         ; роль: DEKOD GOST '7@[77@[7' / TEXT ''17''17'' / ISO '······' | GOST '77777777' / TEXT '''''''''' / ISO '·q··q·' [источник: src/lib21/OCATALOG.mad:25; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8486  ; (POLN: LITERAL__6H_17__17_________)
+ETX013 ,EQU,=6H'''''14''214''214''231'  ; роль: DEKOD GOST '77777@x7' / TEXT ''''''14'' / ISO '·q····' | GOST '7(@x77(@' / TEXT ''214''21' / ISO '·$T·t·' | GOST 'x77()@70' / TEXT '4''231' ' / ISO 'Pq·M··' [источник: src/lib21/OCATALOG.mad:26; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8487  ; (POLN: LITERAL__6H_____14__214__214__231_)
 EDC013 ,EQU,500                         ; роль: десятичная константа/сдвиг; S2:8491  ; (POLN: DEC_500)
 EDC014 ,EQU,14                          ; роль: десятичная константа/сдвиг; S2:8497  ; (POLN: DEC_14)
 EDC015 ,EQU,64                          ; роль: десятичная константа/сдвиг; S2:8503  ; (POLN: DEC_64)
@@ -53,21 +53,21 @@ ETX028 ,EQU,=37 0037                    ; роль: литерал (TEXT/OCT/GOS
 EDC028 ,EQU,38                          ; роль: десятичная константа/сдвиг; S2:8582  ; (POLN: DEC_38)
 ETX029 ,EQU,=:7777 0000 7777            ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8609  ; (POLN: LITERAL___7777_0000_7777)
 ETX030 ,EQU,=301                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8610  ; (POLN: LITERAL__301)
-ETX031 ,EQU,9HKATAЛOГ                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8633  ; (POLN: LIT_9HKATA_O_)
+ETX031 ,EQU,9HKATAЛOГ                   ; роль: DEKOD GOST 'КАТАЛОГ ' / TEXT 'J@R@KNC/' / ISO '······' [источник: src/lib21/OCATALOG.mad:56; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8633  ; (POLN: LIT_9HKATA_O_)
 EDC031 ,EQU,214                         ; роль: десятичная константа/сдвиг; S2:8635  ; (POLN: DEC_214)
 EDC032 ,EQU,200                         ; роль: десятичная константа/сдвиг; S2:8635  ; (POLN: DEC_200)
 ETX032 ,EQU,12H                         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8638  ; (POLN: LIT_12H)
-ETX033 ,EQU,1H'231'                     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8639  ; (POLN: LIT_1H_231_)
+ETX033 ,EQU,1H'231'                     ; роль: DEKOD GOST '7()@7000' / TEXT ''231'   ' / ISO '·$····' [источник: src/lib21/OCATALOG.mad:60; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8639  ; (POLN: LIT_1H_231_)
 ETX034 ,EQU,='265''60''214''231'        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8645  ; (POLN: LITERAL___265__60__214__231_)
-ETX035 ,EQU,18HБЫЛO MAЛO M035 '133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8646  ; (POLN: LIT_18H___O_MA_O_M035__133__231_)
-ETX036 ,EQU,3H'214''214''231'           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8647  ; (POLN: LIT_3H_214__214__231_)
-ETX037 ,EQU,4H'214''265'4'231'          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8648  ; (POLN: LIT_4H_214__265_4_231_)
-ETX038 ,EQU,16HOШИБKA ПPИ OБPAЩ         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8649  ; (POLN: LIT_16HO___KA__P__O_PA_)
+ETX035 ,EQU,18HБЫЛO MAЛO M035 '133''231'; роль: DEKOD GOST 'БЫЛО МАЛ' / TEXT 'A[KN/L@K' / ISO '···>·+' | GOST 'О М035 '' / TEXT 'N/L #%/;' / ISO '····S·' | GOST '133''231' / TEXT '!##;;"#!' / ISO '·0·l ·' | GOST ''       ' / TEXT ';///////' / ISO 'l··<··' [источник: src/lib21/OCATALOG.mad:62; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8646  ; (POLN: LIT_18H___O_MA_O_M035__133__231_)
+ETX036 ,EQU,3H'214''214''231'           ; роль: DEKOD GOST '7(@x77(@' / TEXT ''214''21' / ISO '·$T·t·' | GOST 'x77()@70' / TEXT '4''231' ' / ISO 'Pq·M··' [источник: src/lib21/OCATALOG.mad:63; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8647  ; (POLN: LIT_3H_214__214__231_)
+ETX037 ,EQU,4H'214''265'4'231'          ; роль: DEKOD GOST '7(@x77(;' / TEXT ''214''26' / ISO '·$T·t·' | GOST '=7x7()@7' / TEXT '5'4'231'' / ISO 'Tu·I4G' [источник: src/lib21/OCATALOG.mad:64; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8648  ; (POLN: LIT_4H_214__265_4_231_)
+ETX038 ,EQU,16HOШИБKA ПPИ OБPAЩ         ; роль: DEKOD GOST 'ОШИБКА П' / TEXT 'NXHAJ@/O' / ISO '··!···' | GOST 'РИ ОБРАЩ' / TEXT 'PH/NAP@Y' / ISO '·····9' [источник: src/lib21/OCATALOG.mad:65; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8649  ; (POLN: LIT_16HO___KA__P__O_PA_)
 EDC038 ,EQU,133                         ; роль: десятичная константа/сдвиг; S2:8651  ; (POLN: DEC_133)
 EDC039 ,EQU,231                         ; роль: десятичная константа/сдвиг; S2:8651  ; (POLN: DEC_231)
-ETX039 ,EQU,8HCBOБOДHO                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8652  ; (POLN: LIT_8HCBO_O_HO)
-ETX040 ,EQU,17HTAKOГO OVERLAY'32'Я      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8653  ; (POLN: LIT_17HTAKO_O_OVERLAY_32__)
-ETX041 ,EQU,6H'''' (+)                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8655  ; (POLN: LIT_6H________)
+ETX039 ,EQU,8HCBOБOДHO                  ; роль: DEKOD GOST 'СВОБОДНО' / TEXT 'QBNANDMN' / ISO '·+··Kn' [источник: src/lib21/OCATALOG.mad:68; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8652  ; (POLN: LIT_8HCBO_O_HO)
+ETX040 ,EQU,17HTAKOГO OVERLAY'32'Я      ; роль: DEKOD GOST 'ТАКОГО О' / TEXT 'R@JNCN/N' / ISO '······' | GOST '-Е95АУ'3' / TEXT '+E)%@S;#' / ISO '.RE·6·' | GOST '2'Я     ' / TEXT '";_/////' / ISO '···<··' [источник: src/lib21/OCATALOG.mad:69; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8653  ; (POLN: LIT_17HTAKO_O_OVERLAY_32__)
+ETX041 ,EQU,6H'''' (+)                  ; роль: DEKOD GOST '777708-9' / TEXT ''''' (+)' / ISO '·q····' [источник: src/lib21/OCATALOG.mad:70; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:8655  ; (POLN: LIT_6H________)
 С ---- конец блока констант ----
 
 С ---- ТЕЛО МОДУЛЯ ----
@@ -103,7 +103,7 @@ BEG013: BSS . зарезервированная область  ; (POLN: BEGIN)
 4,VTM,BEG039 . установка индексного регистра  ; S2:8465
 AOX,INF030  ; S2:8466
 ATX,INF048 . запись с модификатором  ; S2:8467
-*70,INF048  ; S2:8468 . Э70 INF048 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,INF048  ; S2:8468 . Э70 INF048 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово INF048 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 6,VTM,N10009 . установка индексного регистра  ; S2:8469
 12,VZM,COR021 . переход при <0  ; S2:8470
 6,XTA,EOC009 . считывание в аккумулятор  ; S2:8471
@@ -216,7 +216,7 @@ UJ,OKO014 . переход/возврат  ; S2:8577
 MYK024: 6,XTA,EDC004 . считывание в аккумулятор  ; (POLN: MБ YK) ; S2:8578
 ASN,EDC015+EDC018  ; S2:8579
 XTS,INF048 . считывание с модификатором  ; S2:8580
-APX,ETX028  ; S2:8581
+APX,ETX028  ; S2:8581  ; ETX028 = маска = TEXT/GOST слово =37 0037 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 ASN,EDC015+EDC028  ; S2:8582
 15,ARX,  ; S2:8583
 15,ATX, . запись с модификатором  ; S2:8584

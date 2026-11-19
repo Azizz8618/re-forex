@@ -338,3 +338,15 @@
 - Смещений `LABEL+NNNB` → десятичное: **0**.
 - Новые имена ≤6 символов, первые 6 уникальны в файле; полное имя — в `POLN:`.
 - Таблица «было → стало» и исходные восьмеричные значения: `logs/labels_semantics_lib21_core.txt`.
+
+## Текстовые константы
+
+Проверено 4 констант модуля `src/lib21/XREF.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `8H*INPUT*` | GOST `+ЙОРХФ+0` / TEXT `*INPUT* ` / ISO `*···B·` | `src/lib21/XREF.mad:1053` | добавлено |
+| `8H   INPUT` | GOST `ЙОРХФ000` / TEXT `INPUT   ` / ISO `··5···` | `src/lib21/XREF.mad:1054` | добавлено |
+| `8H*OUTPUT*` | GOST `+ПХФРХФ+` / TEXT `*OUTPUT*` / ISO `*·t·]·` | `src/lib21/XREF.mad:1055` | добавлено |
+| `8H  OUTPUT` | GOST `ПХФРХФ00` / TEXT `OUTPUT  ` / ISO `·]0·@·` | `src/lib21/XREF.mad:1056` | добавлено |
+

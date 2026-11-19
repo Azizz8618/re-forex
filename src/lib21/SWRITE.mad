@@ -22,7 +22,7 @@ EDC006 ,EQU,2                           ; роль: десятичная кон�
 ETX007 ,EQU,=:005                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:641  ; (POLN: LITERAL___005)
 ETX008 ,EQU,=77777                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:649  ; (POLN: LITERAL__77777)
 EDC008 ,EQU,24                          ; роль: десятичная константа/сдвиг; S3:653  ; (POLN: DEC_24)
-ETX009 ,EQU,=6HREC                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:664  ; (POLN: LITERAL__6HREC)
+ETX009 ,EQU,=6HREC                      ; роль: DEKOD GOST 'ТЕГ00000' / TEXT 'REC     ' / ISO '·X····' [источник: src/lib21/SWRITE.mad:25; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:664  ; (POLN: LITERAL__6HREC)
 ETX010 ,EQU,=:001                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:665  ; (POLN: LITERAL___001)
 ETX011 ,EQU,=:004                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:671  ; (POLN: LITERAL___004)
 С ---- конец блока констант ----

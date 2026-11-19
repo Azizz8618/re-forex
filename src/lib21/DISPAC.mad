@@ -32,8 +32,8 @@ EDC016 ,EQU,24                          ; роль: десятичная кон�
 ETX016 ,EQU,=52                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:10509  ; (POLN: LITERAL__52)
 EOC016 ,EQU,73B                         ; роль: восьмеричная константа; S1:10512  ; (POLN: OCT_73)
 EOC017 ,EQU,122B                        ; роль: восьмеричная константа; S1:10516  ; (POLN: OCT_122)
-ETX017 ,EQU,=6H'177''177''177''177''177''177'; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:10519  ; (POLN: LITERAL__6H_177__177__177__177__177__1)
-ETX018 ,EQU,=6H'200''200''200''200''200''200'; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:10520  ; (POLN: LITERAL__6H_200__200__200__200__200__2)
+ETX017 ,EQU,=6H'177''177''177''177''177''177'; роль: DEKOD GOST '7@[[77@[' / TEXT ''177''17' / ISO '····tW' | GOST '[77@[[77' / TEXT '7''177''' / ISO '\q·]q·' | GOST '@[[77@[[' / TEXT '177''177' / ISO 'Eu····' | GOST '77@[[700' / TEXT '''177'  ' / ISO '·tW\p·' [источник: src/lib21/DISPAC.mad:35; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:10519  ; (POLN: LITERAL__6H_177__177__177__177__177__1)
+ETX018 ,EQU,=6H'200''200''200''200''200''200'; роль: DEKOD GOST '7(ее77(е' / TEXT ''200''20' / ISO '·$··t·' | GOST 'е77(ее77' / TEXT '0''200''' / ISO '@q·A··' | GOST '(ее77(ее' / TEXT '200''200' / ISO 'I···$·' | GOST '77(ее700' / TEXT '''200'  ' / ISO '·t·@p·' [источник: src/lib21/DISPAC.mad:36; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:10520  ; (POLN: LITERAL__6H_200__200__200__200__200__2)
 ETX019 ,EQU,=:11 40 37 00 77            ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:10526  ; (POLN: LITERAL___11_40_37_00_77)
 EOC019 ,EQU,74000B                      ; роль: восьмеричная константа; S1:10529  ; (POLN: OCT_74000)
 EOC020 ,EQU,44B                         ; роль: восьмеричная константа; S1:10537  ; (POLN: OCT_44)
@@ -53,24 +53,24 @@ ETX028 ,EQU,4                           ; роль: константа-слов�
 ETX029 ,EQU,25                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10627  ; (POLN: LIT_25)
 EOC029 ,EQU,300B                        ; роль: восьмеричная константа; S1:10628  ; (POLN: OCT_300)
 ETX030 ,EQU,64 000                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10630  ; (POLN: LIT_64_000)
-ETX031 ,EQU,2H '231'                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10635  ; (POLN: LIT_2H__231_)
+ETX031 ,EQU,2H '231'                    ; роль: DEKOD GOST '7()@7000' / TEXT ''231'   ' / ISO '·$····' [источник: src/lib21/DISPAC.mad:56; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10635  ; (POLN: LIT_2H__231_)
 ETX032 ,EQU,4014 2503 0021 0101         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10636  ; (POLN: LIT_4014_2503_0021_0101)
-ETX033 ,EQU,8HINFLOAD*                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10637  ; (POLN: LIT_8HINFLOAD_)
-ETX034 ,EQU,8HSTATIC*                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10638  ; (POLN: LIT_8HSTATIC_)
-ETX035 ,EQU,8HBIGTIT                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10639  ; (POLN: LIT_8HBIGTIT)
-ETX036 ,EQU,8HPRINT80                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10640  ; (POLN: LIT_8HPRINT80)
-ETX037 ,EQU,30H*NAM035 123456123456123456ЖЖЖЖЖЖ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10641  ; (POLN: LIT_30H_NAM035_123456123456123456_)
-ETX038 ,EQU,8HMONITOR*                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10642  ; (POLN: LIT_8HMONITOR_)
-ETX039 ,EQU,8HDATA*                     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10643  ; (POLN: LIT_8HDATA_)
-ETX040 ,EQU,8HLOADANGO                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10644  ; (POLN: LIT_8HLOADANGO)
-ETX041 ,EQU,8HSYSHEAD*                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10645  ; (POLN: LIT_8HSYSHEAD_)
-ETX042 ,EQU,8HKCOUNT*                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10646  ; (POLN: LIT_8HKCOUNT_)
-ETX043 ,EQU,8HMONCARD*                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10647  ; (POLN: LIT_8HMONCARD_)
+ETX033 ,EQU,8HINFLOAD*                  ; роль: DEKOD GOST 'ЙОЖМПБД+' / TEXT 'INFLOAD*' / ISO '······' [источник: src/lib21/DISPAC.mad:58; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10637  ; (POLN: LIT_8HINFLOAD_)
+ETX034 ,EQU,8HSTATIC*                   ; роль: DEKOD GOST 'УФБФЙГ+0' / TEXT 'STATIC* ' / ISO '·Ht·2·' [источник: src/lib21/DISPAC.mad:59; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10638  ; (POLN: LIT_8HSTATIC_)
+ETX035 ,EQU,8HBIGTIT                    ; роль: DEKOD GOST 'ВЙЗФЙФ00' / TEXT 'BIGTIT  ' / ISO '····@·' [источник: src/lib21/DISPAC.mad:60; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10639  ; (POLN: LIT_8HBIGTIT)
+ETX036 ,EQU,8HPRINT80                   ; роль: DEKOD GOST 'РТЙОФ]е0' / TEXT 'PRINT80 ' / ISO '·*n···' [источник: src/lib21/DISPAC.mad:61; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10640  ; (POLN: LIT_8HPRINT80)
+ETX037 ,EQU,30H*NAM035 123456123456123456ЖЖЖЖЖЖ; роль: DEKOD GOST '*6АМ035 ' / TEXT '9&@L #%/' / ISO 'dh,·1O' | GOST '12345612' / TEXT '!"#$%&!"' / ISO '· ··`B' | GOST '34561234' / TEXT '#$%&!"#$' / ISO '·AF· ·' | GOST '56ЖЖЖЖЖЖ' / TEXT '%&FFFFFF' / ISO '·i··i·' [источник: src/lib21/DISPAC.mad:62; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10641  ; (POLN: LIT_30H_NAM035_123456123456123456_)
+ETX038 ,EQU,8HMONITOR*                  ; роль: DEKOD GOST 'НПОЙФПТ+' / TEXT 'MONITOR*' / ISO '······' [источник: src/lib21/DISPAC.mad:63; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10642  ; (POLN: LIT_8HMONITOR_)
+ETX039 ,EQU,8HDATA*                     ; роль: DEKOD GOST 'ДБФБ+000' / TEXT 'DATA*   ' / ISO '··!(··' [источник: src/lib21/DISPAC.mad:64; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10643  ; (POLN: LIT_8HDATA_)
+ETX040 ,EQU,8HLOADANGO                  ; роль: DEKOD GOST 'МПБДБОЗП' / TEXT 'LOADANGO' / ISO '··d···' [источник: src/lib21/DISPAC.mad:65; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10644  ; (POLN: LIT_8HLOADANGO)
+ETX041 ,EQU,8HSYSHEAD*                  ; роль: DEKOD GOST 'УЩУИЕБД+' / TEXT 'SYSHEAD*' / ISO '······' [источник: src/lib21/DISPAC.mad:66; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10645  ; (POLN: LIT_8HSYSHEAD_)
+ETX042 ,EQU,8HKCOUNT*                   ; роль: DEKOD GOST 'ЛГПХОФ+0' / TEXT 'KCOUNT* ' / ISO '·;··B·' [источник: src/lib21/DISPAC.mad:67; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10646  ; (POLN: LIT_8HKCOUNT_)
+ETX043 ,EQU,8HMONCARD*                  ; роль: DEKOD GOST 'НПОГБТД+' / TEXT 'MONCARD*' / ISO '····)·' [источник: src/lib21/DISPAC.mad:68; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10647  ; (POLN: LIT_8HMONCARD_)
 EOC043 ,EQU,201B                        ; роль: восьмеричная константа; S1:10649  ; (POLN: OCT_201)
 ETX044 ,EQU,4000 0053 4000 0423         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10650  ; (POLN: LIT_4000_0053_4000_0423)
-ETX045 ,EQU,8HDISPAC'33''31'            ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10651  ; (POLN: LIT_8HDISPAC_33__31_)
-ETX046 ,EQU,18HHET CИCTEMЫ'133''231'    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10662  ; (POLN: LIT_18HHET_C_CTEM__133__231_)
-ETX047 ,EQU,2H'201''231'                ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10663  ; (POLN: LIT_2H_201__231_)
+ETX045 ,EQU,8HDISPAC'33''31'            ; роль: DEKOD GOST 'ДЙУРБГ7)' / TEXT 'DISPAC'3' / ISO '····1·' | GOST ')77)@700' / TEXT '3''31'  ' / ISO 'Lq·Dp·' [источник: src/lib21/DISPAC.mad:71; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10651  ; (POLN: LIT_8HDISPAC_33__31_)
+ETX046 ,EQU,18HHET CИCTEMЫ'133''231'    ; роль: DEKOD GOST 'НЕТ СИСТ' / TEXT 'MER/QHQR' / ISO '·\···r' | GOST 'ЕМЫ'133'' / TEXT 'EL[;!##;' / ISO '····0·' | GOST ''231'   ' / TEXT ';"#!;///' / ISO 'l ·l··' [источник: src/lib21/DISPAC.mad:72; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10662  ; (POLN: LIT_18HHET_C_CTEM__133__231_)
+ETX047 ,EQU,2H'201''231'                ; роль: DEKOD GOST '7(е@77()' / TEXT ''201''23' / ISO '·$··t·' | GOST '@7000000' / TEXT '1'      ' / ISO 'Dp····' [источник: src/lib21/DISPAC.mad:73; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:10663  ; (POLN: LIT_2H_201__231_)
 С ---- конец блока констант ----
 
 С ---- ТЕЛО МОДУЛЯ ----
@@ -143,7 +143,7 @@ CTX,END045-BEG012  ; S1:10530
 UJ,EOC019 . переход/возврат  ; S1:10532
 1,REL,BEG012  ; S1:10533
 BEG012: 1,VTM,EOC019 . установка индексного регистра  ; (POLN: BEG) ; S1:10534
-*70,RMO042  ; S1:10535 . Э70 RMO042 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,RMO042  ; S1:10535 . Э70 RMO042 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово RMO042 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 XTA,K44043 . считывание в аккумулятор  ; S1:10536
 ATX,EOC020 . запись с модификатором  ; S1:10537
 XTA,S73018 . считывание в аккумулятор  ; S1:10538
@@ -154,7 +154,7 @@ ATX,EOC016 . запись с модификатором  ; S1:10539
 *67,DEB023  ; S1:10543 . Э67 DEB023 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э67 — внутренний/неописанный, информационное слово — адрес/данные)
 CON013: BSS . зарезервированная область  ; (POLN: CONTI) ; S1:10544
 1,VTM,EOC019 . установка индексного регистра  ; S1:10545
-*70,TRP026  ; S1:10546 . Э70 TRP026 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,TRP026  ; S1:10546 . Э70 TRP026 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово TRP026 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 XTA,KCO040 . считывание в аккумулятор  ; S1:10547
 14,VJM,SER015 . вызов через индексный регистр  ; S1:10548
 XTA,SK024 . считывание в аккумулятор  ; S1:10549

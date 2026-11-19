@@ -1,0 +1,18 @@
+  assembled DATAPR* : body=63 load=47 takepg_entry=0o0
+  OCTTDEC etalon : body=32 load=27 (monsys.9 0o37100) catalog=OCTTDE*
+  assembled GIV/PG  : body=47 load=35 takepg_entry=0o24
+image      : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
+words      : 5120 (5 zones of 1024 words)
+bytes      : 30720
+sha256     : bbd3c8a2cf7b6ef6bb0309397f8626c58a37c4de0d1108578f97ca1cb751252d
+version    : FOREX 5.00 (TEXT stamp in tail words ['0o4657624570002501', '0o2020000000000000']; host banner 2.02 is external)
+catalog    :
+  FOREX*     load=   96 body= 100 word= 2048 (0o4000)
+  LO*SYN     load= 1024 body=1028 word= 2176 (0o4200)
+  LO*GEN     load= 1024 body=1028 word= 3232 (0o6240)
+  FORMAT     load=   61 body=  65 word= 4288 (0o10300)
+  FORTLIBR   load=   69 body=  73 word= 4384 (0o10440)
+  DATAPR*    load=   47 body=  63 word= 4480 (0o10600)
+  OCTTDE*    load=   27 body=  32 word= 4544 (0o10700)
+  GIV/PG     load=   35 body=  47 word= 4576 (0o10740)
+  TAK/PG     ENTRY of GIV/PG at 0o24

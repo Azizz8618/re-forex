@@ -221,20 +221,22 @@ python3 tools/xref_scan.py disasm/CORE_ROOT.bemsh.lst --out logs/core_xref.txt
 
 | Было | Стало | opcode | Интерпретация аргумента |
 |---|---|---|---|
-| `*20` | `APX` (сбр) | 020 | адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]; не адрес данных |
-| `*21` | `AUX` (рзб) | 021 | адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]; не адрес данных |
+| `*20` | `APX` (сбр) | 020 | **mask-word (text)** — TEXT/GOST слово-маска (НЕ адрес); **address** — адрес слова-маски; **immediate-code** — код в младших разрядах [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]. НЕ адрес данных |
+| `*21` | `AUX` (рзб) | 021 | **mask-word (text)** — TEXT/GOST слово-маска (НЕ адрес); **address** — адрес слова-маски; **immediate-code** — код в младших разрядах [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]. НЕ адрес данных |
 | `*33` | `EXT` (увв) | 033 | код устройства (привилегированная операция), не обычный адрес [CmdSheet.md:40; disbesm6.c:72] |
-| `*36` | `ASN` (сда) | 036 | N в форме `64+n`; сдвиг `n = N−64` [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26], immediate, не адрес |
+| `*36` | `ASN` (сда) | 036 | N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17], immediate, НЕ весь адрес |
 | `*46`/`*47` | `*46`/`*47` | 046/047 | аргумент не интерпретируется (неиспользованный код) |
 
+
+**Классы аргументов 020/021 (APX/AUX):** `mask-word (text)` — 8-символьное TEXT/ISO/GOST слово, упакованное в машинное слово и используемое как маска (НЕ адрес); `immediate-code` — код/счётчик в младших разрядах (например AUX 25B/43B/44B в DATAPR/OCTTDEC, формат DD MON 7Y); `address` — адрес слова-маски (НЕ адрес данных). Проверено 307 вхождений; полная таблица — `logs/apx_aux_args_audit.txt`, описание — `docs/lib21/04-extract-codes.md#классы-аргументов-apxaux-020021`.
 
 Расшифровки по `rukava.be` (раздел 1.4). Подробности — `docs/lib21/04-extract-codes.md`.
 
 | Код | Информационное слово | Расшифровка | Стр. | Применений | Места |
 |-----|----------------------|-------------|------|------------|-------|
-| Э20 | 7017 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] | — | 1 | `src/FOREX_CORE.mad:351` |
-| Э36 | 6264 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 1 | `src/FOREX_CORE.mad:577` |
-| Э36 | 7417 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 4 | `src/FOREX_CORE.mad:333`, `src/FOREX_CORE.mad:347`, `src/FOREX_CORE.mad:377`, `src/FOREX_CORE.mad:380` |
+| Э20 | 7017 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): APX (сбр): упаковка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] | — | 1 | `src/FOREX_CORE.mad:351` |
+| Э36 | 6264 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; ASN: 6264B → N=0o64(52)=64−12 ⇒ ,ASN,64-12 — сдвиг ВЛЕВО на 12 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6] (immediate, НЕ весь адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 1 | `src/FOREX_CORE.mad:577` |
+| Э36 | 7417 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; ASN: 7417B → N=0o17(15)=64−49 ⇒ ,ASN,64-49 — сдвиг ВЛЕВО на 49 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6] (immediate, НЕ весь адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 4 | `src/FOREX_CORE.mad:333`, `src/FOREX_CORE.mad:347`, `src/FOREX_CORE.mad:377`, `src/FOREX_CORE.mad:380` |
 | Э56 | 70000 | не найдено в rukava.be | — | 2 | `src/FOREX_CORE.mad:363`, `src/FOREX_CORE.mad:368` |
 | Э56 | 74757 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:583` |
 | Э56 | 76462 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:517` |
@@ -245,3 +247,24 @@ python3 tools/xref_scan.py disasm/CORE_ROOT.bemsh.lst --out logs/core_xref.txt
 | Э62 | 1200 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:543` |
 | Э64 | 4037 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:290` |
 | Э64 | INF | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:292` |
+
+## Текстовые константы
+
+Проверено 13 TEXT-слов в таблице внешних имён/описателей ядра `FOREX*`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO (6 байт/слово). Первичен TEXT-decode. Полная таблица — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (TEXT) | Источник | Вердикт |
+|-----------|----------------------|----------|---------|
+| `0o5457126371560000` | TEXT `LO*SYN  ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o5457124745560000` | TEXT `LO*GEN  ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o4657624570120000` | TEXT `FOREX*  ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o4556646271120000` | TEXT `ENTRY*  ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o4441644160621200` | TEXT `DATAPR* ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | ИСПРАВЛЕНО: было усечение до 6 символов |
+| `0o6441531760470000` | TEXT `TAK/PG  ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o4751661760470000` | TEXT `GIV/PG  ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o5743646444454300` | TEXT `OCTTDEC ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | ИСПРАВЛЕНО: было усечение до 6 символов |
+| `0o4657624570000000` | TEXT `FOREX   ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o4357566364000000` | TEXT `CONST   ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o4357554561000000` | TEXT `COMEQ   ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o5760626462000000` | TEXT `OPRTR   ` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | подтверждено; добавлен decode в комментарий |
+| `0o5457414441564757` | TEXT `LOADANGO` | `src/FOREX_CORE.mad` (слово в таблице 0o5103xx–0o5104xx) | ИСПРАВЛЕНО: было усечение до 6 символов |
+

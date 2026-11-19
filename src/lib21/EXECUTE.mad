@@ -153,8 +153,8 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
   AC,MTJ,CN14 ; S:71
 С.....   ПPABKA KOOPДИHAT PAЗДEЛOB ; S:72 ; ....   ПPABKA KOOPДИHAT PAЗДEЛOB
   REDOR:14,XTA,LC1 ; POLN: REDCOOR S:73 . считать из памяти в аккумулятор [сч]
-  ,ASN,AS64-VT4 ; S:74 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
-  ,ASN,AS64+VT4 ; S:75 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+  ,ASN,AS64-VT4 ; S:74 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
+  ,ASN,AS64+VT4 ; S:75 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
   14,ATX,LC1 ; S:76 . записать аккумулятор в память [зп]
   14,XTA, ; S:77 . считать из памяти в аккумулятор [сч]
   14,UTM,LC2 ; S:78 . увеличить индексный регистр [уир+]
@@ -180,18 +180,18 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  LW,VTM,CNN102 ; S:97
 С.....   ПPOBEPИM, HE MIXLOAD ЛИ ; S:98 ; ....   ПPOBEPИM, HE MIXLOAD ЛИ
  ,AAX,B46 ; S:99 . арифметическая операция [ариф]
- ,ASN,AS64+AS45 ; S:100 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64+AS45 ; S:100 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATI,MX ; S:101 . считать индексный регистр в аккумулятор [счи]
 С===== ИЗ-ЗA ФAЛЬШИBOГO B46 ===== ; S:102
  MX,VZM,PRIOM ; S:103
 С.....   HE ФAЛЬШИBЫЙ ЛИ B46 ; S:104 ; ....   HE ФAЛЬШИBЫЙ ЛИ B46
 С        B ГOЛOBHOM PAЗДEЛE BCEГДA ECTЬ ; S:105
 С        HEПYCTOЙ ФPAГMEHT TPП - ДOЛЖEH ; S:106
-С        БЫTЬ И KOД   ,TEXT,8HFRAG TPП ; S:107
+С        БЫTЬ И KOД   ,TEXT,8HFRAG TPП ; S:107  ; DEKOD GOST '18Б2 ТРП' / TEXT '!(A"/RPO' / ISO '··B?,/' [источник: src/lib21/EXECUTE.mad:190; confidence: high]
  ,XTA, ; S:108 . считать из памяти в аккумулятор [сч]
  ,ATX,LS.CYMM.ДЛИHA ГPYПП ; S:109 . записать аккумулятор в память [зп] ; CYMM.ДЛИHA ГPYПП
  AC,XTA,LC1 ; S:110
- ,ASN,AS64+AS15 ; S:111 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64+AS15 ; S:111 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATI,CN14 ; S:112 . считать индексный регистр в аккумулятор [счи]
  ,ITA,CN14 ; S:113 . считать индексный регистр в аккумулятор [счи]
  ,ATX,LPART.ДЛИHA PAЗДEЛA ; S:114 . записать аккумулятор в память [зп] ; ДЛИHA PAЗДEЛA
@@ -205,16 +205,16 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  CHMX:,BSS, ; POLN: CHMX S:121 . зарезервировать слово (BSS)
  LR,XTA,BTAP ; S:122
  ,ATI,LN ; S:123 . считать индексный регистр в аккумулятор [счи]
- ,ASN,AS64+AS15 ; S:124 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64+AS15 ; S:124 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATI,LM ; S:125 . считать индексный регистр в аккумулятор [счи]
- ,ASN,AS64+AS32 ; S:126 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64+AS32 ; S:126 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ARX,B1 ; S:127 . сдвиг/арифметическая операция с регистром [сд]
  ,ITS,LN ; S:128 . установка индексного регистра [уир]
  15,ARX, ; S:129 . сдвиг/арифметическая операция с регистром [сд]
  ,ATI,CN14 ; S:130 . считать индексный регистр в аккумулятор [счи]
  14,J+M,LR ; S:131
  ,ITA,LR ; S:132 . считать индексный регистр в аккумулятор [счи]
- ,ASN,AS64+AS10 ; S:133 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64+AS10 ; S:133 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,UZA,OLD ZONE ; S:134 . переход при нулевом аккумуляторе [пн]
  ,ATI,CN14 ; S:135 . считать индексный регистр в аккумулятор [счи]
  ,ARX,INFT ; S:136 . сдвиг/арифметическая операция с регистром [сд]
@@ -262,17 +262,17 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
   ,AEX,=6HOC ДYБ ; S:176 . логическая операция с памятью [лг]
   ,U1A,CLTMP ; S:177 . переход при ненулевом аккумуляторе [пнн]
  ,XTA,KC*+LC1 ; S:178 . считать из памяти в аккумулятор [сч]
- ,ASN,AS64+UT12 ; S:179 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64+UT12 ; S:179 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,AAX,C77 ; S:180 . арифметическая операция [ариф]
  ,ATI,CN14 ; S:181 . считать индексный регистр в аккумулятор [счи]
  ,XTA,B48 ; S:182 . считать из памяти в аккумулятор [сч]
- 14,ASN,AS64 ; S:183 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ 14,ASN,AS64 ; S:183 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,AOX,LHEAP* ; S:184 . арифметическая операция [ариф]
  ,AAX,CONDRU ; S:185 . арифметическая операция [ариф]
  ,AEX,CONDRU ; S:186 . логическая операция с памятью [лг]
  MX,V1M,OUR LG21 ; S:187
  ,AOX,OTK21 ; S:188 . арифметическая операция [ариф]
- OUR 21:,ASN,AS64+CN6 ; S:189; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ OUR 21:,ASN,AS64+CN6 ; S:189; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,AOX,C/OTK ; S:190 . арифметическая операция [ариф]
  ,ATX,C/OTK ; S:191 . записать аккумулятор в память [зп]
  ,*72,C/OTK ; S:192 . Э72 C = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э72 — внутренний/неописанный, информационное слово — адрес/данные)
@@ -293,15 +293,15 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  MX,VZM,TRANS ; S:206
 С.....   HAЧAЛЬHAЯ 40-KA - "CBOБ." B TEMPO ; S:207 ; ....   HAЧAЛЬHAЯ 40-KA - "CBOБ." B TEMPO
  ,XTA,AT54 ; S:208 . считать из памяти в аккумулятор [сч]
- ,ASN,AS64+AS5 ; S:209 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64+AS5 ; S:209 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATX,XMD ; S:210 . записать аккумулятор в память [зп]
 С.....   ECЛИ XMD YKAЗЫBAET HE HA HAЧAЛO ; S:211 ; ....   ECЛИ XMD YKAЗЫBAET HE HA HAЧAЛO
 С        TPAKTA, ЧИTAEM EГO HA ЛИCT BDR ; S:212
  ,AAX,C371 ; S:213 . арифметическая операция [ариф]
  ,UZA,TRANS ; S:214 . переход при нулевом аккумуляторе [пн]
  ,XTA,XMD ; S:215 . считать из памяти в аккумулятор [сч]
- ,ASN,AS64-AS33 ; S:216 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
- ,AUX,C371 ; S:217 . арифметическая операция [ариф]; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+ ,ASN,AS64-AS33 ; S:216 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
+ ,AUX,C371 ; S:217 . арифметическая операция [ариф]; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; C371 = адрес слова-маски (не адрес данных)
  ,AOX,P/DR ; S:218 . арифметическая операция [ариф]
  ,AOX,B40 ; S:219 . арифметическая операция [ариф]
   ,ATX,X1 ; S:220 . записать аккумулятор в память [зп]
@@ -318,11 +318,11 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  ,UZA,TRANS.= PAЗДEЛ HA MЛ ; S:231 . переход при нулевом аккумуляторе [пн] ; = PAЗДEЛ HA MЛ
 С.....   ЗAMEHA MЛ-AДPECA HA MБ-AДPEC ; S:232 ; ....   ЗAMEHA MЛ-AДPECA HA MБ-AДPEC
  DRUM:AC,XTA,LC1 ; POLN: DRUM S:233
- ,ASN,AS64-NT3 ; S:234 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
- ,ASN,AS64+AS33 ; S:235 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64-NT3 ; S:234 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
+ ,ASN,AS64+AS33 ; S:235 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATX,X1.MЛ-AДPEC ; S:236 . записать аккумулятор в память [зп] ; MЛ-AДPEC
  ,AEX,XMD ; S:237 . логическая операция с памятью [лг]
- ,ASN,AS64-AS30 ; S:238 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64-AS30 ; S:238 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  AC,AEX,LC1 ; S:239
  ,AOX,B47.ПPИЗHAK:MAT.MБ ; S:240 . арифметическая операция [ариф] ; ПPИЗHAK:MAT.MБ
  MX,V1M,W/CH.ГACИM ; S:241 ; ГACИM
@@ -332,39 +332,39 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  ,UZA,END TRAN.= KOHEЦ ; S:245 . переход при нулевом аккумуляторе [пн] ; = KOHEЦ
 С.....   HACTPOЙKA HA ЧTEHИE C MЛ ; S:246 ; ....   HACTPOЙKA HA ЧTEHИE C MЛ
  ,XTA,X1 ; S:247 . считать из памяти в аккумулятор [сч]
- ,ASN,AS64+AS5 ; S:248 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64+AS5 ; S:248 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATX,NZ.HOMEP ЗOHЫ ; S:249 . записать аккумулятор в память [зп] ; HOMEP ЗOHЫ
- ,ASN,AS64-AS5 ; S:250 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64-AS5 ; S:250 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,AEX,X1 ; S:251 . логическая операция с памятью [лг]
- ,ASN,AS64-AS5 ; S:252 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64-AS5 ; S:252 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATI,LR ; S:253 . считать индексный регистр в аккумулятор [счи]
  LR,UTM,CNN102.OCTATOK ЛИCTA ; S:254 ; OCTATOK ЛИCTA
 С.....   HACTPOЙKA ЗAПИCИ HA MБ ; S:255 ; ....   HACTPOЙKA ЗAПИCИ HA MБ
  ,XTA,XMD ; S:256 . считать из памяти в аккумулятор [сч]
- ,ASN,AS64-AS33 ; S:257 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
- ,AUX,C371 ; S:258 . арифметическая операция [ариф]; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+ ,ASN,AS64-AS33 ; S:257 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
+ ,AUX,C371 ; S:258 . арифметическая операция [ариф]; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; C371 = адрес слова-маски (не адрес данных)
  ,AOX,P/DR ; S:259 . арифметическая операция [ариф]
  ,ATX,INFD.ИC ЗAПИCИ ; S:260 . записать аккумулятор в память [зп] ; ИC ЗAПИCИ
  ,XTA,XMD ; S:261 . считать из памяти в аккумулятор [сч]
  ,AAX,C371 ; S:262 . арифметическая операция [ариф]
- ,ASN,AS64-AS5 ; S:263 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64-AS5 ; S:263 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATI,LW ; S:264 . считать индексный регистр в аккумулятор [счи]
  LW,UTM,CNN102.OCTATOK ЛИCTA ; S:265 ; OCTATOK ЛИCTA
 С.....   ПOЛYЧEHИE ДЛИHЫ ПEPEПИCИ ; S:266 ; ....   ПOЛYЧEHИE ДЛИHЫ ПEPEПИCИ
  AC,XTA,NT3 ; S:267
- ,ASN,AS64-NT3 ; S:268 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
- ,ASN,AS64+AS33 ; S:269 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64-NT3 ; S:268 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
+ ,ASN,AS64+AS33 ; S:269 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,A-X,X1 ; S:270 . вычитание из аккумулятора [выч]
  15,ATX,.ДЛИHA B 40-KAX ; S:271 . записать аккумулятор в память [зп] ; ДЛИHA B 40-KAX
  ,ARX,XMD ; S:272 . сдвиг/арифметическая операция с регистром [сд]
  ,STX,XMD.HOBЫЙ MБ-AДPEC ; S:273 . запись с индексацией [зпи] ; HOBЫЙ MБ-AДPEC
- ,ASN,AS64-AS5 ; S:274 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64-AS5 ; S:274 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,X-A,B1 ; S:275
  ,ATI,LL.ЦИKЛ ПEPEПИCИ ; S:276 . считать индексный регистр в аккумулятор [счи] ; ЦИKЛ ПEPEПИCИ
 С.....   HOBOE "CBOБOДHO" B TEMPO : ; S:277 ; ....   HOBOE "CBOБOДHO" B TEMPO :
  MX,VZM,R1Z ; S:278
  ,XTA,XMD ; S:279 . считать из памяти в аккумулятор [сч]
- ,ASN,AS64-AS5 ; S:280 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64-AS5 ; S:280 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATX,AT54 ; S:281 . записать аккумулятор в память [зп]
 С --- BSS: R1Z (строка 282 исходника) ---
  R1Z:,BSS, ; POLN: R1Z S:282 . зарезервировать слово (BSS)
@@ -430,8 +430,8 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  ,XTA,RM+LC2 ; S:340 . считать из памяти в аккумулятор [сч]
  ,ATI,AS15 ; S:341 . считать индексный регистр в аккумулятор [счи]
  ,ATX,ALOAD.ПPИЗHAK CTATИKИ ; S:342 . записать аккумулятор в память [зп] ; ПPИЗHAK CTATИKИ
- ,ASN,AS64-AS33 ; S:343 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
- ,AUX,CUNP1 ; S:344 . арифметическая операция [ариф]; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+ ,ASN,AS64-AS33 ; S:343 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
+ ,AUX,CUNP1 ; S:344 . арифметическая операция [ариф]; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; CUNP1 = адрес слова-маски (не адрес данных)
  ,AOX,INFMD0 ; S:345 . арифметическая операция [ариф]
  ,ATX,INFMD.CПAC.MAГAЗИHA ; S:346 . записать аккумулятор в память [зп] ; CПAC.MAГAЗИHA
  ,AOX,B40 ; S:347 . арифметическая операция [ариф]
@@ -440,8 +440,8 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  ,XTS,LOAIS ; S:350 . считать адрес TEXT-константы [счт]
  ,U1A,TO LOAD ; S:351 . переход при ненулевом аккумуляторе [пнн]
  ,XTA,XT44 ; S:352 . считать из памяти в аккумулятор [сч]
- ,ASN,AS64-LC1 ; S:353 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
- ,ASN,AS64+LC1 ; S:354 . сравнение с константой [ср]; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+ ,ASN,AS64-LC1 ; S:353 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
+ ,ASN,AS64+LC1 ; S:354 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
  ,ATX,XT44 ; S:355 . записать аккумулятор в память [зп]
  TO LOAD:,XTS,MAIN* ; S:356
  ,UJ,LOADAN ; S:357 . безусловный переход [п]
@@ -504,7 +504,7 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  C77:,LOG,LG77 ; POLN: C77 S:414 . двоичная (LOG) константа
  C371:,LOG,LG37 ; POLN: C37 S:415 . двоичная (LOG) константа
  B1:,LOG,LC1 ; POLN: B1 S:416 . двоичная (LOG) константа
- TFRAG:,TEXT,8HFRAG TPП ; POLN: TEXT_FRAG_TPP S:417 . TEXT-константа "FRAG ТРП" (фрагмент программы ТРП; было FRAG TPП)
+ TFRAG:,TEXT,8HFRAG TPП ; POLN: TEXT_FRAG_TPP S:417 . TEXT-константа "FRAG ТРП" (фрагмент программы ТРП; было FRAG TPП)  ; DEKOD GOST '18Б2 ТРП' / TEXT '!(A"/RPO' / ISO '··B?,/' [источник: src/lib21/EXECUTE.mad:507; confidence: high]
  CODMIX:,ISO,12HMIXLOAD OT ; POLN: CODMIX S:418 . ISO-константа
 С.....   ДИAГHOCTИЧECKИE TEKCTЫ ; S:419 ; ....   ДИAГHOCTИЧECKИE TEKCTЫ
  CODE:,ISO,6HOVERLA ; POLN: CODE S:420 . ISO-константа

@@ -73,8 +73,8 @@ IZ006: ENTRY . точка входа  ; (POLN: IZ) ; S3:5356
 10,VTM,BSS012+ EOC002 . установка индексного регистра  ; S3:5357
 ATI,EDC007 . запись в индексный регистр  ; S3:5358
 9,XTA, . считывание в аккумулятор  ; S3:5359
-10,APX,EOC008  ; S3:5360; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
-10,AUX,EOC009  ; S3:5361; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+10,APX,EOC008  ; S3:5360; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; EOC008 = адрес слова-маски (не адрес данных)
+10,AUX,EOC009  ; S3:5361; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; EOC009 = адрес слова-маски (не адрес данных)
 15,ATX, . запись с модификатором  ; S3:5362
 10,AAX,EOC010  ; S3:5363
 ASN,EOC011  ; S3:5364
@@ -90,8 +90,8 @@ NOZ007: ENTRY . точка входа  ; (POLN: NOZ) ; S3:5373
 10,VTM,BSS012+ EOC002 . установка индексного регистра  ; S3:5374
 ATI,EDC007 . запись в индексный регистр  ; S3:5375
 9,XTA, . считывание в аккумулятор  ; S3:5376
-10,APX,EOC003  ; S3:5377; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
-10,AUX,EOC015  ; S3:5378; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+10,APX,EOC003  ; S3:5377; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; EOC003 = адрес слова-маски (не адрес данных)
+10,AUX,EOC015  ; S3:5378; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; EOC015 = адрес слова-маски (не адрес данных)
 10,AOX,EOC016  ; S3:5379
 13,UJ, . переход/возврат  ; S3:5380
 UTC . сравнение/переход  ; S3:5381

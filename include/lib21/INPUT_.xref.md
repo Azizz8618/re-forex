@@ -142,3 +142,15 @@
 | Э52 | R52021 | не найдено в rukava.be | — | 1 | `src/lib21/INPUT_.mad:143` |
 | Э52 | REF022 | не найдено в rukava.be | — | 1 | `src/lib21/INPUT_.mad:150` |
 | Э60 | INC | не найдено в rukava.be | — | 1 | `src/lib21/INPUT_.mad:83` |
+
+## Текстовые константы
+
+Проверено 4 констант модуля `src/lib21/INPUT_.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `=6H*REA010` | GOST `+ТЕБе@е0` / TEXT `*REA010 ` / ISO `+)aA··` | `src/lib21/INPUT_.mad:16` | добавлено |
+| `=6HOLD'312''12''12'` | GOST `ПМД7)@(7` / TEXT `OLD'312'` / ISO `···M··` | `src/lib21/INPUT_.mad:17` | добавлено |
+| `6HISCODE` | GOST `ЙУГПДЕ00` / TEXT `ISCODE  ` / ISO `·8··P·` | `src/lib21/INPUT_.mad:33` | добавлено |
+| `6HRETSWI` | GOST `ТЕФУЧЙ00` / TEXT `RETSWI  ` / ISO `·]3···` | `src/lib21/INPUT_.mad:34` | добавлено |
+

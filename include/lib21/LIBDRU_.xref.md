@@ -363,3 +363,19 @@
 | Э70 | BUF075 | не найдено в rukava.be | — | 6 | `src/lib21/LIBDRU_.mad:137`, `src/lib21/LIBDRU_.mad:167`, `src/lib21/LIBDRU_.mad:196`, `src/lib21/LIBDRU_.mad:222`, `src/lib21/LIBDRU_.mad:419`, `src/lib21/LIBDRU_.mad:521` |
 | Э70 | BUF076 | не найдено в rukava.be | — | 1 | `src/lib21/LIBDRU_.mad:276` |
 | Э70 | BUF077 | не найдено в rukava.be | — | 3 | `src/lib21/LIBDRU_.mad:250`, `src/lib21/LIBDRU_.mad:432`, `src/lib21/LIBDRU_.mad:465` |
+
+## Текстовые константы
+
+Проверено 8 констант модуля `src/lib21/LIBDRU_.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `=6HCONT` | GOST `ГПОФ0000` / TEXT `CONT    ` / ISO `······` | `src/lib21/LIBDRU_.mad:26` | добавлено |
+| `20HБИБЛИOTEKA ПYCTAЯ'133''231'` | GOST `БИБЛИОТЕ` / TEXT `AHAKHNRE` / ISO `··k···` | `src/lib21/LIBDRU_.mad:68` | добавлено |
+| `18HБOЛЬШOЙ KATAЛOГ'133''231'` | GOST `БОЛЬШОЙ ` / TEXT `ANK\XNI/` / ISO `·····O` | `src/lib21/LIBDRU_.mad:69` | добавлено |
+| `36HИCПOPЧEH KATAЛOГ TEMPORARY LIBRARY'133''231'` | GOST `ИСПОРЧЕН` / TEXT `HQONPWEM` / ISO `····ym` | `src/lib21/LIBDRU_.mad:70` | добавлено |
+| `24HИCПOPЧEHЫ ПOДПPOГPAMMЫ:'231'` | GOST `ИСПОРЧЕН` / TEXT `HQONPWEM` / ISO `····ym` | `src/lib21/LIBDRU_.mad:71` | добавлено |
+| `36HПEPEПOЛHEHA BPEMEHHAЯ БИБЛИOTEKA'133''231'` | GOST `ПЕРЕПОЛН` / TEXT `OEPEONKM` / ISO `·\%···` | `src/lib21/LIBDRU_.mad:72` | добавлено |
+| `24HБИБЛИOTEKA ИCПOPЧEHA '133''231'` | GOST `БИБЛИОТЕ` / TEXT `AHAKHNRE` / ISO `··k···` | `src/lib21/LIBDRU_.mad:73` | добавлено |
+| `1H'231'` | GOST `7()@7000` / TEXT `'231'   ` / ISO `·$····` | `src/lib21/LIBDRU_.mad:75` | добавлено |
+

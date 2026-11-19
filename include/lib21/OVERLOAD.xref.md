@@ -559,3 +559,27 @@
 | Э72 | ICC104 | не найдено в rukava.be | — | 4 | `src/lib21/OVERLOAD.mad:708`, `src/lib21/OVERLOAD.mad:772`, `src/lib21/OVERLOAD.mad:866`, `src/lib21/OVERLOAD.mad:874` |
 | Э72 | ICC105 | не найдено в rukava.be | — | 2 | `src/lib21/OVERLOAD.mad:628`, `src/lib21/OVERLOAD.mad:656` |
 | Э72 | ICL106 | не найдено в rukava.be | — | 2 | `src/lib21/OVERLOAD.mad:785`, `src/lib21/OVERLOAD.mad:817` |
+
+## Текстовые константы
+
+Проверено 16 констант модуля `src/lib21/OVERLOAD.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `8HFRAG TPП` | GOST `18Б2 ТРП` / TEXT `!(A"/RPO` / ISO `··B?,/` | `src/lib21/OVERLOAD.mad:79` | добавлено |
+| `18H***  MAЛO MЛ  ***'231'` | GOST `***  МАЛ` / TEXT `999//L@K` / ISO `e·O>·+` | `src/lib21/OVERLOAD.mad:80` | добавлено |
+| `25HДЛИHA БИБЛИOTEKИ  077 37'231'` | GOST `ДЛИНА БИ` / TEXT `DKHM@/AH` / ISO `··-··h` | `src/lib21/OVERLOAD.mad:81` | добавлено |
+| `6H'367'77037` | GOST `7);[7[[е` / TEXT `'367'770` / ISO `·5··u·` | `src/lib21/OVERLOAD.mad:82` | добавлено |
+| `6H000 00` | GOST `еее0ее00` / TEXT `000 00  ` / ISO `A··A··` | `src/lib21/OVERLOAD.mad:83` | добавлено |
+| `24HHETEKCTOBAЯ KAPTA` | GOST `НЕТЕКСТО` / TEXT `MEREJQRN` / ISO `·\····` | `src/lib21/OVERLOAD.mad:84` | добавлено |
+| `24HOШ` | GOST `ОШ      ` / TEXT `NX//////` / ISO `···<··` | `src/lib21/OVERLOAD.mad:85` | добавлено |
+| `24HHET ЗAKPЫBAЮЩEЙ CKOБKИ` | GOST `НЕТ ЗАКР` / TEXT `MER/G@JP` / ISO `·\····` | `src/lib21/OVERLOAD.mad:86` | добавлено |
+| `24HCЛИШKOM MHOГO PAЗДEЛOB` | GOST `СЛИШКОМ ` / TEXT `QKHXJNL/` / ISO `··8···` | `src/lib21/OVERLOAD.mad:87` | добавлено |
+| `24HПYCTAЯ БИБЛ` | GOST `ПУСТАЯ Б` / TEXT `OSQR@_/A` / ISO `·<r···` | `src/lib21/OVERLOAD.mad:88` | добавлено |
+| `24HPAHOBATO OПИCAH PAЗДEЛ` | GOST `РАНОВАТО` / TEXT `P@MNB@RN` / ISO `··n···` | `src/lib21/OVERLOAD.mad:89` | добавлено |
+| `24HПOBTOP` | GOST `ПОВТОР  ` / TEXT `ONBRNP//` / ISO `······` | `src/lib21/OVERLOAD.mad:90` | добавлено |
+| `24HБЫЛИ OШИБKИ B ЗAДAHИИ` | GOST `БЫЛИ ОШИ` / TEXT `A[KH/NXH` / ISO `···>·(` | `src/lib21/OVERLOAD.mad:91` | добавлено |
+| `12HOVERLAY OT` | GOST `ПЦЕТМБЩ0` / TEXT `OVERLAY ` / ISO `·ir··@` | `src/lib21/OVERLOAD.mad:92` | добавлено |
+| `6H*END R` | GOST `+ЕОД0Т00` / TEXT `*END R  ` / ISO `*[·· ·` | `src/lib21/OVERLOAD.mad:93` | добавлено |
+| `8HMONITOR*` | GOST `НПОЙФПТ+` / TEXT `MONITOR*` / ISO `······` | `src/lib21/OVERLOAD.mad:94` | добавлено |
+

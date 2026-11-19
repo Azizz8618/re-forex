@@ -220,3 +220,36 @@
 (кроме самих определений) в реконструкции нет: переходы идут по абсолютным
 адресам `*000NN`, поэтому переименование не изменило ни одного машинного слова.
 
+
+## Текстовые константы
+
+Проверено 25 констант модуля `src/FOREX_RUNTIME.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `6H` | GOST `` / TEXT `` / ISO `` | `src/FOREX_RUNTIME.mad:60` | добавлено |
+| `1H'055'` | GOST `7е==7000` / TEXT `'055'   ` / ISO `··U···` | `src/FOREX_RUNTIME.mad:84` | добавлено |
+| `2H '200'` | GOST `7(ее7000` / TEXT `'200'   ` / ISO `·$····` | `src/FOREX_RUNTIME.mad:85` | добавлено |
+| `3H00` | GOST `ее000000` / TEXT `00      ` / ISO `A·····` | `src/FOREX_RUNTIME.mad:86` | добавлено |
+| `=6H00` | GOST `ее000000` / TEXT `00      ` / ISO `A·····` | `src/FOREX_RUNTIME.mad:87` | добавлено |
+| `6H0000` | GOST `ееее0000` / TEXT `0000    ` / ISO `A·····` | `src/FOREX_RUNTIME.mad:88` | добавлено |
+| `6H000000` | GOST `ееееее00` / TEXT `000000  ` / ISO `A··A··` | `src/FOREX_RUNTIME.mad:89` | добавлено |
+| `6H000 00` | GOST `еее0ее00` / TEXT `000 00  ` / ISO `A··A··` | `src/FOREX_RUNTIME.mad:90` | добавлено |
+| `=6H00/00/` | GOST `ее ее 00` / TEXT `00/00/  ` / ISO `A··@··` | `src/FOREX_RUNTIME.mad:91` | добавлено |
+| `6H03 0` | GOST `е)0е0000` / TEXT `03 0    ` / ISO `A0····` | `src/FOREX_RUNTIME.mad:92` | добавлено |
+| `6HABГCEH` | GOST `АВГСЕН  ` / TEXT `@BCQEM//` / ISO `·(····` | `src/FOREX_RUNTIME.mad:93` | добавлено |
+| `6HARRAY` | GOST `БТТБЩ000` / TEXT `ARRAY   ` / ISO `·,····` | `src/FOREX_RUNTIME.mad:94` | добавлено |
+| `6HAПPMAЯ` | GOST `АПРМАЯ  ` / TEXT `@OPL@_//` / ISO `··,···` | `src/FOREX_RUNTIME.mad:95` | добавлено |
+| `6HERROR` | GOST `ЕТТПТ000` / TEXT `ERROR   ` / ISO `·,····` | `src/FOREX_RUNTIME.mad:96` | добавлено |
+| `6HIN STA` | GOST `ЙО0УФБ00` / TEXT `IN STA  ` / ISO `··3···` | `src/FOREX_RUNTIME.mad:97` | добавлено |
+| `6HNDART` | GOST `ОДБТФ000` / TEXT `NDART   ` / ISO `·Hr···` | `src/FOREX_RUNTIME.mad:98` | добавлено |
+| `6HOKTHOЯ` | GOST `ОКТНОЯ  ` / TEXT `NJRMN_//` / ISO `······` | `src/FOREX_RUNTIME.mad:99` | добавлено |
+| `6H 00.00` | GOST `ее.ее000` / TEXT `00.00   ` / ISO `A··@··` | `src/FOREX_RUNTIME.mad:100` | добавлено |
+| `=6H'17''17'''''''''` | GOST `7@[77@[7` / TEXT `'17''17'` / ISO `······` | `src/FOREX_RUNTIME.mad:101` | добавлено |
+| `6H'201'  '200'7` | GOST `7(е@7007` / TEXT `'201'  '` / ISO `·$····` | `src/FOREX_RUNTIME.mad:102` | добавлено |
+| `6H'231'  ЯHB` | GOST `'231'  Я` / TEXT `;"#!;//_` / ISO `l ·l··` | `src/FOREX_RUNTIME.mad:103` | добавлено |
+| `=6H'3''17''''17''17'''` | GOST `7)77@[77` / TEXT `'3''17''` / ISO `·1·Eq·` | `src/FOREX_RUNTIME.mad:104` | добавлено |
+| `6HФEBMAP` | GOST `ФЕВМАР  ` / TEXT `TEBL@P//` / ISO `·X····` | `src/FOREX_RUNTIME.mad:105` | добавлено |
+| `6HДEK` | GOST `ДЕК     ` / TEXT `DEJ/////` / ISO `·Z·<··` | `src/FOREX_RUNTIME.mad:106` | добавлено |
+| `6HИЮHИЮЛ` | GOST `ИЮНИЮЛ  ` / TEXT `H^MH^K//` / ISO `··h···` | `src/FOREX_RUNTIME.mad:107` | добавлено |
+

@@ -1114,25 +1114,102 @@
 
 | Было | Стало | opcode | Интерпретация аргумента |
 |---|---|---|---|
-| `*20` | `APX` (сбр) | 020 | адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]; не адрес данных |
-| `*21` | `AUX` (рзб) | 021 | адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]; не адрес данных |
-| `*33` | `EXT` (увв) | 033 | код устройства (привилегированная операция), не обычный адрес [CmdSheet.md:40; disbesm6.c:72] |
-| `*36` | `ASN` (сда) | 036 | N в форме `64+n`; сдвиг `n = N−64` [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26], immediate, не адрес |
+| `*20` | `APX` (сбр) | 020 | **mask-word (text)** — TEXT/GOST слово-маска (НЕ адрес); **address** — адрес слова-маски; **immediate-code** — код в младших разрядах [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]. НЕ адрес данных |
+| `*21` | `AUX` (рзб) | 021 | **mask-word (text)** — TEXT/GOST слово-маска (НЕ адрес); **address** — адрес слова-маски; **immediate-code** — код в младших разрядах [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]. НЕ адрес данных |
+| `*33` | `33` = `STOP` (стоп) в `LO*GEN`; `EXT` (увв) в привилегированном коде ОС | 033 | 1-я структура: `EXT`/увв — код устройства (привилегированная операция) [CmdSheet.md:40; disbesm6.c:72]; 2-я структура (Format 2) в пользовательском генераторе кода — `STOP`, останов скомпилированной программы, выдаваемый в объектный модуль [Besm6_Instruction_Set.md §6; CmdSheet.md:41]; в МАДЛЕН пишется сырым `,33,` |
+| `*36` | `ASN` (сда) | 036 | N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17], immediate, НЕ весь адрес |
 | `*46`/`*47` | `*46`/`*47` | 046/047 | аргумент не интерпретируется (неиспользованный код) |
 
+> **033 = STOP (Format 2), не EXT/увв.** `EXT` (увв) — привилегированная команда
+> ОС (1-я структура, kernel-only). `LO*GEN` — пользовательский генератор кода:
+> в слове 0051 (`0o5375011424334114`, dtran `5,033,113B`) он **выдаёт** команду
+> `STOP` в объектный модуль, а не исполняет привилегированный `EXT`. Поэтому в
+> `src/LO_GEN.mad:667` мнемоника `EXT` заменена на сырую `,33,` (так МАДЛЕН
+> записывает STOP), а комментарий описывает 033 как STOP (2-я структура,
+> Format 2): «останов скомпилированной программы» [Besm6_Instruction_Set.md §6;
+> CmdSheet.md:41]. В таблице операторов `LO*GEN` есть `STOP*` (слово 0623).
+
+**Классы аргументов 020/021 (APX/AUX):** `mask-word (text)` — 8-символьное TEXT/ISO/GOST слово, упакованное в машинное слово и используемое как маска (НЕ адрес); `immediate-code` — код/счётчик в младших разрядах (например AUX 25B/43B/44B в DATAPR/OCTTDEC, формат DD MON 7Y); `address` — адрес слова-маски (НЕ адрес данных). Проверено 307 вхождений; полная таблица — `logs/apx_aux_args_audit.txt`, описание — `docs/lib21/04-extract-codes.md#классы-аргументов-apxaux-020021`.
 
 Расшифровки по `rukava.be` (раздел 1.4). Подробности — `docs/lib21/04-extract-codes.md`.
 
 | Код | Информационное слово | Расшифровка | Стр. | Применений | Места |
 |-----|----------------------|-------------|------|------------|-------|
-| Э20 | 2254 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] | — | 1 | `src/LO_GEN.mad:1362` |
-| Э20 | 50520 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] | — | 1 | `src/LO_GEN.mad:660` |
-| Э20 | 53257 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] | — | 1 | `src/LO_GEN.mad:631` |
-| Э21 | 22662 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): AUX (рзб): разборка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных) [CmdSheet.md:49; disbesm6.c:62] | — | 1 | `src/LO_GEN.mad:661` |
-| Э33 | 4114 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): EXT (увв): управление вводом-выводом; аргумент — код устройства (привилегированная операция), НЕ обычный адрес [CmdSheet.md:40; disbesm6.c:72] | — | 1 | `src/LO_GEN.mad:667` |
-| Э36 | 46126 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 1 | `src/LO_GEN.mad:634` |
-| Э36 | 50530 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 2 | `src/LO_GEN.mad:635`, `src/LO_GEN.mad:670` |
-| Э36 | 52117 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 1 | `src/LO_GEN.mad:655` |
-| Э36 | 52514 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 1 | `src/LO_GEN.mad:669` |
+| Э20 | 2254 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): APX (сбр): упаковка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] | — | 1 | `src/LO_GEN.mad:1362` |
+| Э20 | 50520 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): APX (сбр): упаковка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] | — | 1 | `src/LO_GEN.mad:660` |
+| Э20 | 53257 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): APX (сбр): упаковка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] | — | 1 | `src/LO_GEN.mad:631` |
+| Э21 | 22662 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): AUX (рзб): разборка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных) [CmdSheet.md:49; disbesm6.c:62] | — | 1 | `src/LO_GEN.mad:661` |
+| Э33 | 4114 | 2-я структура ТО IX / Format 2: STOP (стоп) — останов скомпилированной программы, выдаваемый в объектный модуль; EXT (увв) — привилегированная команда ОС, в пользовательском генераторе кода 033 — это STOP [Besm6_Instruction_Set.md §6; CmdSheet.md:41]; мнемоника `33`, НЕ `EXT`; AC4114 = код останова | — | 1 | `src/LO_GEN.mad:667` |
+| Э36 | 46126 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; ASN: 46126B → N=0o126(86)=64+22 ⇒ ,ASN,64+22 — сдвиг ВПРАВО на 22 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6] (immediate, НЕ весь адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 1 | `src/LO_GEN.mad:634` |
+| Э36 | 50530 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; ASN: 50530B → N=0o130(88)=64+24 ⇒ ,ASN,64+24 — сдвиг ВПРАВО на 24 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6] (immediate, НЕ весь адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 2 | `src/LO_GEN.mad:635`, `src/LO_GEN.mad:670` |
+| Э36 | 52117 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; ASN: 52117B → N=0o117(79)=64+15 ⇒ ,ASN,64+15 — сдвиг ВПРАВО на 15 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6] (immediate, НЕ весь адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 1 | `src/LO_GEN.mad:655` |
+| Э36 | 52514 | 1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19): ASN (сда): сдвиг по адресу; ASN: 52514B → N=0o114(76)=64+12 ⇒ ,ASN,64+12 — сдвиг ВПРАВО на 12 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6] (immediate, НЕ весь адрес), группа Л [CmdSheet.md:52; disbesm6.c:75] | — | 1 | `src/LO_GEN.mad:669` |
 | Э50 | 70022 | не найдено в rukava.be | — | 1 | `src/LO_GEN.mad:554` |
 | Э70 | 370 | не найдено в rukava.be | — | 1 | `src/LO_GEN.mad:614` |
+
+## Текстовые константы
+
+Проверено 59 констант модуля `src/LO_GEN.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `8HLO*GEN` | GOST `МП+ЗЕО00` / TEXT `LO*GEN  ` / ISO `······` | `src/LO_GEN.mad:503` | добавлено |
+| `8HPOWER` | GOST `РПЧЕТ000` / TEXT `POWER   ` / ISO `······` | `src/LO_GEN.mad:504` | добавлено |
+| `8HA/RHOCHI` | GOST `Б ТИПГИЙ` / TEXT `A/RHOCHI` / ISO `····:)` | `src/LO_GEN.mad:505` | добавлено |
+| `8HA/NOT` | GOST `Б ОПФ000` / TEXT `A/NOT   ` / ISO `······` | `src/LO_GEN.mad:506` | добавлено |
+| `8HA/AND` | GOST `Б БОД000` / TEXT `A/AND   ` / ISO `··n···` | `src/LO_GEN.mad:507` | добавлено |
+| `8HFT*621` | GOST `ЖФ+;(@00` / TEXT `FT*621  ` / ISO `·B·I··` | `src/LO_GEN.mad:508` | добавлено |
+| `8HFT*002` | GOST `ЖФ+ее(00` / TEXT `FT*002  ` / ISO `·B·A ·` | `src/LO_GEN.mad:509` | добавлено |
+| `8HFD*002` | GOST `ЖД+ее(00` / TEXT `FD*002  ` / ISO `·B·A ·` | `src/LO_GEN.mad:510` | добавлено |
+| `8HFC*002` | GOST `ЖГ+ее(00` / TEXT `FC*002  ` / ISO `·2·A ·` | `src/LO_GEN.mad:511` | добавлено |
+| `8HFT*003` | GOST `ЖФ+ее)00` / TEXT `FT*003  ` / ISO `·B·A0·` | `src/LO_GEN.mad:512` | добавлено |
+| `8HFT*521` | GOST `ЖФ+=(@00` / TEXT `FT*521  ` / ISO `·B·I··` | `src/LO_GEN.mad:513` | добавлено |
+| `8HFT*721` | GOST `ЖФ+[(@00` / TEXT `FT*721  ` / ISO `·B·I··` | `src/LO_GEN.mad:514` | добавлено |
+| `8HFT*722` | GOST `ЖФ+[((00` / TEXT `FT*722  ` / ISO `·B·I ·` | `src/LO_GEN.mad:515` | добавлено |
+| `8HFD*722` | GOST `ЖД+[((00` / TEXT `FD*722  ` / ISO `·B·I ·` | `src/LO_GEN.mad:516` | добавлено |
+| `8HFC*722` | GOST `ЖГ+[((00` / TEXT `FC*722  ` / ISO `·2·I ·` | `src/LO_GEN.mad:517` | добавлено |
+| `8HFT*723` | GOST `ЖФ+[()00` / TEXT `FT*723  ` / ISO `·B·I0·` | `src/LO_GEN.mad:518` | добавлено |
+| `8HFT*641` | GOST `ЖФ+;x@00` / TEXT `FT*641  ` / ISO `·B·Q··` | `src/LO_GEN.mad:519` | добавлено |
+| `8HFT*642` | GOST `ЖФ+;x(00` / TEXT `FT*642  ` / ISO `·B·Q ·` | `src/LO_GEN.mad:520` | добавлено |
+| `8HFD*642` | GOST `ЖД+;x(00` / TEXT `FD*642  ` / ISO `·B·Q ·` | `src/LO_GEN.mad:521` | добавлено |
+| `8HFC*642` | GOST `ЖГ+;x(00` / TEXT `FC*642  ` / ISO `·2·Q ·` | `src/LO_GEN.mad:522` | добавлено |
+| `8HFT*643` | GOST `ЖФ+;x)00` / TEXT `FT*643  ` / ISO `·B·Q0·` | `src/LO_GEN.mad:523` | добавлено |
+| `8HFT*541` | GOST `ЖФ+=x@00` / TEXT `FT*541  ` / ISO `·B·Q··` | `src/LO_GEN.mad:524` | добавлено |
+| `8HFT*561` | GOST `ЖФ+=;@00` / TEXT `FT*561  ` / ISO `·B·Y··` | `src/LO_GEN.mad:525` | добавлено |
+| `8HFT*571` | GOST `ЖФ+=[@00` / TEXT `FT*571  ` / ISO `·B·]··` | `src/LO_GEN.mad:526` | добавлено |
+| `8HFT*531` | GOST `ЖФ+=)@00` / TEXT `FT*531  ` / ISO `·B·M··` | `src/LO_GEN.mad:527` | добавлено |
+| `8HFT*611` | GOST `ЖФ+;@@00` / TEXT `FT*611  ` / ISO `·B·E··` | `src/LO_GEN.mad:528` | добавлено |
+| `8H*REWIN` | GOST `+ТЕЧЙО00` / TEXT `*REWIN  ` / ISO `+)w···` | `src/LO_GEN.mad:529` | добавлено |
+| `8H*BACKS` | GOST `+ВБГЛУ00` / TEXT `*BACKS  ` / ISO `*(c·0·` | `src/LO_GEN.mad:530` | добавлено |
+| `8H*ENDFI` | GOST `+ЕОДЖЙ00` / TEXT `*ENDFI  ` / ISO `*[····` | `src/LO_GEN.mad:531` | добавлено |
+| `8HSTOP*` | GOST `УФПР+000` / TEXT `STOP*   ` / ISO `·K·(··` | `src/LO_GEN.mad:532` | добавлено |
+| `8HPOWER` | GOST `РПЧЕТ000` / TEXT `POWER   ` / ISO `······` | `src/LO_GEN.mad:1587` | добавлено |
+| `8HA/RHOCHI` | GOST `Б ТИПГИЙ` / TEXT `A/RHOCHI` / ISO `····:)` | `src/LO_GEN.mad:1591` | добавлено |
+| `8HA/NOT` | GOST `Б ОПФ000` / TEXT `A/NOT   ` / ISO `······` | `src/LO_GEN.mad:1595` | добавлено |
+| `8HA/AND` | GOST `Б БОД000` / TEXT `A/AND   ` / ISO `··n···` | `src/LO_GEN.mad:1599` | добавлено |
+| `8HFT*621` | GOST `ЖФ+;(@00` / TEXT `FT*621  ` / ISO `·B·I··` | `src/LO_GEN.mad:1603` | добавлено |
+| `8HFT*002` | GOST `ЖФ+ее(00` / TEXT `FT*002  ` / ISO `·B·A ·` | `src/LO_GEN.mad:1607` | добавлено |
+| `8HFD*002` | GOST `ЖД+ее(00` / TEXT `FD*002  ` / ISO `·B·A ·` | `src/LO_GEN.mad:1611` | добавлено |
+| `8HFC*002` | GOST `ЖГ+ее(00` / TEXT `FC*002  ` / ISO `·2·A ·` | `src/LO_GEN.mad:1615` | добавлено |
+| `8HFT*003` | GOST `ЖФ+ее)00` / TEXT `FT*003  ` / ISO `·B·A0·` | `src/LO_GEN.mad:1619` | добавлено |
+| `8HFT*521` | GOST `ЖФ+=(@00` / TEXT `FT*521  ` / ISO `·B·I··` | `src/LO_GEN.mad:1623` | добавлено |
+| `8HFT*721` | GOST `ЖФ+[(@00` / TEXT `FT*721  ` / ISO `·B·I··` | `src/LO_GEN.mad:1627` | добавлено |
+| `8HFT*722` | GOST `ЖФ+[((00` / TEXT `FT*722  ` / ISO `·B·I ·` | `src/LO_GEN.mad:1631` | добавлено |
+| `8HFD*722` | GOST `ЖД+[((00` / TEXT `FD*722  ` / ISO `·B·I ·` | `src/LO_GEN.mad:1635` | добавлено |
+| `8HFC*722` | GOST `ЖГ+[((00` / TEXT `FC*722  ` / ISO `·2·I ·` | `src/LO_GEN.mad:1639` | добавлено |
+| `8HFT*723` | GOST `ЖФ+[()00` / TEXT `FT*723  ` / ISO `·B·I0·` | `src/LO_GEN.mad:1643` | добавлено |
+| `8HFT*641` | GOST `ЖФ+;x@00` / TEXT `FT*641  ` / ISO `·B·Q··` | `src/LO_GEN.mad:1647` | добавлено |
+| `8HFT*642` | GOST `ЖФ+;x(00` / TEXT `FT*642  ` / ISO `·B·Q ·` | `src/LO_GEN.mad:1651` | добавлено |
+| `8HFD*642` | GOST `ЖД+;x(00` / TEXT `FD*642  ` / ISO `·B·Q ·` | `src/LO_GEN.mad:1655` | добавлено |
+| `8HFC*642` | GOST `ЖГ+;x(00` / TEXT `FC*642  ` / ISO `·2·Q ·` | `src/LO_GEN.mad:1659` | добавлено |
+| `8HFT*643` | GOST `ЖФ+;x)00` / TEXT `FT*643  ` / ISO `·B·Q0·` | `src/LO_GEN.mad:1663` | добавлено |
+| `8HFT*541` | GOST `ЖФ+=x@00` / TEXT `FT*541  ` / ISO `·B·Q··` | `src/LO_GEN.mad:1667` | добавлено |
+| `8HFT*561` | GOST `ЖФ+=;@00` / TEXT `FT*561  ` / ISO `·B·Y··` | `src/LO_GEN.mad:1671` | добавлено |
+| `8HFT*571` | GOST `ЖФ+=[@00` / TEXT `FT*571  ` / ISO `·B·]··` | `src/LO_GEN.mad:1675` | добавлено |
+| `8HFT*531` | GOST `ЖФ+=)@00` / TEXT `FT*531  ` / ISO `·B·M··` | `src/LO_GEN.mad:1679` | добавлено |
+| `8HFT*611` | GOST `ЖФ+;@@00` / TEXT `FT*611  ` / ISO `·B·E··` | `src/LO_GEN.mad:1683` | добавлено |
+| `8H*REWIN` | GOST `+ТЕЧЙО00` / TEXT `*REWIN  ` / ISO `+)w···` | `src/LO_GEN.mad:1687` | добавлено |
+| `8H*BACKS` | GOST `+ВБГЛУ00` / TEXT `*BACKS  ` / ISO `*(c·0·` | `src/LO_GEN.mad:1691` | добавлено |
+| `8H*ENDFI` | GOST `+ЕОДЖЙ00` / TEXT `*ENDFI  ` / ISO `*[····` | `src/LO_GEN.mad:1695` | добавлено |
+| `8HSTOP*` | GOST `УФПР+000` / TEXT `STOP*   ` / ISO `·K·(··` | `src/LO_GEN.mad:1699` | добавлено |
+

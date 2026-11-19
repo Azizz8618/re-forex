@@ -619,3 +619,41 @@
 - Смещений `LABEL+NNNB` → десятичное: **1**.
 - Новые имена ≤6 символов, первые 6 уникальны в файле; полное имя — в `POLN:`.
 - Таблица «было → стало» и исходные восьмеричные значения: `logs/labels_semantics_lib21_sys.txt`.
+
+## Текстовые константы
+
+Проверено 30 констант модуля `src/lib21/CRELIB.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `=4HTEMP` | GOST `ФЕНР0000` / TEXT `TEMP    ` / ISO `·[p···` | `src/lib21/CRELIB.mad:31` | добавлено |
+| `=6H'''''7''7''7''7'` | GOST `77777[77` / TEXT `'''''7''` / ISO `·q··q·` | `src/lib21/CRELIB.mad:65` | добавлено |
+| `=6H'''3''7'''''''` | GOST `777)77[7` / TEXT `'''3''7'` / ISO `·q··u·` | `src/lib21/CRELIB.mad:67` | добавлено |
+| `=6H'3''17''17''17''17''17'` | GOST `7)77@[77` / TEXT `'3''17''` / ISO `·1·Eq·` | `src/lib21/CRELIB.mad:71` | добавлено |
+| `=6H000000` | GOST `ееееее00` / TEXT `000000  ` / ISO `A··A··` | `src/lib21/CRELIB.mad:72` | добавлено |
+| `=6H'''7''7''''3''7'` | GOST `777[77[7` / TEXT `'''7''7'` / ISO `·q··u·` | `src/lib21/CRELIB.mad:75` | добавлено |
+| `=6H'7''7''7''7''7'''` | GOST `7[77[77[` / TEXT `'7''7''7` / ISO `·q·\q·` | `src/lib21/CRELIB.mad:76` | добавлено |
+| `=6H'7''7''7''7''7''7'` | GOST `7[77[77[` / TEXT `'7''7''7` / ISO `·q·\q·` | `src/lib21/CRELIB.mad:78` | добавлено |
+| `7HPROGRAM` | GOST `РТПЗТБН0` / TEXT `PROGRAM ` / ISO `·+···@` | `src/lib21/CRELIB.mad:104` | добавлено |
+| `7HLIBLIST` | GOST `МЙВМЙУФ0` / TEXT `LIBLIST ` / ISO `····=·` | `src/lib21/CRELIB.mad:105` | добавлено |
+| `18H   ИCKЛЮЧEH BXOД:` | GOST `ИСКЛЮЧЕН` / TEXT `HQJK^WEM` / ISO `····ym` | `src/lib21/CRELIB.mad:106` | добавлено |
+| `1H'231'` | GOST `7()@7000` / TEXT `'231'   ` / ISO `·$····` | `src/lib21/CRELIB.mad:108` | добавлено |
+| `24HИCПOPЧEHЫ ПOДПPOГPAMMЫ:'231'` | GOST `ИСПОРЧЕН` / TEXT `HQONPWEM` / ISO `····ym` | `src/lib21/CRELIB.mad:109` | добавлено |
+| `6H 00 00` | GOST `ее0ее000` / TEXT `00 00   ` / ISO `A··@··` | `src/lib21/CRELIB.mad:110` | добавлено |
+| `6H00000'231'` | GOST `еееее7()` / TEXT `00000'23` / ISO `A··@t·` | `src/lib21/CRELIB.mad:111` | добавлено |
+| `24H    BKЛЮЧEHA ПPOГPAMMA:` | GOST `ВКЛЮЧЕНА` / TEXT `BJK^WEM@` / ISO `····[`` | `src/lib21/CRELIB.mad:112` | добавлено |
+| `6HДЛИHA:` | GOST `ДЛИНА:  ` / TEXT `DKHM@?//` / ISO `··-···` | `src/lib21/CRELIB.mad:113` | добавлено |
+| `12H    ПAMЯTЬ:` | GOST `ПАМЯТЬ: ` / TEXT `O@L_R\?/` / ISO `··?···` | `src/lib21/CRELIB.mad:114` | добавлено |
+| `7HBXOДЫ:'231'` | GOST `ВХОДЫ:'2` / TEXT `BUND[?;"` / ISO `·[····` | `src/lib21/CRELIB.mad:115` | добавлено |
+| `8HCCЫЛKИ:'231'` | GOST `ССЫЛКИ:'` / TEXT `QQ[KJH?;` / ISO `······` | `src/lib21/CRELIB.mad:116` | добавлено |
+| `30HЧИCЛO ПOДПPOГPAMM И BXOДOB:` | GOST `ЧИСЛО ПО` / TEXT `WHQKN/ON` / ISO `··k···` | `src/lib21/CRELIB.mad:117` | добавлено |
+| `6HY 0000` | GOST `Щ0ееее00` / TEXT `Y 0000  ` / ISO `···A··` | `src/lib21/CRELIB.mad:118` | добавлено |
+| `6H 00'231'` | GOST `ее7()@70` / TEXT `00'231' ` / ISO `A··M··` | `src/lib21/CRELIB.mad:119` | добавлено |
+| `12HДЛИHA LIBRAR` | GOST `ДЛИНА 53` / TEXT `DKHM@/%#` / ISO `··-··C` | `src/lib21/CRELIB.mad:120` | добавлено |
+| `18HИCПOPЧEH KATAЛOГ:` | GOST `ИСПОРЧЕН` / TEXT `HQONPWEM` / ISO `····ym` | `src/lib21/CRELIB.mad:121` | добавлено |
+| `3H '133''231'` | GOST `7@))77()` / TEXT `'133''23` / ISO `····t·` | `src/lib21/CRELIB.mad:122` | добавлено |
+| `20HПEPEПOЛHEH KATAЛOГ'133''231'` | GOST `ПЕРЕПОЛН` / TEXT `OEPEONKM` / ISO `·\%···` | `src/lib21/CRELIB.mad:123` | добавлено |
+| `17HHET ПOДПPOГPAMM'133''231'` | GOST `НЕТ ПОДП` / TEXT `MER/ONDO` / ISO `·\···/` | `src/lib21/CRELIB.mad:124` | добавлено |
+| `9HMAЛO MЛ'133''231'` | GOST `МАЛО МЛ'` / TEXT `L@KN/LK;` / ISO `···>··` | `src/lib21/CRELIB.mad:125` | добавлено |
+| `24HБИБЛИOTEKA HE ЗAПИCAHA'133''231'` | GOST `БИБЛИОТЕ` / TEXT `AHAKHNRE` / ISO `··k···` | `src/lib21/CRELIB.mad:126` | добавлено |
+

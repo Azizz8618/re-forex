@@ -87,8 +87,8 @@ NT3    ,EQU,3               ; роль: операнд NTR (установка �
  ,A+X,A/I0 ; S:49 . сложение с памятью [сл]
  ,AEX,A/I0 ; S:50 . логическая операция с памятью [лг]
  ,CALL,OCTTDE ; S:51 . вызов внешней подпрограммы [пв]
- ,APX,=6H'''17''17''17''17''17' ; S:52; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
- ,AUX,=6H'17''17''17''''17''17' ; S:53 . арифметическая операция [ариф]; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+ ,APX,=6H'''17''17''17''17''17' ; S:52; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; =6H = адрес слова-маски (не адрес данных)
+ ,AUX,=6H'17''17''17''''17''17' ; S:53 . арифметическая операция [ариф]; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; =6H = адрес слова-маски (не адрес данных)
  ,AOX,=6H'''''''16''''' ; S:54 . арифметическая операция [ариф]
  ,ATX,TIME. ; S:55 . записать аккумулятор в память [зп]
  13,VTM,TTEX ; S:56 . загрузить индексный регистр [уир]
@@ -115,9 +115,9 @@ NT3    ,EQU,3               ; роль: операнд NTR (установка �
  ,GOST,1H'231' ; S:76 . GOST-константа ( alfа)
  MIST:,GOST,18H'200'0OШ. TPAHCЛЯTOPA'231' ; POLN: MIST S:77 . GOST-константа ( alfа) ; TPAHCЛЯTOPA'231'
 С --- TEXT: LO*SYN (строка 78 исходника) ---
- TSYN:,TEXT,8HLO*SYN ; POLN: TEXT_OVERLAY_SYN S:78 . TEXT-константа "LO*SYN" (оверлей синтаксиса; было LO*SYN)
+ TSYN:,TEXT,8HLO*SYN ; POLN: TEXT_OVERLAY_SYN S:78 . TEXT-константа "LO*SYN" (оверлей синтаксиса; было LO*SYN)  ; DEKOD GOST 'МП+УЩО00' / TEXT 'LO*SYN  ' / ISO '······' [источник: src/lib21/FOREX_.mad:118; confidence: high]
 С --- TEXT: LO*GEN (строка 79 исходника) ---
- TGEN:,TEXT,8HLO*GEN ; POLN: TEXT_OVERLAY_GEN S:79 . TEXT-константа "LO*GEN" (оверлей генерации; было LO*GEN)
+ TGEN:,TEXT,8HLO*GEN ; POLN: TEXT_OVERLAY_GEN S:79 . TEXT-константа "LO*GEN" (оверлей генерации; было LO*GEN)  ; DEKOD GOST 'МП+ЗЕО00' / TEXT 'LO*GEN  ' / ISO '······' [источник: src/lib21/FOREX_.mad:120; confidence: high]
 С --- BSS: RET (строка 80 исходника) ---
  RET:,BSS,LC1. ; POLN: RET S:80 . зарезервировать слово (BSS)
  ,END, ; S:81 . конец модуля

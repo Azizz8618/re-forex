@@ -28,8 +28,8 @@ EDC009 ,EQU,12                          ; роль: десятичная кон�
 EDC010 ,EQU,24                          ; роль: десятичная константа/сдвиг; S2:1576  ; (POLN: DEC_24)
 EDC011 ,EQU,1                           ; роль: десятичная константа/сдвиг; S2:1581  ; (POLN: DEC_1)
 EDC012 ,EQU,42                          ; роль: десятичная константа/сдвиг; S2:1603  ; (POLN: DEC_42)
-ETX012 ,EQU,24HOШИБKA ПPИ ЗAKAЗE OБCП'133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1623  ; (POLN: LIT_24HO___KA__P___AKA_E_O_C__133_)
-ETX013 ,EQU,24HCЛИШKOM MHOГO OБCП '133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1624  ; (POLN: LIT_24HC___KOM_MHO_O_O_C___133__23)
+ETX012 ,EQU,24HOШИБKA ПPИ ЗAKAЗE OБCП'133''231'; роль: DEKOD GOST 'ОШИБКА П' / TEXT 'NXHAJ@/O' / ISO '··!···' | GOST 'РИ ЗАКАЗ' / TEXT 'PH/G@J@G' / ISO '·····'' | GOST 'Е ОБСП'1' / TEXT 'E/NAQO;!' / ISO '······' | GOST '33''231'' / TEXT '##;;"#!;' / ISO '·6··0[' [источник: src/lib21/LIBRARY_.mad:31; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1623  ; (POLN: LIT_24HO___KA__P___AKA_E_O_C__133_)
+ETX013 ,EQU,24HCЛИШKOM MHOГO OБCП '133''231'; роль: DEKOD GOST 'СЛИШКОМ ' / TEXT 'QKHXJNL/' / ISO '··8···' | GOST 'МНОГО ОБ' / TEXT 'LMNCN/NA' / ISO '······' | GOST 'СП '133'' / TEXT 'QO/;!##;' / ISO '····0·' | GOST ''231'   ' / TEXT ';"#!;///' / ISO 'l ·l··' [источник: src/lib21/LIBRARY_.mad:32; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1624  ; (POLN: LIT_24HC___KOM_MHO_O_O_C___133__23)
 ETX014 ,EQU,4040 4040 4040 4040         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1625  ; (POLN: LIT_4040_4040_4040_4040)
 ETX015 ,EQU,3737 3737 3737 3737         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1626  ; (POLN: LIT_3737_3737_3737_3737)
 ETX016 ,EQU,2                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1627  ; (POLN: LIT_2)
@@ -144,7 +144,7 @@ UJ,NOP015 . переход/возврат  ; S2:1600
 ECT013: BSS . зарезервированная область  ; (POLN: ECTЬ) ; S2:1601
 XTA,NLI025 . считывание в аккумулятор  ; S2:1602
 ASN,EDC006-EDC012  ; S2:1603
-AUX,BUF023  ; S2:1604
+AUX,BUF023  ; S2:1604  ; BUF023 = адрес слова-маски (не адрес данных)
 AOX,LIB002  ; S2:1605
 ATX,LIB002 . запись с модификатором  ; S2:1606
 13,UJ, . переход/возврат  ; S2:1607

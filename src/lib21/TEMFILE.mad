@@ -15,11 +15,11 @@ EDC007 ,EQU,16                          ; роль: десятичная кон�
 EDC008 ,EQU,14                          ; роль: десятичная константа/сдвиг; S3:4346  ; (POLN: DEC_14)
 EDC009 ,EQU,13                          ; роль: десятичная константа/сдвиг; S3:4351  ; (POLN: DEC_13)
 EDC010 ,EQU,5                           ; роль: десятичная константа/сдвиг; S3:4352  ; (POLN: DEC_5)
-ETX010 ,EQU,=5H*READ                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4360  ; (POLN: LITERAL__5H_READ)
+ETX010 ,EQU,=5H*READ                    ; роль: DEKOD GOST '+ТЕБД000' / TEXT '*READ   ' / ISO '+)a···' [источник: src/lib21/TEMFILE.mad:18; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4360  ; (POLN: LITERAL__5H_READ)
 EDC011 ,EQU,1                           ; роль: десятичная константа/сдвиг; S3:4362  ; (POLN: DEC_1)
-ETX011 ,EQU,=3HOLD                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4363  ; (POLN: LITERAL__3HOLD)
-ETX012 ,EQU,=5H*CAL052                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4367  ; (POLN: LITERAL__5H_CAL052)
-ETX013 ,EQU,=3H'134''134''134'          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4370  ; (POLN: LITERAL__3H_134__134__134_)
+ETX011 ,EQU,=3HOLD                      ; роль: DEKOD GOST 'ПМД00000' / TEXT 'OLD     ' / ISO '······' [источник: src/lib21/TEMFILE.mad:20; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4363  ; (POLN: LITERAL__3HOLD)
+ETX012 ,EQU,=5H*CAL052                  ; роль: DEKOD GOST '+ГБМе=(0' / TEXT '*CAL052 ' / ISO '*8lAT·' [источник: src/lib21/TEMFILE.mad:21; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4367  ; (POLN: LITERAL__5H_CAL052)
+ETX013 ,EQU,=3H'134''134''134'          ; роль: DEKOD GOST '7@)x77@)' / TEXT ''134''13' / ISO '····tS' | GOST 'x77@)x70' / TEXT '4''134' ' / ISO 'Pq·MA·' [источник: src/lib21/TEMFILE.mad:22; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4370  ; (POLN: LITERAL__3H_134__134__134_)
 ETX014 ,EQU,=:7777 7777                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4371  ; (POLN: LITERAL___7777_7777)
 EDC014 ,EQU,79                          ; роль: десятичная константа/сдвиг; S3:4387  ; (POLN: DEC_79)
 EDC015 ,EQU,11                          ; роль: десятичная константа/сдвиг; S3:4390  ; (POLN: DEC_11)
@@ -66,14 +66,14 @@ EDC050 ,EQU,7                           ; роль: десятичная кон�
 EDC051 ,EQU,23                          ; роль: десятичная константа/сдвиг; S3:4544  ; (POLN: DEC_23)
 EDC052 ,EQU,24                          ; роль: десятичная константа/сдвиг; S3:4545  ; (POLN: DEC_24)
 EDC053 ,EQU,6                           ; роль: десятичная константа/сдвиг; S3:4562  ; (POLN: DEC_6)
-ETX053 ,EQU,=6H''''''L''''              ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4571  ; (POLN: LITERAL__6H______L____)
-ETX054 ,EQU,=6H'''''''177'''''          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4572  ; (POLN: LITERAL__6H_______177_____)
+ETX053 ,EQU,=6H''''''L''''              ; роль: DEKOD GOST '777777М7' / TEXT '''''''L'' / ISO '·q··{·' | GOST '77700000' / TEXT ''''     ' / ISO '·q····' [источник: src/lib21/TEMFILE.mad:69; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4571  ; (POLN: LITERAL__6H______L____)
+ETX054 ,EQU,=6H'''''''177'''''          ; роль: DEKOD GOST '7777777@' / TEXT ''''''''1' / ISO '·q··q·' | GOST '[[777770' / TEXT '77''''' ' / ISO ']q··q·' [источник: src/lib21/TEMFILE.mad:70; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4572  ; (POLN: LITERAL__6H_______177_____)
 ETX055 ,EQU,=7741                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4601  ; (POLN: LITERAL__7741)
 ETX056 ,EQU,=7740                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4602  ; (POLN: LITERAL__7740)
 EDC056 ,EQU,12                          ; роль: десятичная константа/сдвиг; S3:4612  ; (POLN: DEC_12)
 ETX057 ,EQU,=377                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4619  ; (POLN: LITERAL__377)
 ETX058 ,EQU,=365                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:4620  ; (POLN: LITERAL__365)
-ETX059 ,EQU,83H*CAL052 TEMP//           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4635  ; (POLN: LIT_83H_CAL052_TEMP__)
+ETX059 ,EQU,83H*CAL052 TEMP//           ; роль: DEKOD GOST '+ГБМе=(0' / TEXT '*CAL052 ' / ISO '*8lAT·' | GOST 'ФЕНР  00' / TEXT 'TEMP//  ' / ISO '·[p<··' [источник: src/lib21/TEMFILE.mad:76; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4635  ; (POLN: LIT_83H_CAL052_TEMP__)
 ETX060 ,EQU,77751                       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4637  ; (POLN: LIT_77751)
 ETX061 ,EQU,24                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4638  ; (POLN: LIT_24)
 ETX062 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4642  ; (POLN: LIT_1)
@@ -195,7 +195,7 @@ POS072: BSS . зарезервированная область  ; (POLN: TEM_PO
 RR011: BSS . зарезервированная область  ; (POLN: R/R) ; S3:4394
 WTC,CAR061  ; S3:4395
 8,XTA, . считывание в аккумулятор  ; S3:4396
-9,ASN,EDC018+EDC016  ; S3:4397; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+9,ASN,EDC018+EDC016  ; S3:4397; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
 AAX,ETX018  ; S3:4398
 9,UTM,EDC019 . переход при >0  ; S3:4399
 9,VIM,JUM012 . переход  ; S3:4400
@@ -215,7 +215,7 @@ UJ,DO037 . переход/возврат  ; S3:4413
 RC014: BSS . зарезервированная область  ; (POLN: R/C) ; S3:4414
 WTC,CAR061  ; S3:4415
 8,XTA, . считывание в аккумулятор  ; S3:4416
-9,ASN,EDC018-EDC019  ; S3:4417; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+9,ASN,EDC018-EDC019  ; S3:4417; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
 AAX,ETX018  ; S3:4418
 ATI,EDC008 . запись в индексный регистр  ; S3:4419
 XTA,ESC058 . считывание в аккумулятор  ; S3:4420
@@ -317,7 +317,7 @@ ACX,ETX050  ; S3:4515
 AAX,ETX050  ; S3:4516
 ASN,EDC018-EDC050  ; S3:4517
 AOX,WRKWRD  ; S3:4518
-11,ASN,EDC018+EDC019  ; S3:4519; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
+11,ASN,EDC018+EDC019  ; S3:4519; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
 10,AOX,BIN056+EDC011  ; S3:4520
 10,ATX,BIN056+EDC011 . запись с модификатором  ; S3:4521
 11,UTM,EDC019 . переход при >0  ; S3:4522
@@ -397,7 +397,7 @@ ATX . запись с модификатором  ; S3:4594
 13,UJ, . переход/возврат  ; S3:4596
 MDW047: BSS . зарезервированная область  ; (POLN: MDW) ; S3:4597
 ITS . сохранение индексного регистра в стек  ; S3:4598
-*70,IW053  ; S3:4599 . Э70 IW053 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,IW053  ; S3:4599 . Э70 IW053 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово IW053 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 XTA,IW053 . считывание в аккумулятор  ; S3:4600
 ARX,ETX055  ; S3:4601
 AOX,ETX056  ; S3:4602

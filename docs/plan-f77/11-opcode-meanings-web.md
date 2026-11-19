@@ -33,7 +33,7 @@
 | **020** | `APX` (БЕМШ `сбр`) — **сборка битов по маске**: «Pack bits in A masked by X», группа Л, пользовательский режим | `э20` / `*20` — **«Additional system call»**, т.е. экстракод (системный вызов). W1: «20 э20 … экстракоды»; W3 в таблице экстракодов: «020 (0200) Additional system call», «021 (0210) Additional system call»; в разделе привилегий: «All extracodes (050–077, 020, 021) execute in user mode» | W1, W2, W3 |
 | **021** | `AUX` (БЕМШ `рзб`) — **разборка битов по маске**: «Unpack bits in A using mask X», группа Л | `э21` / `*21` — **«Additional system call»**, экстракод (то же семейство, что 020) | W1, W2, W3 |
 | **033** | `EXT` (БЕМШ `увв`) — **управление вводом-выводом**, привилегированная, kernel-only. W3: «033 — EXT (увв) — I/O control… Kernel mode only… Note that opcode 033 names two instructions: this one in the first structure (Format 1, long address) and STOP in the second (Format 2). The address-field width is what distinguishes them» | `стоп` / `STOP` — **останов процессора**. W1: «33 э33 стоп — останов процессора»; W3: «033 — STOP (стоп) — Stop… This is the Format-2 (short-address) 033; the Format-1 033 is a different instruction entirely, EXT»; Madlen пишет сырой `,33,`, Bemsh `стоп`, b6as `stop` | W1, W3, W4, W5 (W2 — аутлайер: у него `032=EXT`, а 033 пустой) |
-| **036** | `ASN` (БЕМШ `сда`) — **сдвиг по адресу / немедленный сдвиг** на `N−64`: «Shift immediate… Logical», группа Л | `э36` / `*36` — **недокументированный**: «Undocumented, same as VZM»; W3: «Documented in the original manual as having an additional "flush BRZ" side-effect, but implemented identically in this emulator». W1: «36 э36 … тоже что и э34» (т.е. как `пио`/VZM). В `rukava.be` длинная строка 036 **отсутствует** | W1, W2 («36 Unused, but identical to 34»), W3 |
+| **036** | `ASN` (БЕМШ `сда`) — **сдвиг по адресу / немедленный сдвиг**: `N = EA[7:1]` (младшие 7 разрядов адреса), `,ASN,64+N` — вправо, `,ASN,64−N` — влево; «Shift immediate… Logical», группа Л | `э36` / `*36` — **недокументированный**: «Undocumented, same as VZM»; W3: «Documented in the original manual as having an additional "flush BRZ" side-effect, but implemented identically in this emulator». W1: «36 э36 … тоже что и э34» (т.е. как `пио`/VZM). В `rukava.be` длинная строка 036 **отсутствует** | W1, W2 («36 Unused, but identical to 34»), W3 |
 | **046** | `соп` — **незаконная**: W3 «046 — (соп) — Special memory access. **Illegal.** Throws Illegal instruction in all modes»; W1 строка пустая; rukava.be: «(не используется)»; W2: «Unused, but identical to 044 and 045» | **не существует** (длинные коды — только 20–37) | W1, W2, W3 |
 | **047** | `э47` — **незаконная**: W3 «047 — (э47) — **Illegal.** Throws Illegal instruction in all modes»; rukava.be: «(не используется)»; W2: «Unused, but identical to 044 and 045» | **не существует** | W1, W2, W3 |
 
@@ -59,16 +59,19 @@
 |---|---|---|---|
 | `src/LO_GEN.mad:631` `APX` | 1-я структура (20-й разряд=0) | `сбр`/`APX`, упаковка битов (`disbesm6.c:61`) | адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] |
 | `src/LO_GEN.mad:661` `AUX` | 1-я структура | `рзб`/`AUX`, разборка битов (`disbesm6.c:62`) | адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] |
-| `src/LO_GEN.mad:667` `EXT` | 1-я структура | `увв`/`EXT`, привилегированный ввод-вывод (`disbesm6.c:72`) | код устройства (привилегированная операция) |
-| `src/FOREX_CORE.mad:333/347/377/380` `ASN` | 1-я структура | `сда`/`ASN`, сдвиг (`disbesm6.c:75`) | N в форме `64+n`; сдвиг `n = N−64` [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] |
-| `src/FOREX_CORE.mad:577` `ASN` | 1-я структура | `сда`/`ASN`, сдвиг (`disbesm6.c:75`) | N в форме `64+n`; сдвиг `n = N−64` |
+| `src/LO_GEN.mad:667` `33`/`STOP` | 2-я структура (Format 2) в пользовательском генераторе кода | `стоп`/`STOP`, останов скомпилированной программы [Besm6_Instruction_Set.md §6; CmdSheet.md:41]; `EXT`/увв — привилегированная команда ОС 1-й структуры | `EXT` — код устройства; в `LO*GEN` 033 — STOP, мнемоника `,33,` |
+| `src/FOREX_CORE.mad:333/347/377/380` `ASN` | 1-я структура | `сда`/`ASN`, сдвиг (`disbesm6.c:75`) | `N = EA[7:1]`; `,ASN,64+N` — вправо, `,ASN,64−N` — влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17] |
+| `src/FOREX_CORE.mad:577` `ASN` | 1-я структура | `сда`/`ASN`, сдвиг (`disbesm6.c:75`) | `N = EA[7:1]`; `,ASN,64+N` — вправо, `,ASN,64−N` — влево |
 | `src/FOREX_CORE.mad:578` `APX` | 1-я структура | `сбр`/`APX`, упаковка битов (`disbesm6.c:61`) | адрес слова-маски |
 
 Следовательно, к нашим словам **нельзя** применять интерпретации 2-й структуры:
 - 020/021 «Additional system call» (W3) — ко 1-й структуре не относится;
 - 036 «flush BRZ»/«same as VZM» (W1/W3) — не относится; `втбрз` — имя
   подпрограммы `gens1.be`, а не мнемоника opcode;
-- 033 «стоп/STOP» — не относится: наш `EXT` — `увв`.
+- 033 «стоп/STOP» — не относится к 1-й структуре (`EXT`/увв), **но относится
+  к `LO*GEN`**: там то же число 033 — STOP (Format 2), выдаваемый в объектный
+  модуль [Besm6_Instruction_Set.md §6; CmdSheet.md:41]. Один и тот же номер
+  opcode интерпретируется по-разному: зависит от структуры и контекста.
 
 ## Какие комментарии в `.mad` считать корректными
 
@@ -76,8 +79,8 @@
 |---|---|---|
 | `. опк 20 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски … [CmdSheet.md:48; disbesm6.c:61]` | **ВЕРЕН** | Формат и значение по CmdSheet/disbesm6/Монитор-80 |
 | `. опк 21 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = AUX (рзб): разборка битов по маске; аргумент — адрес слова-маски … [CmdSheet.md:49; disbesm6.c:62]` | **ВЕРЕН** | То же |
-| `. опк 33 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = EXT (увв): … аргумент — код устройства … [CmdSheet.md:40; disbesm6.c:72]` | **ВЕРЕН** | `EXT`/`увв` — 033 1-й структуры; `стоп` — 2-я структура |
-| `. опк 36 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = ASN (сда): … аргумент — N в форме 64+n; сдвиг n = N−64 … [CmdSheet.md:52; disbesm6.c:75]` | **ВЕРЕН** | `ASN`/`сда` — 036 1-й структуры; «втбрз/flush BRZ» — миф 2-й структуры |
+| `. опк 33 … = EXT (увв): … код устройства … [CmdSheet.md:40; disbesm6.c:72]` (ОС) / `. опк 33 (2-я структура, Format 2) = STOP (стоп): останов скомпилированной программы … [Besm6_Instruction_Set.md §6; CmdSheet.md:41]` (`LO*GEN`, мнемоника `33`) | **ВЕРЕН** | `EXT`/`увв` — 033 1-й структуры в привилегированном коде ОС; `STOP` — 2-я структура, то, что выдаёт `LO*GEN` |
+| `. ASN: 4037B → N=0o37(31)=64−33 ⇒ ,ASN,64-33 — сдвиг ВЛЕВО на 33 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6]` | **ВЕРЕН** | `ASN`/`сда` — 036 1-й структуры; `N = EA[7:1]`, `64±N` по Монитор-80; «втбрз/flush BRZ» — миф 2-й структуры |
 | `. опк 46/47 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = неиспользованный код по ТО IX; аргумент не интерпретируется [disbesm6.c:83,84]` | **ВЕРЕН** | В `disbesm6.c` строки закомментированы |
 
 Любая формулировка «группы LONG», «Additional system call», «flush BRZ»,
@@ -85,3 +88,33 @@
 считается **FAIL** (см. `tests/check-extract-codes.sh`). Причина ошибочного
 прежнего вывода — смешение 1-based/0-based нумерации разрядов, а не баг
 `besm6tape.py:84`.
+
+## Э60/Э70: класс и контекст
+
+Веб-таблица «Extracodes» в `Besm6_Instruction_Set.md §6` даёт класс кода, даже
+если конкретное информационное слово не описано ни в `rukava.be`, ни у Тюрина:
+
+| Код | Класс (`Besm6_Instruction_Set.md §6`) | Информационное слово по контексту |
+|---|---|---|
+| 060 | **I/O control (input)** | адрес буфера / номер устройства |
+| 061 | I/O control (output) | адрес буфера вывода / устройство |
+| 070 | **Memory/register dump** | адрес и/или объём дампа |
+| 071 | Debug output | адрес/объём отладочных данных |
+
+В `LO_SYN`/`FOREX_CORE`/`lib21` конкретные информационные слова — именованные
+адреса (`EX60*`, `EX70*`, `BUF*`, `TR*`, `CON*`), то есть адреса буферов и
+областей памяти, что согласуется с классами «управление вводом» и «дамп
+памяти/регистров». Комментарии у всех вхождений дополнены классом и контекстом;
+пометка «НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985» сохранена как уточнение
+(конкретное слово в справочниках не найдено).
+
+## 033 = STOP в `LO*GEN`
+
+W3 (`Besm6_Instruction_Set.md §6`) явно различает 033 1-й структуры (`EXT`/увв,
+kernel-only) и 033 2-й структуры (`STOP`/стоп, Format 2, доступен в пользовательском
+режиме); МАДЛЕН пишет последний сырым `,33,`. `LO*GEN` — пользовательский
+генератор кода: в слове 0051 (`0o5375011424334114`, dtran `5,033,113B`) он
+выдаёт STOP в объектный модуль, в таблице операторов есть `STOP*` (слово 0623).
+Поэтому `src/LO_GEN.mad:667` использует мнемонику `33` и комментарий STOP
+[Besm6_Instruction_Set.md §6; CmdSheet.md:41]. `EXT` в привилегированном коде ОС
+остаётся `EXT`/увв — конфликта нет, это разные структуры одного opcode.

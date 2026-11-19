@@ -1,0 +1,10 @@
+OK   base: 1 строк(и) совпали с gold
+OK   blockif: 2 строк(и) совпали с gold
+OK   charhollerith: 1 строк(и) совпали с gold
+OK   dataparam: 1 строк(и) совпали с gold
+OK   do2d: 3 строк(и) совпали с gold
+OK   dpcomplex: 4 строк(и) совпали с gold
+OK   intrinsics_ext: 1 строк(и) совпали с gold
+OK   listio: 1 строк(и) совпали с gold
+Итог: 8/8 случаев OK; кросс-сверка *FTN: 3/3
+OK: F77 suite пройден полностью

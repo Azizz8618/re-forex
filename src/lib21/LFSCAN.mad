@@ -590,7 +590,7 @@ LFSCAN:,NAME, NEW DTRAN ; POLN: LFSCAN S:1 . имя модуля
  CON420:,INT,CN51 ; POLN: LFS_CONST_0420 S:498 . целая константа
  CON421:,INT,CN5 ; POLN: LFS_CONST_0421 S:499 . целая константа
 С --- TEXT: (без метки) (строка 500 исходника) ---
- TAN:,TEXT,8HAH ; POLN: TEXT_AN S:500 . TEXT-константа "АН" (6-бит/GOST 8H AH; была без метки)
+ TAN:,TEXT,8HAH ; POLN: TEXT_AN S:500 . TEXT-константа "АН" (6-бит/GOST 8H AH; была без метки)  ; DEKOD GOST 'БИ000000' / TEXT 'AH      ' / ISO '······' [источник: src/lib21/LFSCAN.mad:593; confidence: high]
  ,INT,CN24 ; S:501 . целая константа
  ,INT,-VT1 ; S:502 . целая константа
  ,INT,LC3 ; S:503 . целая константа

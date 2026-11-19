@@ -76,22 +76,22 @@ ETX052 ,EQU,1777                        ; роль: константа-слов�
 ETX053 ,EQU,37                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9703  ; (POLN: LIT_37)
 ETX054 ,EQU,10                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9704  ; (POLN: LIT_10)
 ETX055 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9706  ; (POLN: LIT_1)
-ETX056 ,EQU,8HFRAG TPП                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9707  ; (POLN: LIT_8HFRAG_TP_)
-ETX057 ,EQU,18H***  MAЛO MЛ  ***'231'   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9708  ; (POLN: LIT_18H_____MA_O_M_______231_)
-ETX058 ,EQU,25HДЛИHA БИБЛИOTEKИ  077 37'231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9709  ; (POLN: LIT_25H___HA______OTEK___077_37_23)
-ETX059 ,EQU,6H'367'77037                ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9710  ; (POLN: LIT_6H_367_77037)
-ETX060 ,EQU,6H000 00                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9711  ; (POLN: LIT_6H000_00)
-ETX061 ,EQU,24HHETEKCTOBAЯ KAPTA        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9728  ; (POLN: LIT_24HHETEKCTOBA__KAPTA)
-ETX062 ,EQU,24HOШ                       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9729  ; (POLN: LIT_24HO_)
-ETX063 ,EQU,24HHET ЗAKPЫBAЮЩEЙ CKOБKИ   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9730  ; (POLN: LIT_24HHET__AKP_BA__E__CKO_K_)
-ETX064 ,EQU,24HCЛИШKOM MHOГO PAЗДEЛOB   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9731  ; (POLN: LIT_24HC___KOM_MHO_O_PA__E_OB)
-ETX065 ,EQU,24HПYCTAЯ БИБЛ              ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9732  ; (POLN: LIT_24H_YCTA______)
-ETX066 ,EQU,24HPAHOBATO OПИCAH PAЗДEЛ   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9733  ; (POLN: LIT_24HPAHOBATO_O__CAH_PA__E_)
-ETX067 ,EQU,24HПOBTOP                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9734  ; (POLN: LIT_24H_OBTOP)
-ETX068 ,EQU,24HБЫЛИ OШИБKИ B ЗAДAHИИ    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9735  ; (POLN: LIT_24H_____O___K__B__A_AH__)
-ETX069 ,EQU,12HOVERLAY OT               ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9736  ; (POLN: LIT_12HOVERLAY_OT)
-ETX070 ,EQU,6H*END R                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9737  ; (POLN: LIT_6H_END_R)
-ETX071 ,EQU,8HMONITOR*                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9738  ; (POLN: LIT_8HMONITOR_)
+ETX056 ,EQU,8HFRAG TPП                  ; роль: DEKOD GOST '18Б2 ТРП' / TEXT '!(A"/RPO' / ISO '··B?,/' [источник: src/lib21/OVERLOAD.mad:79; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9707  ; (POLN: LIT_8HFRAG_TP_)
+ETX057 ,EQU,18H***  MAЛO MЛ  ***'231'   ; роль: DEKOD GOST '***  МАЛ' / TEXT '999//L@K' / ISO 'e·O>·+' | GOST 'О МЛ  **' / TEXT 'N/LK//99' / ISO '··+<·Y' | GOST '*'231'  ' / TEXT '9;"#!;//' / ISO 'e·····' [источник: src/lib21/OVERLOAD.mad:80; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9708  ; (POLN: LIT_18H_____MA_O_M_______231_)
+ETX058 ,EQU,25HДЛИHA БИБЛИOTEKИ  077 37'231'; роль: DEKOD GOST 'ДЛИНА БИ' / TEXT 'DKHM@/AH' / ISO '··-··h' | GOST 'БЛИОТЕКИ' / TEXT 'AKHNREJH' / ISO '··.·Z·' | GOST '  077 37' / TEXT '// ''/#'' / ISO '<·····' | GOST ''231'   ' / TEXT ';"#!;///' / ISO 'l ·l··' [источник: src/lib21/OVERLOAD.mad:81; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9709  ; (POLN: LIT_25H___HA______OTEK___077_37_23)
+ETX059 ,EQU,6H'367'77037                ; роль: DEKOD GOST '7);[7[[е' / TEXT ''367'770' / ISO '·5··u·' | GOST ')[000000' / TEXT '37      ' / ISO 'Mp····' [источник: src/lib21/OVERLOAD.mad:82; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9710  ; (POLN: LIT_6H_367_77037)
+ETX060 ,EQU,6H000 00                    ; роль: DEKOD GOST 'еее0ее00' / TEXT '000 00  ' / ISO 'A··A··' [источник: src/lib21/OVERLOAD.mad:83; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9711  ; (POLN: LIT_6H000_00)
+ETX061 ,EQU,24HHETEKCTOBAЯ KAPTA        ; роль: DEKOD GOST 'НЕТЕКСТО' / TEXT 'MEREJQRN' / ISO '·\····' | GOST 'ВАЯ КАРТ' / TEXT 'B@_/J@PR' / ISO '·····2' | GOST 'А       ' / TEXT '@///////' / ISO '···<··' [источник: src/lib21/OVERLOAD.mad:84; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9728  ; (POLN: LIT_24HHETEKCTOBA__KAPTA)
+ETX062 ,EQU,24HOШ                       ; роль: DEKOD GOST 'ОШ      ' / TEXT 'NX//////' / ISO '···<··' [источник: src/lib21/OVERLOAD.mad:85; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9729  ; (POLN: LIT_24HO_)
+ETX063 ,EQU,24HHET ЗAKPЫBAЮЩEЙ CKOБKИ   ; роль: DEKOD GOST 'НЕТ ЗАКР' / TEXT 'MER/G@JP' / ISO '·\····' | GOST 'ЫВАЮЩЕЙ ' / TEXT '[B@^YEI/' / ISO '·(>·ZO' | GOST 'СКОБКИ  ' / TEXT 'QJNAJH//' / ISO '······' [источник: src/lib21/OVERLOAD.mad:86; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9730  ; (POLN: LIT_24HHET__AKP_BA__E__CKO_K_)
+ETX064 ,EQU,24HCЛИШKOM MHOГO PAЗДEЛOB   ; роль: DEKOD GOST 'СЛИШКОМ ' / TEXT 'QKHXJNL/' / ISO '··8···' | GOST 'МНОГО РА' / TEXT 'LMNCN/P@' / ISO '····· ' | GOST 'ЗДЕЛОВ  ' / TEXT 'GDEKNB//' / ISO '·Ik·#·' [источник: src/lib21/OVERLOAD.mad:87; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9731  ; (POLN: LIT_24HC___KOM_MHO_O_PA__E_OB)
+ETX065 ,EQU,24HПYCTAЯ БИБЛ              ; роль: DEKOD GOST 'ПУСТАЯ Б' / TEXT 'OSQR@_/A' / ISO '·<r···' | GOST 'ИБЛ     ' / TEXT 'HAK/////' / ISO '···<··' [источник: src/lib21/OVERLOAD.mad:88; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9732  ; (POLN: LIT_24H_YCTA______)
+ETX066 ,EQU,24HPAHOBATO OПИCAH PAЗДEЛ   ; роль: DEKOD GOST 'РАНОВАТО' / TEXT 'P@MNB@RN' / ISO '··n···' | GOST ' ОПИСАН ' / TEXT '/NOHQ@M/' / ISO '>····O' | GOST 'РАЗДЕЛ  ' / TEXT 'P@GDEK//' / ISO '······' [источник: src/lib21/OVERLOAD.mad:89; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9733  ; (POLN: LIT_24HPAHOBATO_O__CAH_PA__E_)
+ETX067 ,EQU,24HПOBTOP                   ; роль: DEKOD GOST 'ПОВТОР  ' / TEXT 'ONBRNP//' / ISO '······' [источник: src/lib21/OVERLOAD.mad:90; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9734  ; (POLN: LIT_24H_OBTOP)
+ETX068 ,EQU,24HБЫЛИ OШИБKИ B ЗAДAHИИ    ; роль: DEKOD GOST 'БЫЛИ ОШИ' / TEXT 'A[KH/NXH' / ISO '···>·(' | GOST 'БКИ В ЗА' / TEXT 'AJH/B/G@' / ISO '······' | GOST 'ДАНИИ   ' / TEXT 'D@MHH///' / ISO '··h···' [источник: src/lib21/OVERLOAD.mad:91; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9735  ; (POLN: LIT_24H_____O___K__B__A_AH__)
+ETX069 ,EQU,12HOVERLAY OT               ; роль: DEKOD GOST 'ПЦЕТМБЩ0' / TEXT 'OVERLAY ' / ISO '·ir··@' | GOST 'ПФ000000' / TEXT 'OT      ' / ISO '·@····' [источник: src/lib21/OVERLOAD.mad:92; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9736  ; (POLN: LIT_12HOVERLAY_OT)
+ETX070 ,EQU,6H*END R                    ; роль: DEKOD GOST '+ЕОД0Т00' / TEXT '*END R  ' / ISO '*[·· ·' [источник: src/lib21/OVERLOAD.mad:93; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9737  ; (POLN: LIT_6H_END_R)
+ETX071 ,EQU,8HMONITOR*                  ; роль: DEKOD GOST 'НПОЙФПТ+' / TEXT 'MONITOR*' / ISO '······' [источник: src/lib21/OVERLOAD.mad:94; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9738  ; (POLN: LIT_8HMONITOR_)
 ETX072 ,EQU,4007 7777 7770 0000         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9739  ; (POLN: LIT_4007_7777_7770_0000)
 ETX073 ,EQU,04                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:9740  ; (POLN: LIT_04)
 С ---- конец блока констант ----
@@ -859,7 +859,7 @@ CC****   ЗABEPШEHИE PAБOTЫ CБOPЩИKA,,  ; S2:9626
 С
 XTA,XT111 . XAPAKTEPИCTИKA  ; S2:9628
 C,ATX,EDC017 . 'CBOБOДHO'  ; S2:9629
-AUX,UPM129  ; S2:9630
+AUX,UPM129  ; S2:9630  ; UPM129 = адрес слова-маски (не адрес данных)
 AOX,CGT130  ; S2:9631
 ATX,T128+EDC030 . запись с модификатором  ; S2:9632
 C,, . ....   ПPOБЫ HA ДOCБPOC БYФEPA  ; S2:9633

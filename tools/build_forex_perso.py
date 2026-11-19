@@ -50,6 +50,20 @@ The module's internal head-section name is patched to the same alias so that
 `siprod_lib.Library` still finds a loadable object for every catalog entry.
 
 Output: build/FOREX_PERSO_2300.bin
+
+OFFICIAL VERSION STAMP
+----------------------
+The reconstruction is released as FOREX 5.00 (izdeliye `re-forex`).  A TEXT
+marker "FOREX 5.00" is written into the unused tail padding of the PERSO image
+so the compiled artifact itself physically carries the version.
+
+The "F О R Е Х … ВЕРСИЯ 2.02 ОТ 15.07.80" banner seen in the regression output
+is NOT produced by this image: it is printed by the HOST system FOREX on disk
+2048.  Verified by running the very same deck with and without *perso:602300 —
+the banner is identically 2.02.  The version constant is therefore not present
+in any reconstructed module (CORE_ROOT.words / LO_*.words / runtime dumps) and
+cannot be patched here; the host banner 2.02 stays, while OUR product version
+is 5.00 (see docs/00-charter.md, docs/16-glissade-run.md).
 """
 
 from __future__ import annotations
@@ -68,6 +82,9 @@ ROOT = Path(__file__).resolve().parent.parent
 WORD_BYTES = 6
 ZONE_WORDS = 1024
 MODULE_ALIGN = 32
+
+# Official product version of this reconstruction (izdeliye `re-forex`).
+PRODUCT_VERSION = "5.00"
 
 # Dubna TEXT (modified ECMA-1), same table as re-siprod/tools/siprod_lib.py.
 TEXT = [
@@ -117,6 +134,12 @@ def text_encode(name: str) -> int:
     for ch in name.ljust(8)[:8]:
         v = (v << 6) | TEXT_INDEX.get(ch, 0)
     return v
+
+
+# Two TEXT words placed in the trailing zero padding of the PERSO image;
+# decoded together they read "FOREX 5.00".  Outside the catalog and outside
+# every DMS module, so they cannot affect loading or execution.
+VERSION_STAMP_WORDS = [text_encode("FOREX 5."), text_encode("00")]
 
 
 def read_words(path: Path) -> list[int]:
@@ -290,6 +313,13 @@ def build() -> Path:
     # Pad to whole zones.
     total = ((nwords + ZONE_WORDS - 1) // ZONE_WORDS) * ZONE_WORDS
     words_buf.extend([0] * (total - len(words_buf)))
+
+    # Official version stamp of our izdeliye: "FOREX 5.00" in the unused tail
+    # padding.  It is deliberately outside the catalog and every module body,
+    # so the loader never sees it and the regression output is unchanged.
+    for i, w in enumerate(VERSION_STAMP_WORDS):
+        words_buf[len(words_buf) - len(VERSION_STAMP_WORDS) + i] = w
+
     image = b"".join(w.to_bytes(WORD_BYTES, "big") for w in words_buf)
 
     out = ROOT / "build/FOREX_PERSO_2300.bin"
@@ -301,6 +331,9 @@ def build() -> Path:
     print(f"words      : {len(words_buf)} ({total // ZONE_WORDS} zones of {ZONE_WORDS} words)")
     print(f"bytes      : {len(image)}")
     print(f"sha256     : {digest}")
+    print(f"version    : FOREX {PRODUCT_VERSION} "
+          f"(TEXT stamp in tail words {[oct(w) for w in VERSION_STAMP_WORDS]}; "
+          f"host banner 2.02 is external)")
     print("catalog    :")
     for m, start, body in bodies:
         if body is None:

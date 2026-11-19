@@ -1,3 +1,4 @@
+С  ВЕРСИЯ ИЗДЕЛИЯ FOREX 5.00 (re-forex); системный баннер 2.02 - внешний
 С =============================================================================
 С  LO*GEN  —  ГЕНЕРАТОР КОДА КОМПИЛЯТОРА ФОРЭКС (ИПМ АН СССР, ОС ДИСПАК)
 С =============================================================================
@@ -499,36 +500,36 @@ ENTRY*: , BSS, 0o50            . COMMON 40 слов — таблица entry-т�
 *DMON*: , BSS, 5               . COMMON 5 слов — рабочие ячейки монитора  ; (POLN: *DUMON*)
 
 С ---- декодированные TEXT/GOST-константы ----
-MNTXT: , TEXT, 8HLO*GEN       . слово 0001 — имя модуля  ; (POLN: MODULE_NAME_TEXT)
-TXPOWE: , TEXT, 8HPOWER    . слово 0533 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_POWER)
-TXARHO: , TEXT, 8HA/RHOCHI . слово 0535 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_A_RHOCHI)
-TXANOT: , TEXT, 8HA/NOT    . слово 0537 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_A_NOT)
-TXAAND: , TEXT, 8HA/AND    . слово 0541 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_A_AND)
-TXF621: , TEXT, 8HFT*621   . слово 0543 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_621)
-TXF002: , TEXT, 8HFT*002   . слово 0545 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_002)
-TXD002: , TEXT, 8HFD*002   . слово 0547 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FD_002)
-TXC002: , TEXT, 8HFC*002   . слово 0551 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FC_002)
-TXF003: , TEXT, 8HFT*003   . слово 0553 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_003)
-TXF521: , TEXT, 8HFT*521   . слово 0555 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_521)
-TXF721: , TEXT, 8HFT*721   . слово 0557 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_721)
-TXF722: , TEXT, 8HFT*722   . слово 0561 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_722)
-TXD722: , TEXT, 8HFD*722   . слово 0563 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FD_722)
-TXC722: , TEXT, 8HFC*722   . слово 0565 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FC_722)
-TXF723: , TEXT, 8HFT*723   . слово 0567 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_723)
-TXF641: , TEXT, 8HFT*641   . слово 0571 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_641)
-TXF642: , TEXT, 8HFT*642   . слово 0573 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_642)
-TXD642: , TEXT, 8HFD*642   . слово 0575 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FD_642)
-TXC642: , TEXT, 8HFC*642   . слово 0577 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FC_642)
-TXF643: , TEXT, 8HFT*643   . слово 0601 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_643)
-TXF541: , TEXT, 8HFT*541   . слово 0603 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_541)
-TXF561: , TEXT, 8HFT*561   . слово 0605 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_561)
-TXF571: , TEXT, 8HFT*571   . слово 0607 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_571)
-TXF531: , TEXT, 8HFT*531   . слово 0611 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_531)
-TXF611: , TEXT, 8HFT*611   . слово 0613 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_611)
-TXREWI: , TEXT, 8H*REWIN   . слово 0615 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_REWIN)
-TXBACK: , TEXT, 8H*BACKS   . слово 0617 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_BACKS)
-TXENDF: , TEXT, 8H*ENDFI   . слово 0621 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_ENDFI)
-TXSTOP: , TEXT, 8HSTOP*    . слово 0623 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_STOP)
+MNTXT: , TEXT, 8HLO*GEN       . слово 0001 — имя модуля  ; (POLN: MODULE_NAME_TEXT)  ; DEKOD GOST 'МП+ЗЕО00' / TEXT 'LO*GEN  ' / ISO '······' [источник: src/LO_GEN.mad:503; confidence: high]
+TXPOWE: , TEXT, 8HPOWER    . слово 0533 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_POWER)  ; DEKOD GOST 'РПЧЕТ000' / TEXT 'POWER   ' / ISO '······' [источник: src/LO_GEN.mad:504; confidence: high]
+TXARHO: , TEXT, 8HA/RHOCHI . слово 0535 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_A_RHOCHI)  ; DEKOD GOST 'Б ТИПГИЙ' / TEXT 'A/RHOCHI' / ISO '····:)' [источник: src/LO_GEN.mad:505; confidence: high]
+TXANOT: , TEXT, 8HA/NOT    . слово 0537 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_A_NOT)  ; DEKOD GOST 'Б ОПФ000' / TEXT 'A/NOT   ' / ISO '······' [источник: src/LO_GEN.mad:506; confidence: high]
+TXAAND: , TEXT, 8HA/AND    . слово 0541 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_A_AND)  ; DEKOD GOST 'Б БОД000' / TEXT 'A/AND   ' / ISO '··n···' [источник: src/LO_GEN.mad:507; confidence: high]
+TXF621: , TEXT, 8HFT*621   . слово 0543 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_621)  ; DEKOD GOST 'ЖФ+;(@00' / TEXT 'FT*621  ' / ISO '·B·I··' [источник: src/LO_GEN.mad:508; confidence: high]
+TXF002: , TEXT, 8HFT*002   . слово 0545 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_002)  ; DEKOD GOST 'ЖФ+ее(00' / TEXT 'FT*002  ' / ISO '·B·A ·' [источник: src/LO_GEN.mad:509; confidence: high]
+TXD002: , TEXT, 8HFD*002   . слово 0547 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FD_002)  ; DEKOD GOST 'ЖД+ее(00' / TEXT 'FD*002  ' / ISO '·B·A ·' [источник: src/LO_GEN.mad:510; confidence: high]
+TXC002: , TEXT, 8HFC*002   . слово 0551 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FC_002)  ; DEKOD GOST 'ЖГ+ее(00' / TEXT 'FC*002  ' / ISO '·2·A ·' [источник: src/LO_GEN.mad:511; confidence: high]
+TXF003: , TEXT, 8HFT*003   . слово 0553 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_003)  ; DEKOD GOST 'ЖФ+ее)00' / TEXT 'FT*003  ' / ISO '·B·A0·' [источник: src/LO_GEN.mad:512; confidence: high]
+TXF521: , TEXT, 8HFT*521   . слово 0555 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_521)  ; DEKOD GOST 'ЖФ+=(@00' / TEXT 'FT*521  ' / ISO '·B·I··' [источник: src/LO_GEN.mad:513; confidence: high]
+TXF721: , TEXT, 8HFT*721   . слово 0557 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_721)  ; DEKOD GOST 'ЖФ+[(@00' / TEXT 'FT*721  ' / ISO '·B·I··' [источник: src/LO_GEN.mad:514; confidence: high]
+TXF722: , TEXT, 8HFT*722   . слово 0561 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_722)  ; DEKOD GOST 'ЖФ+[((00' / TEXT 'FT*722  ' / ISO '·B·I ·' [источник: src/LO_GEN.mad:515; confidence: high]
+TXD722: , TEXT, 8HFD*722   . слово 0563 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FD_722)  ; DEKOD GOST 'ЖД+[((00' / TEXT 'FD*722  ' / ISO '·B·I ·' [источник: src/LO_GEN.mad:516; confidence: high]
+TXC722: , TEXT, 8HFC*722   . слово 0565 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FC_722)  ; DEKOD GOST 'ЖГ+[((00' / TEXT 'FC*722  ' / ISO '·2·I ·' [источник: src/LO_GEN.mad:517; confidence: high]
+TXF723: , TEXT, 8HFT*723   . слово 0567 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_723)  ; DEKOD GOST 'ЖФ+[()00' / TEXT 'FT*723  ' / ISO '·B·I0·' [источник: src/LO_GEN.mad:518; confidence: high]
+TXF641: , TEXT, 8HFT*641   . слово 0571 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_641)  ; DEKOD GOST 'ЖФ+;x@00' / TEXT 'FT*641  ' / ISO '·B·Q··' [источник: src/LO_GEN.mad:519; confidence: high]
+TXF642: , TEXT, 8HFT*642   . слово 0573 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_642)  ; DEKOD GOST 'ЖФ+;x(00' / TEXT 'FT*642  ' / ISO '·B·Q ·' [источник: src/LO_GEN.mad:520; confidence: high]
+TXD642: , TEXT, 8HFD*642   . слово 0575 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FD_642)  ; DEKOD GOST 'ЖД+;x(00' / TEXT 'FD*642  ' / ISO '·B·Q ·' [источник: src/LO_GEN.mad:521; confidence: high]
+TXC642: , TEXT, 8HFC*642   . слово 0577 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FC_642)  ; DEKOD GOST 'ЖГ+;x(00' / TEXT 'FC*642  ' / ISO '·2·Q ·' [источник: src/LO_GEN.mad:522; confidence: high]
+TXF643: , TEXT, 8HFT*643   . слово 0601 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_643)  ; DEKOD GOST 'ЖФ+;x)00' / TEXT 'FT*643  ' / ISO '·B·Q0·' [источник: src/LO_GEN.mad:523; confidence: high]
+TXF541: , TEXT, 8HFT*541   . слово 0603 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_541)  ; DEKOD GOST 'ЖФ+=x@00' / TEXT 'FT*541  ' / ISO '·B·Q··' [источник: src/LO_GEN.mad:524; confidence: high]
+TXF561: , TEXT, 8HFT*561   . слово 0605 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_561)  ; DEKOD GOST 'ЖФ+=;@00' / TEXT 'FT*561  ' / ISO '·B·Y··' [источник: src/LO_GEN.mad:525; confidence: high]
+TXF571: , TEXT, 8HFT*571   . слово 0607 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_571)  ; DEKOD GOST 'ЖФ+=[@00' / TEXT 'FT*571  ' / ISO '·B·]··' [источник: src/LO_GEN.mad:526; confidence: high]
+TXF531: , TEXT, 8HFT*531   . слово 0611 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_531)  ; DEKOD GOST 'ЖФ+=)@00' / TEXT 'FT*531  ' / ISO '·B·M··' [источник: src/LO_GEN.mad:527; confidence: high]
+TXF611: , TEXT, 8HFT*611   . слово 0613 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_FT_611)  ; DEKOD GOST 'ЖФ+;@@00' / TEXT 'FT*611  ' / ISO '·B·E··' [источник: src/LO_GEN.mad:528; confidence: high]
+TXREWI: , TEXT, 8H*REWIN   . слово 0615 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_REWIN)  ; DEKOD GOST '+ТЕЧЙО00' / TEXT '*REWIN  ' / ISO '+)w···' [источник: src/LO_GEN.mad:529; confidence: high]
+TXBACK: , TEXT, 8H*BACKS   . слово 0617 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_BACKS)  ; DEKOD GOST '+ВБГЛУ00' / TEXT '*BACKS  ' / ISO '*(c·0·' [источник: src/LO_GEN.mad:530; confidence: high]
+TXENDF: , TEXT, 8H*ENDFI   . слово 0621 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_ENDFI)  ; DEKOD GOST '+ЕОДЖЙ00' / TEXT '*ENDFI  ' / ISO '*[····' [источник: src/LO_GEN.mad:531; confidence: high]
+TXSTOP: , TEXT, 8HSTOP*    . слово 0623 — TEXT-имя из таблицы операторов  ; (POLN: TEXT_STOP)  ; DEKOD GOST 'УФПР+000' / TEXT 'STOP*   ' / ISO '·K·(··' [источник: src/LO_GEN.mad:532; confidence: high]
 
 С =============================================================================
 С  ПОЛНЫЙ ДАМП: 1024 слова с адресами (верхнее и нижнее полуслово = 2 команды)
@@ -611,7 +612,7 @@ BW0026: RS0013,ATX,                 . записать аккумулятор в
          ATX,AC0002                  . записать аккумулятор в память [зп]
 С слово 0027  @0o277527  = 0o4000000000700370
 BW0027: RS0008,ATX,                  . записать аккумулятор в память [зп]  ; (POLN: BUF_WRITE_0027)
-         *70,AC0370                . экстракод *70 [э70] . Э70 370 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+         *70,AC0370                . экстракод *70 [э70] . Э70 370 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово 370 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 С слово 0030  @0o277530  = 0o3707713002200000
 JP0030: RS0007,UJ,JT1NII             . безусловный переход; переход в резидентную память 0o077130 [пб]  ; (POLN: JUMP_0030)
          UTC,                    . модификация адреса (индексная приставка) [мода]
@@ -628,18 +629,18 @@ BW0033: ATX,                    . записать аккумулятор в п�
 JP0034: RS0007,UJ,JT1M2O             . безусловный переход; переход в резидентную память 0o075264 [пб]  ; (POLN: JUMP_0034)
          UTC,                    . модификация адреса (индексная приставка) [мода]
 С слово 0035  @0o277535  = 0o2205325724254114
-DT0035: RS0004,APX,AC153D              ; (POLN: DATA_0035) . опк 20 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61]; AC153D = адрес слова-маски (не адрес данных)
+DT0035: RS0004,APX,AC153D              ; (POLN: DATA_0035) . опк 20 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = APX (сбр): упаковка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61]; AC153D = адрес слова-маски (не адрес данных)
          RS0005,E-X,AC4114             . вычитание с экстракодом [вчп]
 С слово 0036  @0o277536  = 0o2364612653650530
-DT0036: RS0004,ASN,AC0ZLA              ; (POLN: DATA_0036) . опк 36 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75]; AC0ZLA = N в форме 64+n; сдвиг n = N−64 (не адрес)
-         RE0010,ASN,AC12ZM            . опк 36 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75]; AC12ZM = N в форме 64+n; сдвиг n = N−64 (не адрес)
+DT0036: RS0004,ASN,AC0ZLA              ; (POLN: DATA_0036) . ASN: 46126B → N=0o126(86)=64+22 ⇒ ,ASN,64+22 — сдвиг ВПРАВО на 22 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6]
+         RE0010,ASN,AC12ZM            . ASN: 50530B → N=0o130(88)=64+24 ⇒ ,ASN,64+24 — сдвиг ВПРАВО на 24 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6]
 С слово 0037  @0o277537  = 0o2224010020040100
 AM0037: RS0004,UTC,MV0COW             . модификация адреса (индексная приставка); модификатор = 0o40100; через M4 [мода]  ; (POLN: ADDR_MOD_0037)
          RS0004,A+X,AC0100              . сложить аккумулятор с памятью; обращение к ячейке/константе 0o000100 [сл]
 С слово 0040  @0o277540  = 0o1000000000000000
 BW0040: RS0002,ATX,                  . записать аккумулятор в память [зп]  ; (POLN: BUF_WRITE_0040)
 С слово 0041  @0o277541  = 0o1600000000000007
-DT0041: RS0003,APX,                  . опк 20 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] ; (POLN: DATA_0041)
+DT0041: RS0003,APX,                  . опк 20 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = APX (сбр): упаковка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61] ; (POLN: DATA_0041)
          ATX,AC0007                  . записать аккумулятор в память [зп]
 С слово 0042  @0o277542  = 0o0000000000000005
 BW0042: ATX,                    . записать аккумулятор в память [зп]  ; (POLN: BUF_WRITE_0042)
@@ -652,22 +653,22 @@ BW0044: ATX,                    . записать аккумулятор в п�
          ATX,AC0005                  . записать аккумулятор в память [зп]
 С слово 0045  @0o277545  = 0o2502510723652117
 DT0045: RS0005,MOD,AC1LYB            . установить номер модификатора [рег]  ; (POLN: DATA_0045)
-         RS0004,ASN,AC147P             . опк 36 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75]; AC147P = N в форме 64+n; сдвиг n = N−64 (не адрес)
+         RS0004,ASN,AC147P             . ASN: 52117B → N=0o117(79)=64+15 ⇒ ,ASN,64+15 — сдвиг ВПРАВО на 15 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6]
 С слово 0046  @0o277546  = 0o3707530002200000
 JP0046: RS0007,UJ,JT1M3O             . безусловный переход; переход в резидентную память 0o075300 [пб]  ; (POLN: JUMP_0046)
          UTC,                    . модификация адреса (индексная приставка) [мода]
 С слово 0047  @0o277547  = 0o2205052052122662
-DT0047: RS0004,APX,AC12ZC              ; (POLN: DATA_0047) . опк 20 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61]; AC12ZC = адрес слова-маски (не адрес данных)
-         RE0010,AUX,AC0HHI            . опк 21 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = AUX (рзб): разборка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных) [CmdSheet.md:49; disbesm6.c:62]; AC0HHI = адрес слова-маски (не адрес данных)
+DT0047: RS0004,APX,AC12ZC              ; (POLN: DATA_0047) . опк 20 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = APX (сбр): упаковка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61]; AC12ZC = адрес слова-маски (не адрес данных)
+         RE0010,AUX,AC0HHI            . опк 21 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = AUX (рзб): разборка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных) [CmdSheet.md:49; disbesm6.c:62]; AC0HHI = адрес слова-маски (не адрес данных)
 С слово 0050  @0o277550  = 0o5445525766647253
 DT0050: RS0011,J+M,AC5257            . переход с прибавлением [сли]  ; (POLN: DATA_0050)
          RS0013,UZA,JT10GL           . переход при нулевом аккумуляторе; цель 0o047253 (резидентная память); база M15 [по]
 С слово 0051  @0o277551  = 0o5375011424334114
 VC0051: RE0010,VLM,JT12O2           . циклический переход; цель 0o050114 (резидентная память); база M12 [цикл]  ; (POLN: VCALL_0051)
-         RS0005,EXT,AC4114              . опк 33 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = EXT (увв): управление вводом-выводом; аргумент — код устройства (привилегированная операция), НЕ обычный адрес [CmdSheet.md:40; disbesm6.c:72]; AC4114 = код устройства (привилегированная операция, не адрес)
+         RS0005,33,AC4114              . опк 33 (2-я структура ТО IX / Format 2) = STOP (стоп): останов скомпилированной программы; EXT (увв) — привилегированная команда ОС; в пользовательском генераторе кода 033 — это STOP (Format 2), выдаваемый в объектный модуль [Besm6_Instruction_Set.md §6; CmdSheet.md:41]; AC4114 = код останова (2-я структура)
 С слово 0052  @0o277552  = 0o5365251453650530
-DT0052: RE0010,ASN,AC14IQ             ; (POLN: DATA_0052) . опк 36 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75]; AC14IQ = N в форме 64+n; сдвиг n = N−64 (не адрес)
-         RE0010,ASN,AC12ZM            . опк 36 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес), группа Л [CmdSheet.md:52; disbesm6.c:75]; AC12ZM = N в форме 64+n; сдвиг n = N−64 (не адрес)
+DT0052: RE0010,ASN,AC14IQ             ; (POLN: DATA_0052) . ASN: 52514B → N=0o114(76)=64+12 ⇒ ,ASN,64+12 — сдвиг ВПРАВО на 12 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6]
+         RE0010,ASN,AC12ZM            . ASN: 50530B → N=0o130(88)=64+24 ⇒ ,ASN,64+24 — сдвиг ВПРАВО на 24 [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6]
 С слово 0053  @0o277553  = 0o2224010020040100
 AM0053: RS0004,UTC,MV0COW             . модификация адреса (индексная приставка); модификатор = 0o40100; через M4 [мода]  ; (POLN: ADDR_MOD_0053)
          RS0004,A+X,AC0100              . сложить аккумулятор с памятью; обращение к ячейке/константе 0o000100 [сл]
@@ -1359,7 +1360,7 @@ JP0420: RS0007,UJ,JT1MR6             . безусловный переход; п
          UTC,                    . модификация адреса (индексная приставка) [мода]
 С слово 0421  @0o300121  = 0o0000000002002254
 BW0421: ATX,                    . записать аккумулятор в память [зп]  ; (POLN: BUF_WRITE_0421)
-         APX,AC2254                . опк 20 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = APX (сбр): упаковка битов по маске; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61]; AC2254 = адрес слова-маски (не адрес данных)
+         APX,AC2254                . опк 20 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) = APX (сбр): упаковка битов по маске; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490] (НЕ адрес данных), пример «сборка, Л» [CmdSheet.md:48; disbesm6.c:61]; AC2254 = адрес слова-маски (не адрес данных)
 С слово 0422  @0o300122  = 0o3707615200040565
 JP0422: RS0007,UJ,JT1MRC             . безусловный переход; переход в резидентную память 0o076152 [пб]  ; (POLN: JUMP_0422)
          A+X,AC0565                . сложить аккумулятор с памятью; обращение к ячейке/константе 0o000565 [сл]
@@ -1583,119 +1584,119 @@ JP0531: RS0007,UJ,JT1MYZ             . безусловный переход; п
 С слово 0532  @0o300232  = 0o0000000000020005
 ND0532: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0532)
 С слово 0533  @0o300233  = 0o6057674562000000  TEXT='POWER   '
-NT0533: , TEXT, 8HPOWER    . TEXT-имя: POWER  ; (POLN: NAMETAB_TEXT_0533)
+NT0533: , TEXT, 8HPOWER    . TEXT-имя: POWER  ; (POLN: NAMETAB_TEXT_0533)  ; DEKOD GOST 'РПЧЕТ000' / TEXT 'POWER   ' / ISO '······' [источник: src/LO_GEN.mad:1587; confidence: high]
 С слово 0534  @0o300234  = 0o0000000000020005
 ND0534: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0534)
 С слово 0535  @0o300235  = 0o4117625057435051  TEXT='A/RHOCHI'
-NT0535: , TEXT, 8HA/RHOCHI . TEXT-имя: A/RHOCHI  ; (POLN: NAMETAB_TEXT_0535)
+NT0535: , TEXT, 8HA/RHOCHI . TEXT-имя: A/RHOCHI  ; (POLN: NAMETAB_TEXT_0535)  ; DEKOD GOST 'Б ТИПГИЙ' / TEXT 'A/RHOCHI' / ISO '····:)' [источник: src/LO_GEN.mad:1591; confidence: high]
 С слово 0536  @0o300236  = 0o0000000000020005
 ND0536: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0536)
 С слово 0537  @0o300237  = 0o4117565764000000  TEXT='A/NOT   '
-NT0537: , TEXT, 8HA/NOT    . TEXT-имя: A/NOT  ; (POLN: NAMETAB_TEXT_0537)
+NT0537: , TEXT, 8HA/NOT    . TEXT-имя: A/NOT  ; (POLN: NAMETAB_TEXT_0537)  ; DEKOD GOST 'Б ОПФ000' / TEXT 'A/NOT   ' / ISO '······' [источник: src/LO_GEN.mad:1595; confidence: high]
 С слово 0540  @0o300240  = 0o0000000000020005
 ND0540: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0540)
 С слово 0541  @0o300241  = 0o4117415644000000  TEXT='A/AND   '
-NT0541: , TEXT, 8HA/AND    . TEXT-имя: A/AND  ; (POLN: NAMETAB_TEXT_0541)
+NT0541: , TEXT, 8HA/AND    . TEXT-имя: A/AND  ; (POLN: NAMETAB_TEXT_0541)  ; DEKOD GOST 'Б БОД000' / TEXT 'A/AND   ' / ISO '··n···' [источник: src/LO_GEN.mad:1599; confidence: high]
 С слово 0542  @0o300242  = 0o0000000000020005
 ND0542: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0542)
 С слово 0543  @0o300243  = 0o4664122622210000  TEXT='FT*621  '
-NT0543: , TEXT, 8HFT*621   . TEXT-имя: FT*621  ; (POLN: NAMETAB_TEXT_0543)
+NT0543: , TEXT, 8HFT*621   . TEXT-имя: FT*621  ; (POLN: NAMETAB_TEXT_0543)  ; DEKOD GOST 'ЖФ+;(@00' / TEXT 'FT*621  ' / ISO '·B·I··' [источник: src/LO_GEN.mad:1603; confidence: high]
 С слово 0544  @0o300244  = 0o0000000000020005
 ND0544: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0544)
 С слово 0545  @0o300245  = 0o4664122020220000  TEXT='FT*002  '
-NT0545: , TEXT, 8HFT*002   . TEXT-имя: FT*002  ; (POLN: NAMETAB_TEXT_0545)
+NT0545: , TEXT, 8HFT*002   . TEXT-имя: FT*002  ; (POLN: NAMETAB_TEXT_0545)  ; DEKOD GOST 'ЖФ+ее(00' / TEXT 'FT*002  ' / ISO '·B·A ·' [источник: src/LO_GEN.mad:1607; confidence: high]
 С слово 0546  @0o300246  = 0o0000000000020005
 ND0546: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0546)
 С слово 0547  @0o300247  = 0o4644122020220000  TEXT='FD*002  '
-NT0547: , TEXT, 8HFD*002   . TEXT-имя: FD*002  ; (POLN: NAMETAB_TEXT_0547)
+NT0547: , TEXT, 8HFD*002   . TEXT-имя: FD*002  ; (POLN: NAMETAB_TEXT_0547)  ; DEKOD GOST 'ЖД+ее(00' / TEXT 'FD*002  ' / ISO '·B·A ·' [источник: src/LO_GEN.mad:1611; confidence: high]
 С слово 0550  @0o300250  = 0o0000000000020005
 ND0550: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0550)
 С слово 0551  @0o300251  = 0o4643122020220000  TEXT='FC*002  '
-NT0551: , TEXT, 8HFC*002   . TEXT-имя: FC*002  ; (POLN: NAMETAB_TEXT_0551)
+NT0551: , TEXT, 8HFC*002   . TEXT-имя: FC*002  ; (POLN: NAMETAB_TEXT_0551)  ; DEKOD GOST 'ЖГ+ее(00' / TEXT 'FC*002  ' / ISO '·2·A ·' [источник: src/LO_GEN.mad:1615; confidence: high]
 С слово 0552  @0o300252  = 0o0000000000020005
 ND0552: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0552)
 С слово 0553  @0o300253  = 0o4664122020230000  TEXT='FT*003  '
-NT0553: , TEXT, 8HFT*003   . TEXT-имя: FT*003  ; (POLN: NAMETAB_TEXT_0553)
+NT0553: , TEXT, 8HFT*003   . TEXT-имя: FT*003  ; (POLN: NAMETAB_TEXT_0553)  ; DEKOD GOST 'ЖФ+ее)00' / TEXT 'FT*003  ' / ISO '·B·A0·' [источник: src/LO_GEN.mad:1619; confidence: high]
 С слово 0554  @0o300254  = 0o0000000000020005
 ND0554: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0554)
 С слово 0555  @0o300255  = 0o4664122522210000  TEXT='FT*521  '
-NT0555: , TEXT, 8HFT*521   . TEXT-имя: FT*521  ; (POLN: NAMETAB_TEXT_0555)
+NT0555: , TEXT, 8HFT*521   . TEXT-имя: FT*521  ; (POLN: NAMETAB_TEXT_0555)  ; DEKOD GOST 'ЖФ+=(@00' / TEXT 'FT*521  ' / ISO '·B·I··' [источник: src/LO_GEN.mad:1623; confidence: high]
 С слово 0556  @0o300256  = 0o0000000000020005
 ND0556: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0556)
 С слово 0557  @0o300257  = 0o4664122722210000  TEXT='FT*721  '
-NT0557: , TEXT, 8HFT*721   . TEXT-имя: FT*721  ; (POLN: NAMETAB_TEXT_0557)
+NT0557: , TEXT, 8HFT*721   . TEXT-имя: FT*721  ; (POLN: NAMETAB_TEXT_0557)  ; DEKOD GOST 'ЖФ+[(@00' / TEXT 'FT*721  ' / ISO '·B·I··' [источник: src/LO_GEN.mad:1627; confidence: high]
 С слово 0560  @0o300260  = 0o0000000000020005
 ND0560: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0560)
 С слово 0561  @0o300261  = 0o4664122722220000  TEXT='FT*722  '
-NT0561: , TEXT, 8HFT*722   . TEXT-имя: FT*722  ; (POLN: NAMETAB_TEXT_0561)
+NT0561: , TEXT, 8HFT*722   . TEXT-имя: FT*722  ; (POLN: NAMETAB_TEXT_0561)  ; DEKOD GOST 'ЖФ+[((00' / TEXT 'FT*722  ' / ISO '·B·I ·' [источник: src/LO_GEN.mad:1631; confidence: high]
 С слово 0562  @0o300262  = 0o0000000000020005
 ND0562: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0562)
 С слово 0563  @0o300263  = 0o4644122722220000  TEXT='FD*722  '
-NT0563: , TEXT, 8HFD*722   . TEXT-имя: FD*722  ; (POLN: NAMETAB_TEXT_0563)
+NT0563: , TEXT, 8HFD*722   . TEXT-имя: FD*722  ; (POLN: NAMETAB_TEXT_0563)  ; DEKOD GOST 'ЖД+[((00' / TEXT 'FD*722  ' / ISO '·B·I ·' [источник: src/LO_GEN.mad:1635; confidence: high]
 С слово 0564  @0o300264  = 0o0000000000020005
 ND0564: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0564)
 С слово 0565  @0o300265  = 0o4643122722220000  TEXT='FC*722  '
-NT0565: , TEXT, 8HFC*722   . TEXT-имя: FC*722  ; (POLN: NAMETAB_TEXT_0565)
+NT0565: , TEXT, 8HFC*722   . TEXT-имя: FC*722  ; (POLN: NAMETAB_TEXT_0565)  ; DEKOD GOST 'ЖГ+[((00' / TEXT 'FC*722  ' / ISO '·2·I ·' [источник: src/LO_GEN.mad:1639; confidence: high]
 С слово 0566  @0o300266  = 0o0000000000020005
 ND0566: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0566)
 С слово 0567  @0o300267  = 0o4664122722230000  TEXT='FT*723  '
-NT0567: , TEXT, 8HFT*723   . TEXT-имя: FT*723  ; (POLN: NAMETAB_TEXT_0567)
+NT0567: , TEXT, 8HFT*723   . TEXT-имя: FT*723  ; (POLN: NAMETAB_TEXT_0567)  ; DEKOD GOST 'ЖФ+[()00' / TEXT 'FT*723  ' / ISO '·B·I0·' [источник: src/LO_GEN.mad:1643; confidence: high]
 С слово 0570  @0o300270  = 0o0000000000020005
 ND0570: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0570)
 С слово 0571  @0o300271  = 0o4664122624210000  TEXT='FT*641  '
-NT0571: , TEXT, 8HFT*641   . TEXT-имя: FT*641  ; (POLN: NAMETAB_TEXT_0571)
+NT0571: , TEXT, 8HFT*641   . TEXT-имя: FT*641  ; (POLN: NAMETAB_TEXT_0571)  ; DEKOD GOST 'ЖФ+;x@00' / TEXT 'FT*641  ' / ISO '·B·Q··' [источник: src/LO_GEN.mad:1647; confidence: high]
 С слово 0572  @0o300272  = 0o0000000000020005
 ND0572: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0572)
 С слово 0573  @0o300273  = 0o4664122624220000  TEXT='FT*642  '
-NT0573: , TEXT, 8HFT*642   . TEXT-имя: FT*642  ; (POLN: NAMETAB_TEXT_0573)
+NT0573: , TEXT, 8HFT*642   . TEXT-имя: FT*642  ; (POLN: NAMETAB_TEXT_0573)  ; DEKOD GOST 'ЖФ+;x(00' / TEXT 'FT*642  ' / ISO '·B·Q ·' [источник: src/LO_GEN.mad:1651; confidence: high]
 С слово 0574  @0o300274  = 0o0000000000020005
 ND0574: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0574)
 С слово 0575  @0o300275  = 0o4644122624220000  TEXT='FD*642  '
-NT0575: , TEXT, 8HFD*642   . TEXT-имя: FD*642  ; (POLN: NAMETAB_TEXT_0575)
+NT0575: , TEXT, 8HFD*642   . TEXT-имя: FD*642  ; (POLN: NAMETAB_TEXT_0575)  ; DEKOD GOST 'ЖД+;x(00' / TEXT 'FD*642  ' / ISO '·B·Q ·' [источник: src/LO_GEN.mad:1655; confidence: high]
 С слово 0576  @0o300276  = 0o0000000000020005
 ND0576: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0576)
 С слово 0577  @0o300277  = 0o4643122624220000  TEXT='FC*642  '
-NT0577: , TEXT, 8HFC*642   . TEXT-имя: FC*642  ; (POLN: NAMETAB_TEXT_0577)
+NT0577: , TEXT, 8HFC*642   . TEXT-имя: FC*642  ; (POLN: NAMETAB_TEXT_0577)  ; DEKOD GOST 'ЖГ+;x(00' / TEXT 'FC*642  ' / ISO '·2·Q ·' [источник: src/LO_GEN.mad:1659; confidence: high]
 С слово 0600  @0o300300  = 0o0000000000020005
 ND0600: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0600)
 С слово 0601  @0o300301  = 0o4664122624230000  TEXT='FT*643  '
-NT0601: , TEXT, 8HFT*643   . TEXT-имя: FT*643  ; (POLN: NAMETAB_TEXT_0601)
+NT0601: , TEXT, 8HFT*643   . TEXT-имя: FT*643  ; (POLN: NAMETAB_TEXT_0601)  ; DEKOD GOST 'ЖФ+;x)00' / TEXT 'FT*643  ' / ISO '·B·Q0·' [источник: src/LO_GEN.mad:1663; confidence: high]
 С слово 0602  @0o300302  = 0o0000000000020005
 ND0602: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0602)
 С слово 0603  @0o300303  = 0o4664122524210000  TEXT='FT*541  '
-NT0603: , TEXT, 8HFT*541   . TEXT-имя: FT*541  ; (POLN: NAMETAB_TEXT_0603)
+NT0603: , TEXT, 8HFT*541   . TEXT-имя: FT*541  ; (POLN: NAMETAB_TEXT_0603)  ; DEKOD GOST 'ЖФ+=x@00' / TEXT 'FT*541  ' / ISO '·B·Q··' [источник: src/LO_GEN.mad:1667; confidence: high]
 С слово 0604  @0o300304  = 0o0000000000020005
 ND0604: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0604)
 С слово 0605  @0o300305  = 0o4664122526210000  TEXT='FT*561  '
-NT0605: , TEXT, 8HFT*561   . TEXT-имя: FT*561  ; (POLN: NAMETAB_TEXT_0605)
+NT0605: , TEXT, 8HFT*561   . TEXT-имя: FT*561  ; (POLN: NAMETAB_TEXT_0605)  ; DEKOD GOST 'ЖФ+=;@00' / TEXT 'FT*561  ' / ISO '·B·Y··' [источник: src/LO_GEN.mad:1671; confidence: high]
 С слово 0606  @0o300306  = 0o0000000000020005
 ND0606: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0606)
 С слово 0607  @0o300307  = 0o4664122527210000  TEXT='FT*571  '
-NT0607: , TEXT, 8HFT*571   . TEXT-имя: FT*571  ; (POLN: NAMETAB_TEXT_0607)
+NT0607: , TEXT, 8HFT*571   . TEXT-имя: FT*571  ; (POLN: NAMETAB_TEXT_0607)  ; DEKOD GOST 'ЖФ+=[@00' / TEXT 'FT*571  ' / ISO '·B·]··' [источник: src/LO_GEN.mad:1675; confidence: high]
 С слово 0610  @0o300310  = 0o0000000000020005
 ND0610: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0610)
 С слово 0611  @0o300311  = 0o4664122523210000  TEXT='FT*531  '
-NT0611: , TEXT, 8HFT*531   . TEXT-имя: FT*531  ; (POLN: NAMETAB_TEXT_0611)
+NT0611: , TEXT, 8HFT*531   . TEXT-имя: FT*531  ; (POLN: NAMETAB_TEXT_0611)  ; DEKOD GOST 'ЖФ+=)@00' / TEXT 'FT*531  ' / ISO '·B·M··' [источник: src/LO_GEN.mad:1679; confidence: high]
 С слово 0612  @0o300312  = 0o0000000000020005
 ND0612: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0612)
 С слово 0613  @0o300313  = 0o4664122621210000  TEXT='FT*611  '
-NT0613: , TEXT, 8HFT*611   . TEXT-имя: FT*611  ; (POLN: NAMETAB_TEXT_0613)
+NT0613: , TEXT, 8HFT*611   . TEXT-имя: FT*611  ; (POLN: NAMETAB_TEXT_0613)  ; DEKOD GOST 'ЖФ+;@@00' / TEXT 'FT*611  ' / ISO '·B·E··' [источник: src/LO_GEN.mad:1683; confidence: high]
 С слово 0614  @0o300314  = 0o0000000000020005
 ND0614: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0614)
 С слово 0615  @0o300315  = 0o1262456751560000  TEXT='*REWIN  '
-NT0615: , TEXT, 8H*REWIN   . TEXT-имя: *REWIN  ; (POLN: NAMETAB_TEXT_0615)
+NT0615: , TEXT, 8H*REWIN   . TEXT-имя: *REWIN  ; (POLN: NAMETAB_TEXT_0615)  ; DEKOD GOST '+ТЕЧЙО00' / TEXT '*REWIN  ' / ISO '+)w···' [источник: src/LO_GEN.mad:1687; confidence: high]
 С слово 0616  @0o300316  = 0o0000000000020005
 ND0616: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0616)
 С слово 0617  @0o300317  = 0o1242414353630000  TEXT='*BACKS  '
-NT0617: , TEXT, 8H*BACKS   . TEXT-имя: *BACKS  ; (POLN: NAMETAB_TEXT_0617)
+NT0617: , TEXT, 8H*BACKS   . TEXT-имя: *BACKS  ; (POLN: NAMETAB_TEXT_0617)  ; DEKOD GOST '+ВБГЛУ00' / TEXT '*BACKS  ' / ISO '*(c·0·' [источник: src/LO_GEN.mad:1691; confidence: high]
 С слово 0620  @0o300320  = 0o0000000000020005
 ND0620: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0620)
 С слово 0621  @0o300321  = 0o1245564446510000  TEXT='*ENDFI  '
-NT0621: , TEXT, 8H*ENDFI   . TEXT-имя: *ENDFI  ; (POLN: NAMETAB_TEXT_0621)
+NT0621: , TEXT, 8H*ENDFI   . TEXT-имя: *ENDFI  ; (POLN: NAMETAB_TEXT_0621)  ; DEKOD GOST '+ЕОДЖЙ00' / TEXT '*ENDFI  ' / ISO '*[····' [источник: src/LO_GEN.mad:1695; confidence: high]
 С слово 0622  @0o300322  = 0o0000000000020005
 ND0622: , LOG, NMLN5D  . дескриптор таблицы имён: длина 5  ; (POLN: NAMETAB_DESC_0622)
 С слово 0623  @0o300323  = 0o6364576012000000  TEXT='STOP*   '
-NT0623: , TEXT, 8HSTOP*    . TEXT-имя: STOP*  ; (POLN: NAMETAB_TEXT_0623)
+NT0623: , TEXT, 8HSTOP*    . TEXT-имя: STOP*  ; (POLN: NAMETAB_TEXT_0623)  ; DEKOD GOST 'УФПР+000' / TEXT 'STOP*   ' / ISO '·K·(··' [источник: src/LO_GEN.mad:1699; confidence: high]
 
 С ============================================================================
 С БЛОК 0624..1777: ПРОДОЛЖЕНИЕ ТЕЛА ГЕНЕРАТОРА (та же схема: линейные блоки + вызовы резидентных подпрограмм).

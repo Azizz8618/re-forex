@@ -589,3 +589,38 @@
 | Э70 | BUF135 | не найдено в rukava.be | — | 2 | `src/lib21/MAKELIBT.mad:700`, `src/lib21/MAKELIBT.mad:739` |
 | Э70 | BUF136 | не найдено в rukava.be | — | 2 | `src/lib21/MAKELIBT.mad:752`, `src/lib21/MAKELIBT.mad:836` |
 | Э70 | IWN143 | не найдено в rukava.be | — | 1 | `src/lib21/MAKELIBT.mad:888` |
+
+## Текстовые константы
+
+Проверено 27 констант модуля `src/lib21/MAKELIBT.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `=6H` | GOST `` / TEXT `` / ISO `` | `src/lib21/MAKELIBT.mad:26` | добавлено |
+| `=6H''''''''''-` | GOST `77777777` / TEXT `''''''''` / ISO `·q··q·` | `src/lib21/MAKELIBT.mad:28` | добавлено |
+| `=6H''''''''''(` | GOST `77777777` / TEXT `''''''''` / ISO `·q··q·` | `src/lib21/MAKELIBT.mad:29` | добавлено |
+| `=6H'''''''''')` | GOST `77777777` / TEXT `''''''''` / ISO `·q··q·` | `src/lib21/MAKELIBT.mad:31` | добавлено |
+| `=6H'7''7'''''''''` | GOST `7[77[777` / TEXT `'7''7'''` / ISO `·q·\q·` | `src/lib21/MAKELIBT.mad:86` | добавлено |
+| `=6H'''''7''7''7''7'` | GOST `77777[77` / TEXT `'''''7''` / ISO `·q··q·` | `src/lib21/MAKELIBT.mad:87` | добавлено |
+| `=6HLIBRAR` | GOST `МЙВТБТ00` / TEXT `LIBRAR  ` / ISO `···· ·` | `src/lib21/MAKELIBT.mad:88` | добавлено |
+| `=6HY OT` | GOST `Щ0ПФ0000` / TEXT `Y OT    ` / ISO `······` | `src/lib21/MAKELIBT.mad:89` | добавлено |
+| `=6H'377''377'''''''''` | GOST `7)[[77)[` / TEXT `'377''37` / ISO `·5··t·` | `src/lib21/MAKELIBT.mad:90` | добавлено |
+| `=6H''''` | GOST `77770000` / TEXT `''''    ` / ISO `·q····` | `src/lib21/MAKELIBT.mad:91` | добавлено |
+| `=6H'''3''7'''''''` | GOST `777)77[7` / TEXT `'''3''7'` / ISO `·q··u·` | `src/lib21/MAKELIBT.mad:93` | добавлено |
+| `=6H 00` | GOST `ее000000` / TEXT `00      ` / ISO `A·····` | `src/lib21/MAKELIBT.mad:94` | добавлено |
+| `=6H'''7''7''7''7'''` | GOST `777[77[7` / TEXT `'''7''7'` / ISO `·q··u·` | `src/lib21/MAKELIBT.mad:96` | добавлено |
+| `=6H 0000` | GOST `ееее0000` / TEXT `0000    ` / ISO `A·····` | `src/lib21/MAKELIBT.mad:97` | добавлено |
+| `=6H'''''''7''7'''` | GOST `7777777[` / TEXT `'''''''7` / ISO `·q··q·` | `src/lib21/MAKELIBT.mad:98` | добавлено |
+| `=6HHO 00` | GOST `ИП0ее000` / TEXT `HO 00   ` / ISO `···@··` | `src/lib21/MAKELIBT.mad:99` | добавлено |
+| `30HCBOБOДHO 66  0120  37   BXOДOB` | GOST `СВОБОДНО` / TEXT `QBNANDMN` / ISO `·+··Kn` | `src/lib21/MAKELIBT.mad:103` | добавлено |
+| `1H'231'` | GOST `7()@7000` / TEXT `'231'   ` / ISO `·$····` | `src/lib21/MAKELIBT.mad:105` | добавлено |
+| `24HИCПOPЧEHЫ ПOДПPOГPAMMЫ:'231'` | GOST `ИСПОРЧЕН` / TEXT `HQONPWEM` / ISO `····ym` | `src/lib21/MAKELIBT.mad:106` | добавлено |
+| `12H00 ЗOHA 0000` | GOST `00 ЗОНА ` / TEXT `  /GNM@/` / ISO `······` | `src/lib21/MAKELIBT.mad:107` | добавлено |
+| `18HИCKЛЮЧEHЫ BXOДЫ:'231'` | GOST `ИСКЛЮЧЕН` / TEXT `HQJK^WEM` / ISO `····ym` | `src/lib21/MAKELIBT.mad:108` | добавлено |
+| `12HMAЛO MЛ '133''231'` | GOST `МАЛО МЛ ` / TEXT `L@KN/LK/` / ISO `···>··` | `src/lib21/MAKELIBT.mad:109` | добавлено |
+| `18H ИCПOPЧEH KATAЛOГ` | GOST `ИСПОРЧЕН` / TEXT `HQONPWEM` / ISO `····ym` | `src/lib21/MAKELIBT.mad:110` | добавлено |
+| `12H` | GOST `` / TEXT `` / ISO `` | `src/lib21/MAKELIBT.mad:111` | добавлено |
+| `30HOШИБOЧHЫЙ CПИCOK ПAPAMETPOB'231'` | GOST `ОШИБОЧНЫ` / TEXT `NXHANWM[` / ISO `··!·{{` | `src/lib21/MAKELIBT.mad:112` | добавлено |
+| `30HПEPEПOЛHEHИE KATAЛOГA OБCП !'231'` | GOST `ПЕРЕПОЛН` / TEXT `OEPEONKM` / ISO `·\%···` | `src/lib21/MAKELIBT.mad:113` | добавлено |
+| `8HPROGRAM` | GOST `РТПЗТБН0` / TEXT `PROGRAM ` / ISO `·+···@` | `src/lib21/MAKELIBT.mad:114` | добавлено |
+

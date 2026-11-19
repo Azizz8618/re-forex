@@ -23,7 +23,7 @@ EDC015 ,EQU,13                          ; роль: десятичная кон�
 ETX015 ,EQU,=670000                     ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1027  ; (POLN: LITERAL__670000)
 EDC016 ,EQU,4                           ; роль: десятичная константа/сдвиг; S2:1033  ; (POLN: DEC_4)
 EDC017 ,EQU,6                           ; роль: десятичная константа/сдвиг; S2:1037  ; (POLN: DEC_6)
-ETX017 ,EQU,=6HCONT                     ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1040  ; (POLN: LITERAL__6HCONT)
+ETX017 ,EQU,=6HCONT                     ; роль: DEKOD GOST 'ГПОФ0000' / TEXT 'CONT    ' / ISO '······' [источник: src/lib21/LIBDRU_.mad:26; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1040  ; (POLN: LITERAL__6HCONT)
 EDC018 ,EQU,2                           ; роль: десятичная константа/сдвиг; S2:1043  ; (POLN: DEC_2)
 EDC019 ,EQU,1022                        ; роль: десятичная константа/сдвиг; S2:1044  ; (POLN: DEC_1022)
 ETX019 ,EQU,=21 20000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1047  ; (POLN: LITERAL__21_20000)
@@ -65,14 +65,14 @@ ETX045 ,EQU,=2000 0077 7777 7777        ; роль: литерал (TEXT/OCT/GOS
 ETX046 ,EQU,=11                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1434  ; (POLN: LITERAL__11)
 ETX047 ,EQU,=:0000 0100                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1442  ; (POLN: LITERAL___0000_0100)
 EDC047 ,EQU,19                          ; роль: десятичная константа/сдвиг; S2:1469  ; (POLN: DEC_19)
-ETX048 ,EQU,20HБИБЛИOTEKA ПYCTAЯ'133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1472  ; (POLN: LIT_20H_____OTEKA__YCTA__133__231_)
-ETX049 ,EQU,18HБOЛЬШOЙ KATAЛOГ'133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1473  ; (POLN: LIT_18H_O___O__KATA_O__133__231_)
-ETX050 ,EQU,36HИCПOPЧEH KATAЛOГ TEMPORARY LIBRARY'133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1474  ; (POLN: LIT_36H_C_OP_EH_KATA_O__TEMPORARY_)
-ETX051 ,EQU,24HИCПOPЧEHЫ ПOДПPOГPAMMЫ:'231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1475  ; (POLN: LIT_24H_C_OP_EH___O__PO_PAMM___231)
-ETX052 ,EQU,36HПEPEПOЛHEHA BPEMEHHAЯ БИБЛИOTEKA'133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1476  ; (POLN: LIT_36H_EPE_O_HEHA_BPEMEHHA_______)
-ETX053 ,EQU,24HБИБЛИOTEKA ИCПOPЧEHA '133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1477  ; (POLN: LIT_24H_____OTEKA__C_OP_EHA__133__)
+ETX048 ,EQU,20HБИБЛИOTEKA ПYCTAЯ'133''231'; роль: DEKOD GOST 'БИБЛИОТЕ' / TEXT 'AHAKHNRE' / ISO '··k···' | GOST 'КА ПУСТА' / TEXT 'J@/OSQR@' / ISO '······' | GOST 'Я'133''2' / TEXT '_;!##;;"' / ISO '··C···' | GOST '31'     ' / TEXT '#!;/////' / ISO '···<··' [источник: src/lib21/LIBDRU_.mad:68; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1472  ; (POLN: LIT_20H_____OTEKA__YCTA__133__231_)
+ETX049 ,EQU,18HБOЛЬШOЙ KATAЛOГ'133''231'; роль: DEKOD GOST 'БОЛЬШОЙ ' / TEXT 'ANK\XNI/' / ISO '·····O' | GOST 'КАТАЛОГ'' / TEXT 'J@R@KNC;' / ISO '······' | GOST '133''231' / TEXT '!##;;"#!' / ISO '·0·l ·' | GOST ''       ' / TEXT ';///////' / ISO 'l··<··' [источник: src/lib21/LIBDRU_.mad:69; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1473  ; (POLN: LIT_18H_O___O__KATA_O__133__231_)
+ETX050 ,EQU,36HИCПOPЧEH KATAЛOГ TEMPORARY LIBRARY'133''231'; роль: DEKOD GOST 'ИСПОРЧЕН' / TEXT 'HQONPWEM' / ISO '····ym' | GOST ' КАТАЛОГ' / TEXT '/J@R@KNC' / ISO '>·2···' | GOST ' ТЕМРП8А' / TEXT '/RELPO(@' / ISO '?)l·· ' | GOST '8У 53Г8А' / TEXT '(S/%#C(@' / ISO '#3··2 ' | GOST '8У'133''' / TEXT '(S;!##;;' / ISO '#6··6·' | GOST '231'    ' / TEXT '"#!;////' / ISO '·0[<··' [источник: src/lib21/LIBDRU_.mad:70; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1474  ; (POLN: LIT_36H_C_OP_EH_KATA_O__TEMPORARY_)
+ETX051 ,EQU,24HИCПOPЧEHЫ ПOДПPOГPAMMЫ:'231'; роль: DEKOD GOST 'ИСПОРЧЕН' / TEXT 'HQONPWEM' / ISO '····ym' | GOST 'Ы ПОДПРО' / TEXT '[/ONDOPN' / ISO '·····.' | GOST 'ГРАММЫ:'' / TEXT 'CP@LL[?;' / ISO '··,···' | GOST '231'    ' / TEXT '"#!;////' / ISO '·0[<··' [источник: src/lib21/LIBDRU_.mad:71; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1475  ; (POLN: LIT_24H_C_OP_EH___O__PO_PAMM___231)
+ETX052 ,EQU,36HПEPEПOЛHEHA BPEMEHHAЯ БИБЛИOTEKA'133''231'; роль: DEKOD GOST 'ПЕРЕПОЛН' / TEXT 'OEPEONKM' / ISO '·\%···' | GOST 'ЕНА ВРЕМ' / TEXT 'EM@/BPEL' / ISO '·····l' | GOST 'ЕННАЯ БИ' / TEXT 'EMM@_/AH' / ISO '··`··h' | GOST 'БЛИОТЕКА' / TEXT 'AKHNREJ@' / ISO '··.·Z·' | GOST ''133''23' / TEXT ';!##;;"#' / ISO 'l··m··' | GOST '1'      ' / TEXT '!;//////' / ISO '···<··' [источник: src/lib21/LIBDRU_.mad:72; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1476  ; (POLN: LIT_36H_EPE_O_HEHA_BPEMEHHA_______)
+ETX053 ,EQU,24HБИБЛИOTEKA ИCПOPЧEHA '133''231'; роль: DEKOD GOST 'БИБЛИОТЕ' / TEXT 'AHAKHNRE' / ISO '··k···' | GOST 'КА ИСПОР' / TEXT 'J@/HQONP' / ISO '······' | GOST 'ЧЕНА '13' / TEXT 'WEM@/;!#' / ISO '·[`=·C' | GOST '3''231' ' / TEXT '#;;"#!;/' / ISO '······' [источник: src/lib21/LIBDRU_.mad:73; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1477  ; (POLN: LIT_24H_____OTEKA__C_OP_EHA__133__)
 ETX054 ,EQU,20                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1478  ; (POLN: LIT_20)
-ETX055 ,EQU,1H'231'                     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1479  ; (POLN: LIT_1H_231_)
+ETX055 ,EQU,1H'231'                     ; роль: DEKOD GOST '7()@7000' / TEXT ''231'   ' / ISO '·$····' [источник: src/lib21/LIBDRU_.mad:75; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1479  ; (POLN: LIT_1H_231_)
 ETX056 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:1481  ; (POLN: LIT_1)
 С ---- конец блока констант ----
 
@@ -134,7 +134,7 @@ AOX,ETX020  ; S2:1051
 AEX,ETX020  ; S2:1052
 ARX,IR059  ; S2:1053
 ATX,BUF075 . HAЧAЛO KATAЛOГA  ; S2:1054
-*70,BUF075  ; S2:1055 . Э70 BUF075 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF075  ; S2:1055 . Э70 BUF075 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF075 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 3,XTA,EDC019 . считывание в аккумулятор  ; S2:1056
 AAX,ETX021  ; S2:1057
 UZA,KAY056 . переход при =0  ; S2:1058
@@ -164,7 +164,7 @@ UZA,END023 . переход при =0  ; S2:1070
 XTA,BUF075 . считывание в аккумулятор  ; S2:1082
 14,VJM,NEX021 . CЛEД. TPAKT.  ; S2:1083
 ATX,BUF075 . запись с модификатором  ; S2:1084
-*70,BUF075  ; S2:1085 . Э70 BUF075 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF075  ; S2:1085 . Э70 BUF075 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF075 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 NOT020: 3,UTM,RBU010 . переход при >0  ; (POLN: NOT/EMPT) ; S2:1086
 UJ,LOO019 . переход/возврат  ; S2:1087
 NEX021: ARX,ETX025  ; (POLN: NEXT*TRZ) ; S2:1088
@@ -193,7 +193,7 @@ XTA,ETX024 . считывание в аккумулятор  ; S2:1104
 XTA,PLA072 . считывание в аккумулятор  ; S2:1111
 ARX,IR059  ; S2:1112
 ATX,BUF075 . HAЧAЛO KATAЛOГA  ; S2:1113
-*70,BUF075  ; S2:1114 . Э70 BUF075 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF075  ; S2:1114 . Э70 BUF075 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF075 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 3,XTA,EDC019 . считывание в аккумулятор  ; S2:1115
 AAX,ETX021  ; S2:1116
 UZA,KAY052 . переход при =0  ; S2:1117
@@ -219,7 +219,7 @@ UZA,END026 . ECЛИ HET PERMANENT  ; S2:1128
 XTA,BUF075 . считывание в аккумулятор  ; S2:1137
 14,VJM,NEX021 . CЛEД. TPAKT.  ; S2:1138
 ATX,BUF075 . запись с модификатором  ; S2:1139
-*70,BUF075  ; S2:1140 . Э70 BUF075 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF075  ; S2:1140 . Э70 BUF075 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF075 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 NOT025: 3,UTM,RBU010 . переход при >0  ; (POLN: NOT EMPT) ; S2:1141
 UJ,LOO024 . переход/возврат  ; S2:1142
 END026: ITA,EDC018 . взятие из стека в индексный регистр  ; (POLN: END CAT) ; S2:1143
@@ -237,8 +237,8 @@ ITS,EDC015 . БИБЛИOTEKИ  ; S2:1154
 XTS,ETX025 . считывание с модификатором  ; S2:1155
 CALL,PRINT8 . вызов подпрограммы  ; S2:1156
 XTA,CBO003 . считывание в аккумулятор  ; S2:1157
-APX,ETX030  ; S2:1158
-AUX,ETX031  ; S2:1159
+APX,ETX030  ; S2:1158  ; ETX030 = маска = TEXT/GOST слово =77 76000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX031  ; S2:1159  ; ETX031 = маска = TEXT/GOST слово =77 0037 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 AOX,IW060  ; S2:1160
 AOX,ETX032  ; S2:1161
 ATX,BUF077 . KYДA ПИCATЬ  ; S2:1162
@@ -247,7 +247,7 @@ AAX,ETX029  ; S2:1164
 ATI,EDC032 . запись в индексный регистр  ; S2:1165
 5,UTM,-EDC010 . переход при >0  ; S2:1166
 UZA,NOS027 . C HAЧAЛA TPAKTA  ; S2:1167
-*70,BUF077 . ПOДKAЧKA  ; S2:1168 . Э70 BUF077 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF077 . ПOДKAЧKA  ; S2:1168 . Э70 BUF077 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF077 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 NOS027: BSS . CЭKOHOMИЛИ OБMEH  ; (POLN: NO SWING) ; S2:1169
 XTA,BUF077 . считывание в аккумулятор  ; S2:1170
 AEX,ETX032  ; S2:1171
@@ -259,13 +259,13 @@ UZA,FIN045 . BCЯ PERSONAL  ; S2:1175
 AAX,ETX033  ; S2:1177
 UZA,LOO028 . ЭTO BXOД  ; S2:1178
 2,XTA,EDC012 . считывание в аккумулятор  ; S2:1179
-APX,ETX034  ; S2:1180
-AUX,ETX035  ; S2:1181
+APX,ETX034  ; S2:1180  ; ETX034 = маска = TEXT/GOST слово =1740 0000 0000 0000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX035  ; S2:1181  ; ETX035 = маска = TEXT/GOST слово =1740 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 ATI,EDC035 . запись в индексный регистр  ; S2:1182
 3,UTM,RBU010 . переход при >0  ; S2:1183
 2,XTA,EDC012 . считывание в аккумулятор  ; S2:1184
-APX,ETX036  ; S2:1185
-AUX,ETX037  ; S2:1186
+APX,ETX036  ; S2:1185  ; ETX036 = маска = TEXT/GOST слово =0037 7700 0000 0000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX037  ; S2:1186  ; ETX037 = маска = TEXT/GOST слово =0000 0000 0000 3777 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 NTR,EDC035  ; S2:1187
 A-X,ETX038  ; S2:1188
 ARX,PLA072  ; S2:1189
@@ -273,7 +273,7 @@ AOX,IR059  ; S2:1190
 ATX,BUF076 . запись с модификатором  ; S2:1191
 AEX,BUF075  ; S2:1192
 UZA,NOS029 . ЗOHA B ПAMЯTИ  ; S2:1193
-*70,BUF076 . ПOДKAЧAЛИ  ; S2:1194 . Э70 BUF076 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF076 . ПOДKAЧAЛИ  ; S2:1194 . Э70 BUF076 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF076 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 XTA,BUF076 . ЗOHY  ; S2:1195
 ATX,BUF075 . запись с модификатором  ; S2:1196
 NOS029: XTA,ETX039 . считывание в аккумулятор  ; (POLN: NO SWOP) ; S2:1197
@@ -416,7 +416,7 @@ XTA,EDC022 . считывание в аккумулятор  ; S2:1330
 XTS,BUF075 . считывание с модификатором  ; S2:1334
 14,VJM,NEX021 . вызов через индексный регистр  ; S2:1335
 ATX,BUF075 . запись с модификатором  ; S2:1336
-*70,BUF075  ; S2:1337 . Э70 BUF075 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF075  ; S2:1337 . Э70 BUF075 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF075 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 15,XTA, . считывание в аккумулятор  ; S2:1338
 13,UJ, . переход/возврат  ; S2:1339
 WRW043: 5,UTM,EDC012 . переход при >0  ; (POLN: WRWRD) ; S2:1340
@@ -429,7 +429,7 @@ XTA,BUF077 . KOHTPOЛЬ HYЖEH  ; S2:1346
 ARX,ETX026 . HE ПPИ ЧTEHИИ,  ; S2:1347
 AAX,ETX027 . KAK Y ББ ,  ; S2:1348
 U1A,OVE055 . A ПPИ ЗAПИCИ !!!  ; S2:1349
-*70,BUF077  ; S2:1350 . Э70 BUF077 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF077  ; S2:1350 . Э70 BUF077 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF077 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 XTA,BUF077 . считывание в аккумулятор  ; S2:1351
 14,VJM,NEX021 . вызов через индексный регистр  ; S2:1352
 ATX,BUF077 . запись с модификатором  ; S2:1353
@@ -443,13 +443,13 @@ FIN044: BSS . зарезервированная область  ; (POLN: FIN/SM
 AAX,ETX045  ; S2:1361
 2,ATX,EDC012 . запись с модификатором  ; S2:1362
 XTA,CBO003 . считывание в аккумулятор  ; S2:1363
-APX,ETX035  ; S2:1364
-AUX,ETX034  ; S2:1365
+APX,ETX035  ; S2:1364  ; ETX035 = маска = TEXT/GOST слово =1740 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX034  ; S2:1365  ; ETX034 = маска = TEXT/GOST слово =1740 0000 0000 0000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 2,AOX,EDC012  ; S2:1366
 2,ATX,EDC012 . запись с модификатором  ; S2:1367
 XTA,CBO003 . считывание в аккумулятор  ; S2:1368
-APX,ETX030  ; S2:1369
-AUX,ETX036  ; S2:1370
+APX,ETX030  ; S2:1369  ; ETX030 = маска = TEXT/GOST слово =77 76000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX036  ; S2:1370  ; ETX036 = маска = TEXT/GOST слово =0037 7700 0000 0000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 2,AOX,EDC012  ; S2:1371
 2,ATX,EDC012 . ИCПPABЛEHO  ; S2:1372
 XTA,LGS073 . считывание в аккумулятор  ; S2:1373
@@ -462,7 +462,7 @@ XTA,BUF077 . EЩE PAЗ  ; S2:1379
 ARX,ETX026 . ПPO -  ; S2:1380
 AAX,ETX027 . KOH -  ; S2:1381
 U1A,OVE055 . TPOЛИPYEM  ; S2:1382
-*70,BUF077  ; S2:1383 . Э70 BUF077 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF077  ; S2:1383 . Э70 BUF077 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF077 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 DRU046: BSS . зарезервированная область  ; (POLN: DRUMFULL) ; S2:1384
 С********************************************
 С   OБ'EДИHEHИE KATAЛOГOB БИБЛИOTEK
@@ -518,7 +518,7 @@ UZA,TOL057 . переход при =0  ; S2:1435
 XTA,IWC061 . считывание в аккумулятор  ; S2:1436
 ATX,BUF075 . запись с модификатором  ; S2:1437
 LOW051: 2,VZM,EXI054 . переход при <0  ; (POLN: LOWC) ; S2:1438
-*70,BUF075  ; S2:1439 . Э70 BUF075 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF075  ; S2:1439 . Э70 BUF075 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF075 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 2,UTM,-EDC012 . переход при >0  ; S2:1440
 XTA,BUF075 . считывание в аккумулятор  ; S2:1441
 ARX,ETX047  ; S2:1442

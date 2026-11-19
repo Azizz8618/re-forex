@@ -1,3 +1,4 @@
+C  VERSION STAMP FOREX 5.00 (re-forex); host banner 2.02 is external
 C***********************************************************************
 C* FOREX_RUNTIME — библиотечные/рантайм-модули компилятора ФОРЭКС       *
 C* Аннотированный МАДЛЕН-текст (субагент «рантайм»)                     *
@@ -80,30 +81,30 @@ STKOF5             ,EQU, -5                           ; роль: ; S5:7712; и�
 STKOF6             ,EQU, -6                           ; роль: ; S5:7694; источник: S5:7694  ; полное имя: STACK_OFF_M6
 SOM             ,EQU, -8                           ; роль: ; S5:7688; источник: S5:7688  ; полное имя: STACK_OFF_M8
 TL0000          ,EQU, ''000000''                   ; роль: ; S6:5083 ZERO = 8TEXT «000000»; источник: S6:5083  ; полное имя: TEXT_LIT_000000
-TL0001          ,EQU, 1H'055'                      ; роль: ; S5:7717; источник: S5:7717  ; полное имя: TEXT_LIT_1H_055
-TL0002          ,EQU, 2H '200'                     ; роль: ; S5:7715; источник: S5:7715  ; полное имя: TEXT_LIT_2H_200
-TL0003            ,EQU, 3H00                         ; роль: ; S5:7718; источник: S5:7718  ; полное имя: TEXT_LIT_3H00
-TL0004            ,EQU, =6H00                        ; роль: ; S5:7705; источник: S5:7705  ; полное имя: TEXT_LIT_6H00
-TL0005          ,EQU, 6H0000                       ; роль: ; S5:7729; источник: S5:7729  ; полное имя: TEXT_LIT_6H0000
-TL0006        ,EQU, 6H000000                     ; роль: ; S7:458 ZERO = ISO 6H000000; источник: S7:458  ; полное имя: TEXT_LIT_6H000000
-TL0007        ,EQU, 6H000 00                     ; роль: ; S5:7719; источник: S5:7719  ; полное имя: TEXT_LIT_6H000_00
-TL0008         ,EQU, =6H00/00/                    ; роль: ; S5:7708; источник: S5:7708  ; полное имя: TEXT_LIT_6H00_00
-TL0009          ,EQU, 6H03 0                       ; роль: ; S5:7728; источник: S5:7728  ; полное имя: TEXT_LIT_6H03_0
-TL0010        ,EQU, 6HABГCEH                     ; роль: ; S5:7725; источник: S5:7725  ; полное имя: TEXT_LIT_6HAB_CEH
-TL0011         ,EQU, 6HARRAY                      ; роль: ; S1:15710; источник: S1:15710  ; полное имя: TEXT_LIT_6HARRAY
-TL0012         ,EQU, 6HAПPMAЯ                     ; роль: ; S5:7723; источник: S5:7723  ; полное имя: TEXT_LIT_6HA_PMA
-TL0013         ,EQU, 6HERROR                      ; роль: ; S1:15707; источник: S1:15707  ; полное имя: TEXT_LIT_6HERROR
-TL0014        ,EQU, 6HIN STA                     ; роль: ; S1:15708; источник: S1:15708  ; полное имя: TEXT_LIT_6HIN_STA
-TL0015         ,EQU, 6HNDART                      ; роль: ; S1:15709; источник: S1:15709  ; полное имя: TEXT_LIT_6HNDART
-TL0016         ,EQU, 6HOKTHOЯ                     ; роль: ; S5:7730; источник: S5:7730  ; полное имя: TEXT_LIT_6HOKTHO
-TL0017        ,EQU, 6H 00.00                     ; роль: ; S5:7726; источник: S5:7726  ; полное имя: TEXT_LIT_6H_00_00
-TL0018        ,EQU, =6H'17''17'''''''''          ; роль: ; S5:7704; источник: S5:7704  ; полное имя: TEXT_LIT_6H_17_17
-TL0019    ,EQU, 6H'201'  '200'7              ; роль: ; S5:7714; источник: S5:7714  ; полное имя: TEXT_LIT_6H_201_200_7
-TL0020       ,EQU, 6H'231'  ЯHB                 ; роль: ; S5:7721; источник: S5:7721  ; полное имя: TEXT_LIT_6H_231_HB
-TL0021   ,EQU, =6H'3''17''''17''17'''       ; роль: ; S5:7707; источник: S5:7707  ; полное имя: TEXT_LIT_6H_3_17_17_17
-TL0022        ,EQU, 6HФEBMAP                     ; роль: ; S5:7722; источник: S5:7722  ; полное имя: TEXT_LIT_6H_EBMAP
-TL0023           ,EQU, 6HДEK                        ; роль: ; S5:7731; источник: S5:7731  ; полное имя: TEXT_LIT_6H_EK
-TL0024            ,EQU, 6HИЮHИЮЛ                     ; роль: ; S5:7724; источник: S5:7724  ; полное имя: TEXT_LIT_6H_H
+TL0001          ,EQU, 1H'055'                      ; роль: DEKOD GOST '7е==7000' / TEXT ''055'   ' / ISO '··U···' [источник: src/FOREX_RUNTIME.mad:84; confidence: high]; ; S5:7717; источник: S5:7717  ; полное имя: TEXT_LIT_1H_055
+TL0002          ,EQU, 2H '200'                     ; роль: DEKOD GOST '7(ее7000' / TEXT ''200'   ' / ISO '·$····' [источник: src/FOREX_RUNTIME.mad:85; confidence: high]; ; S5:7715; источник: S5:7715  ; полное имя: TEXT_LIT_2H_200
+TL0003            ,EQU, 3H00                         ; роль: DEKOD GOST 'ее000000' / TEXT '00      ' / ISO 'A·····' [источник: src/FOREX_RUNTIME.mad:86; confidence: high]; ; S5:7718; источник: S5:7718  ; полное имя: TEXT_LIT_3H00
+TL0004            ,EQU, =6H00                        ; роль: DEKOD GOST 'ее000000' / TEXT '00      ' / ISO 'A·····' [источник: src/FOREX_RUNTIME.mad:87; confidence: high]; ; S5:7705; источник: S5:7705  ; полное имя: TEXT_LIT_6H00
+TL0005          ,EQU, 6H0000                       ; роль: DEKOD GOST 'ееее0000' / TEXT '0000    ' / ISO 'A·····' [источник: src/FOREX_RUNTIME.mad:88; confidence: high]; ; S5:7729; источник: S5:7729  ; полное имя: TEXT_LIT_6H0000
+TL0006        ,EQU, 6H000000                     ; роль: DEKOD GOST 'ееееее00' / TEXT '000000  ' / ISO 'A··A··' [источник: src/FOREX_RUNTIME.mad:89; confidence: high]; ; S7:458 ZERO = ISO 6H000000; источник: S7:458  ; полное имя: TEXT_LIT_6H000000
+TL0007        ,EQU, 6H000 00                     ; роль: DEKOD GOST 'еее0ее00' / TEXT '000 00  ' / ISO 'A··A··' [источник: src/FOREX_RUNTIME.mad:90; confidence: high]; ; S5:7719; источник: S5:7719  ; полное имя: TEXT_LIT_6H000_00
+TL0008         ,EQU, =6H00/00/                    ; роль: DEKOD GOST 'ее ее 00' / TEXT '00/00/  ' / ISO 'A··@··' [источник: src/FOREX_RUNTIME.mad:91; confidence: high]; ; S5:7708; источник: S5:7708  ; полное имя: TEXT_LIT_6H00_00
+TL0009          ,EQU, 6H03 0                       ; роль: DEKOD GOST 'е)0е0000' / TEXT '03 0    ' / ISO 'A0····' [источник: src/FOREX_RUNTIME.mad:92; confidence: high]; ; S5:7728; источник: S5:7728  ; полное имя: TEXT_LIT_6H03_0
+TL0010        ,EQU, 6HABГCEH                     ; роль: DEKOD GOST 'АВГСЕН  ' / TEXT '@BCQEM//' / ISO '·(····' [источник: src/FOREX_RUNTIME.mad:93; confidence: high]; ; S5:7725; источник: S5:7725  ; полное имя: TEXT_LIT_6HAB_CEH
+TL0011         ,EQU, 6HARRAY                      ; роль: DEKOD GOST 'БТТБЩ000' / TEXT 'ARRAY   ' / ISO '·,····' [источник: src/FOREX_RUNTIME.mad:94; confidence: high]; ; S1:15710; источник: S1:15710  ; полное имя: TEXT_LIT_6HARRAY
+TL0012         ,EQU, 6HAПPMAЯ                     ; роль: DEKOD GOST 'АПРМАЯ  ' / TEXT '@OPL@_//' / ISO '··,···' [источник: src/FOREX_RUNTIME.mad:95; confidence: high]; ; S5:7723; источник: S5:7723  ; полное имя: TEXT_LIT_6HA_PMA
+TL0013         ,EQU, 6HERROR                      ; роль: DEKOD GOST 'ЕТТПТ000' / TEXT 'ERROR   ' / ISO '·,····' [источник: src/FOREX_RUNTIME.mad:96; confidence: high]; ; S1:15707; источник: S1:15707  ; полное имя: TEXT_LIT_6HERROR
+TL0014        ,EQU, 6HIN STA                     ; роль: DEKOD GOST 'ЙО0УФБ00' / TEXT 'IN STA  ' / ISO '··3···' [источник: src/FOREX_RUNTIME.mad:97; confidence: high]; ; S1:15708; источник: S1:15708  ; полное имя: TEXT_LIT_6HIN_STA
+TL0015         ,EQU, 6HNDART                      ; роль: DEKOD GOST 'ОДБТФ000' / TEXT 'NDART   ' / ISO '·Hr···' [источник: src/FOREX_RUNTIME.mad:98; confidence: high]; ; S1:15709; источник: S1:15709  ; полное имя: TEXT_LIT_6HNDART
+TL0016         ,EQU, 6HOKTHOЯ                     ; роль: DEKOD GOST 'ОКТНОЯ  ' / TEXT 'NJRMN_//' / ISO '······' [источник: src/FOREX_RUNTIME.mad:99; confidence: high]; ; S5:7730; источник: S5:7730  ; полное имя: TEXT_LIT_6HOKTHO
+TL0017        ,EQU, 6H 00.00                     ; роль: DEKOD GOST 'ее.ее000' / TEXT '00.00   ' / ISO 'A··@··' [источник: src/FOREX_RUNTIME.mad:100; confidence: high]; ; S5:7726; источник: S5:7726  ; полное имя: TEXT_LIT_6H_00_00
+TL0018        ,EQU, =6H'17''17'''''''''          ; роль: DEKOD GOST '7@[77@[7' / TEXT ''17''17'' / ISO '······' | GOST '77777777' / TEXT '''''''''' / ISO '·q··q·' [источник: src/FOREX_RUNTIME.mad:101; confidence: high]; ; S5:7704; источник: S5:7704  ; полное имя: TEXT_LIT_6H_17_17
+TL0019    ,EQU, 6H'201'  '200'7              ; роль: DEKOD GOST '7(е@7007' / TEXT ''201'  '' / ISO '·$····' | GOST '(ее7[000' / TEXT '200'7   ' / ISO 'I··\··' [источник: src/FOREX_RUNTIME.mad:102; confidence: high]; ; S5:7714; источник: S5:7714  ; полное имя: TEXT_LIT_6H_201_200_7
+TL0020       ,EQU, 6H'231'  ЯHB                 ; роль: DEKOD GOST ''231'  Я' / TEXT ';"#!;//_' / ISO 'l ·l··' | GOST 'НВ      ' / TEXT 'MB//////' / ISO '·#·<··' [источник: src/FOREX_RUNTIME.mad:103; confidence: high]; ; S5:7721; источник: S5:7721  ; полное имя: TEXT_LIT_6H_231_HB
+TL0021   ,EQU, =6H'3''17''''17''17'''       ; роль: DEKOD GOST '7)77@[77' / TEXT ''3''17''' / ISO '·1·Eq·' | GOST '77@[77@[' / TEXT '''17''17' / ISO '·tW·tW' | GOST '77700000' / TEXT ''''     ' / ISO '·q····' [источник: src/FOREX_RUNTIME.mad:104; confidence: high]; ; S5:7707; источник: S5:7707  ; полное имя: TEXT_LIT_6H_3_17_17_17
+TL0022        ,EQU, 6HФEBMAP                     ; роль: DEKOD GOST 'ФЕВМАР  ' / TEXT 'TEBL@P//' / ISO '·X····' [источник: src/FOREX_RUNTIME.mad:105; confidence: high]; ; S5:7722; источник: S5:7722  ; полное имя: TEXT_LIT_6H_EBMAP
+TL0023           ,EQU, 6HДEK                        ; роль: DEKOD GOST 'ДЕК     ' / TEXT 'DEJ/////' / ISO '·Z·<··' [источник: src/FOREX_RUNTIME.mad:106; confidence: high]; ; S5:7731; источник: S5:7731  ; полное имя: TEXT_LIT_6H_EK
+TL0024            ,EQU, 6HИЮHИЮЛ                     ; роль: DEKOD GOST 'ИЮНИЮЛ  ' / TEXT 'H^MH^K//' / ISO '··h···' [источник: src/FOREX_RUNTIME.mad:107; confidence: high]; ; S5:7724; источник: S5:7724  ; полное имя: TEXT_LIT_6H_H
 FUNDTM          ,EQU, 67B.DD.MM.YY.HH.MM         ; роль: FUN 67B — системная дата/время; источник: S5:7657  ; полное имя: FUN_DATE_TIME
 DBFLN           ,EQU, 2                          ; роль: DATA* — 2-словный буфер даты; источник: S5:7646  ; полное имя: DATE_BUF_LEN
 MNTHFO        ,EQU, 00 776                     ; роль: маска поля месяца в FUN 67B; источник: S5:7732  ; полное имя: MONTH_FIELD_OCT
@@ -290,12 +291,12 @@ L            7 ,  ARX,   *00074    - FLCON        ; S1:15680
 L            7 ,  AAX,   *00073    - FLCON        ; S1:15681
 L            7 ,  AOX,   *00067    - FLCON        ; S1:15682
 L            7 ,  ATX,   *00070    - FLCON        ; S1:15683
-C  Экстракод *70 и сдвиг ASN 54B — сборка 8-символьного слова.
+C  Экстракод *70 = Memory/register dump [Besm6_Instruction_Set.md §6] — дамп памяти/регистров; информационное слово — адрес/объём дампа (конкретное слово не найдено ни в rukava.be, ни в Тюрине-1985); и сдвиг ASN 54B — сборка 8-символьного слова.
 L            7 ,  XTS,   *00071    - FLCON        ; S1:15684  ASN 54B
                  ,ASN,  ISOCSH        ; S1:15685
             15 ,  AOX,        ; S1:15686
 L            7 ,  ATX,   *00070    - FLCON        ; S1:15687
-L            7 ,   *70,  *00070    - FLCON        ; S1:15688  *70 — экстракод
+L            7 ,   *70,  *00070    - FLCON        ; S1:15688  Э70 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово *00070 — адрес/объём дампа (контекст); конкретное слово не найдено ни в rukava.be, ни в Тюрине-1985
                  ,XTA,        ; S1:15689
                  , UJ,   FL_SHIFT_IN        ; S1:15690
  FLCON    :,     LOG,  DW0001.        ; S1:15691  . полное имя: FL_CONST_BASE
@@ -348,7 +349,7 @@ C  DARET: разбор результата FUN 67B, выборка месяца
  DPARSE:,BSS,     ; (DARET)        ; S5:7660  ; полное имя: DATE_PARSE
  ,XTS,DATE0        ; S5:7661
  15,XTS,STKOF2        ; S5:7662
- ,AUX,DYMSK        ; S5:7663
+ ,AUX,DYMSK        ; S5:7663  ; DYMSK = маска = TEXT/GOST слово DYMSK [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
  ,ASN,DTDAYS.        ; S5:7664
  ,AOX,DATE1        ; S5:7665
  15,XTS,STKOF3        ; S5:7666
@@ -366,12 +367,12 @@ C  MARR — таблица названий месяцев (ЯНВ … ДЕК).
  ,ASN,DTMISH        ; S5:7677
  15,XTS,STKOF4        ; S5:7678
  ,ASN,DTYRSH.        ; S5:7679
- ,AUX,YMASK        ; S5:7680
+ ,AUX,YMASK        ; S5:7680  ; YMASK = маска = TEXT/GOST слово YMASK [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
  15,AOX,        ; S5:7681
  ,AOX,DATE2        ; S5:7682
  15,XTS,STKOF4        ; S5:7683
  ,ASN,DTTMSH.        ; S5:7684
- ,AUX,TMASK        ; S5:7685
+ ,AUX,TMASK        ; S5:7685  ; TMASK = маска = TEXT/GOST слово TMASK [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
  ,AOX,DATE3        ; S5:7686
  ,XTS,DATE4        ; S5:7687
  15,XTS,SOM        ; S5:7688
@@ -392,10 +393,10 @@ C  PREPDAT: ENTRY — подготовка даты и передача в DATAP
  DPREPB:13,BAS,DPREPB  ; (B)        ; S5:7701  ; полное имя: DATE_PREP_BASE
  15,ATX,        ; S5:7702
  ,ASN,DTYRSH        ; S5:7703
- ,AUX,TL0018        ; S5:7704
+ ,AUX,TL0018        ; S5:7704  ; TL0018 = маска = TEXT/GOST слово =6H'17''17''''''''' [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
  ,AOX,TL0004        ; S5:7705
  ,STX,DATA*+1        ; S5:7706
- ,AUX,TL0021        ; S5:7707
+ ,AUX,TL0021        ; S5:7707  ; TL0021 = маска = TEXT/GOST слово =6H'3''17''''17''17''' [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
  ,AOX,TL0008        ; S5:7708
  ,STX,DATA*        ; S5:7709
  ,STI,RETLR        ; S5:7710
@@ -504,7 +505,7 @@ C  (C1/10) и C10; возврат через M15; ZERO = ISO 6H000000.
  OCTERT:,STX,   ; (RET)        ; S7:446  RET: STX  ; полное имя: OCT_EX_RETURN
  15,UTM,STKOF2        ; S7:447  15,UTM,-2 — сдвиг стека
  ,ASN,DTMISH        ; S7:448
- ,AUX,MSK        ; S7:449
+ ,AUX,MSK        ; S7:449  ; MSK = маска = TEXT/GOST слово MSK [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
  ,AOX,ZERO        ; S7:450
  ,NTR,FIXM2        ; S7:451
  15,WTC,ONEW        ; S7:452  15,WTC,1

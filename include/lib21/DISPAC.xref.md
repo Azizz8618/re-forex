@@ -278,3 +278,28 @@
 | Э70 | RMO042 | не найдено в rukava.be | — | 1 | `src/lib21/DISPAC.mad:146` |
 | Э70 | TRP026 | не найдено в rukava.be | — | 1 | `src/lib21/DISPAC.mad:157` |
 | Э72 | ETX019 | не найдено в rukava.be | — | 1 | `src/lib21/DISPAC.mad:137` |
+
+## Текстовые константы
+
+Проверено 17 констант модуля `src/lib21/DISPAC.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `=6H'177''177''177''177''177''177'` | GOST `7@[[77@[` / TEXT `'177''17` / ISO `····tW` | `src/lib21/DISPAC.mad:35` | добавлено |
+| `=6H'200''200''200''200''200''200'` | GOST `7(ее77(е` / TEXT `'200''20` / ISO `·$··t·` | `src/lib21/DISPAC.mad:36` | добавлено |
+| `2H '231'` | GOST `7()@7000` / TEXT `'231'   ` / ISO `·$····` | `src/lib21/DISPAC.mad:56` | добавлено |
+| `8HINFLOAD*` | GOST `ЙОЖМПБД+` / TEXT `INFLOAD*` / ISO `······` | `src/lib21/DISPAC.mad:58` | добавлено |
+| `8HSTATIC*` | GOST `УФБФЙГ+0` / TEXT `STATIC* ` / ISO `·Ht·2·` | `src/lib21/DISPAC.mad:59` | добавлено |
+| `8HBIGTIT` | GOST `ВЙЗФЙФ00` / TEXT `BIGTIT  ` / ISO `····@·` | `src/lib21/DISPAC.mad:60` | добавлено |
+| `8HPRINT80` | GOST `РТЙОФ]е0` / TEXT `PRINT80 ` / ISO `·*n···` | `src/lib21/DISPAC.mad:61` | добавлено |
+| `30H*NAM035 123456123456123456ЖЖЖЖЖЖ` | GOST `*6АМ035 ` / TEXT `9&@L #%/` / ISO `dh,·1O` | `src/lib21/DISPAC.mad:62` | добавлено |
+| `8HMONITOR*` | GOST `НПОЙФПТ+` / TEXT `MONITOR*` / ISO `······` | `src/lib21/DISPAC.mad:63` | добавлено |
+| `8HDATA*` | GOST `ДБФБ+000` / TEXT `DATA*   ` / ISO `··!(··` | `src/lib21/DISPAC.mad:64` | добавлено |
+| `8HLOADANGO` | GOST `МПБДБОЗП` / TEXT `LOADANGO` / ISO `··d···` | `src/lib21/DISPAC.mad:65` | добавлено |
+| `8HSYSHEAD*` | GOST `УЩУИЕБД+` / TEXT `SYSHEAD*` / ISO `······` | `src/lib21/DISPAC.mad:66` | добавлено |
+| `8HKCOUNT*` | GOST `ЛГПХОФ+0` / TEXT `KCOUNT* ` / ISO `·;··B·` | `src/lib21/DISPAC.mad:67` | добавлено |
+| `8HMONCARD*` | GOST `НПОГБТД+` / TEXT `MONCARD*` / ISO `····)·` | `src/lib21/DISPAC.mad:68` | добавлено |
+| `8HDISPAC'33''31'` | GOST `ДЙУРБГ7)` / TEXT `DISPAC'3` / ISO `····1·` | `src/lib21/DISPAC.mad:71` | добавлено |
+| `18HHET CИCTEMЫ'133''231'` | GOST `НЕТ СИСТ` / TEXT `MER/QHQR` / ISO `·\···r` | `src/lib21/DISPAC.mad:72` | добавлено |
+| `2H'201''231'` | GOST `7(е@77()` / TEXT `'201''23` / ISO `·$··t·` | `src/lib21/DISPAC.mad:73` | добавлено |
+

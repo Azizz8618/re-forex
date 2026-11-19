@@ -1684,3 +1684,87 @@
 |-----|----------------------|-------------|------|------------|-------|
 | Э70 | AEX333 | не найдено в rukava.be | — | 1 | `src/lib21/TCATALOG.mad:2741` |
 | Э70 | XX367 | не найдено в rukava.be | — | 2 | `src/lib21/TCATALOG.mad:449`, `src/lib21/TCATALOG.mad:453` |
+
+## Текстовые константы
+
+Проверено 76 констант модуля `src/lib21/TCATALOG.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `=6H'''''''7''7''7'` | GOST `7777777[` / TEXT `'''''''7` / ISO `·q··q·` | `src/lib21/TCATALOG.mad:69` | добавлено |
+| `=6H''''''000` | GOST `777777ее` / TEXT `''''''00` / ISO `·q··t·` | `src/lib21/TCATALOG.mad:70` | добавлено |
+| `=6H'7''7''''3''7'` | GOST `7[77[777` / TEXT `'7''7'''` / ISO `·q·\q·` | `src/lib21/TCATALOG.mad:71` | добавлено |
+| `=6H00 00` | GOST `ее0ее000` / TEXT `00 00   ` / ISO `A··@··` | `src/lib21/TCATALOG.mad:72` | добавлено |
+| `=6H'77''77''77''77'''''` | GOST `7[[77[[7` / TEXT `'77''77'` / ISO `·u··u·` | `src/lib21/TCATALOG.mad:87` | добавлено |
+| `=6HUSE` | GOST `ХУЕ00000` / TEXT `USE     ` / ISO `·9@···` | `src/lib21/TCATALOG.mad:106` | добавлено |
+| `=6HINTER` | GOST `ЙОФЕТ000` / TEXT `INTER   ` / ISO `··%···` | `src/lib21/TCATALOG.mad:107` | добавлено |
+| `=6H''''''D` | GOST `777777Д0` / TEXT `''''''D ` / ISO `·q··y·` | `src/lib21/TCATALOG.mad:131` | добавлено |
+| `=6H)` | GOST `90000000` / TEXT `)       ` / ISO `$·····` | `src/lib21/TCATALOG.mad:132` | добавлено |
+| `=6H''''''''E` | GOST `77777777` / TEXT `''''''''` / ISO `·q··q·` | `src/lib21/TCATALOG.mad:136` | добавлено |
+| `=6H''''''C` | GOST `777777Г0` / TEXT `''''''C ` / ISO `·q··x·` | `src/lib21/TCATALOG.mad:137` | добавлено |
+| `=6H''''''E` | GOST `777777Е0` / TEXT `''''''E ` / ISO `·q··y@` | `src/lib21/TCATALOG.mad:139` | добавлено |
+| `=6H''''''''N` | GOST `77777777` / TEXT `''''''''` / ISO `·q··q·` | `src/lib21/TCATALOG.mad:140` | добавлено |
+| `=6H'''''' ''''` | GOST `77777707` / TEXT `'''''' '` / ISO `·q··p·` | `src/lib21/TCATALOG.mad:143` | добавлено |
+| `=6H''''''D''''` | GOST `777777Д7` / TEXT `''''''D'` / ISO `·q··y·` | `src/lib21/TCATALOG.mad:144` | добавлено |
+| `=6H''''''N''''` | GOST `777777О7` / TEXT `''''''N'` / ISO `·q··{·` | `src/lib21/TCATALOG.mad:145` | добавлено |
+| `=6H''''''''S` | GOST `77777777` / TEXT `''''''''` / ISO `·q··q·` | `src/lib21/TCATALOG.mad:146` | добавлено |
+| `=6H''''''''P` | GOST `77777777` / TEXT `''''''''` / ISO `·q··q·` | `src/lib21/TCATALOG.mad:148` | добавлено |
+| `=6H''''''''L` | GOST `77777777` / TEXT `''''''''` / ISO `·q··q·` | `src/lib21/TCATALOG.mad:150` | добавлено |
+| `=6H*LBL069LBL069` | GOST `+МВМе;*М` / TEXT `*LBL069L` / ISO `*··Afl` | `src/lib21/TCATALOG.mad:151` | добавлено |
+| `=6H'7''7''7''7''7'''` | GOST `7[77[77[` / TEXT `'7''7''7` / ISO `·q·\q·` | `src/lib21/TCATALOG.mad:154` | добавлено |
+| `=6H00000` | GOST `еееее000` / TEXT `00000   ` / ISO `A··@··` | `src/lib21/TCATALOG.mad:155` | добавлено |
+| `4HЦБ` | GOST `ЦБ      ` / TEXT `VA//////` / ISO `···<··` | `src/lib21/TCATALOG.mad:220` | добавлено |
+| `4HИГФД` | GOST `ИГФД    ` / TEXT `HCTD////` / ISO `·=$<··` | `src/lib21/TCATALOG.mad:221` | добавлено |
+| `4HЙ*)(` | GOST `Й*)(    ` / TEXT `I932////` / ISO `···<··` | `src/lib21/TCATALOG.mad:222` | добавлено |
+| `4H/ЖЯЛ` | GOST `/ЖЯЛ    ` / TEXT `,F_K////` / ISO `2o·<··` | `src/lib21/TCATALOG.mad:223` | добавлено |
+| `4H3210` | GOST `)(@е0000` / TEXT `3210    ` / ISO `M$P···` | `src/lib21/TCATALOG.mad:224` | добавлено |
+| `4H7654` | GOST `[;=x0000` / TEXT `7654    ` / ISO `]eT···` | `src/lib21/TCATALOG.mad:225` | добавлено |
+| `4H Ь98` | GOST `Ь98     ` / TEXT `\)(/////` / ISO `···<··` | `src/lib21/TCATALOG.mad:226` | добавлено |
+| `4HЫ+-П` | GOST `Ы+-П    ` / TEXT `[*+O////` / ISO `···<··` | `src/lib21/TCATALOG.mad:227` | добавлено |
+| `4HCBAЗ` | GOST `СВАЗ    ` / TEXT `QB@G////` / ISO `·('<··` | `src/lib21/TCATALOG.mad:228` | добавлено |
+| `4HGFED` | GOST `ЗЖЕД0000` / TEXT `GFED    ` / ISO `·id···` | `src/lib21/TCATALOG.mad:229` | добавлено |
+| `4HKJIH` | GOST `ЛКЙИ0000` / TEXT `KJIH    ` / ISO `··h···` | `src/lib21/TCATALOG.mad:230` | добавлено |
+| `4HONML` | GOST `ПОНМ0000` / TEXT `ONML    ` / ISO `··l···` | `src/lib21/TCATALOG.mad:231` | добавлено |
+| `4HSRQP` | GOST `УТСР0000` / TEXT `SRQP    ` / ISO `·,p···` | `src/lib21/TCATALOG.mad:232` | добавлено |
+| `4HWVUT` | GOST `ЧЦХФ0000` / TEXT `WVUT    ` / ISO `·mt···` | `src/lib21/TCATALOG.mad:233` | добавлено |
+| `4HШZYX` | GOST `Щ,УХ    ` / TEXT `Y-SU////` / ISO `···<··` | `src/lib21/TCATALOG.mad:234` | добавлено |
+| `4HЮЧЩЭ` | GOST `ЮЧЩЭ    ` / TEXT `^WY]////` / ISO `·~}<··` | `src/lib21/TCATALOG.mad:235` | добавлено |
+| `8H0000 00` | GOST `ееее0ее0` / TEXT `0000 00 ` / ISO `A·····` | `src/lib21/TCATALOG.mad:238` | добавлено |
+| `8H00  000` | GOST `ее00еее0` / TEXT `00  000 ` / ISO `A··A··` | `src/lib21/TCATALOG.mad:239` | добавлено |
+| `6H'''''7''7'''''` | GOST `77777[77` / TEXT `'''''7''` / ISO `·q··q·` | `src/lib21/TCATALOG.mad:248` | добавлено |
+| `6H'''''3''7'''''` | GOST `77777)77` / TEXT `'''''3''` / ISO `·q··1·` | `src/lib21/TCATALOG.mad:249` | добавлено |
+| `6H 000` | GOST `еее00000` / TEXT `000     ` / ISO `A·····` | `src/lib21/TCATALOG.mad:250` | добавлено |
+| `6H  00` | GOST `ее000000` / TEXT `00      ` / ISO `A·····` | `src/lib21/TCATALOG.mad:251` | добавлено |
+| `18HPERSONAL LIBRARY` | GOST `РЕТУПОБМ` / TEXT `PERSONAL` / ISO `·\···l` | `src/lib21/TCATALOG.mad:270` | добавлено |
+| `18H TEMPORARY LIBRARY` | GOST `ФЕНРПТБТ` / TEXT `TEMPORAR` / ISO `·[p·(r` | `src/lib21/TCATALOG.mad:271` | добавлено |
+| `18HPERMANENT LIBRARY` | GOST `РЕТНБОЕО` / TEXT `PERMANEN` / ISO `·\···n` | `src/lib21/TCATALOG.mad:272` | добавлено |
+| `30HCCЫЛKИ HA ПOДПPOГPAMMЫ` | GOST `ССЫЛКИ Н` / TEXT `QQ[KJH/M` / ISO `······` | `src/lib21/TCATALOG.mad:273` | добавлено |
+| `30HИCПOЛЬЗOBAHИE ПOДПPOГPAMM` | GOST `ИСПОЛЬЗО` / TEXT `HQONK\GN` / ISO `······` | `src/lib21/TCATALOG.mad:274` | добавлено |
+| `30HCCЫЛKИ HA COMMON'47'Ы` | GOST `ССЫЛКИ Н` / TEXT `QQ[KJH/M` / ISO `······` | `src/lib21/TCATALOG.mad:275` | добавлено |
+| `30HИCПOЛЬЗOBAHИE COMMON'47'OB` | GOST `ИСПОЛЬЗО` / TEXT `HQONK\GN` / ISO `······` | `src/lib21/TCATALOG.mad:276` | добавлено |
+| `30HИCПOЛЬЗOBAHИE ИCTИHHЫX AДPECOB` | GOST `ИСПОЛЬЗО` / TEXT `HQONK\GN` / ISO `······` | `src/lib21/TCATALOG.mad:277` | добавлено |
+| `30HИCПOЛЬЗOBAHИE ЭKCTPAKOДOB` | GOST `ИСПОЛЬЗО` / TEXT `HQONK\GN` / ISO `······` | `src/lib21/TCATALOG.mad:278` | добавлено |
+| `24HHEИCПOЛЬЗYEMЫE BXOДЫ` | GOST `НЕИСПОЛЬ` / TEXT `MEHQONK\` / ISO `·Z1···` | `src/lib21/TCATALOG.mad:279` | добавлено |
+| `24HИCПOЛЬЗYEMЫE BXOДЫ` | GOST `ИСПОЛЬЗУ` / TEXT `HQONK\GS` / ISO `······` | `src/lib21/TCATALOG.mad:280` | добавлено |
+| `24HB ЭKCTPAKOДAX` | GOST `В ЭКСТРА` / TEXT `B/]JQRP@` / ISO `··j·, ` | `src/lib21/TCATALOG.mad:281` | добавлено |
+| `24HB OCTAЛЬHЫX KOMAHДAX` | GOST `В ОСТАЛЬ` / TEXT `B/NQR@K\` / ISO `······` | `src/lib21/TCATALOG.mad:282` | добавлено |
+| `30HD - PACCЫЛKA ДAHHЫX` | GOST `0 - РАСС` / TEXT ` /+/P@QQ` / ISO `·····q` | `src/lib21/TCATALOG.mad:283` | добавлено |
+| `30HE - BHEШHЯЯ П/П` | GOST `Е - ВНЕШ` / TEXT `E/+/BMEX` / ISO `·····x` | `src/lib21/TCATALOG.mad:284` | добавлено |
+| `30HN - OПИCAHA,HE ИCПOЛЬЗYETCЯ` | GOST `6 - ОПИС` / TEXT `&/+/NOHQ` / ISO `·····1` | `src/lib21/TCATALOG.mad:285` | добавлено |
+| `30HC - ECTЬ OДHO359ИMEHHЫЙ COMMON` | GOST `С - ЕСТЬ` / TEXT `Q/+/EQR\` / ISO `······` | `src/lib21/TCATALOG.mad:286` | добавлено |
+| `30HE - ECTЬ OДHO359ИMEHHAЯ П/П` | GOST `Е - ЕСТЬ` / TEXT `E/+/EQR\` / ISO `······` | `src/lib21/TCATALOG.mad:287` | добавлено |
+| `30HN - OПИCAH,HE ИCПOЛЬЗYETCЯ` | GOST `6 - ОПИС` / TEXT `&/+/NOHQ` / ISO `·····1` | `src/lib21/TCATALOG.mad:288` | добавлено |
+| `30HP - CTPAHИЧHЫЙ COMMON` | GOST `Р - СТРА` / TEXT `P/+/QRP@` / ISO `····, ` | `src/lib21/TCATALOG.mad:289` | добавлено |
+| `30HS - CEKTOPHЫЙ COMMON` | GOST `9 - СЕКТ` / TEXT `)/+/QEJR` / ISO `$···Z·` | `src/lib21/TCATALOG.mad:290` | добавлено |
+| `30HL - ПPOCTOЙ COMMON` | GOST `5 - ПРОС` / TEXT `%/+/OPNQ` / ISO `······` | `src/lib21/TCATALOG.mad:291` | добавлено |
+| `30H*LBL069LBL069 - ДЛИHA OПИCAHA HEЯBHO` | GOST `*5Г50695` / TEXT `9%C% &)%` / ISO `dX··bE` | `src/lib21/TCATALOG.mad:292` | добавлено |
+| `18HИCПOPЧEH KATAЛOГ` | GOST `ИСПОРЧЕН` / TEXT `HQONPWEM` / ISO `····ym` | `src/lib21/TCATALOG.mad:293` | добавлено |
+| `18HOШИБOЧHЫЙ ПAPAMETP` | GOST `ОШИБОЧНЫ` / TEXT `NXHANWM[` / ISO `··!·{{` | `src/lib21/TCATALOG.mad:294` | добавлено |
+| `6HPERM` | GOST `РЕТН0000` / TEXT `PERM    ` / ISO `·\····` | `src/lib21/TCATALOG.mad:295` | добавлено |
+| `6HMACROS` | GOST `НБГТПУ00` / TEXT `MACROS  ` / ISO `····0·` | `src/lib21/TCATALOG.mad:296` | добавлено |
+| `6HRADDRE` | GOST `ТБДДТЕ00` / TEXT `RADDRE  ` / ISO `··$·P·` | `src/lib21/TCATALOG.mad:297` | добавлено |
+| `6HREFERS` | GOST `ТЕЖЕТУ00` / TEXT `REFERS  ` / ISO `·Y··0·` | `src/lib21/TCATALOG.mad:298` | добавлено |
+| `6H` | GOST `` / TEXT `` / ISO `` | `src/lib21/TCATALOG.mad:299` | добавлено |
+| `6HCBOБOД` | GOST `СВОБОД  ` / TEXT `QBNAND//` / ISO `·+··C·` | `src/lib21/TCATALOG.mad:300` | добавлено |
+| `6HHO` | GOST `ИП000000` / TEXT `HO      ` / ISO `······` | `src/lib21/TCATALOG.mad:302` | добавлено |
+

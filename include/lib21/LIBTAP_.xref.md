@@ -423,3 +423,29 @@
 | Э70 | BUF083 | не найдено в rukava.be | — | 3 | `src/lib21/LIBTAP_.mad:163`, `src/lib21/LIBTAP_.mad:195`, `src/lib21/LIBTAP_.mad:560` |
 | Э70 | BUF084 | не найдено в rukava.be | — | 2 | `src/lib21/LIBTAP_.mad:242`, `src/lib21/LIBTAP_.mad:542` |
 | Э70 | PLA078 | не найдено в rukava.be | — | 3 | `src/lib21/LIBTAP_.mad:508`, `src/lib21/LIBTAP_.mad:569`, `src/lib21/LIBTAP_.mad:576` |
+
+## Текстовые константы
+
+Проверено 18 констант модуля `src/lib21/LIBTAP_.mad`. Методика: `t6()` из `tools/extract_words.py` (6 бит/символ, 8 символов/слово), GOST-10859 (`gost10859.h`), ISO/ASCII (6 байт/слово). Для ASCII-Hollerith-литералов первичен TEXT-decode; для кириллических GOST-литералов — GOST-decode. Полная таблица с вердиктами — `logs/text_constants_audit.txt`.
+
+| Константа | Декодирование (GOST / TEXT / ISO) | Источник | Вердикт |
+|-----------|----------------------------------|----------|---------|
+| `=6H` | GOST `` / TEXT `` / ISO `` | `src/lib21/LIBTAP_.mad:27` | добавлено |
+| `=6HLIBRAR` | GOST `МЙВТБТ00` / TEXT `LIBRAR  ` / ISO `···· ·` | `src/lib21/LIBTAP_.mad:57` | добавлено |
+| `=6HY OT` | GOST `Щ0ПФ0000` / TEXT `Y OT    ` / ISO `······` | `src/lib21/LIBTAP_.mad:58` | добавлено |
+| `=6H'17''17''''03''17'''` | GOST `7@[77@[7` / TEXT `'17''17'` / ISO `······` | `src/lib21/LIBTAP_.mad:64` | добавлено |
+| `=6H00 00` | GOST `ее0ее000` / TEXT `00 00   ` / ISO `A··@··` | `src/lib21/LIBTAP_.mad:65` | добавлено |
+| `=6H'17''17''''17''17'''` | GOST `7@[77@[7` / TEXT `'17''17'` / ISO `······` | `src/lib21/LIBTAP_.mad:67` | добавлено |
+| `=6H00` | GOST `ее000000` / TEXT `00      ` / ISO `A·····` | `src/lib21/LIBTAP_.mad:68` | добавлено |
+| `=6H'''''7''7''7''7'` | GOST `77777[77` / TEXT `'''''7''` / ISO `·q··q·` | `src/lib21/LIBTAP_.mad:73` | добавлено |
+| `6HY 0000` | GOST `Щ0ееее00` / TEXT `Y 0000  ` / ISO `···A··` | `src/lib21/LIBTAP_.mad:81` | добавлено |
+| `27HЧИCЛO ПOДПPOГPAMM И BXOДOB` | GOST `ЧИСЛО ПО` / TEXT `WHQKN/ON` / ISO `··k···` | `src/lib21/LIBTAP_.mad:82` | добавлено |
+| `12HДЛИHA LIBRAR` | GOST `ДЛИНА 53` / TEXT `DKHM@/%#` / ISO `··-··C` | `src/lib21/LIBTAP_.mad:83` | добавлено |
+| `6H ЗOH` | GOST `ЗОН     ` / TEXT `GNM/////` / ISO `··O<··` | `src/lib21/LIBTAP_.mad:84` | добавлено |
+| `23HБИБЛИOTEKA HE ЗAПИCAHA,` | GOST `БИБЛИОТЕ` / TEXT `AHAKHNRE` / ISO `··k···` | `src/lib21/LIBTAP_.mad:85` | добавлено |
+| `42HБИБЛИOTEKA HE ЗAПИCAHA,T` | GOST `БИБЛИОТЕ` / TEXT `AHAKHNRE` / ISO `··k···` | `src/lib21/LIBTAP_.mad:86` | добавлено |
+| `42HБИБЛИOTEKA HE ЗAПИCAHA - OO072 KAT008'133''231'` | GOST `БИБЛИОТЕ` / TEXT `AHAKHNRE` / ISO `··k···` | `src/lib21/LIBTAP_.mad:87` | добавлено |
+| `36HИCПOPЧEH KAT008 TEMPORARY LIBRARY'133''231'` | GOST `ИСПОРЧЕН` / TEXT `HQONPWEM` / ISO `····ym` | `src/lib21/LIBTAP_.mad:88` | добавлено |
+| `24HИCПOPЧEHЫ ПOДПPOГPAMMЫ:'231'` | GOST `ИСПОРЧЕН` / TEXT `HQONPWEM` / ISO `····ym` | `src/lib21/LIBTAP_.mad:89` | добавлено |
+| `1H'231'` | GOST `7()@7000` / TEXT `'231'   ` / ISO `·$····` | `src/lib21/LIBTAP_.mad:91` | добавлено |
+

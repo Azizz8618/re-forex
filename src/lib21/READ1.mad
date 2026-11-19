@@ -27,7 +27,7 @@ ETX012 ,EQU,0000 0000 0000 0377         ; роль: константа-слов�
 ETX013 ,EQU,0000 0000 0000 0012         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:12661  ; (POLN: LIT_0000_0000_0000_0012)
 ETX014 ,EQU,0000 0000 0000 0001         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:12662  ; (POLN: LIT_0000_0000_0000_0001)
 ETX015 ,EQU,0000 0000 0077 0777         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:12663  ; (POLN: LIT_0000_0000_0077_0777)
-ETX016 ,EQU,14HNONTEXT CAR012-'231'     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:12665  ; (POLN: LIT_14HNONTEXT_CAR012__231_)
+ETX016 ,EQU,14HNONTEXT CAR012-'231'     ; роль: DEKOD GOST 'ОПОФЕШФ0' / TEXT 'NONTEXT ' / ISO '······' | GOST 'ГБТе@(,7' / TEXT 'CAR012-'' / ISO '···E#G' | GOST '()@70000' / TEXT '231'    ' / ISO 'I4G···' [источник: src/lib21/READ1.mad:30; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:12665  ; (POLN: LIT_14HNONTEXT_CAR012__231_)
 ETX017 ,EQU,776                         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:12668  ; (POLN: LIT_776)
 ETX018 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:12669  ; (POLN: LIT_1)
 С ---- конец блока констант ----
@@ -79,12 +79,12 @@ CALL,COS004 . вызов подпрограммы  ; S2:12611
 STI,EDC007 . сохранение в стек  ; S2:12614
 13,UJ, . переход/возврат  ; S2:12615
 FIL009: ASN,EDC008-EDC009  ; (POLN: FILE) ; S2:12616
-12,AUX,MAS020-C  ; S2:12617; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+12,AUX,MAS020-C  ; S2:12617; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; MAS020-C = маска = TEXT/GOST слово MAS020-C [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 12,XTS,BUF016-C . считывание с модификатором  ; S2:12618
 ASN,EDC008-EDC010  ; S2:12619
 15,AOX,  ; S2:12620
 12,ATX,INF023-C . запись с модификатором  ; S2:12621
-MAG010: 12,*70,INF023-C  ; (POLN: MAG) ; S2:12622 . Э70 INF023-C = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+MAG010: 12,*70,INF023-C  ; (POLN: MAG) ; S2:12622 . Э70 INF023-C = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово INF023-C — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 UTC,LIM003+EDC002 . сравнение/переход  ; S2:12623
 XTA . считывание в аккумулятор  ; S2:12624
 12,ARX,ETX006  ; S2:12625

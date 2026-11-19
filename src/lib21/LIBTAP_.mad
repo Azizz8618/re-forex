@@ -54,23 +54,23 @@ EDC038 ,EQU,20                          ; роль: десятичная кон�
 EDC039 ,EQU,14                          ; роль: десятичная константа/сдвиг; S2:1849  ; (POLN: DEC_14)
 EDC040 ,EQU,10                          ; роль: десятичная константа/сдвиг; S2:1889  ; (POLN: DEC_10)
 ETX040 ,EQU,=37                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1899  ; (POLN: LITERAL__37)
-ETX041 ,EQU,=6HLIBRAR                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1919  ; (POLN: LITERAL__6HLIBRAR)
-ETX042 ,EQU,=6HY OT                     ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1921  ; (POLN: LITERAL__6HY_OT)
+ETX041 ,EQU,=6HLIBRAR                   ; роль: DEKOD GOST 'МЙВТБТ00' / TEXT 'LIBRAR  ' / ISO '···· ·' [источник: src/lib21/LIBTAP_.mad:57; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1919  ; (POLN: LITERAL__6HLIBRAR)
+ETX042 ,EQU,=6HY OT                     ; роль: DEKOD GOST 'Щ0ПФ0000' / TEXT 'Y OT    ' / ISO '······' [источник: src/lib21/LIBTAP_.mad:58; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1921  ; (POLN: LITERAL__6HY_OT)
 EOC042 ,EQU,700B                        ; роль: восьмеричная константа; S2:1927  ; (POLN: OCT_700)
 EOC043 ,EQU,757B                        ; роль: восьмеричная константа; S2:1929  ; (POLN: OCT_757)
 ETX043 ,EQU,=4000 0000 0000 0001        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1931  ; (POLN: LITERAL__4000_0000_0000_0001)
 EOC044 ,EQU,67B                         ; роль: восьмеричная константа; S2:1933  ; (POLN: OCT_67)
 ETX044 ,EQU,=0000 1777 7400 0000        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1935  ; (POLN: LITERAL__0000_1777_7400_0000)
-ETX045 ,EQU,=6H'17''17''''03''17'''     ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1936  ; (POLN: LITERAL__6H_17__17____03__17___)
-ETX046 ,EQU,=6H00 00                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1937  ; (POLN: LITERAL__6H00_00)
+ETX045 ,EQU,=6H'17''17''''03''17'''     ; роль: DEKOD GOST '7@[77@[7' / TEXT ''17''17'' / ISO '······' | GOST '777е)77@' / TEXT ''''03''1' / ISO '·q·Lq·' | GOST '[7770000' / TEXT '7'''    ' / ISO '\q····' [источник: src/lib21/LIBTAP_.mad:64; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1936  ; (POLN: LITERAL__6H_17__17____03__17___)
+ETX046 ,EQU,=6H00 00                    ; роль: DEKOD GOST 'ее0ее000' / TEXT '00 00   ' / ISO 'A··@··' [источник: src/lib21/LIBTAP_.mad:65; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1937  ; (POLN: LITERAL__6H00_00)
 ETX047 ,EQU,=0000 0000 0377 7760        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1939  ; (POLN: LITERAL__0000_0000_0377_7760)
-ETX048 ,EQU,=6H'17''17''''17''17'''     ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1940  ; (POLN: LITERAL__6H_17__17____17__17___)
-ETX049 ,EQU,=6H00                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1941  ; (POLN: LITERAL__6H00)
+ETX048 ,EQU,=6H'17''17''''17''17'''     ; роль: DEKOD GOST '7@[77@[7' / TEXT ''17''17'' / ISO '······' | GOST '777@[77@' / TEXT ''''17''1' / ISO '·q·\q·' | GOST '[7770000' / TEXT '7'''    ' / ISO '\q····' [источник: src/lib21/LIBTAP_.mad:67; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1940  ; (POLN: LITERAL__6H_17__17____17__17___)
+ETX049 ,EQU,=6H00                       ; роль: DEKOD GOST 'ее000000' / TEXT '00      ' / ISO 'A·····' [источник: src/lib21/LIBTAP_.mad:68; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1941  ; (POLN: LITERAL__6H00)
 EDC049 ,EQU,6                           ; роль: десятичная константа/сдвиг; S2:1944  ; (POLN: DEC_6)
 EDC050 ,EQU,9                           ; роль: десятичная константа/сдвиг; S2:1946  ; (POLN: DEC_9)
 ETX050 ,EQU,=21 00000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1963  ; (POLN: LITERAL__21_00000)
 ETX051 ,EQU,=1777                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1965  ; (POLN: LITERAL__1777)
-ETX052 ,EQU,=6H'''''7''7''7''7'         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1969  ; (POLN: LITERAL__6H_____7__7__7__7_)
+ETX052 ,EQU,=6H'''''7''7''7''7'         ; роль: DEKOD GOST '77777[77' / TEXT ''''''7''' / ISO '·q··q·' | GOST '[77[77[7' / TEXT '7''7''7'' / ISO '\q··u·' [источник: src/lib21/LIBTAP_.mad:73; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1969  ; (POLN: LITERAL__6H_____7__7__7__7_)
 ETX053 ,EQU,=:7777 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1999  ; (POLN: LITERAL___7777_77)
 ETX054 ,EQU,=:5777 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:2000  ; (POLN: LITERAL___5777_77)
 ETX055 ,EQU,=3777                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:2003  ; (POLN: LITERAL__3777)
@@ -78,17 +78,17 @@ ETX056 ,EQU,=:0037 77                   ; роль: литерал (TEXT/OCT/GOS
 ETX057 ,EQU,=:0000 0100                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:2049  ; (POLN: LITERAL___0000_0100)
 EDC057 ,EQU,24                          ; роль: десятичная константа/сдвиг; S2:2060  ; (POLN: DEC_24)
 EDC058 ,EQU,19                          ; роль: десятичная константа/сдвиг; S2:2156  ; (POLN: DEC_19)
-ETX058 ,EQU,6HY 0000                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2159  ; (POLN: LIT_6HY_0000)
-ETX059 ,EQU,27HЧИCЛO ПOДПPOГPAMM И BXOДOB; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2160  ; (POLN: LIT_27H__C_O__O__PO_PAMM___BXO_OB)
-ETX060 ,EQU,12HДЛИHA LIBRAR             ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2162  ; (POLN: LIT_12H___HA_LIBRAR)
-ETX061 ,EQU,6H ЗOH                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2164  ; (POLN: LIT_6H__OH)
-ETX062 ,EQU,23HБИБЛИOTEKA HE ЗAПИCAHA,  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2165  ; (POLN: LIT_23H_____OTEKA_HE__A__CAHA_)
-ETX063 ,EQU,42HБИБЛИOTEKA HE ЗAПИCAHA,T ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2167  ; (POLN: LIT_42H_____OTEKA_HE__A__CAHA_T)
-ETX064 ,EQU,42HБИБЛИOTEKA HE ЗAПИCAHA - OO072 KAT008'133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2168  ; (POLN: LIT_42H_____OTEKA_HE__A__CAHA___OO)
-ETX065 ,EQU,36HИCПOPЧEH KAT008 TEMPORARY LIBRARY'133''231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2169  ; (POLN: LIT_36H_C_OP_EH_KAT008_TEMPORARY_L)
-ETX066 ,EQU,24HИCПOPЧEHЫ ПOДПPOГPAMMЫ:'231'; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2170  ; (POLN: LIT_24H_C_OP_EH___O__PO_PAMM___231)
+ETX058 ,EQU,6HY 0000                    ; роль: DEKOD GOST 'Щ0ееее00' / TEXT 'Y 0000  ' / ISO '···A··' [источник: src/lib21/LIBTAP_.mad:81; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2159  ; (POLN: LIT_6HY_0000)
+ETX059 ,EQU,27HЧИCЛO ПOДПPOГPAMM И BXOДOB; роль: DEKOD GOST 'ЧИСЛО ПО' / TEXT 'WHQKN/ON' / ISO '··k···' | GOST 'ДПРОГРАМ' / TEXT 'DOPNCP@L' / ISO '··.··,' | GOST 'М И ВХОД' / TEXT 'L/H/BUND' / ISO '····[·' | GOST 'ОВ      ' / TEXT 'NB//////' / ISO '·#·<··' [источник: src/lib21/LIBTAP_.mad:82; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2160  ; (POLN: LIT_27H__C_O__O__PO_PAMM___BXO_OB)
+ETX060 ,EQU,12HДЛИHA LIBRAR             ; роль: DEKOD GOST 'ДЛИНА 53' / TEXT 'DKHM@/%#' / ISO '··-··C' | GOST 'Г8Б8    ' / TEXT 'C(A(////' / ISO '··H<··' [источник: src/lib21/LIBTAP_.mad:83; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2162  ; (POLN: LIT_12H___HA_LIBRAR)
+ETX061 ,EQU,6H ЗOH                      ; роль: DEKOD GOST 'ЗОН     ' / TEXT 'GNM/////' / ISO '··O<··' [источник: src/lib21/LIBTAP_.mad:84; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2164  ; (POLN: LIT_6H__OH)
+ETX062 ,EQU,23HБИБЛИOTEKA HE ЗAПИCAHA,  ; роль: DEKOD GOST 'БИБЛИОТЕ' / TEXT 'AHAKHNRE' / ISO '··k···' | GOST 'КА НЕ ЗА' / TEXT 'J@/ME/G@' / ISO '······' | GOST 'ПИСАНА, ' / TEXT 'OHQ@M@-/' / ISO '··`··O' [источник: src/lib21/LIBTAP_.mad:85; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2165  ; (POLN: LIT_23H_____OTEKA_HE__A__CAHA_)
+ETX063 ,EQU,42HБИБЛИOTEKA HE ЗAПИCAHA,T ; роль: DEKOD GOST 'БИБЛИОТЕ' / TEXT 'AHAKHNRE' / ISO '··k···' | GOST 'КА НЕ ЗА' / TEXT 'J@/ME/G@' / ISO '······' | GOST 'ПИСАНА,Т' / TEXT 'OHQ@M@-R' / ISO '··`··r' [источник: src/lib21/LIBTAP_.mad:86; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2167  ; (POLN: LIT_42H_____OTEKA_HE__A__CAHA_T)
+ETX064 ,EQU,42HБИБЛИOTEKA HE ЗAПИCAHA - OO072 KAT008'133''231'; роль: DEKOD GOST 'БИБЛИОТЕ' / TEXT 'AHAKHNRE' / ISO '··k···' | GOST 'КА НЕ ЗА' / TEXT 'J@/ME/G@' / ISO '······' | GOST 'ПИСАНА -' / TEXT 'OHQ@M@/+' / ISO '··`···' | GOST ' ОО072 К' / TEXT '/NN '"/J' / ISO '>···#·' | GOST 'АТ008'13' / TEXT '@R  (;!#' / ISO '· ·!·C' | GOST '3''231' ' / TEXT '#;;"#!;/' / ISO '······' [источник: src/lib21/LIBTAP_.mad:87; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2168  ; (POLN: LIT_42H_____OTEKA_HE__A__CAHA___OO)
+ETX065 ,EQU,36HИCПOPЧEH KAT008 TEMPORARY LIBRARY'133''231'; роль: DEKOD GOST 'ИСПОРЧЕН' / TEXT 'HQONPWEM' / ISO '····ym' | GOST ' КАТ008 ' / TEXT '/J@R  (/' / ISO '>·2···' | GOST 'ТЕМРП8Б8' / TEXT 'RELPO(A(' / ISO '·[0··H' | GOST 'У 53Г8Б8' / TEXT 'S/%#C(A(' / ISO '··C··H' | GOST 'У'133''2' / TEXT 'S;!##;;"' / ISO '··C···' | GOST '31'     ' / TEXT '#!;/////' / ISO '···<··' [источник: src/lib21/LIBTAP_.mad:88; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2169  ; (POLN: LIT_36H_C_OP_EH_KAT008_TEMPORARY_L)
+ETX066 ,EQU,24HИCПOPЧEHЫ ПOДПPOГPAMMЫ:'231'; роль: DEKOD GOST 'ИСПОРЧЕН' / TEXT 'HQONPWEM' / ISO '····ym' | GOST 'Ы ПОДПРО' / TEXT '[/ONDOPN' / ISO '·····.' | GOST 'ГРАММЫ:'' / TEXT 'CP@LL[?;' / ISO '··,···' | GOST '231'    ' / TEXT '"#!;////' / ISO '·0[<··' [источник: src/lib21/LIBTAP_.mad:89; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2170  ; (POLN: LIT_24H_C_OP_EH___O__PO_PAMM___231)
 ETX067 ,EQU,20                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2171  ; (POLN: LIT_20)
-ETX068 ,EQU,1H'231'                     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2172  ; (POLN: LIT_1H_231_)
+ETX068 ,EQU,1H'231'                     ; роль: DEKOD GOST '7()@7000' / TEXT ''231'   ' / ISO '·$····' [источник: src/lib21/LIBTAP_.mad:91; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2172  ; (POLN: LIT_1H_231_)
 ETX069 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2174  ; (POLN: LIT_1)
 С ---- конец блока констант ----
 
@@ -160,7 +160,7 @@ AOX,ETX020  ; S2:1697
 AEX,ETX020  ; S2:1698
 ARX,IR061  ; S2:1699
 ATX,BUF083 . HAЧAЛO KATAЛOГA  ; S2:1700
-*70,BUF083  ; S2:1701 . Э70 BUF083 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF083  ; S2:1701 . Э70 BUF083 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF083 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 3,XTA,EDC020 . считывание в аккумулятор  ; S2:1702
 AAX,ETX021  ; S2:1703
 UZA,KAY058 . переход при =0  ; S2:1704
@@ -192,7 +192,7 @@ UZA,END026 . ECЛИ HET PERMANET  ; S2:1718
 XTA,BUF083 . считывание в аккумулятор  ; S2:1730
 14,VJM,NEX024 . CЛEД. TPAKT.  ; S2:1731
 ATX,BUF083 . запись с модификатором  ; S2:1732
-*70,BUF083  ; S2:1733 . Э70 BUF083 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF083  ; S2:1733 . Э70 BUF083 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF083 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 NOT023: 3,UTM,RBU011 . переход при >0  ; (POLN: NOT EMPT) ; S2:1734
 UJ,LOO021 . переход/возврат  ; S2:1735
 NEX024: ARX,ETX025  ; (POLN: NEXT*TRZ) ; S2:1736
@@ -228,18 +228,18 @@ UZA,FIN040 . BCE CCЫЛKИ.  ; S2:1764
 AAX,ETX030  ; S2:1766
 UZA,LOO027 . ЭTO BXOД  ; S2:1767
 2,XTA,EDC019 . считывание в аккумулятор  ; S2:1768
-APX,ETX031  ; S2:1769
-AUX,ETX032  ; S2:1770
+APX,ETX031  ; S2:1769  ; ETX031 = маска = TEXT/GOST слово =1740 0000 0000 0000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX032  ; S2:1770  ; ETX032 = маска = TEXT/GOST слово =1740 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 ATI,EDC032 . запись в индексный регистр  ; S2:1771
 3,UTM,RBU011 . переход при >0  ; S2:1772
 2,XTA,EDC019 . считывание в аккумулятор  ; S2:1773
-APX,ETX033  ; S2:1774
-AUX,ETX034  ; S2:1775
+APX,ETX033  ; S2:1774  ; ETX033 = маска = TEXT/GOST слово =4037 7700 0000 0000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX034  ; S2:1775  ; ETX034 = маска = TEXT/GOST слово =0004 0000 0077 0037 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 AOX,IR061  ; S2:1776
 ATX,BUF084 . запись с модификатором  ; S2:1777
 AEX,BUF083  ; S2:1778
 UZA,NOS028 . ЗOHA B ПAMЯTИ  ; S2:1779
-*70,BUF084 . ПOДKAЧAЛИ  ; S2:1780 . Э70 BUF084 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF084 . ПOДKAЧAЛИ  ; S2:1780 . Э70 BUF084 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF084 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 XTA,BUF084 . ЗOHY  ; S2:1781
 ATX,BUF083 . запись с модификатором  ; S2:1782
 NOS028: XTA,ETX035 . считывание в аккумулятор  ; (POLN: NO SWOP) ; S2:1783
@@ -394,12 +394,12 @@ AEX,ETX043  ; S2:1931
 UIA,CAK041 . переход  ; S2:1932
 *50,EOC044  ; S2:1933 . Э50 67 = СЕРВИСНЫЕ ЭКСТРАКОДЫ И ЭЛЕМЕНТАРНЫЕ ФУНКЦИИ (ИР 050 A), стр.264 [tyurin1985]
 15,ATX, . запись с модификатором  ; S2:1934
-APX,ETX044  ; S2:1935
-AUX,ETX045  ; S2:1936
+APX,ETX044  ; S2:1935  ; ETX044 = маска = TEXT/GOST слово =0000 1777 7400 0000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX045  ; S2:1936  ; ETX045 = маска = TEXT/GOST слово =6H'17''17''''03''17''' [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 AOX,ETX046  ; S2:1937
 2,STX,EDC017  ; S2:1938
-APX,ETX047  ; S2:1939
-AUX,ETX048  ; S2:1940
+APX,ETX047  ; S2:1939  ; ETX047 = маска = TEXT/GOST слово =0000 0000 0377 7760 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX048  ; S2:1940  ; ETX048 = маска = TEXT/GOST слово =6H'17''17''''17''17''' [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 AOX,ETX049 . 00  ; S2:1941
 UJ,YHA042 . переход/возврат  ; S2:1942
 CAK041: XTA,ETX018 . считывание в аккумулятор  ; (POLN: ДИCПAK) ; S2:1943
@@ -427,8 +427,8 @@ STX,LEN080 . 0-E CЛOBO KATAЛOГA  ; S2:1964
 ARX,ETX051  ; S2:1965
 ASN,EDC036+EDC040  ; S2:1966
 15,ATX, . запись с модификатором  ; S2:1967
-APX,ETX036  ; S2:1968
-AUX,ETX052  ; S2:1969
+APX,ETX036  ; S2:1968  ; ETX036 = маска = TEXT/GOST слово =7777 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX052  ; S2:1969  ; ETX052 = маска = TEXT/GOST слово =6H'''''7''7''7''7' [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 AOX,DOP065  ; S2:1970
 STX,LIB069  ; S2:1971
 NTR,EDC032  ; S2:1972
@@ -462,8 +462,8 @@ AOX,ETX053  ; S2:1999
 AEX,ETX054  ; S2:2000
 15,AOX,  ; S2:2001
 XTS,BUF085 . считывание с модификатором  ; S2:2002
-APX,ETX055  ; S2:2003
-AUX,ETX056  ; S2:2004
+APX,ETX055  ; S2:2003  ; ETX055 = маска = TEXT/GOST слово =3777 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX056  ; S2:2004  ; ETX056 = маска = TEXT/GOST слово =:0037 77 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 15,AOX,  ; S2:2005
 2,ATX,EDC019 . запись с модификатором  ; S2:2006
 4,XTA, . считывание в аккумулятор  ; S2:2007
@@ -505,7 +505,7 @@ XTA,PLA078 . считывание в аккумулятор  ; S2:2042
 ARX,IWC063  ; S2:2043
 ATX,PLA078 . запись с модификатором  ; S2:2044
 LOO047: 11,VZM,HET048 . переход при <0  ; (POLN: LOOPC4) ; S2:2045
-*70,PLA078 . CБPOC  ; S2:2046 . Э70 PLA078 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,PLA078 . CБPOC  ; S2:2046 . Э70 PLA078 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово PLA078 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 XTA,PLA078 . ПOЛHЫX  ; S2:2047
 14,VJM,NEX024 . ЗOH  ; S2:2048
 ARX,ETX057  ; S2:2049
@@ -527,19 +527,19 @@ ATX,PLA078 . запись с модификатором  ; S2:2063
 LOO049: 4,XTA, . считывание в аккумулятор  ; (POLN: LOOPWRSM) ; S2:2065
 ATI,EDC040 . ДЛИHA CM. B CЛOBAX  ; S2:2066
 10,VZM,FIN053 . переход при <0  ; S2:2067
-APX,ETX031  ; S2:2068
-AUX,ETX032 . YCTAHOBKA  ; S2:2069
+APX,ETX031  ; S2:2068  ; ETX031 = маска = TEXT/GOST слово =1740 0000 0000 0000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX032 . YCTAHOBKA  ; S2:2069  ; ETX032 = маска = TEXT/GOST слово =1740 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 ATI,EDC017 . CЛOBA ДЛЯ  ; S2:2070
 5,UTM,-EDC012 . ЧTEHИЯ CM.  ; S2:2071
 4,XTA, . считывание в аккумулятор  ; S2:2072
 4,UTM,EDC019 . переход при >0  ; S2:2073
-APX,ETX033  ; S2:2074
-AUX,ETX034  ; S2:2075
+APX,ETX033  ; S2:2074  ; ETX033 = маска = TEXT/GOST слово =4037 7700 0000 0000 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
+AUX,ETX034  ; S2:2075  ; ETX034 = маска = TEXT/GOST слово =0004 0000 0077 0037 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 AOX,IR061  ; S2:2076
 ATX,BUF084 . запись с модификатором  ; S2:2077
 AEX,BUF083  ; S2:2078
 UZA,INM050 . переход при =0  ; S2:2079
-*70,BUF084  ; S2:2080 . Э70 BUF084 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF084  ; S2:2080 . Э70 BUF084 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF084 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 XTA,BUF084 . считывание в аккумулятор  ; S2:2081
 ATX,BUF083 . запись с модификатором  ; S2:2082
 INM050: 10,VZM,LOO049 . переход при <0  ; (POLN: IN MEMOR) ; S2:2083
@@ -557,7 +557,7 @@ XTA,EDC022 . считывание в аккумулятор  ; S2:2090
 XTA,BUF083 . считывание в аккумулятор  ; S2:2095
 14,VJM,NEX024 . вызов через индексный регистр  ; S2:2096
 ATX,BUF083 . запись с модификатором  ; S2:2097
-*70,BUF083  ; S2:2098 . Э70 BUF083 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,BUF083  ; S2:2098 . Э70 BUF083 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово BUF083 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 15,XTA, . считывание в аккумулятор  ; S2:2099
 13,UJ, . переход/возврат  ; S2:2100
 WRW052: 3,UTM,EDC019 . переход при >0  ; (POLN: WRWRD) ; S2:2101
@@ -566,14 +566,14 @@ ATX,EDC022 . запись с модификатором  ; S2:2103
 13,UTC, . сравнение/переход  ; S2:2104
 3,VIM, . переход  ; S2:2105
 3,VTM,-EDC012 . установка индексного регистра  ; S2:2106
-*70,PLA078  ; S2:2107 . Э70 PLA078 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,PLA078  ; S2:2107 . Э70 PLA078 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово PLA078 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 XTA,PLA078 . считывание в аккумулятор  ; S2:2108
 14,VJM,NEX024 . вызов через индексный регистр  ; S2:2109
 ATX,PLA078 . запись с модификатором  ; S2:2110
 13,UJ, . переход/возврат  ; S2:2111
 FIN053: 3,UTM,EDC012 . переход при >0  ; (POLN: FINISH) ; S2:2112
 3,VZM,TAP054 . переход при <0  ; S2:2113
-*70,PLA078  ; S2:2114 . Э70 PLA078 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э70 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+*70,PLA078  ; S2:2114 . Э70 PLA078 = Memory/register dump [Besm6_Instruction_Set.md §6]; информационное слово PLA078 — адрес/объём дампа (контекст); НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (конкретное информационное слово не описано в справочниках)
 TAP054: WTC,END092  ; (POLN: TAPEFULL) ; S2:2115
 14,VTM,-NEWCAT . установка индексного регистра  ; S2:2116
 14,UTM,-EDC019 . переход при >0  ; S2:2117

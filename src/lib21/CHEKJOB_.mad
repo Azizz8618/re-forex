@@ -41,33 +41,33 @@ ETX022 ,EQU,=7                          ; роль: литерал (TEXT/OCT/GOS
 EDC022 ,EQU,32                          ; роль: десятичная константа/сдвиг; S1:6110  ; (POLN: DEC_32)
 EOC022 ,EQU,502B                        ; роль: восьмеричная константа; S1:6116  ; (POLN: OCT_502)
 EDC023 ,EQU,27                          ; роль: десятичная константа/сдвиг; S1:6119  ; (POLN: DEC_27)
-ETX023 ,EQU,=6H'7''7'''''''''           ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6120  ; (POLN: LITERAL__6H_7__7_________)
+ETX023 ,EQU,=6H'7''7'''''''''           ; роль: DEKOD GOST '7[77[777' / TEXT ''7''7'''' / ISO '·q·\q·' | GOST '77777700' / TEXT '''''''  ' / ISO '·q··p·' [источник: src/lib21/CHEKJOB_.mad:44; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6120  ; (POLN: LITERAL__6H_7__7_________)
 EDC024 ,EQU,13                          ; роль: десятичная константа/сдвиг; S1:6147  ; (POLN: DEC_13)
 EOC024 ,EQU,76B                         ; роль: восьмеричная константа; S1:6148  ; (POLN: OCT_76)
 EOC025 ,EQU,64B                         ; роль: восьмеричная константа; S1:6151  ; (POLN: OCT_64)
 EDC025 ,EQU,3                           ; роль: десятичная константа/сдвиг; S1:6155  ; (POLN: DEC_3)
 EOC026 ,EQU,166B                        ; роль: восьмеричная константа; S1:6158  ; (POLN: OCT_166)
 ETX026 ,EQU,=100 00000 00000            ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6163  ; (POLN: LITERAL__100_00000_00000)
-ETX027 ,EQU,=6H'360'''''''''''          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6166  ; (POLN: LITERAL__6H_360___________)
-ETX028 ,EQU,=6H'060'''''''''''          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6167  ; (POLN: LITERAL__6H_060___________)
+ETX027 ,EQU,=6H'360'''''''''''          ; роль: DEKOD GOST '7);е7777' / TEXT ''360''''' / ISO '·5··q·' | GOST '77777770' / TEXT '''''''' ' / ISO '·q··q·' [источник: src/lib21/CHEKJOB_.mad:51; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6166  ; (POLN: LITERAL__6H_360___________)
+ETX028 ,EQU,=6H'060'''''''''''          ; роль: DEKOD GOST '7е;е7777' / TEXT ''060''''' / ISO '····q·' | GOST '77777770' / TEXT '''''''' ' / ISO '·q··q·' [источник: src/lib21/CHEKJOB_.mad:52; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6167  ; (POLN: LITERAL__6H_060___________)
 EDC028 ,EQU,8                           ; роль: десятичная константа/сдвиг; S1:6172  ; (POLN: DEC_8)
 EDC029 ,EQU,17                          ; роль: десятичная константа/сдвиг; S1:6175  ; (POLN: DEC_17)
 EOC029 ,EQU,21B                         ; роль: восьмеричная константа; S1:6189  ; (POLN: OCT_21)
 EDC030 ,EQU,0                           ; роль: десятичная константа/сдвиг; S1:6193  ; (POLN: DEC_0)
-ETX030 ,EQU,=6H*CHE081                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6205  ; (POLN: LITERAL__6H_CHE081)
-ETX031 ,EQU,=6H(                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6208  ; (POLN: LITERAL__6H_)
+ETX030 ,EQU,=6H*CHE081                  ; роль: DEKOD GOST '+ГИЕе]@0' / TEXT '*CHE081 ' / ISO '*:%A·@' [источник: src/lib21/CHEKJOB_.mad:57; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6205  ; (POLN: LITERAL__6H_CHE081)
+ETX031 ,EQU,=6H(                        ; роль: DEKOD GOST '80000000' / TEXT '(       ' / ISO ' ·····' [источник: src/lib21/CHEKJOB_.mad:58; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6208  ; (POLN: LITERAL__6H_)
 EDC031 ,EQU,40                          ; роль: десятичная константа/сдвиг; S1:6209  ; (POLN: DEC_40)
 EDC032 ,EQU,24                          ; роль: десятичная константа/сдвиг; S1:6215  ; (POLN: DEC_24)
 ETX032 ,EQU,=6H                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6246  ; (POLN: LITERAL__6H)
 EDC033 ,EQU,42                          ; роль: десятичная константа/сдвиг; S1:6257  ; (POLN: DEC_42)
 EDC034 ,EQU,16                          ; роль: десятичная константа/сдвиг; S1:6273  ; (POLN: DEC_16)
 ETX034 ,EQU,=17 7777                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6278  ; (POLN: LITERAL__17_7777)
-ETX035 ,EQU,=6H-MU''''''                ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6283  ; (POLN: LITERAL__6H_MU______)
-ETX036 ,EQU,=6H     =                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6287  ; (POLN: LITERAL__6H______)
+ETX035 ,EQU,=6H-MU''''''                ; роль: DEKOD GOST ',НХ77777' / TEXT '-MU'''''' / ISO '6·G·q·' | GOST '70000000' / TEXT ''       ' / ISO '······' [источник: src/lib21/CHEKJOB_.mad:65; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6283  ; (POLN: LITERAL__6H_MU______)
+ETX036 ,EQU,=6H     =                   ; роль: DEKOD GOST '<0000000' / TEXT '=       ' / ISO 't·····' [источник: src/lib21/CHEKJOB_.mad:66; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6287  ; (POLN: LITERAL__6H______)
 ETX037 ,EQU,=377                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6288  ; (POLN: LITERAL__377)
-ETX038 ,EQU,=6H'''''''''1''7'           ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6291  ; (POLN: LITERAL__6H_________1__7_)
+ETX038 ,EQU,=6H'''''''''1''7'           ; роль: DEKOD GOST '77777777' / TEXT '''''''''' / ISO '·q··q·' | GOST '7@77[700' / TEXT ''1''7'  ' / ISO '···\p·' [источник: src/lib21/CHEKJOB_.mad:68; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6291  ; (POLN: LITERAL__6H_________1__7_)
 ETX039 ,EQU,=20 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6293  ; (POLN: LITERAL__20_0000)
-ETX040 ,EQU,=6H'''''1''7'''''           ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6296  ; (POLN: LITERAL__6H_____1__7_____)
+ETX040 ,EQU,=6H'''''1''7'''''           ; роль: DEKOD GOST '77777@77' / TEXT ''''''1''' / ISO '·q····' | GOST '[7777700' / TEXT '7'''''  ' / ISO '\q··p·' [источник: src/lib21/CHEKJOB_.mad:70; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6296  ; (POLN: LITERAL__6H_____1__7_____)
 ETX041 ,EQU,=40 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6298  ; (POLN: LITERAL__40_0000)
 ETX042 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6319  ; (POLN: LIT_1)
 EOC042 ,EQU,74100B                      ; роль: восьмеричная константа; S1:6334  ; (POLN: OCT_74100)
@@ -83,33 +83,33 @@ EOC048 ,EQU,762B                        ; роль: восьмеричная к�
 ETX048 ,EQU,=77777                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6370  ; (POLN: LITERAL__77777)
 ETX049 ,EQU,=4                          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6373  ; (POLN: LITERAL__4)
 ETX050 ,EQU,=7770 0000 7760 0000        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6390  ; (POLN: LITERAL__7770_0000_7760_0000)
-ETX051 ,EQU,2H '231'                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6457  ; (POLN: LIT_2H__231_)
-ETX052 ,EQU,8HMONITOR*                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6458  ; (POLN: LIT_8HMONITOR_)
+ETX051 ,EQU,2H '231'                    ; роль: DEKOD GOST '7()@7000' / TEXT ''231'   ' / ISO '·$····' [источник: src/lib21/CHEKJOB_.mad:86; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6457  ; (POLN: LIT_2H__231_)
+ETX052 ,EQU,8HMONITOR*                  ; роль: DEKOD GOST 'НПОЙФПТ+' / TEXT 'MONITOR*' / ISO '······' [источник: src/lib21/CHEKJOB_.mad:87; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6458  ; (POLN: LIT_8HMONITOR_)
 ETX053 ,EQU,12H                         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6460  ; (POLN: LIT_12H)
-ETX054 ,EQU,6HБЭCM-6                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6461  ; (POLN: LIT_6H__CM_6)
-ETX055 ,EQU,6H/0                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6462  ; (POLN: LIT_6H_0)
-ETX056 ,EQU,6H ШИФP-                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6463  ; (POLN: LIT_6H____P_)
-ETX057 ,EQU,6H00                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6464  ; (POLN: LIT_6H00)
-ETX058 ,EQU,36HMOHИTOPHAЯ C038ИCTEMA  '47'Д Y Б H A'47'  -; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6466  ; (POLN: LIT_36HMOH_TOPHA__C038_CTEMA___47_)
+ETX054 ,EQU,6HБЭCM-6                    ; роль: DEKOD GOST 'БЭСМ-6  ' / TEXT 'A]QL+&//' / ISO '··l,c·' [источник: src/lib21/CHEKJOB_.mad:89; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6461  ; (POLN: LIT_6H__CM_6)
+ETX055 ,EQU,6H/0                        ; роль: DEKOD GOST ' е000000' / TEXT '/0      ' / ISO '=·····' [источник: src/lib21/CHEKJOB_.mad:90; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6462  ; (POLN: LIT_6H_0)
+ETX056 ,EQU,6H ШИФP-                    ; роль: DEKOD GOST 'ШИФР-   ' / TEXT 'XHTP+///' / ISO '··0,··' [источник: src/lib21/CHEKJOB_.mad:91; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6463  ; (POLN: LIT_6H____P_)
+ETX057 ,EQU,6H00                        ; роль: DEKOD GOST 'ее000000' / TEXT '00      ' / ISO 'A·····' [источник: src/lib21/CHEKJOB_.mad:92; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6464  ; (POLN: LIT_6H00)
+ETX058 ,EQU,36HMOHИTOPHAЯ C038ИCTEMA  '47'Д Y Б H A'47'  -; роль: DEKOD GOST 'МОНИТОРН' / TEXT 'LNMHRNPM' / ISO '··h··-' | GOST 'АЯ С038И' / TEXT '@_/Q #(H' / ISO '····2(' | GOST 'СТЕМА  '' / TEXT 'QREL@//;' / ISO '·)l···' | GOST '47'Д У Б' / TEXT '$';D/S/A' / ISO '·v·?3·' | GOST ' Н А'47'' / TEXT '/M/@;$';' / ISO '>··lA·' | GOST '  -     ' / TEXT '//+/////' / ISO '<··<··' [источник: src/lib21/CHEKJOB_.mad:93; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6466  ; (POLN: LIT_36HMOH_TOPHA__C038_CTEMA___47_)
 ETX059 ,EQU,2                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6467  ; (POLN: LIT_2)
 ETX060 ,EQU,14 0000 0021 0001           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6468  ; (POLN: LIT_14_0000_0021_0001)
 ETX061 ,EQU,4014 0003 0021 0101         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6469  ; (POLN: LIT_4014_0003_0021_0101)
 ETX062 ,EQU,0000 37                     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6470  ; (POLN: LIT_0000_37)
 ETX063 ,EQU,4000 0000                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6472  ; (POLN: LIT_4000_0000)
 ETX064 ,EQU,04                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6473  ; (POLN: LIT_04)
-ETX065 ,EQU,6H*DOS                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6474  ; (POLN: LIT_6H_DOS)
-ETX066 ,EQU,6H'377'00000                ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6475  ; (POLN: LIT_6H_377_00000)
-ETX067 ,EQU,6H'377''377'0000            ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6476  ; (POLN: LIT_6H_377__377_0000)
-ETX068 ,EQU,6H0000'377''377'            ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6477  ; (POLN: LIT_6H0000_377__377_)
-ETX069 ,EQU,21HOTCYTCTBYET П/K *NAME    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6483  ; (POLN: LIT_21HOTCYTCTBYET___K__NAME)
-ETX070 ,EQU,15HOШИБKA B KAPTE-          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6484  ; (POLN: LIT_15HO___KA_B_KAPTE_)
-ETX071 ,EQU,15HCHECK PAHOBATO           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6486  ; (POLN: LIT_15HCHECK_PAHOBATO)
+ETX065 ,EQU,6H*DOS                      ; роль: DEKOD GOST '+ДПУ0000' / TEXT '*DOS    ' / ISO '*K····' [источник: src/lib21/CHEKJOB_.mad:100; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6474  ; (POLN: LIT_6H_DOS)
+ETX066 ,EQU,6H'377'00000                ; роль: DEKOD GOST '7)[[7еее' / TEXT ''377'000' / ISO '·5····' | GOST 'ее000000' / TEXT '00      ' / ISO 'A·····' [источник: src/lib21/CHEKJOB_.mad:101; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6475  ; (POLN: LIT_6H_377_00000)
+ETX067 ,EQU,6H'377''377'0000            ; роль: DEKOD GOST '7)[[77)[' / TEXT ''377''37' / ISO '·5··t·' | GOST '[7ееее00' / TEXT '7'0000  ' / ISO '\t·A··' [источник: src/lib21/CHEKJOB_.mad:102; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6476  ; (POLN: LIT_6H_377__377_0000)
+ETX068 ,EQU,6H0000'377''377'            ; роль: DEKOD GOST 'ееее7)[[' / TEXT '0000'377' / ISO 'A···5·' | GOST '77)[[700' / TEXT '''377'  ' / ISO '·t·\p·' [источник: src/lib21/CHEKJOB_.mad:103; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6477  ; (POLN: LIT_6H0000_377__377_)
+ETX069 ,EQU,21HOTCYTCTBYET П/K *NAME    ; роль: DEKOD GOST 'ОТСУТСТВ' / TEXT 'NRQSRQRB' / ISO '·,s···' | GOST 'УЕТ П/К ' / TEXT 'SER/O,J/' / ISO '·\····' | GOST '*6АМЕ   ' / TEXT '9&@LE///' / ISO 'dh,···' [источник: src/lib21/CHEKJOB_.mad:104; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6483  ; (POLN: LIT_21HOTCYTCTBYET___K__NAME)
+ETX070 ,EQU,15HOШИБKA B KAPTE-          ; роль: DEKOD GOST 'ОШИБКА В' / TEXT 'NXHAJ@/B' / ISO '··!···' | GOST ' КАРТЕ- ' / TEXT '/J@PRE+/' / ISO '>·0·R·' [источник: src/lib21/CHEKJOB_.mad:105; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6484  ; (POLN: LIT_15HO___KA_B_KAPTE_)
+ETX071 ,EQU,15HCHECK PAHOBATO           ; роль: DEKOD GOST 'ГИЕГЛ0РБ' / TEXT 'CHECK PA' / ISO '··c··!' | GOST 'ИПВБФП00' / TEXT 'HOBATO  ' / ISO '······' [источник: src/lib21/CHEKJOB_.mad:106; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6486  ; (POLN: LIT_15HCHECK_PAHOBATO)
 EDC071 ,EQU,47                          ; роль: десятичная константа/сдвиг; S1:6487  ; (POLN: DEC_47)
-ETX072 ,EQU,19HПOBTOPHO OПPEДEЛEHO      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6488  ; (POLN: LIT_19H_OBTOPHO_O_PE_E_EHO)
-ETX073 ,EQU,20HHEПPABИЛЬHAЯ CCЫЛKA      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6489  ; (POLN: LIT_20HHE_PAB___HA__CC__KA)
-ETX074 ,EQU,18HHE OБ'47'ЯBЛEH ДИCK      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6491  ; (POLN: LIT_18HHE_O__47__B_EH___CK)
-ETX075 ,EQU,23HБЫЛИ OШИБKИ B YK PAБOTЫ  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6492  ; (POLN: LIT_23H_____O___K__B_YK_PA_OT_)
-ETX076 ,EQU,18H <ЭKCПPECC-ЗAДAЧA>       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6493  ; (POLN: LIT_18H___KC_PECC__A_A_A_)
+ETX072 ,EQU,19HПOBTOPHO OПPEДEЛEHO      ; роль: DEKOD GOST 'ПОВТОРНО' / TEXT 'ONBRNPMN' / ISO '·····n' | GOST ' ОПРЕДЕЛ' / TEXT '/NOPEDEK' / ISO '>···Ik' | GOST 'ЕНО     ' / TEXT 'EMN/////' / ISO '···<··' [источник: src/lib21/CHEKJOB_.mad:108; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6488  ; (POLN: LIT_19H_OBTOPHO_O_PE_E_EHO)
+ETX073 ,EQU,20HHEПPABИЛЬHAЯ CCЫЛKA      ; роль: DEKOD GOST 'НЕПРАВИЛ' / TEXT 'MEOP@BHK' / ISO '·[··*+' | GOST 'ЬНАЯ ССЫ' / TEXT '\M@_/QQ[' / ISO '··??·{' | GOST 'ЛКА     ' / TEXT 'KJ@/////' / ISO '···<··' [источник: src/lib21/CHEKJOB_.mad:109; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6489  ; (POLN: LIT_20HHE_PAB___HA__CC__KA)
+ETX074 ,EQU,18HHE OБ'47'ЯBЛEH ДИCK      ; роль: DEKOD GOST 'НЕ ОБ'47' / TEXT 'ME/NA;$'' / ISO '·S····' | GOST ''ЯВЛЕН Д' / TEXT ';_BKEM/D' / ISO 'o·····' | GOST 'ИСК     ' / TEXT 'HQJ/////' / ISO '···<··' [источник: src/lib21/CHEKJOB_.mad:110; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6491  ; (POLN: LIT_18HHE_O__47__B_EH___CK)
+ETX075 ,EQU,23HБЫЛИ OШИБKИ B YK PAБOTЫ  ; роль: DEKOD GOST 'БЫЛИ ОШИ' / TEXT 'A[KH/NXH' / ISO '···>·(' | GOST 'БКИ В УК' / TEXT 'AJH/B/SJ' / ISO '······' | GOST ' РАБОТЫ ' / TEXT '/P@ANR[/' / ISO '?·!·.·' [источник: src/lib21/CHEKJOB_.mad:111; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6492  ; (POLN: LIT_23H_____O___K__B_YK_PA_OT_)
+ETX076 ,EQU,18H <ЭKCПPECC-ЗAДAЧA>       ; роль: DEKOD GOST '<ЭКСПРЕС' / TEXT '=]JQOPEQ' / ISO 'w····q' | GOST 'С-ЗАДАЧА' / TEXT 'Q+G@D@W@' / ISO '······' | GOST '>       ' / TEXT '>///////' / ISO 'x··<··' [источник: src/lib21/CHEKJOB_.mad:112; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6493  ; (POLN: LIT_18H___KC_PECC__A_A_A_)
 ETX077 ,EQU,144                         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6494  ; (POLN: LIT_144)
 С ---- конец блока констант ----
 
@@ -174,7 +174,7 @@ AEX,MON095  ; S1:6088
 U1A,NOS048  ; S1:6089
 XTA,RM+EDC013 . MAГAЗИH  ; S1:6090
 ASN,EDC018-EDC020  ; S1:6091
-AUX,ETX020  ; S1:6092
+AUX,ETX020  ; S1:6092  ; ETX020 = маска = TEXT/GOST слово =:0000 3703 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 AOX,ETX021  ; S1:6093
 ATX,STA008 . запись с модификатором  ; S1:6094
 ATX,INFLOA . запись с модификатором  ; S1:6095
@@ -202,7 +202,7 @@ DIS050: IFSEQ,D,DD**  ; (POLN: DISP) ; S1:6115
 ATI,EDC016 . запись в индексный регистр  ; S1:6117
 14,*63,  ; S1:6118
 ASN,EDC018-EDC023  ; S1:6119
-AUX,ETX023  ; S1:6120
+AUX,ETX023  ; S1:6120  ; ETX023 = маска = TEXT/GOST слово =6H'7''7''''''''' [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 AOX,SHI098  ; S1:6121
 ATX,SHI098 . запись с модификатором  ; S1:6122
 DIS051: ENDIF  ; (POLN: DISP) ; S1:6123
@@ -373,12 +373,12 @@ AEX,ETX036  ; S1:6287
 AAX,ETX037  ; S1:6288
 UIA,GIV065 . переход  ; S1:6289
 XTA,NACA+EDC012 . RUN JOB  ; S1:6290
-APX,ETX038  ; S1:6291
+APX,ETX038  ; S1:6291  ; ETX038 = маска = TEXT/GOST слово =6H'''''''''1''7' [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 ASN,EDC018+EDC028  ; S1:6292
 AOX,ETX039 . BIT17  ; S1:6293
 UJ,TOI064 . переход/возврат  ; S1:6294
 MUJ063: XTA,NACA+EDC013 . считывание в аккумулятор  ; (POLN: MUJ) ; S1:6295
-APX,ETX040  ; S1:6296
+APX,ETX040  ; S1:6296  ; ETX040 = маска = TEXT/GOST слово =6H'''''1''7''''' [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
 ASN,EDC018+EDC028  ; S1:6297
 AOX,ETX041 . BIT18  ; S1:6298
 TOI064: AOX,INF121  ; (POLN: TOINFBA) ; S1:6299

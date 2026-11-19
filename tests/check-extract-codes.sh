@@ -25,9 +25,32 @@
 #   ". Э57 1263 = ..., стр.264 [tyurin1985]"      — экстракод по Тюрину
 #   ". Э65 502 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985
 #      (...; информационное слово — адрес/данные)" — экстракод без расшифровки
-#   ". опк 36 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) =
-#      ASN (сда): сдвиг по адресу; аргумент — величина сдвига N−64 ...;
-#      GATAD = константа сдвига N−64 (не адрес)"    — команда
+#   ". ASN: 4037B → N=0o37(31)=64−33 ⇒ ,ASN,64-33 — сдвиг ВЛЕВО на 33
+#      [monitor80-re/chekjob/mvstack.asm:17; Besm6_Instruction_Set.md §6]" — ASN
+#     (. опк 36 (...) = ASN (сда): ...; GATAD = N в форме 64+n ... — УСТАРЕЛО)
+#
+# АРГУМЕНТ ASN: ,ASN,64+N — сдвиг ВПРАВО, ,ASN,64−N — сдвиг ВЛЕВО;
+#   N = EA[7:1] — младшие 7 разрядов адреса (Besm6_Instruction_Set.md §6),
+#   а НЕ весь адрес.  Требуется явная формула для каждого вхождения.
+#
+# ЭКСТРАКОДЫ 060/070: класс по Besm6_Instruction_Set.md §6 —
+#   060 = I/O control (input), 070 = Memory/register dump;
+#   конкретное информационное слово не найдено — сохраняем пометку ОБОИХ
+#   справочников и добавляем класс + контекстную интерпретацию слова.
+#
+# 033 В LO*GEN — STOP (2-я структура, Format 2), не EXT/увв; мнемоника `33`.
+#
+# КЛАССЫ АРГУМЕНТОВ 020/021 (запрос пользователя 2026-11-19: аргументы APX/AUX
+# «нередко работают с текстом»).  Для КАЖДОГО из 307 вхождений APX/AUX
+# проверяется явная интерпретация аргумента; класс считается по токену и его
+# EQU-значению (``ec.classify_apx_aux_argument``), ожидаемая пометка —
+# ``ec.apx_aux_argument_note``:
+#   mask-word (text) — НЕ адрес: 8-символьное TEXT/ISO/GOST слово-маска
+#     (OCT-слово 0160 3407 0160 34 [star%.masm:490], *0353B [paramt%.masm:365],
+#     =6H'…' [edit%%%.asm:996], ETX*-литералы =6H/=:/=NNNN NNNN);
+#   immediate-code   — код/счётчик в младших разрядах, не адрес
+#     (AUX 25B/43B/44B в DATAPR/OCTTDEC, DV043=MONTHFI, DV044=DATE2);
+#   address          — адрес слова-маски, НЕ адрес данных (AC153D, EX4254).
 #
 # Старая формулировка "НЕ НАЙДЕНО в rukava.be" считается FAIL.
 # Отчёт: logs/extract_codes_check.txt
@@ -73,9 +96,10 @@ w('КРИТИЧЕСКОЕ ПРАВИЛО: коды 020..047 — КОМАНДЫ �
 w('ФОРМАТ: ec.FORMAT_LABEL = ' + ec.FORMAT_LABEL + '; besm6tape.py:84 проверяет тот же разряд')
 w('Источники расшифровок: rukava.be разд.1.4; Тюрин-1985; приоритет rukava.be > tyurin1985')
 w('Команды: ". опк NN (' + ec.FORMAT_LABEL + ') = <мнёмоника> (...); аргумент ... [CmdSheet/disbesm6]"')
-w('МНЕМОНИКИ: 020=APX (маска X); 021=AUX (маска X); 033=EXT (код операции ВВ); 036=ASN (сдвиг N−64); 046/047=*46/*47 (аргумент не интерпретируется)')
+w('МНЕМОНИКИ: 020=APX (маска X); 021=AUX (маска X); 033=EXT (увв, привил. ОС), но в LO*GEN 033=STOP (Format 2, мнемоника `33`); 036=ASN (,ASN,64+N — вправо, ,ASN,64−N — влево; N=EA[7:1]); 046/047=*46/*47 (аргумент не интерпретируется)')
 w('Запрещены: *20/*21/*33/*36 в коде, LONG, "Additional system call", "flush BRZ", "в LONG-формате stop/стоп", "втбрз"')
 w('Экстракоды без расшифровки: "НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (...)"')
+w('Классы экстракодов: Э60=I/O control (input), Э70=Memory/register dump, Э71=Debug output [Besm6_Instruction_Set.md §6] + контекст информационного слова')
 w('')
 
 # 0. Глобальная проверка: в исходниках не осталось команд, названных экстракодами.
@@ -98,6 +122,7 @@ EXPECTED_MNEMONIC['47'] = '*47'
 stale = []
 stale_short = []
 stale_mnem = []
+stale_033 = []
 sources = (sorted((root / 'src').glob('*.mad'))
            + sorted((root / 'src' / 'lib21').glob('*.mad')))
 for path in sources:
@@ -111,6 +136,14 @@ for path in sources:
         code_part = line[:cut.start()] if cut else line
         if STALE_MNEM_RE.search(code_part):
             stale_mnem.append((str(path.relative_to(root)), no, line.strip()[:110]))
+        # 033 в пользовательском генераторе кода — STOP (Format 2), не EXT/увв.
+        if path.name == 'LO_GEN.mad':
+            if re.search(r'(?<![A-Za-z0-9_])EXT\s*,', code_part):
+                stale_033.append((str(path.relative_to(root)), no,
+                                  'EXT — привилегированная команда ОС; в LO*GEN 033 = STOP'))
+            if re.search(r',\s*33\s*,', code_part) and 'STOP' not in line:
+                stale_033.append((str(path.relative_to(root)), no,
+                                  'нет пометки STOP (Format 2)'))
 if stale:
     w('FAIL: команды 020..047 всё ещё помечены как экстракоды:')
     for f, n, t in stale:
@@ -134,6 +167,14 @@ if stale_mnem:
     w('')
 else:
     w('OK: в коде нет *20/*21/*33/*36 — используются APX/AUX/EXT/ASN')
+    w('')
+if stale_033:
+    w('FAIL: в LO*GEN opcode 033 помечен как EXT/увв (должен быть STOP, Format 2):')
+    for f, n, t in stale_033:
+        w(f'  {f}:{n}: {t}')
+    w('')
+else:
+    w('OK: в LO*GEN opcode 033 = STOP (Format 2), мнемоника `33`, не EXT/увв')
     w('')
 
 seen = set()
@@ -162,31 +203,49 @@ for r in rows:
         n_commands += 1
         norm = format(int(r['code'].lstrip('Э*'), 8), '02o')
         ref = r['command_ref']
-        # Канонический комментарий целиком (формат, мнёмоника, аргумент, источник).
-        canonical = ec.make_command_comment(r['code'])
-        marker = f'. опк {norm} ({ec.FORMAT_LABEL}) = '
-        ok = marker in line and canonical in line
-        if ok:
-            meaning = ec.COMMAND_STATEMENTS.get(norm, '')
-            if meaning not in line:
-                ok = False
+        expect = EXPECTED_MNEMONIC.get(norm)
+        if norm == '36':
+            # Явная формула Монитор-80 для КАЖДОГО вхождения:
+            #   ,ASN,64+N → вправо; ,ASN,64−N → влево; N = EA[7:1]
+            #   (младшие 7 разрядов адреса, Besm6_Instruction_Set.md §6).
+            expected_comment = ec.make_asn_comment(str(r['info']))
+            ok = expected_comment in line
+            if not ok:
                 cmd_bad.append((frel, r['line'], r['code'], r['info'],
-                                f'нет значения «{meaning}»'))
-            expect = EXPECTED_MNEMONIC.get(norm)
+                                'нет явной формулы ASN (Монитор-80 64±N)'))
             found = r.get('opcode_mnemonic')
             if found != expect:
                 ok = False
                 cmd_bad.append((frel, r['line'], r['code'], r['info'],
                                 f'мнёмоника {found!r}, ожидалась {expect!r}'))
-            op = r.get('token')
-            if op and ec.ARGUMENT_NOTES.get(norm) and \
-                    f'; {op} = {ec.ARGUMENT_NOTES[norm]}' not in line:
-                ok = False
-                cmd_bad.append((frel, r['line'], r['code'], r['info'],
-                                f'нет интерпретации аргумента {op}'))
+            formula, N, k, madlen, word = ec.asn_shift(str(r['info']))
+            label = f'ASN опк 36: {formula}'
+        else:
+            # Канонический комментарий целиком (формат, мнёмоника, аргумент, источник).
+            canonical = ec.make_command_comment(r['code'])
+            marker = f'. опк {norm} ({ec.FORMAT_LABEL}) = '
+            ok = marker in line and canonical in line
+            if ok:
+                meaning = ec.COMMAND_STATEMENTS.get(norm, '')
+                if meaning not in line:
+                    ok = False
+                    cmd_bad.append((frel, r['line'], r['code'], r['info'],
+                                    f'нет значения «{meaning}»'))
+                found = r.get('opcode_mnemonic')
+                if found != expect:
+                    ok = False
+                    cmd_bad.append((frel, r['line'], r['code'], r['info'],
+                                    f'мнёмоника {found!r}, ожидалась {expect!r}'))
+                op = r.get('token')
+                expected_note = r.get('argument_note')
+                if op and expected_note and expected_note not in line:
+                    ok = False
+                    cmd_bad.append((frel, r['line'], r['code'], r['info'],
+                                    f'нет интерпретации аргумента {op} '
+                                    f'({r.get("argument_class")})'))
+            label = f'{expect} опк {norm} [{ref}]'
         if not ok:
             missing.append((frel, r['line'], r['code'], r['info']))
-        label = f'{expect} опк {norm} [{ref}]'
         status = 'OK' if ok else 'FAIL'
         w(f"{status:4} {frel}:{r['line']}: опк {norm} {r['info']} -> {label}")
         continue
@@ -215,6 +274,13 @@ for r in rows:
             if not (both or addr):
                 wrong_source.append((frel, r['line'], r['code'], r['info'],
                                      'нет «ни в rukava.be, ни в Тюрине-1985» или «адрес/данные»'))
+    if ok and r['code'] in ec.EXTRACT_CLASSES:
+        # Э60/Э70/Э71: класс экстракода по Besm6_Instruction_Set.md §6
+        # и контекстная интерпретация информационного слова обязательны.
+        class_comment = ec.make_extract_class_comment(r['code'], str(r['info']))
+        if class_comment not in line:
+            wrong_source.append((frel, r['line'], r['code'], r['info'],
+                                 'нет класса экстракода (Besm6_Instruction_Set.md §6)'))
     if not ok:
         missing.append((frel, r['line'], r['code'], r['info']))
     status = 'OK' if ok else 'FAIL'
@@ -222,6 +288,57 @@ for r in rows:
     w(f"{status:4} {frel}:{r['line']}: {r['code']} {r['info']} "
       f"-> {(r['description'] or '—')[:60]} [{label}]")
 
+# ── Классы аргументов APX/AUX: проверяем ВСЕ 307 вхождений ────────────────
+# Основной цикл выше видит только аннотированные строки (`. опк ...`), а
+# ETX/TL/MAS-операнды в lib21 имеют краткую пометку `; S:NNNN`.  Здесь
+# проверка дополнена до всех
+# инструкций 020/021 с аргументом, независимо от вида комментария.
+argclass_bad = []
+argclass_counts = Counter()
+argclass_lines = 0
+arg_noarg = 0
+APX_ARG_RE = re.compile(
+    r'(?:(?<=^)|(?<=[,:])|(?<=\s))\s*(APX|AUX)\s*,\s*'
+    r'([A-Za-z0-9_#$()+\-=:]+)'
+)
+APX_NOARG_RE = re.compile(r'(?:^|[,:]|\s)(APX|AUX)\s*,\s*(?=\s|\.|;|$)')
+EQU_SIMPLE_RE = re.compile(
+    r'^\s*([A-Za-z][A-Za-z0-9_#$]*)\s*,\s*EQU\s*,\s*(.*?)\s*(?:[.;].*)?$'
+)
+for path in sources:
+    frel = str(path.relative_to(root))
+    lines = path.read_text(encoding='utf-8', errors='replace').splitlines()
+    local_equ = {}
+    for ln in lines:
+        em = EQU_SIMPLE_RE.match(ln)
+        if em:
+            local_equ[em.group(1)] = em.group(2).strip()
+    for no, line in enumerate(lines, 1):
+        head = re.split(r'\s+[.;]', line, maxsplit=1)[0]
+        am = APX_ARG_RE.search(head)
+        if not am:
+            if APX_NOARG_RE.search(head):
+                arg_noarg += 1
+            continue
+        tok = am.group(2)
+        info = local_equ.get(tok, '')
+        cls = ec.classify_apx_aux_argument(tok, info)
+        note = ec.apx_aux_argument_note(tok, info)
+        argclass_counts[cls] += 1
+        argclass_lines += 1
+        if note not in line:
+            argclass_bad.append((frel, no, tok, cls))
+w('КЛАССЫ АРГУМЕНТОВ 020/021 (APX/AUX)')
+for cls in ec.APX_AUX_ARG_CLASSES:
+    w(f'  {cls:<18}: {argclass_counts[cls]}')
+w(f'  инструкций с аргументом: {argclass_lines}; без аргумента: {arg_noarg}')
+if argclass_bad:
+    w(f'FAIL: у {len(argclass_bad)} APX/AUX нет явной интерпретации аргумента:')
+    for f, n, t, c in argclass_bad:
+        w(f'  {f}:{n}: {t} — ожидался класс {c}')
+else:
+    w('OK: у всех инструкций APX/AUX аргумент явно классифицирован '
+      '(mask-word (text) / immediate-code / address)')
 w('')
 w(f'Вхождений: {len(seen)} (команд 020..047: {n_commands}; экстракодов 050..077: {n_extracts})')
 w(f'Уникальных пар экстракодов: {len(pairs_seen)}')
@@ -251,9 +368,13 @@ if cmd_bad:
     for f, n, c, i, s in cmd_bad:
         w(f'  {f}:{n}: {c} {i} — {s}')
 
-fail = bool(missing or wrong_source or cmd_bad or stale or stale_short or stale_mnem)
+fail = bool(missing or wrong_source or cmd_bad or stale or stale_short
+            or stale_mnem or stale_033 or argclass_bad)
 if not fail:
-    w('OK: мнёмоники APX/AUX/EXT/ASN и комментарии «' + ec.FORMAT_LABEL + '» корректны; экстракоды 050..077 расшифрованы')
+    w('OK: мнёмоники APX/AUX/EXT/ASN, классы аргументов 020/021 '
+      '(mask-word (text) / immediate-code / address), явные формулы ASN '
+      '(Монитор-80 64±N), классы Э60/Э70/Э71 и 033=STOP в LO*GEN корректны; '
+      'экстракоды 050..077 расшифрованы')
 else:
     w('FAIL: часть мнёмоник/комментариев отсутствует или неверна')
 report.write_text('\n'.join(out) + '\n', encoding='utf-8')

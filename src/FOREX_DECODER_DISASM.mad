@@ -1,3 +1,4 @@
+C  VERSION STAMP FOREX 5.00 (re-forex); host banner 2.02 is external
 C***********************************************************************
 C* FOREX_DECODER_DISASM — скомпилированные тела внешних подпрограмм       *
 C*                         DATE_PRINT (DATAPR*) и OCT_DEC (OCTTDEC)       *
@@ -161,7 +162,7 @@ DP003   ,BSS,.        ; DARET — полное имя: DATE_PARSE; S5:7661
 C Слово 0005 @0o000005 = 0o6403003274037776
         ,XTS,DV032    ; XTS 32B — DATE0; S5:7662
         ,XTS,DN02     ; XTS -2; S5:7659
-        ,AUX,DV043    ; AUX 43B — MONTHFI; S5:7663
+        ,AUX,DV043    ; AUX 43B — MONTHFI; S5:7663  ; DV043 = аргумент = код DD из даты (младшие разряды) = 43, не адрес [besmmons/system1.txt:7663,7682,7700; src/FOREX_DECODER_DISASM.mad:67,72,76,164,184,213]
         ,ASN,D64P16   ; ASN 64+16 — выделить DD; S5:7664
         ,AOX,DV033    ; AOX 33B — DATE1; S5:7664
         ,XTS,DN03     ; XTS -3; S5:7663
@@ -181,12 +182,12 @@ C Слово 0015 @0o000015 = 0o0036005074037774
         ,ASN,D64M24   ; ASN 64-24 — индекс месяца; S5:7677
         ,XTS,DN04     ; XTS -4; S5:7676
         ,ASN,D64M14   ; ASN 64-14 — YY; S5:7679
-        ,AUX,DV044    ; AUX 44B — DATE2; S5:7682
+        ,AUX,DV044    ; AUX 44B — DATE2; S5:7682  ; DV044 = аргумент = код DD из даты (младшие разряды) = 44, не адрес [besmmons/system1.txt:7663,7682,7700; src/FOREX_DECODER_DISASM.mad:67,72,76,164,184,213]
         ,AOX,DS00     ; AOX; S5:7682
         ,AOX,DV034    ; AOX 34B — DATE3; S5:7685
         ,XTS,DN04     ; XTS -4; S5:7685
         ,ASN,D64M22   ; ASN 64-22 — HH.MM; S5:7684
-        ,AUX,DV043    ; AUX 43B — MONTHFI; S5:7686
+        ,AUX,DV043    ; AUX 43B — MONTHFI; S5:7686  ; DV043 = аргумент = код DD из даты (младшие разряды) = 43, не адрес [besmmons/system1.txt:7663,7682,7700; src/FOREX_DECODER_DISASM.mad:67,72,76,164,184,213]
         ,AOX,DV024    ; AOX 24B — DATE4; S5:7687
         ,XTS,DV035    ; XTS 35B — YMASK; S5:7688
         ,XTS,DN08     ; XTS -8; S5:7688
@@ -207,10 +208,10 @@ DP026   ,ENTRY,       ; PREPDAT — полное имя: DATE_PREPARE; S5:7698
         ,VJM,DP001    ; VJM DATE*; S5:7699
         ,ATX,DS00     ; ATX; S5:7699
         ,ASN,D64M14   ; ASN 64-14; S5:7699
-        ,AUX,DV024    ; AUX 24B
+        ,AUX,DV024    ; AUX 24B  ; DV024 = аргумент = код DD из даты (младшие разряды) = 24, не адрес [besmmons/system1.txt:7663,7682,7700; src/FOREX_DECODER_DISASM.mad:67,72,76,164,184,213]
         ,AOX,DV027    ; AOX 27B
         ,STX,DPDAT+1  ; STX DATA*+1; S5:7700
-        ,AUX,DV025    ; AUX 25B
+        ,AUX,DV025    ; AUX 25B  ; DV025 = аргумент = код DD из даты (младшие разряды) = 25, не адрес [besmmons/system1.txt:7663,7682,7700; src/FOREX_DECODER_DISASM.mad:67,72,76,164,184,213]
         ,AOX,DV026    ; AOX 26B
         ,STX,DPDAT    ; STX DATA*; S5:7701
         ,STI,DR13     ; STI 13; S5:7702
@@ -319,7 +320,7 @@ OXRET   ,BSS,.         ; RET — возврат; S7:445
         ,STX,DS00      ; STX; S7:445
         ,UTM,ON02      ; UTM -2; S7:445
         ,ASN,O64M24   ; ASN 64-24; S7:446
-        ,AUX,OXMSK     ; AUX MSK; S7:447
+        ,AUX,OXMSK     ; AUX MSK; S7:447  ; OXMSK = маска = TEXT/GOST слово 0360741703607417 [monitor80-re/permanent/star%.masm:490; monitor80-re/permanent/paramt%.masm:365; monitor80-re/permanent/edit%%%.asm:996], НЕ адрес данных
         ,AOX,OXZER     ; AOX ZERO; S7:448
         ,NTR,OI02      ; NTR 2; S7:448
         ,WTC,OI01      ; WTC 1; S7:449

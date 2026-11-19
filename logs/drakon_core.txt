@@ -1,0 +1,54 @@
+ДРАКОН-СХЕМЫ КОМПИЛЯТОРА ФОРЭКС — отчёт генерации и проверки
+===========================================================
+Дата: 2026-11-19
+Формат: re-siprod/DRAKON.md; генератор: re-siprod/tools/drakon_markup.py
+Печать: python3 tools/drakon_markup.py <scheme> | tests/siprod/run.sh -
+
+ИКОН (строк с ключевыми словами, включая ТО/ИНАЧЕ; по метрике
+tests/check-drakon.sh). В скобках — число икон без служебных ТО/ИНАЧЕ.
+  forex_root : 40 (37)
+  lo_syn     : 40 (38)
+  lo_gen     : 40 (38)
+Диапазон 20..40 соблюдён. Вложенных ВЕТКА нет, макс. длина строки 65/67/67.
+
+ФАЙЛЫ
+-----
+docs/drakon/forex_root.drakon
+  sha256 416b1c6f91bfa78d36f9305a0f032eb5d504c8703ab833205448f7dbf4df39a3
+docs/drakon/markup/forex_root.txt   6293 байт
+  sha256 6809b09eba720959d83efd6b4a4729855a180c5d7d2a24bd684d9dd2f2a457f0
+docs/drakon/printed/forex_root.txt 34522 байт
+  sha256 5f7213cccaa8aa047b098819d46df17deca489742a561e16c6b01eec10dbcd11
+
+docs/drakon/lo_syn.drakon
+  sha256 01718f53008ed9de4af9151860df69a0b4416f9187c517d1a15783b49ec8e7fc
+docs/drakon/markup/lo_syn.txt   6562 байт
+  sha256 b23e3c0cf47d3dacfb6f022fb1db46b043fd6c932bd846669c766c240e6a2ffb
+docs/drakon/printed/lo_syn.txt 34509 байт
+  sha256 c5c20233cb81d4e1cb49ef03a7ff7a455a7921cbd33e2c04ef36c3ace142ea23
+
+docs/drakon/lo_gen.drakon
+  sha256 64a7f6442a5f67213af1e4dce4f7686697c948da29db9804dd6a411982419227
+docs/drakon/markup/lo_gen.txt   6343 байт
+  sha256 e0bbbef3089a9fb2d40eb76471befb7daa2ac500f865dc7a7a714d02acf42e5f
+docs/drakon/printed/lo_gen.txt 34519 байт
+  sha256 6e697481eafe4faf5408729b662481f3bde51da230aedd2a63df0f7d8f0758f3
+
+ИДЕМПОТЕНТНОСТЬ РАЗМЕТКИ
+-------------------------
+drakon_markup.py запускался дважды для каждого .drakon; sha256 выводов
+совпадает с sha256 сохранённого markup/*.txt (проверено check-drakon.sh).
+Первая строка каждой разметки — *RED, последняя — *END.
+
+ПЕЧАТЬ НА БЭСМ-6
+----------------
+Схемы напечатаны СИПРОДом на АЦПУ через tests/siprod/run.sh (диск 2348,
+ПЕРСО зона 1088). stderr конвейера пуст для всех трёх схем. Каждая печать
+состоит из 4 страниц, содержит иконы (+----, |, (, /) и икону КОНЕЦ;
+диагностических строк с ОШИБКА / ERROR / Illegal — 0.
+
+ПРОВЕРКА
+--------
+bash tests/check-drakon.sh -> rc=0, все 9 схем OK (включая три новые).
+INDEX.md обновлён: добавлены строки forex_root / lo_syn / lo_gen,
+исправлены числа икон perso_build (39 -> 40) и длина строки (86 -> 80).

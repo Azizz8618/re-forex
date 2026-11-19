@@ -1,5 +1,5 @@
 === F77PREP v2 case case2 ===
-date    : 2026-11-19T13:02:47Z
+date    : 2026-11-19T13:46:20Z
 source  : /tmp/.private/azizz/opencode/re-forex/tests/f77/prep-case2.f77
 data    : /tmp/.private/azizz/opencode/re-forex/tests/f77/prep-case2.data
 OK: case case2: обе проверки пройдены
