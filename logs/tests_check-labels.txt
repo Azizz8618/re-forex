@@ -1,0 +1,5 @@
+OK src/LO_SYN.mad: авто-меток 0, в include/LO_SYN.labels.md 768 строк соответствий
+OK src/LO_GEN.mad: авто-меток 0, в include/LO_GEN.labels.md 1531 строк соответствий
+OK src/FOREX_CORE.mad: авто-меток 0, в include/FOREX.labels.md 317 строк соответствий
+OK src/FOREX_RUNTIME.mad: авто-меток 0, в include/FOREX.labels.md 317 строк соответствий
+OK include/FOREX_ROOT.mad: авто-меток 0, в include/FOREX.labels.md 317 строк соответствий

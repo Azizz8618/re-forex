@@ -1,0 +1,223 @@
+OK CORE label ^START:(\s+, ENTRY,)(\s+\._entry: 0o510303) \(INITFOR\*\): 1
+WARN не найдено: CORE label ^START:: ^START:
+OK CORE label ^X_DATAPRS ,: 1
+OK CORE label ^X_TAK_PG  ,: 1
+OK CORE label ^X_GIV_PG  ,: 1
+OK CORE label ^X_OCTTDEC ,: 1
+OK CORE label ^X_LOADANGO,: 1
+OK CORE label ^INITFOR:: 1
+OK CORE label ^NPR:: 1
+OK CORE label ^LOREX:: 1
+OK CORE label ^RMON:: 1
+OK CORE label ^PRIN:: 1
+OK CORE label ^STOP:: 1
+OK CORE ref ENTRY INITFOR\* \(libra: 1
+OK CORE ref CALL DATAPR\* \(VJM: 1
+OK CORE ref NPR: XTA FULISFL\*: 1
+OK CORE ref CALL GIV/PG \(VJM: 1
+OK CORE ref ENTRY LOREX \(15485\): 1
+OK CORE ref CALL LOADANGO \(VJM: 1
+OK CORE ref ENTRY RMON \(15490\): 1
+OK CORE ref CALL OCTTDEC \(VJM: 1
+OK CORE ref UJ 0o40023 → PRIN: 1
+OK CORE ref ENTRY STOP/ \(15511\): 1
+OK CORE ref UJ TAK/PG \(0o74011\): 1
+OK RUNTIME label *00004->FTD_TABLE_BASE: 2
+OK RUNTIME label *00005->FTD_LOOP: 3
+OK RUNTIME label *00010->FTD_OFFSET: 2
+OK RUNTIME label *00012->FTD_STORE: 3
+OK RUNTIME label *00026->FTD_TABLE_END: 4
+OK RUNTIME label *00027->FTD_CONST: 5
+OK RUNTIME label *00010->FL_AFTER_WRITE: 2
+OK RUNTIME label *00023->FL_SIGN_CHECK: 1
+OK RUNTIME label *00027->FL_XOR_LOOP: 2
+OK RUNTIME label *00032->FL_WTC_CASE: 2
+OK RUNTIME label *00036->FL_ALT_CASE: 2
+OK RUNTIME label *00042->FL_SHIFT_IN: 1
+OK RUNTIME label *00045->FL_COMPARE: 2
+OK RUNTIME label *00050->FL_MASK_CASE: 1
+OK RUNTIME label *00053->FL_ASSEMBLE: 1
+OK RUNTIME label *00061->FL_CONST_BASE: 42
+OK RUNTIME hdr 1: 1
+OK RUNTIME FORMAT name: 1
+OK RUNTIME hdr 2: 1
+OK RUNTIME FORTLIBR name: 1
+OK RUNTIME BUFFER: 1
+OK RUNTIME BUFFER refs: 6
+WARN не найдено: RUNTIME DATAPR ^(\s*)DATAPR\*(,NAME,): ^(\s*)DATAPR\*(,NAME,)
+WARN не найдено: RUNTIME DATAPR ^(\s*)DATAPR\*(,BSS,\.): ^(\s*)DATAPR\*(,BSS,\.)
+OK RUNTIME DATAPR ,UJ,DATAPR\*: 1
+WARN не найдено: RUNTIME DATAPR ^(\s*)DATE\*(,ENTRY,): ^(\s*)DATE\*(,ENTRY,)
+WARN не найдено: RUNTIME DATAPR ^(\s*)DATE\*(,BSS,): ^(\s*)DATE\*(,BSS,)
+OK RUNTIME DATAPR ,VJM,DATE\*: 1
+WARN не найдено: RUNTIME DATAPR ^(\s*)DARET(,BSS,): ^(\s*)DARET(,BSS,)
+WARN не найдено: RUNTIME DATAPR ^(\s*)L1(,WTC,): ^(\s*)L1(,WTC,)
+OK RUNTIME DATAPR ,UZA,L1: 1
+WARN не найдено: RUNTIME DATAPR ^L2,UTC,L3: ^L2,UTC,L3
+OK RUNTIME DATAPR ,UZA,L2: 1
+WARN не найдено: RUNTIME DATAPR ^L3:: ^L3:
+WARN не найдено: RUNTIME DATAPR ^B:13,BAS,B: ^B:13,BAS,B
+WARN не найдено: RUNTIME DATAPR ^(\s*)PREPDAT(,ENTRY,): ^(\s*)PREPDAT(,ENTRY,)
+WARN не найдено: RUNTIME DATAPR ^(\s*)MARR(,:): ^(\s*)MARR(,:)
+OK RUNTIME DATAPR ,XTA,MARR: 1
+WARN не найдено: RUNTIME DATAPR ^(\s*)DMASK(,:): ^(\s*)DMASK(,:)
+OK RUNTIME DATAPR ,AUX,DMASK: 1
+WARN не найдено: RUNTIME DATAPR ^(\s*)TMASK(,:): ^(\s*)TMASK(,:)
+WARN не найдено: RUNTIME DATAPR ^(\s*)YMASK(,:): ^(\s*)YMASK(,:)
+WARN не найдено: RUNTIME DATAPR ^(\s*)MONTHFI(,:): ^(\s*)MONTHFI(,:)
+OK RUNTIME DATAPR C----- 3\. DATAPR\*:: 1
+OK RUNTIME OCTTDEC6 C----- 4a\. OCTTDEC:: 1
+WARN не найдено: RUNTIME OCTTDEC6 ^(\s*)OCTTDEC(\s+:,NAME,): ^(\s*)OCTTDEC(\s+:,NAME,)
+WARN не найдено: RUNTIME OCTTDEC6 ^(\s*)C(\s+:,BSS,): ^(\s*)C(\s+:,BSS,)
+OK RUNTIME OCTTDEC6 ^(\s*)BEGIN(\s+:12,VTM,): 1
+OK RUNTIME OCTTDEC6 ^(\s*)CYCL(\s+:  ,NTR,): 1
+WARN не найдено: RUNTIME OCTTDEC6 ,UJ,CYCL: ,UJ,CYCL
+WARN не найдено: RUNTIME OCTTDEC6 ^(\s*)/6SYMB(\s+:,BSS,): ^(\s*)/6SYMB(\s+:,BSS,)
+OK RUNTIME OCTTDEC6 ,VLM,/6SYMB: 1
+OK RUNTIME OCTTDEC7 C----- 4b\. OCTTDEC:: 1
+WARN не найдено: RUNTIME OCTTDEC7 ^(\s*)OCTTDEC(,NAME,): ^(\s*)OCTTDEC(,NAME,)
+WARN не найдено: RUNTIME OCTTDEC7 ^L1:: ^L1:
+OK RUNTIME OCTTDEC7 ,UJ,L1: 1
+WARN не найдено: RUNTIME OCTTDEC7 ^RET:,STX,: ^RET:,STX,
+OK RUNTIME OCTTDEC7 ,UZA,RET: 1
+WARN не найдено: RUNTIME tail INITFOR\* \(FOREX*\) --CALL--> DATAPR\*: INITFOR\* \(FOREX*\) --CALL--> DATAPR\*
+OK RUNTIME tail INITFOR\*\s+--CALL--> GIV/PG: 1
+OK RUNTIME tail LOREX\s+--CALL--> LOADANGO: 1
+OK RUNTIME tail RMON\s+--CALL--> OCTTDEC: 1
+OK RUNTIME tail STOP/\s+--UJ---->  TAK/PG: 1
+OK RUNTIME tail DATAPR\* -> DATE\* \(FUN 67B\); PREPDAT -> DATE\* -> DATAPR\*: 1
+OK RUNTIME tail FORMAT   --UJ x11-->: 1
+OK RUNTIME tail FORTLIBR PRINT8 --VJM-->: 1
+OK RUNTIME tail DECODER  --экспорт--> OCTTDEC: 1
+OK RUNTIME tail FORMAT/DATAPR\*/OCTTDEC: 1
+OK RUNTIME tail PRINT8: база: 1
+OK ROOT C----- ~0o510303 INITFOR\*:: 1
+WARN не найдено: ROOT ^(\s*)INITFOR\*(,ENTRY,\.): ^(\s*)INITFOR\*(,ENTRY,\.)
+OK ROOT ,UIA,NPR : 1
+WARN не найдено: ROOT ^NPR:,XTA,FULISFL\*: ^NPR:,XTA,FULISFL\*
+OK ROOT C----- 0o510315  LOREX:: 1
+WARN не найдено: ROOT ^(\s*)LOREX(,ENTRY,\.): ^(\s*)LOREX(,ENTRY,\.)
+OK ROOT C----- 0o510317  RMON:: 1
+WARN не найдено: ROOT ^(\s*)RMON(,ENTRY,\.): ^(\s*)RMON(,ENTRY,\.)
+WARN не найдено: ROOT ^(PRIN:),\(\*64,INF\): ^(PRIN:),\(\*64,INF\)
+WARN не найдено: ROOT ^PRIN:,: ^PRIN:,
+OK ROOT ,UJ,PRIN : 1
+OK ROOT C----- 0o510332  STOP/:: 1
+WARN не найдено: ROOT ^(\s*)STOP/(,ENTRY,\.): ^(\s*)STOP/(,ENTRY,\.)
+OK ROOT ,UJ,TAK/PG\.: 1
+WARN не найдено: ROOT ^(\s*)GIV/PG(,NAME,): ^(\s*)GIV/PG(,NAME,)
+WARN не найдено: ROOT ^(\s*)TAK/PG(,ENTRY,\.): ^(\s*)TAK/PG(,ENTRY,\.)
+OK ROOT ,CALL,GIV/PG\.: 1
+OK ROOT ^(\s*)\*C:12,BASE,\*C\.: 1
+OK ROOT ,VTM,\*C\.: 1
+WARN не найдено: ROOT ^(\s*)FL\*SAV(,BSS,1\.): ^(\s*)FL\*SAV(,BSS,1\.)
+OK ROOT ,XTA,FL\*SAV\.: 1
+OK ROOT ^(\s*)COMM(:14,VTM,-2): 1
+OK ROOT ,UJ,COMM\.: 1
+OK ROOT ^(\s*)L/S(:14,UTC,2\.): 1
+OK ROOT ,VLM,L/S\.: 1
+WARN не найдено: ROOT ^(\s*)R17(,:,XTA,): ^(\s*)R17(,:,XTA,)
+OK ROOT ,Z00,R17: 1
+WARN не найдено: ROOT ^(\s*)Э67(,:,Z00,): ^(\s*)Э67(,:,Z00,)
+OK ROOT ,AEX,Э67 : 1
+WARN не найдено: ROOT ^(\s*)K67(,:,): ^(\s*)K67(,:,)
+OK ROOT ,XTA,K67: 1
+WARN не найдено: ROOT ^GO:,: ^GO:,
+OK ROOT ,UIA,GO\.: 1
+OK ROOT ^(\s*)\*W(\s+:,BSS,1\.): 1
+OK ROOT ,ATX,\*W\.: 1
+WARN не найдено: ROOT ^(\s*)\*S(\s+:,BSS,1\.): ^(\s*)\*S(\s+:,BSS,1\.)
+WARN не найдено: ROOT ,ATX,\*S\.: ,ATX,\*S\.
+WARN не найдено: ROOT ^(\s*)Э67\*(\s+:,BSS,1\.): ^(\s*)Э67\*(\s+:,BSS,1\.)
+OK ROOT ,ATX,Э67\*: 1
+OK ROOT ,\*67,Э67\*\.: 1
+WARN не найдено: ROOT ^(\s*)DATE\*(,ENTRY,): ^(\s*)DATE\*(,ENTRY,)
+WARN не найдено: ROOT ^(\s*)DATE\*(,BSS,): ^(\s*)DATE\*(,BSS,)
+WARN не найдено: ROOT ^(\s*)DATAPR\*(,SUBP,\.): ^(\s*)DATAPR\*(,SUBP,\.)
+OK ROOT ,CALL,DATAPR\*: 1
+WARN не найдено: ROOT ^(\s*)OCTTDEC(,SUBP,\.): ^(\s*)OCTTDEC(,SUBP,\.)
+OK ROOT ,CALL,OCTTDEC : 1
+OK FOREX_CORE.mad: литералов в EQU = 110
+OK FOREX_RUNTIME.mad: литералов в EQU = 80
+OK FOREX_ROOT.mad: литералов в EQU = 32
+
+--- проход 2 ---
+WARN include/FOREX_ROOT.mad: '  INITFOR*:,ENTRY,.' x0
+WARN include/FOREX_ROOT.mad: '  NPR:,XTA,FULISFL*' x0
+WARN include/FOREX_ROOT.mad: '  LOREX:,ENTRY,.' x0
+WARN include/FOREX_ROOT.mad: '  RMON:,ENTRY,.' x0
+WARN include/FOREX_ROOT.mad: '  PRIN:,*64,INF' x0
+WARN include/FOREX_ROOT.mad: '  STOP/:,ENTRY,.' x0
+WARN include/FOREX_ROOT.mad: '  DATAPR*:,SUBP,.' x0
+WARN include/FOREX_ROOT.mad: '  TAK/PG :,SUBP,.' x0
+WARN include/FOREX_ROOT.mad: '  GIV/PG :,SUBP,.' x0
+WARN include/FOREX_ROOT.mad: '  OCTTDEC:,SUBP,.' x0
+WARN include/FOREX_ROOT.mad: '  GIV/PG:,NAME,' x0
+WARN include/FOREX_ROOT.mad: '  TAK/PG:,ENTRY,.' x0
+WARN include/FOREX_ROOT.mad: 'FL*SAV' x0
+WARN include/FOREX_ROOT.mad: 'R17:' x0
+WARN include/FOREX_ROOT.mad: 'Э67:' x0
+WARN include/FOREX_ROOT.mad: 'K67:' x0
+OK  include/FOREX_ROOT.mad: 'GO:' x1
+WARN include/FOREX_ROOT.mad: '*W     :,BSS,' x0
+WARN include/FOREX_ROOT.mad: ',AEX,*W' x0
+WARN include/FOREX_ROOT.mad: '*S    : ,BSS,' x0
+WARN include/FOREX_ROOT.mad: ',ATX,*S' x0
+WARN include/FOREX_ROOT.mad: 'Э67*  : ,BSS,' x0
+WARN include/FOREX_ROOT.mad: ',*67,Э67*.' x0
+OK  include/FOREX_ROOT.mad: ',UIA,PG_GO.' x1
+WARN include/FOREX_ROOT.mad: ',ATI,DEC_15.' x0
+WARN include/FOREX_ROOT.mad: ',ITA,DEC_15.' x0
+WARN include/FOREX_ROOT.mad: ',UTC,FIXED_MODE_2.' x0
+WARN include/FOREX_ROOT.mad: ',UTC,FIXED_MODE_2 ' x0
+WARN src/FOREX_RUNTIME.mad: ' DATAPR*:,NAME,' x0
+WARN src/FOREX_RUNTIME.mad: ' DATAPR*:,BSS,.' x0
+WARN src/FOREX_RUNTIME.mad: ',END,DATAPR*' x0
+WARN src/FOREX_RUNTIME.mad: ' DATE*:,ENTRY,' x0
+WARN src/FOREX_RUNTIME.mad: ' DATE*:,BSS,' x0
+WARN src/FOREX_RUNTIME.mad: ',BASE,DARET' x0
+WARN src/FOREX_RUNTIME.mad: ' DARET:,BSS,' x0
+WARN src/FOREX_RUNTIME.mad: ' L1:15,WTC,' x0
+WARN src/FOREX_RUNTIME.mad: ',UZA,L1' x0
+WARN src/FOREX_RUNTIME.mad: ' L2:,UTC,L3' x0
+WARN src/FOREX_RUNTIME.mad: ',UZA,L2' x0
+WARN src/FOREX_RUNTIME.mad: ' L3:13,Z00,' x0
+WARN src/FOREX_RUNTIME.mad: ' B:13,BAS,B' x0
+WARN src/FOREX_RUNTIME.mad: ' PREPDAT:,ENTRY,' x0
+WARN src/FOREX_RUNTIME.mad: ' MARR:,GOST,' x0
+WARN src/FOREX_RUNTIME.mad: ' DMASK:,BSS,.' x0
+WARN src/FOREX_RUNTIME.mad: ' TMASK:,GOST,' x0
+WARN src/FOREX_RUNTIME.mad: ' YMASK:,GOST,' x0
+WARN src/FOREX_RUNTIME.mad: ' MONTHFI:,OCT,' x0
+WARN src/FOREX_RUNTIME.mad: ' OCTTDEC :  ,NAME,' x0
+WARN src/FOREX_RUNTIME.mad: ' C       :  ,BSS,' x0
+WARN src/FOREX_RUNTIME.mad: ',VTM,C ' x0
+WARN src/FOREX_RUNTIME.mad: 'DEC-C' x0
+WARN src/FOREX_RUNTIME.mad: 'INT0-C' x0
+WARN src/FOREX_RUNTIME.mad: 'OCT-C' x0
+WARN src/FOREX_RUNTIME.mad: 'MASK15-C' x0
+WARN src/FOREX_RUNTIME.mad: 'ZERO-C' x0
+WARN src/FOREX_RUNTIME.mad: '/6SYMB' x0
+WARN src/FOREX_RUNTIME.mad: ',UJ,CYCL' x0
+OK  src/FOREX_RUNTIME.mad: ', UJ,CYCL' x1
+WARN src/FOREX_RUNTIME.mad: ' OCTTDEC:,NAME,' x0
+WARN src/FOREX_RUNTIME.mad: ' L1:15,XTS,' x0
+WARN src/FOREX_RUNTIME.mad: ',UJ,L1' x0
+WARN src/FOREX_RUNTIME.mad: ' RET:,STX,' x0
+WARN src/FOREX_RUNTIME.mad: ' DATA*:,LC,FIXED_MODE_2' x0
+WARN src/FOREX_RUNTIME.mad: ',FUN,67B.DD.MM.YY.HH.MM' x0
+WARN src/FOREX_RUNTIME.mad: ',OCT,MONTH_FIELD_OCT' x0
+WARN src/FOREX_RUNTIME.mad: ' MONTH_FIELD:,OCT,00 776' x0
+OK src/FOREX_RUNTIME.mad: добавлено EQU 3
+OK include/FOREX_ROOT.mad: добавлено EQU 2
+
+--- финальная проверка ---
+Строки с машинными словами CORE (96): сохранены побайтово
+Адресная колонка FOREX_ROOT.mad (56): сохранена
+Незаменённых литералов в операндах: CORE=0, RUNTIME=0, ROOT=0
+bash tests/check-annotations.sh : rc=0
+python3 tests/check-source-words.py : rc=0
+bash tests/check-labels.sh : 4/5 проверок OK; FAIL только из-за отсутствия
+  include/LO_GEN.labels.md — файл вне перечня разрешённых выходов этого
+  субагента (создаётся другим субагентом, отвечающим за LO*GEN).
+bash tests/check-constants.sh : rc=0 (125/89/35 EQU, уник <= 20)

@@ -20,6 +20,7 @@
 | 9 | Рантайм | завершён | `src/FOREX_RUNTIME.mad` (FORMAT, FORTLIBR, DATAPR*, OCTTDEC) — `docs/07-runtime.md` |
 | 10 | Карта адресов | завершён (с оговоркой) | `docs/06-address-map.md`: модель `0o22654`, 9 подтверждённых символов, топ-20 с confidence |
 | 11 | FOREX3\* | завершён (не найден) | `docs/08-forex3.md`: 20 образов, 0 совпадений; `FOREX3*` — deck-параметр, грузит FOREX 4.12 |
+| 12 | Имена меток и констант | завершён | 1080+ меток переименованы, ~1300 `EQU`, 9/9 тестов OK; `docs/09-crossrefs.md`, `docs/10-naming-conventions.md`, `include/*.labels.md` |
 
 ## Итоговый состав реконструкции
 
@@ -31,6 +32,7 @@
 | `include/FOREX_ROOT.mad` | исходник корня + `GIV/PG` + `TAK/PG` |
 | `include/*xref.md`, `include/*registers.md` | перекрёстные ссылки и регистры M1..M17 по всем частям |
 | `docs/03-symbols.md`, `docs/04-register-conventions.md`, `docs/06-*.md`, `docs/07-*.md`, `docs/08-*.md` | символьный чек-лист, соглашения, карта адресов, отчёты |
+| `include/*.labels.md`, `docs/09-crossrefs.md`, `docs/10-naming-conventions.md`, `tools/xref_all.py` | осмысленные имена меток, все литералы в `EQU`, глобальный свод ссылок, правила именования |
 | `reference/`, `tests/`, `tools/` | эталоны, 7 регрессионных сценариев, утилиты |
 
 ## Важные выводы

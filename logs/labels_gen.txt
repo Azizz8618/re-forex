@@ -1,0 +1,36 @@
+=== labels_gen.txt — переименование меток и литералов LO*GEN ===
+Дата: 2026-11-19T07:53:21Z
+
+1. ПЕРЕИМЕНОВАНИЕ МЕТОК
+   Авто-меток Wnnnn/WTnnnn до правки: 1024 + 29 = 1053
+   Переименовано: 1053 (плюс LOGTXT -> MODULE_NAME_TEXT = 1054)
+   Уникальных новых имён: 1054; коллизий: 0
+   START, X_*, *A*, ENTRY*, *DUMON* оставлены (имена уже осмысленные)
+
+2. ЛИТЕРАЛЫ -> ,EQU, КОНСТАНТЫ
+   Заменено уникальных литералов: 451
+   Добавлено строк ,EQU,: 451 + 5 строк-заголовков блока
+   Категории: JUMP_TARGET_*, FT*_ADDR, ADDR_*, MODVAL_*, REGSEL_*, NEG_*, ZERO/ONE, HEADER_*, WORDVAL_*, NAME_LEN5_DESCRIPTOR
+   Остаток: 1 литерал — '5' в BSS *DUMON* (директива, не команда)
+   =6H'...' в LO_GEN.mad отсутствуют
+
+3. ИЗМЕНЁННЫЕ ФАЙЛЫ
+   src/LO_GEN.mad (3109 -> 3565 строк)
+   include/LO_GEN.labels.md (новый, 1567 строк, 1531 строка таблиц)
+   include/LO_GEN.xref.md (872 -> 1106 строк; 504 перехода + 225 целей с символами; §8)
+
+4. ПРОВЕРКИ
+OK LO*SYN: все 1024 слова совпадают с дампом
+OK LO*GEN: все 1024 слова совпадают с дампом
+OK src/LO_SYN.mad: 1024/1024 слов аннотировано
+OK src/LO_GEN.mad: 1024/1024 слов аннотировано
+OK src/LO_GEN.mad: авто-меток 0, в include/LO_GEN.labels.md 1531 строк соответствий
+
+check-labels.sh (общий rc=0; все модули, включая LO_GEN, прошли):
+OK src/LO_SYN.mad: авто-меток 0, в include/LO_SYN.labels.md 768 строк соответствий
+OK src/LO_GEN.mad: авто-меток 0, в include/LO_GEN.labels.md 1531 строк соответствий
+OK src/FOREX_CORE.mad: авто-меток 0, в include/FOREX.labels.md 317 строк соответствий
+OK src/FOREX_RUNTIME.mad: авто-меток 0, в include/FOREX.labels.md 317 строк соответствий
+OK include/FOREX_ROOT.mad: авто-меток 0, в include/FOREX.labels.md 317 строк соответствий
+src/LO_GEN.mad               |   451 |      0 |      0 | OK
+OK: все файлы вынесли литералы в ,EQU, (уник <= 20)

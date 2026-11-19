@@ -14,6 +14,8 @@ tests/check-annotations.sh
 tests/check-disasm.sh
 tests/check-dtran.sh
 tests/check-word-coverage.sh
+tests/check-labels.sh
+tests/check-constants.sh
 python3 tests/check-source-words.py
 ```
 
@@ -21,7 +23,7 @@ python3 tests/check-source-words.py
 
 ```sh
 mkdir -p logs
-for s in run-forex verify-dumps check-annotations check-disasm check-dtran check-word-coverage; do
+for s in run-forex verify-dumps check-annotations check-disasm check-dtran check-word-coverage check-labels check-constants; do
     tests/$s.sh > logs/tests_$s.txt 2>&1
     printf '%-20s rc=%s\n' "$s" "$?"
 done
@@ -40,6 +42,8 @@ printf '%-20s rc=%s\n' check-source-words "$?"
 | `check-dtran.sh` | `disasm/LO_{SYN,GEN}.dtran.madlen` exist, ≥1500 строк, заголовок `LO*SYN`/`LO*GEN`, присутствуют `VTM`/`VJM` | `OK …: N строк, заголовок …, VTM/VJM присутствуют` |
 | `check-word-coverage.sh` | в `src/LO_{SYN,GEN}.mad` ровно 1024 уникальных строк-меток слов (формат `С--- слово NNNN`) | `OK …: 1024/1024 слов аннотировано` |
 | `check-source-words.py` | каждое из 1024 машинных слов в аннотированном тексте совпадает с дампом `build/LO_*.words` | `OK …: все 1024 слова совпадают с дампом` |
+| `check-labels.sh` | в `src/*.mad` нет автосгенерированных меток `W1777:`/`WT0533:`/`D00001:`; для каждого модуля есть таблица соответствий в `include/*.labels.md` | `OK …: авто-меток 0, в … N строк соответствий` |
+| `check-constants.sh` | числовые литералы вынесены в `,EQU,`: для каждого файла печатает число EQU, голых литералов и уникальных | `OK …: EQU > 0, уник ≤ 20` |
 
 ## Переменные окружения
 

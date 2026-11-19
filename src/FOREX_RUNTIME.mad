@@ -23,10 +23,101 @@ C*  S4 reference/expect_forex.txt — адреса 4.13: OCTTDEC 04773,         
 C*     PRINT8 03324                                                    *
 C***********************************************************************
 
-C----- 1. FORMAT: диспетчер таблицы входов FT* (S1:15529-15589) -----
+C ---- КОНСТАНТЫ/ЛИТЕРАЛЫ (все операндные литералы -> ,EQU,) ----
+ALL_ONES_MASK            ,EQU, 77777B                       ; роль: маска «все единицы»; источник: S1:15677
+BASE_REG14               ,EQU, 14                           ; роль: номер индексного регистра базы M14; источник: S1:15541
+DATA_WORD_0000000000077777 ,EQU, 0000000000077777             ; роль: ; S6:5074 MASK15 = 0000000000077777; источник: S6:5074
+DATA_WORD_00000000_00000000 ,EQU, 00000000 00000000            ; роль: ; S1:15691; источник: S1:15691
+DATA_WORD_00000000_00000001 ,EQU, 00000000 00000001            ; роль: ; S1:15694; источник: S1:15694
+DATA_WORD_00000000_00000002 ,EQU, 00000000 00000002            ; роль: ; S1:15703; источник: S1:15703
+DATA_WORD_00000000_00001777 ,EQU, 00000000 00001777            ; роль: ; S1:15696; источник: S1:15696
+DATA_WORD_00100000_00000000 ,EQU, 00100000 00000000            ; роль: ; S1:15697; источник: S1:15697
+DATA_WORD_17_7777_7777_7777 ,EQU, 17 7777 7777 7777            ; роль: ; S7:454; источник: S7:454
+DATA_WORD_37777774_77777477 ,EQU, 37777774 77777477            ; роль: ; S1:15701; источник: S1:15701
+DATA_WORD_77270707_00000000 ,EQU, 77270707 00000000            ; роль: ; S1:15704; источник: S1:15704
+DATE_DAY_SHIFT           ,EQU, 64+16                        ; роль: выделение DD из FUN 67B; источник: S5:7664
+DATE_MONTH_INDEX_SHIFT   ,EQU, 64-24                        ; роль: выделение индекса месяца; источник: S5:7677
+DATE_MONTH_SHIFT         ,EQU, 64+35                        ; роль: выделение MM из FUN 67B; источник: S5:7668
+DATE_TIME_SHIFT          ,EQU, 64-22                        ; роль: выделение HH.MM из FUN 67B; источник: S5:7684
+DATE_YEAR_SHIFT          ,EQU, 64-14                        ; роль: выделение YY из FUN 67B; источник: S5:7679
+DEC_7                    ,EQU, 7                            ; роль: ; S1:15596; источник: S1:15596
+FIXED_MODE_2             ,EQU, 2                            ; роль: режим NTR 2 / шаг 2; источник: S5:7646
+FT002_DISPATCH           ,EQU, 77776B                       ; роль: ячейка передачи FT*002; источник: S1:15584
+FT003_DISPATCH           ,EQU, 77775B                       ; роль: ячейка передачи FT*003; источник: S1:15586
+FT521_DISPATCH           ,EQU, 77257B                       ; роль: ячейка передачи FT*521; источник: S1:15578
+FT531_DISPATCH           ,EQU, 77247B                       ; роль: ячейка передачи FT*531; источник: S1:15572
+FT541_DISPATCH           ,EQU, 77237B                       ; роль: ячейка передачи FT*541; источник: S1:15568
+FT561_DISPATCH           ,EQU, 77217B                       ; роль: ячейка передачи FT*561; источник: S1:15574
+FT571_DISPATCH           ,EQU, 77207B                       ; роль: ячейка передачи FT*571; источник: S1:15566
+FT611_DISPATCH           ,EQU, 77167B                       ; роль: ячейка передачи FT*611; источник: S1:15570
+FT621_DISPATCH           ,EQU, 77157B                       ; роль: ячейка передачи FT*621; источник: S1:15576
+FT641_DISPATCH           ,EQU, 77137B                       ; роль: ячейка передачи FT*641; источник: S1:15582
+FT721_DISPATCH           ,EQU, 77057B                       ; роль: ячейка передачи FT*721; источник: S1:15580
+FTD_TABLE_BASE_ADDR      ,EQU, 77766B                       ; роль: база таблицы передач FORMAT; источник: S1:15549
+FT_ADDR_FIELD            ,EQU, 103B                         ; роль: маска поля адреса в FORMAT; источник: S1:15543
+FT_OFFSET_MASK           ,EQU, 155B                         ; роль: маска смещения в FORMAT; источник: S1:15559
+GOST_BLANK               ,EQU, 6H                           ; роль: пустой GOST-формат; источник: S7:457
+INT_ZERO                 ,EQU, 0                            ; роль: целое 0; источник: S6:5075
+ISO_CODE_SHIFT           ,EQU, 54B                          ; роль: сдвиг ASN 54B при сборке 8-символьного слова; источник: S1:15685
+ISO_WORD_SHIFT           ,EQU, 64                           ; роль: сдвиг GOST/ISO-поля на 64 разряда; источник: S5:7676
+LIB_BUFFER_LEN           ,EQU, 2000B                        ; роль: длина BUFFER PU (0o2000 слов); источник: S1:15591
+LIT_10                   ,EQU, 10                           ; роль: ; S6:5067; источник: S6:5067
+LIT_10000000_00000000    ,EQU, 10000000 00000000            ; роль: ; S1:15587 FTD_CONST: LOG 10000000 00000000; источник: S1:15587
+LIT_2                    ,EQU, 2                            ; роль: ; S6:5058; источник: S6:5058
+LIT_3                    ,EQU, 3                            ; роль: ; S6:5055; источник: S6:5055
+MODE_6                   ,EQU, 6                            ; роль: режим NTR 6; источник: S5:7658
+MONTH_INDEX_BASE         ,EQU, 24                           ; роль: база индекса месяца; источник: S5:7671
+OCT_SIX_DIGIT_MASK       ,EQU, =777 7777-C                  ; роль: маска 6 цифр OCTTDEC; источник: S6:5047
+ONE_WORD                 ,EQU, 1                            ; роль: одно слово / константа 1; источник: S1:15646
+POW10_5                  ,EQU, 100000.0                     ; роль: вещественный масштаб 10^5; источник: S6:5077
+REAL_MODE_3              ,EQU, 3                            ; роль: режим NTR 3 (вещественный); источник: S1:15612
+RET_LINK_REG             ,EQU, 13                           ; роль: номер индексного регистра связывания M13; источник: S1:15597
+STACK_OFF_M1             ,EQU, -1                           ; роль: ; S5:7713; источник: S5:7713
+STACK_OFF_M2             ,EQU, -2                           ; роль: ; S5:7662; источник: S5:7662
+STACK_OFF_M3             ,EQU, -3                           ; роль: ; S5:7666; источник: S5:7666
+STACK_OFF_M4             ,EQU, -4                           ; роль: ; S5:7678; источник: S5:7678
+STACK_OFF_M5             ,EQU, -5                           ; роль: ; S5:7712; источник: S5:7712
+STACK_OFF_M6             ,EQU, -6                           ; роль: ; S5:7694; источник: S5:7694
+STACK_OFF_M8             ,EQU, -8                           ; роль: ; S5:7688; источник: S5:7688
+TEXT_LIT_000000          ,EQU, ''000000''                   ; роль: ; S6:5083 ZERO = 8TEXT «000000»; источник: S6:5083
+TEXT_LIT_1H_055          ,EQU, 1H'055'                      ; роль: ; S5:7717; источник: S5:7717
+TEXT_LIT_2H_200          ,EQU, 2H '200'                     ; роль: ; S5:7715; источник: S5:7715
+TEXT_LIT_3H00            ,EQU, 3H00                         ; роль: ; S5:7718; источник: S5:7718
+TEXT_LIT_6H00            ,EQU, =6H00                        ; роль: ; S5:7705; источник: S5:7705
+TEXT_LIT_6H0000          ,EQU, 6H0000                       ; роль: ; S5:7729; источник: S5:7729
+TEXT_LIT_6H000000        ,EQU, 6H000000                     ; роль: ; S7:458 ZERO = ISO 6H000000; источник: S7:458
+TEXT_LIT_6H000_00        ,EQU, 6H000 00                     ; роль: ; S5:7719; источник: S5:7719
+TEXT_LIT_6H00_00         ,EQU, =6H00/00/                    ; роль: ; S5:7708; источник: S5:7708
+TEXT_LIT_6H03_0          ,EQU, 6H03 0                       ; роль: ; S5:7728; источник: S5:7728
+TEXT_LIT_6HAB_CEH        ,EQU, 6HABГCEH                     ; роль: ; S5:7725; источник: S5:7725
+TEXT_LIT_6HARRAY         ,EQU, 6HARRAY                      ; роль: ; S1:15710; источник: S1:15710
+TEXT_LIT_6HA_PMA         ,EQU, 6HAПPMAЯ                     ; роль: ; S5:7723; источник: S5:7723
+TEXT_LIT_6HERROR         ,EQU, 6HERROR                      ; роль: ; S1:15707; источник: S1:15707
+TEXT_LIT_6HIN_STA        ,EQU, 6HIN STA                     ; роль: ; S1:15708; источник: S1:15708
+TEXT_LIT_6HNDART         ,EQU, 6HNDART                      ; роль: ; S1:15709; источник: S1:15709
+TEXT_LIT_6HOKTHO         ,EQU, 6HOKTHOЯ                     ; роль: ; S5:7730; источник: S5:7730
+TEXT_LIT_6H_00_00        ,EQU, 6H 00.00                     ; роль: ; S5:7726; источник: S5:7726
+TEXT_LIT_6H_17_17        ,EQU, =6H'17''17'''''''''          ; роль: ; S5:7704; источник: S5:7704
+TEXT_LIT_6H_201_200_7    ,EQU, 6H'201'  '200'7              ; роль: ; S5:7714; источник: S5:7714
+TEXT_LIT_6H_231_HB       ,EQU, 6H'231'  ЯHB                 ; роль: ; S5:7721; источник: S5:7721
+TEXT_LIT_6H_3_17_17_17   ,EQU, =6H'3''17''''17''17'''       ; роль: ; S5:7707; источник: S5:7707
+TEXT_LIT_6H_EBMAP        ,EQU, 6HФEBMAP                     ; роль: ; S5:7722; источник: S5:7722
+TEXT_LIT_6H_EK           ,EQU, 6HДEK                        ; роль: ; S5:7731; источник: S5:7731
+TEXT_LIT_6H_H            ,EQU, 6HИЮHИЮЛ                     ; роль: ; S5:7724; источник: S5:7724
+FUN_DATE_TIME          ,EQU, 67B.DD.MM.YY.HH.MM         ; роль: FUN 67B — системная дата/время; источник: S5:7657
+DATE_BUF_LEN           ,EQU, 2                          ; роль: DATA* — 2-словный буфер даты; источник: S5:7646
+MONTH_FIELD_OCT        ,EQU, 00 776                     ; роль: маска поля месяца в FUN 67B; источник: S5:7732
+OCT_ISO_SHIFT           ,EQU, 64-8                           ; роль: сдвиг ASN ISO-кода цифры; источник: S6:5070
+POW10_4                 ,EQU, 10000.0                        ; роль: вещественный масштаб 10^4; источник: S6:5078
+POW10_3                 ,EQU, 1000.0                         ; роль: вещественный масштаб 10^3; источник: S6:5079
+POW10_2                 ,EQU, 100.0                          ; роль: вещественный масштаб 10^2; источник: S6:5080
+POW10_1                 ,EQU, 10.0                           ; роль: вещественный масштаб 10^1; источник: S6:5081
+C ---- конец блока констант ----
+
+C----- 1. FT_FORMAT_DISPATCH (FORMAT): диспетчер таблицы входов FT* (S1:15529-15589) -----
 C  Модуль не форматирует данные сам: он строит таблицу передач,
 C  записывая адреса 11 подпрограмм FT* в ячейки 77xxxB (S3:206-216).
-      FORMAT     :,NAME,        ; S1:15529
+      FT_FORMAT_DISPATCH     :,NAME,  ; (FORMAT)        ; S1:15529
 C  Объявлены 11 внешних подпрограмм: FT*571 … FT*003.
       FT*571     :,SUBP,        ; S1:15530
       FT*541     :,SUBP,        ; S1:15531
@@ -40,389 +131,389 @@ C  Объявлены 11 внешних подпрограмм: FT*571 … FT*00
       FT*002     :,SUBP,        ; S1:15539
       FT*003     :,SUBP,        ; S1:15540
 C  Настройка M14 и вычисление смещения в таблице передач.
-                 ,ATI,  14        ; S1:15541  M14 <- acc: установка индексного регистра
+                 ,ATI,  BASE_REG14        ; S1:15541  M14 <- acc: установка индексного регистра
             14 ,  XTA,        ; S1:15542  acc <- (M14)
-                 ,ASN,  103B        ; S1:15543  ASN 103B: выделение поля адреса
+                 ,ASN,  FT_ADDR_FIELD        ; S1:15543  ASN 103B: выделение поля адреса
                  ,YTA,        ; S1:15544
-                 ,UTC,   *00027        ; S1:15545  UTC *00027: прибавить константу
+                 ,UTC,   FTD_CONST        ; S1:15545  UTC FTD_CONST: прибавить константу
                  ,AEX,        ; S1:15546
-                 ,UIA,   *00010        ; S1:15547
+                 ,UIA,   FTD_OFFSET        ; S1:15547
             14 ,  XTA,        ; S1:15548
 C  M12 = база 77766B; цикл VLM по M12 обходит таблицу.
- *00004    :12 ,  VTM,  77766B        ; S1:15549  M12 <- база 77766B
+ FTD_TABLE_BASE    :12 ,  VTM,  FTD_TABLE_BASE_ADDR        ; S1:15549  M12 <- база 77766B
                  ,UTC,        ; S1:15550
- *00005    :     ,ATI,  14        ; S1:15551
-            12 ,  WTC,   *00026        ; S1:15552  WTC *00026: модификатор адреса
+ FTD_LOOP    :     ,ATI,  BASE_REG14        ; S1:15551
+            12 ,  WTC,   FTD_TABLE_END        ; S1:15552  WTC FTD_TABLE_END: модификатор адреса
             14 ,  UTM,        ; S1:15553
-            14 ,  VZM,   *00012        ; S1:15554  VZM *00012: переход при нулевом M14
-            12 ,  VLM,   *00005        ; S1:15555  VLM *00005: цикл по M12
+            14 ,  VZM,   FTD_STORE        ; S1:15554  VZM FTD_STORE: переход при нулевом M14
+            12 ,  VLM,   FTD_LOOP        ; S1:15555  VLM FTD_LOOP: цикл по M12
                  , IJ,        ; S1:15556
 C  Вычисление адреса очередной пары «UJ FT* / ATX 77xxxB».
- *00010    :     ,UTC,   *00027        ; S1:15557  формирование смещения (ASN 155B)
+ FTD_OFFSET    :     ,UTC,   FTD_CONST        ; S1:15557  формирование смещения (ASN 155B)
                  ,AEX,        ; S1:15558
-                 ,ASN,  155B        ; S1:15559
-                 , UJ,   *00004        ; S1:15560
+                 ,ASN,  FT_OFFSET_MASK        ; S1:15559
+                 , UJ,   FTD_TABLE_BASE        ; S1:15560
 C  STX + ATI 14: запись и продвижение указателя таблицы.
- *00012    :     ,STX,        ; S1:15561
-                 ,ATI,  14        ; S1:15562
-            12 ,   UJ,   *00026        ; S1:15563
+ FTD_STORE    :     ,STX,        ; S1:15561
+                 ,ATI,  BASE_REG14        ; S1:15562
+            12 ,   UJ,   FTD_TABLE_END        ; S1:15563
                  ,UTC,        ; S1:15564
 C  ТАБЛИЦА ПЕРЕХОДОВ: 11 пар UJ FT*nnn / ATX 77xxxB.
 C  FT*571 реально экспортирует ANL (S3:1075), остальные 10 — FORMAT.
                  , UJ,  FT*571        ; S1:15565  FT*571 -> 77207B (импорт из ANL)
-                 ,ATX,  77207B        ; S1:15566
+                 ,ATX,  FT571_DISPATCH        ; S1:15566
                  , UJ,  FT*541        ; S1:15567  FT*541 -> 77237B
-                 ,ATX,  77237B        ; S1:15568
+                 ,ATX,  FT541_DISPATCH        ; S1:15568
                  , UJ,  FT*611        ; S1:15569  FT*611 -> 77167B
-                 ,ATX,  77167B        ; S1:15570
+                 ,ATX,  FT611_DISPATCH        ; S1:15570
                  , UJ,  FT*531        ; S1:15571  FT*531 -> 77247B
-                 ,ATX,  77247B        ; S1:15572
+                 ,ATX,  FT531_DISPATCH        ; S1:15572
                  , UJ,  FT*561        ; S1:15573  FT*561 -> 77217B
-                 ,ATX,  77217B        ; S1:15574
+                 ,ATX,  FT561_DISPATCH        ; S1:15574
                  , UJ,  FT*621        ; S1:15575  FT*621 -> 77157B
-                 ,ATX,  77157B        ; S1:15576
+                 ,ATX,  FT621_DISPATCH        ; S1:15576
                  , UJ,  FT*521        ; S1:15577  FT*521 -> 77257B
-                 ,ATX,  77257B        ; S1:15578
+                 ,ATX,  FT521_DISPATCH        ; S1:15578
                  , UJ,  FT*721        ; S1:15579  FT*721 -> 77057B
-                 ,ATX,  77057B        ; S1:15580
+                 ,ATX,  FT721_DISPATCH        ; S1:15580
                  , UJ,  FT*641        ; S1:15581  FT*641 -> 77137B
-                 ,ATX,  77137B        ; S1:15582
+                 ,ATX,  FT641_DISPATCH        ; S1:15582
                  , UJ,  FT*002        ; S1:15583  FT*002 -> 77776B
-                 ,ATX,  77776B        ; S1:15584
- *00026    :     , UJ,  FT*003        ; S1:15585  FT*003 -> 77775B
-                 ,ATX,  77775B        ; S1:15586
+                 ,ATX,  FT002_DISPATCH        ; S1:15584
+ FTD_TABLE_END    :     , UJ,  FT*003        ; S1:15585  FT*003 -> 77775B
+                 ,ATX,  FT003_DISPATCH        ; S1:15586
 C  Константы и конец модуля.
- *00027    :,     LOG,  10000000 00000000.        ; S1:15587  *00027: LOG 10000000 00000000
+ FTD_CONST    :,     LOG,  LIT_10000000_00000000.        ; S1:15587  FTD_CONST: LOG 10000000 00000000
  BSS       :     ,BSS,        ; S1:15588
       ,END,        ; S1:15589  END FORMAT
 
-C----- 2. FORTLIBR: PRINT8 / WRITLIBR (S1:15590-15712) -----
+C----- 2. FT_LIBRARY_IO (FORTLIBR): PRINT8 / WRITLIBR (S1:15590-15712) -----
 C  Экспорт: PRINT8 (S3:217), WRITLIBR (S3:1313).
-C  BUFFER PU 2000B — буфер обмена с библиотекой.
-      FORTLIBR   :,NAME,        ; S1:15590
-      BUFFER     :,PU,  2000B        ; S1:15591  BUFFER: PU 2000B (0o2000 слов)
+C  FT_LIB_BUFFER PU 2000B — буфер обмена с библиотекой.
+      FT_LIBRARY_IO   :,NAME,  ; (FORTLIBR)        ; S1:15590
+      FT_LIB_BUFFER     :,PU,  LIB_BUFFER_LEN        ; S1:15591  FT_LIB_BUFFER: PU 2000B (0o2000 слов)
       WRITLIBR   :,SUBP,        ; S1:15592  SUBP — точка входа (экспорт)
       PRINT8     :,SUBP,        ; S1:15593  SUBP — точка входа (экспорт)
 C  PRINT8: печать 8-символьного ISO-слова; M14/M7/M13 — рабочие.
-            14 ,  VTM,   *00061        ; S1:15594  M14 <- *00061 (база констант)
-L           14 ,  ATX,   *00077    - *00061        ; S1:15595
-                 ,ITA,  7        ; S1:15596
-                 ,ITS,  13        ; S1:15597
-             7 ,  VTM,   *00061        ; S1:15598
-L            7 ,  XTS,   *00064    - *00061        ; S1:15599
-L            7 ,  ATX,   *00100    - *00061        ; S1:15600
+            14 ,  VTM,   FL_CONST_BASE        ; S1:15594  M14 <- FL_CONST_BASE (база констант)
+L           14 ,  ATX,   *00077    - FL_CONST_BASE        ; S1:15595
+                 ,ITA,  DEC_7        ; S1:15596
+                 ,ITS,  RET_LINK_REG        ; S1:15597
+             7 ,  VTM,   FL_CONST_BASE        ; S1:15598
+L            7 ,  XTS,   *00064    - FL_CONST_BASE        ; S1:15599
+L            7 ,  ATX,   *00100    - FL_CONST_BASE        ; S1:15600
             14 ,  VTM,   *00014        ; S1:15601
-                 ,ITA,  14        ; S1:15602
+                 ,ITA,  BASE_REG14        ; S1:15602
 C  VJM WRITLIBR+1 — вызов подготовительной части WRITLIBR.
 L           13 ,  VJM,   WRITLIBR  +1        ; S1:15603  VJM WRITLIBR+1
-                 ,UIA,   *00010        ; S1:15604
+                 ,UIA,   FL_AFTER_WRITE        ; S1:15604
                  ,STI,        ; S1:15605
-                 ,STI,  13        ; S1:15606
-                 ,STI,  7        ; S1:15607
+                 ,STI,  RET_LINK_REG        ; S1:15606
+                 ,STI,  DEC_7        ; S1:15607
             13 ,   UJ,        ; S1:15608
                  ,UTC,        ; S1:15609
- *00010    :14 ,  VTM,   *00101        ; S1:15610
-                 ,ITS,  14        ; S1:15611
-            14 ,  UTM,  3        ; S1:15612
-                 ,ITS,  14        ; S1:15613
+ FL_AFTER_WRITE    :14 ,  VTM,   *00101        ; S1:15610
+                 ,ITS,  BASE_REG14        ; S1:15611
+            14 ,  UTM,  REAL_MODE_3        ; S1:15612
+                 ,ITS,  BASE_REG14        ; S1:15613
                  ,ITS,        ; S1:15614
 C  VJM PRINT8 — печать подготовленного слова.
             13 ,  VJM,  PRINT8        ; S1:15615  VJM PRINT8
                  , *74,        ; S1:15616
-C  WRITLIBR: проверки и сборка выходного слова в BUFFER.
- *00014    :     ,ITS,  7        ; S1:15617
-             7 ,  VTM,   *00061        ; S1:15618
+C  WRITLIBR: проверки и сборка выходного слова в FT_LIB_BUFFER.
+ *00014    :     ,ITS,  DEC_7        ; S1:15617
+             7 ,  VTM,   FL_CONST_BASE        ; S1:15618
              7 ,  ATX,        ; S1:15619
-C  M14 = BUFFER: адрес буфера.
-            14 ,  VTM,  BUFFER        ; S1:15620  M14 <- BUFFER
-                 ,ITA,  14        ; S1:15621
-L            7 ,  ATX,   *00071    - *00061        ; S1:15622
+C  M14 = FT_LIB_BUFFER: адрес буфера.
+            14 ,  VTM,  FT_LIB_BUFFER        ; S1:15620  M14 <- FT_LIB_BUFFER
+                 ,ITA,  BASE_REG14        ; S1:15621
+L            7 ,  ATX,   *00071    - FL_CONST_BASE        ; S1:15622
                  ,UTC,   *00100        ; S1:15623
                  ,XTA,        ; S1:15624
-                 ,UZA,   *00023        ; S1:15625
-L            7 ,  ATX,   *00062    - *00061        ; S1:15626
+                 ,UZA,   FL_SIGN_CHECK        ; S1:15625
+L            7 ,  ATX,   *00062    - FL_CONST_BASE        ; S1:15626
                  ,XTA,        ; S1:15627
-L            7 ,  ATX,   *00063    - *00061        ; S1:15628
+L            7 ,  ATX,   *00063    - FL_CONST_BASE        ; S1:15628
                  ,UTC,   *00100        ; S1:15629
                  ,ATX,        ; S1:15630
-L*00023    : 7 ,  XTA,   *00062    - *00061        ; S1:15631
-                 ,UZA,   *00045        ; S1:15632
-L            7 ,  XTA,   *00063    - *00061        ; S1:15633
-                 ,UIA,   *00032        ; S1:15634
+L*00023    : 7 ,  XTA,   *00062    - FL_CONST_BASE        ; S1:15631
+                 ,UZA,   FL_COMPARE        ; S1:15632
+L            7 ,  XTA,   *00063    - FL_CONST_BASE        ; S1:15633
+                 ,UIA,   FL_WTC_CASE        ; S1:15634
 C  WTC *00077 — установка модификатора адреса.
                  ,WTC,   *00077        ; S1:15635  WTC *00077
                  ,XTA,        ; S1:15636
                  ,AEX,        ; S1:15637
-                 ,UZA,   *00036        ; S1:15638
-L*00027    : 7 ,  XTS,   *00063    - *00061        ; S1:15639
-L            7 ,  AEX,   *00064    - *00061        ; S1:15640
-L            7 ,  STX,   *00063    - *00061        ; S1:15641
+                 ,UZA,   FL_ALT_CASE        ; S1:15638
+L*00027    : 7 ,  XTS,   *00063    - FL_CONST_BASE        ; S1:15639
+L            7 ,  AEX,   *00064    - FL_CONST_BASE        ; S1:15640
+L            7 ,  STX,   *00063    - FL_CONST_BASE        ; S1:15641
              7 ,  XTS,        ; S1:15642
-                 ,STI,  7        ; S1:15643
+                 ,STI,  DEC_7        ; S1:15643
             13 ,   UJ,        ; S1:15644
- *00032    :     ,WTC,   *00077        ; S1:15645
-                 ,XTA,  1        ; S1:15646
-L            7 ,  XTS,   *00077    - *00061        ; S1:15647
-L            7 ,  ARX,   *00075    - *00061        ; S1:15648
-L            7 ,  ATX,   *00077    - *00061        ; S1:15649
+ FL_WTC_CASE    :     ,WTC,   *00077        ; S1:15645
+                 ,XTA,  ONE_WORD        ; S1:15646
+L            7 ,  XTS,   *00077    - FL_CONST_BASE        ; S1:15647
+L            7 ,  ARX,   *00075    - FL_CONST_BASE        ; S1:15648
+L            7 ,  ATX,   *00077    - FL_CONST_BASE        ; S1:15649
                  ,STX,        ; S1:15650
-                 , UJ,   *00027        ; S1:15651
+                 , UJ,   FL_XOR_LOOP        ; S1:15651
                  ,UTC,        ; S1:15652
- *00036    :     ,WTC,   *00077        ; S1:15653
-                 ,XTA,  1        ; S1:15654
-L            7 ,  ATX,   *00065    - *00061        ; S1:15655
+ FL_ALT_CASE    :     ,WTC,   *00077        ; S1:15653
+                 ,XTA,  ONE_WORD        ; S1:15654
+L            7 ,  ATX,   *00065    - FL_CONST_BASE        ; S1:15655
                  ,XTA,        ; S1:15656
-L            7 ,  ATX,   *00062    - *00061        ; S1:15657
-L            7 ,  ATX,   *00072    - *00061        ; S1:15658
-L            7 ,  ATX,   *00074    - *00061        ; S1:15659
-                 , UJ,   *00045        ; S1:15660
-L*00042    : 7 ,  ARX,   *00071    - *00061        ; S1:15661
-L            7 ,  ATX,   *00072    - *00061        ; S1:15662
-L            7 ,  XTA,   *00074    - *00061        ; S1:15663
-L            7 ,  ARX,   *00064    - *00061        ; S1:15664
-L            7 ,  ATX,   *00074    - *00061        ; S1:15665
+L            7 ,  ATX,   *00062    - FL_CONST_BASE        ; S1:15657
+L            7 ,  ATX,   *00072    - FL_CONST_BASE        ; S1:15658
+L            7 ,  ATX,   *00074    - FL_CONST_BASE        ; S1:15659
+                 , UJ,   FL_COMPARE        ; S1:15660
+L*00042    : 7 ,  ARX,   *00071    - FL_CONST_BASE        ; S1:15661
+L            7 ,  ATX,   *00072    - FL_CONST_BASE        ; S1:15662
+L            7 ,  XTA,   *00074    - FL_CONST_BASE        ; S1:15663
+L            7 ,  ARX,   *00064    - FL_CONST_BASE        ; S1:15664
+L            7 ,  ATX,   *00074    - FL_CONST_BASE        ; S1:15665
                  ,UTC,        ; S1:15666
-L*00045    : 7 ,  XTA,   *00072    - *00061        ; S1:15667
-L            7 ,  AEX,   *00071    - *00061        ; S1:15668
-                 ,UZA,   *00050        ; S1:15669
-L            7 ,  AAX,   *00066    - *00061        ; S1:15670
-                 ,UZA,   *00053        ; S1:15671
+L*00045    : 7 ,  XTA,   *00072    - FL_CONST_BASE        ; S1:15667
+L            7 ,  AEX,   *00071    - FL_CONST_BASE        ; S1:15668
+                 ,UZA,   FL_MASK_CASE        ; S1:15669
+L            7 ,  AAX,   *00066    - FL_CONST_BASE        ; S1:15670
+                 ,UZA,   FL_ASSEMBLE        ; S1:15671
                  ,UTC,        ; S1:15672
-L*00050    : 7 ,  XTA,   *00072    - *00061        ; S1:15673
-L            7 ,  ARX,   *00064    - *00061        ; S1:15674
-L            7 ,  ATX,   *00072    - *00061        ; S1:15675
+L*00050    : 7 ,  XTA,   *00072    - FL_CONST_BASE        ; S1:15673
+L            7 ,  ARX,   *00064    - FL_CONST_BASE        ; S1:15674
+L            7 ,  ATX,   *00072    - FL_CONST_BASE        ; S1:15675
                  ,WTC,   *00072        ; S1:15676
-                 ,XTA,  77777B        ; S1:15677  XTA 77777B — маска
-                 , UJ,   *00027        ; S1:15678
-L*00053    : 7 ,  XTA,   *00065    - *00061        ; S1:15679
-L            7 ,  ARX,   *00074    - *00061        ; S1:15680
-L            7 ,  AAX,   *00073    - *00061        ; S1:15681
-L            7 ,  AOX,   *00067    - *00061        ; S1:15682
-L            7 ,  ATX,   *00070    - *00061        ; S1:15683
+                 ,XTA,  ALL_ONES_MASK        ; S1:15677  XTA 77777B — маска
+                 , UJ,   FL_XOR_LOOP        ; S1:15678
+L*00053    : 7 ,  XTA,   *00065    - FL_CONST_BASE        ; S1:15679
+L            7 ,  ARX,   *00074    - FL_CONST_BASE        ; S1:15680
+L            7 ,  AAX,   *00073    - FL_CONST_BASE        ; S1:15681
+L            7 ,  AOX,   *00067    - FL_CONST_BASE        ; S1:15682
+L            7 ,  ATX,   *00070    - FL_CONST_BASE        ; S1:15683
 C  Экстракод *70 и сдвиг ASN 54B — сборка 8-символьного слова.
-L            7 ,  XTS,   *00071    - *00061        ; S1:15684  ASN 54B
-                 ,ASN,  54B        ; S1:15685
+L            7 ,  XTS,   *00071    - FL_CONST_BASE        ; S1:15684  ASN 54B
+                 ,ASN,  ISO_CODE_SHIFT        ; S1:15685
             15 ,  AOX,        ; S1:15686
-L            7 ,  ATX,   *00070    - *00061        ; S1:15687
-L            7 ,   *70,  *00070    - *00061        ; S1:15688  *70 — экстракод
+L            7 ,  ATX,   *00070    - FL_CONST_BASE        ; S1:15687
+L            7 ,   *70,  *00070    - FL_CONST_BASE        ; S1:15688  *70 — экстракод
                  ,XTA,        ; S1:15689
-                 , UJ,   *00042        ; S1:15690
- *00061    :,     LOG,  00000000 00000000.        ; S1:15691
- *00062    :,     LOG,  00000000 00000000.        ; S1:15692
- *00063    :,     LOG,  00000000 00000000.        ; S1:15693
- *00064    :,     LOG,  00000000 00000001.        ; S1:15694
- *00065    :,     LOG,  00000000 00000000.        ; S1:15695
- *00066    :,     LOG,  00000000 00001777.        ; S1:15696
- *00067    :,     LOG,  00100000 00000000.        ; S1:15697
- *00070    :,     LOG,  00000000 00000000.        ; S1:15698
- *00071    :,     LOG,  00000000 00000000.        ; S1:15699
- *00072    :,     LOG,  00000000 00000000.        ; S1:15700
- *00073    :,     LOG,  37777774 77777477.        ; S1:15701
- *00074    :,     LOG,  00000000 00000000.        ; S1:15702
- *00075    :,     LOG,  00000000 00000002.        ; S1:15703
-            ,     LOG,  77270707 00000000.        ; S1:15704
- *00077    :,     LOG,  00000000 00000000.        ; S1:15705
- *00100    :,     LOG,  00000000 00000000.        ; S1:15706
+                 , UJ,   FL_SHIFT_IN        ; S1:15690
+ FL_CONST_BASE    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15691
+ *00062    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15692
+ *00063    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15693
+ *00064    :,     LOG,  DATA_WORD_00000000_00000001.        ; S1:15694
+ *00065    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15695
+ *00066    :,     LOG,  DATA_WORD_00000000_00001777.        ; S1:15696
+ *00067    :,     LOG,  DATA_WORD_00100000_00000000.        ; S1:15697
+ *00070    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15698
+ *00071    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15699
+ *00072    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15700
+ *00073    :,     LOG,  DATA_WORD_37777774_77777477.        ; S1:15701
+ *00074    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15702
+ *00075    :,     LOG,  DATA_WORD_00000000_00000002.        ; S1:15703
+            ,     LOG,  DATA_WORD_77270707_00000000.        ; S1:15704
+ *00077    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15705
+ *00100    :,     LOG,  DATA_WORD_00000000_00000000.        ; S1:15706
 C  Диагностика «ERROR IN STANDARD ARRAY».
- *00101    :, ISO    ,6HERROR        ; S1:15707
-            , ISO    ,6HIN STA        ; S1:15708
-            , ISO    ,6HNDART        ; S1:15709
-            , ISO    ,6HARRAY        ; S1:15710
+ *00101    :, ISO    ,TEXT_LIT_6HERROR        ; S1:15707
+            , ISO    ,TEXT_LIT_6HIN_STA        ; S1:15708
+            , ISO    ,TEXT_LIT_6HNDART        ; S1:15709
+            , ISO    ,TEXT_LIT_6HARRAY        ; S1:15710
 C  Конец FORTLIBR.
  BSS       :     ,BSS,        ; S1:15711  BSS
       ,END,        ; S1:15712  END FORTLIBR
 
-C----- 3. DATAPR*: печать даты DD MON YY HH.MM (S5:7645-7733) -----
+C----- 3. DATE_PRINT (DATAPR*): печать даты DD MON YY HH.MM (S5:7645-7733) -----
 C  Резидент MONSYS; вызывается корнем INITFOR* (S1:15479 / S2:0o510306).
 C  Точки входа: DATAPR* (главная), DATE*, PREPDAT.
- DATAPR*:,NAME,        ; S5:7645
- DATA*:,LC,2        ; S5:7646  DATA*: LC 2 — 2-словный буфер даты
- DATAPR*:,BSS,.        ; S5:7647  главная точка входа
+ DATE_PRINT:,NAME,     ; (DATAPR*)        ; S5:7645
+ DATA*:,LC,DATE_BUF_LEN        ; S5:7646  DATA*: LC 2 — 2-словный буфер даты
+ DATE_PRINT:,BSS,.     ; (DATAPR*)        ; S5:7647  главная точка входа
 C  ПЕЧАТЬ ДАТЫ ПО ФОРМАТУ  DD MON 7Y HH.MM.
 C-------------------------------------------        ; S5:7648
 C ПEЧATЬ ДATЫ        ; S5:7649
 C ПO ФOPMATY  DD MON 7Y HH.MM        ; S5:7650
 C-------------------------------------------        ; S5:7651
 C  Сохранение M13, настройка базы DARET.
- ,ITS,13        ; S5:7652  сохранить M13
- 13,BASE,DARET        ; S5:7653  M13 <- база DARET
+ ,ITS,RET_LINK_REG        ; S5:7652  сохранить M13
+ 13,BASE,DATE_PARSE        ; S5:7653  M13 <- база DARET
 C  DATE*: ENTRY — получение даты/времени через FUN 67B.
- DATE*:,ENTRY,        ; S5:7654
- DATE*:,BSS,        ; S5:7655
+ DATE_GET:,ENTRY,      ; (DATE*)        ; S5:7654
+ DATE_GET:,BSS,        ; (DATE*)        ; S5:7655
  ,ITS,.        ; S5:7656
- ,FUN,67B.DD.MM.YY.HH.MM        ; S5:7657  FUN 67B — системная функция даты/времени
- ,NTR,6        ; S5:7658
+ ,FUN,FUN_DATE_TIME        ; S5:7657  FUN 67B — системная функция даты/времени
+ ,NTR,MODE_6        ; S5:7658
  13,UJ,.        ; S5:7659  13,UJ,. — возврат через M13
 C  DARET: разбор результата FUN 67B, выборка месяца из MARR.
- DARET:,BSS,        ; S5:7660
+ DATE_PARSE:,BSS,     ; (DARET)        ; S5:7660
  ,XTS,DATE0        ; S5:7661
- 15,XTS,-2        ; S5:7662
- ,AUX,DMASK        ; S5:7663
- ,ASN,64+16.        ; S5:7664
+ 15,XTS,STACK_OFF_M2        ; S5:7662
+ ,AUX,DAY_MASK        ; S5:7663
+ ,ASN,DATE_DAY_SHIFT.        ; S5:7664
  ,AOX,DATE1        ; S5:7665
- 15,XTS,-3        ; S5:7666
+ 15,XTS,STACK_OFF_M3        ; S5:7666
  ,AAX,MONTHFI        ; S5:7667
- ,ASN,64+35        ; S5:7668
+ ,ASN,DATE_MONTH_SHIFT        ; S5:7668
  15,ATX,        ; S5:7669
  ,YTA,        ; S5:7670
- 14,VTM,24        ; S5:7671
- ,UZA,L1        ; S5:7672
+ 14,VTM,MONTH_INDEX_BASE        ; S5:7671
+ ,UZA,DATE_WTC_SET        ; S5:7672
  14,VTM,        ; S5:7673
- L1:15,WTC,        ; S5:7674
+ DATE_WTC_SET:15,WTC,  ; (L1)        ; S5:7674
 C  MARR — таблица названий месяцев (ЯНВ … ДЕК).
- ,XTA,MARR        ; S5:7675  MARR — названия месяцев
- 14,ASN,64        ; S5:7676
- ,ASN,64-24        ; S5:7677
- 15,XTS,-4        ; S5:7678
- ,ASN,64-14.        ; S5:7679
+ ,XTA,MONTH_NAMES        ; S5:7675  MARR — названия месяцев
+ 14,ASN,ISO_WORD_SHIFT        ; S5:7676
+ ,ASN,DATE_MONTH_INDEX_SHIFT        ; S5:7677
+ 15,XTS,STACK_OFF_M4        ; S5:7678
+ ,ASN,DATE_YEAR_SHIFT.        ; S5:7679
  ,AUX,YMASK        ; S5:7680
  15,AOX,        ; S5:7681
  ,AOX,DATE2        ; S5:7682
- 15,XTS,-4        ; S5:7683
- ,ASN,64-22.        ; S5:7684
+ 15,XTS,STACK_OFF_M4        ; S5:7683
+ ,ASN,DATE_TIME_SHIFT.        ; S5:7684
  ,AUX,TMASK        ; S5:7685
  ,AOX,DATE3        ; S5:7686
  ,XTS,DATE4        ; S5:7687
- 15,XTS,-8        ; S5:7688
- 15,MTJ,13        ; S5:7689
- ,UZA,L2        ; S5:7690
- 13,UTM,1        ; S5:7691
- L2:,UTC,L3        ; S5:7692
+ 15,XTS,STACK_OFF_M8        ; S5:7688
+ 15,MTJ,RET_LINK_REG        ; S5:7689
+ ,UZA,DATE_END_CHECK        ; S5:7690
+ 13,UTM,ONE_WORD        ; S5:7691
+ DATE_END_CHECK:,UTC,DATE_STACK_ADJUST  ; (L2/L3)        ; S5:7692
 C  PRINT — вывод сформированной строки.
  ,PRINT,        ; S5:7693  PRINT — вывод строки
- 15,UTM,-6        ; S5:7694
+ 15,UTM,STACK_OFF_M6        ; S5:7694
  15,XTA,        ; S5:7695
- ,STI,13        ; S5:7696
+ ,STI,RET_LINK_REG        ; S5:7696
  13,UJ,        ; S5:7697
 C  PREPDAT: ENTRY — подготовка даты и передача в DATAPR*.
- PREPDAT:,ENTRY,        ; S5:7698
- ,ITS,13.        ; S5:7699
- 13,VJM,DATE*        ; S5:7700  VJM DATE*
- B:13,BAS,B        ; S5:7701
+ DATE_PREPARE:,ENTRY,  ; (PREPDAT)        ; S5:7698
+ ,ITS,RET_LINK_REG.        ; S5:7699
+ 13,VJM,DATE_GET        ; S5:7700  VJM DATE*
+ DATE_PREP_BASE:13,BAS,DATE_PREP_BASE  ; (B)        ; S5:7701
  15,ATX,        ; S5:7702
- ,ASN,64-14        ; S5:7703
- ,AUX,=6H'17''17'''''''''        ; S5:7704
- ,AOX,=6H00        ; S5:7705
+ ,ASN,DATE_YEAR_SHIFT        ; S5:7703
+ ,AUX,TEXT_LIT_6H_17_17        ; S5:7704
+ ,AOX,TEXT_LIT_6H00        ; S5:7705
  ,STX,DATA*+1        ; S5:7706
- ,AUX,=6H'3''17''''17''17'''        ; S5:7707
- ,AOX,=6H00/00/        ; S5:7708
+ ,AUX,TEXT_LIT_6H_3_17_17_17        ; S5:7707
+ ,AOX,TEXT_LIT_6H00_00        ; S5:7708
  ,STX,DATA*        ; S5:7709
- ,STI,13        ; S5:7710
- ,UJ,DATAPR*        ; S5:7711  UJ DATAPR*
- L3:13,Z00,-5        ; S5:7712
- 15,Z00,-1        ; S5:7713
+ ,STI,RET_LINK_REG        ; S5:7710
+ ,UJ,DATE_PRINT        ; S5:7711  UJ DATAPR*
+ DATE_STACK_ADJUST:13,Z00,STACK_OFF_M5        ; S5:7712
+ 15,Z00,STACK_OFF_M1        ; S5:7713
 C  GOST/ISO-константы формата даты.
- DATE0:,GOST,6H'201'  '200'7        ; S5:7714
- DATE1:,GOST,2H '200'        ; S5:7715
+ DATE0:,GOST,TEXT_LIT_6H_201_200_7        ; S5:7714
+ DATE1:,GOST,TEXT_LIT_2H_200        ; S5:7715
 C ПOЗИЦИИ        ; S5:7716
- ,CONT,1H'055'        ; S5:7717
- ,CONT,3H00        ; S5:7718
- DATE2:,GOST,6H000 00.        ; S5:7719
+ ,CONT,TEXT_LIT_1H_055        ; S5:7717
+ ,CONT,TEXT_LIT_3H00        ; S5:7718
+ DATE2:,GOST,TEXT_LIT_6H000_00.        ; S5:7719
  DATE4:,BSS,        ; S5:7720
- MARR:,GOST,6H'231'  ЯHB        ; S5:7721
- ,GOST,6HФEBMAP        ; S5:7722
- ,GOST,6HAПPMAЯ        ; S5:7723
- ,GOST,6HИЮHИЮЛ        ; S5:7724
- ,GOST,6HABГCEH        ; S5:7725
- DATE3:,GOST,6H 00.00        ; S5:7726
- DMASK:,BSS,.        ; S5:7727
- TMASK:,GOST,6H03 0        ; S5:7728
- YMASK:,GOST,6H0000  .        ; S5:7729
- ,GOST,6HOKTHOЯ        ; S5:7730
- ,GOST,6HДEK        ; S5:7731
- MONTHFI:,OCT,00 776        ; S5:7732
+ MONTH_NAMES:,GOST,    ; (MARR)TEXT_LIT_6H_231_HB        ; S5:7721
+ ,GOST,TEXT_LIT_6H_EBMAP        ; S5:7722
+ ,GOST,TEXT_LIT_6HA_PMA        ; S5:7723
+ ,GOST,TEXT_LIT_6H_H        ; S5:7724
+ ,GOST,TEXT_LIT_6HAB_CEH        ; S5:7725
+ DATE3:,GOST,TEXT_LIT_6H_00_00        ; S5:7726
+ DAY_MASK:,BSS,.       ; (DMASK)        ; S5:7727
+ TIME_MASK:,GOST,      ; (TMASK)TEXT_LIT_6H03_0        ; S5:7728
+ YEAR_MASK:,GOST,      ; (YMASK)TEXT_LIT_6H0000.        ; S5:7729
+ ,GOST,TEXT_LIT_6HOKTHO        ; S5:7730
+ ,GOST,TEXT_LIT_6H_EK        ; S5:7731
+ MONTH_FIELD:,OCT,     ; (MONTHFI)00 776        ; S5:7732
 C  Конец DATAPR*.
- ,END,DATAPR*        ; S5:7733  END DATAPR*
+ ,END,DATE_PRINT        ; S5:7733  END DATAPR*
 
-C----- 4a. OCTTDEC: число → 6 ISO-цифр (S6:5042-5084) -----
+C----- 4a. OCT_DEC (OCTTDEC): число → 6 ISO-цифр (S6:5042-5084) -----
 C  Экспортируется модулем DECODER (S3:1181).
 C  Вызывается корнем RMON (S1:15498 / S2:0o510322), TCATALOG,
 C  OVERLOAD, SUMOVER (S3:1182-84).
- OCTTDEC :  ,NAME,        ; S6:5042
- C       :  ,BSS,        ; S6:5043
+ OCT_DEC :  ,NAME,     ; (OCTTDEC)        ; S6:5042
+ OCT_BASE :  ,BSS,     ; (C)        ; S6:5043
 C  BEGIN: база C; CYCL — выделение 6 цифр делением на 10^k.
- BEGIN   :12,VTM,C                        .        ; S6:5044  BEGIN: M12 <- C (база)
+ OCT_BEGIN   :12,VTM,OCT_BASE                        .        ; S6:5044  BEGIN: M12 <- C (база)
             ,XTS,                         .        ; S6:5045
-          12,STX,DEC-C                    .        ; S6:5046
-          12,AAX,=777 7777-C        ; S6:5047  AAX =7777777-C — маска 6 цифр
-          12,AOX,INT0-C                   .        ; S6:5048  AOX INT0-C — константа INT0
-          12,ATX,OCT-C                    .        ; S6:5049
-          14,VTM,-5        ; S6:5050
+          12,STX,DEC-OCT_BASE                    .        ; S6:5046
+          12,AAX,OCT_SIX_DIGIT_MASK        ; S6:5047  AAX =7777777-C — маска 6 цифр
+          12,AOX,INT0-OCT_BASE                   .        ; S6:5048  AOX INT0-OCT_BASE — константа INT0
+          12,ATX,OCT-OCT_BASE                    .        ; S6:5049
+          14,VTM,STACK_OFF_M5        ; S6:5050
 C  CYCL: NTR 3 / A/X / NTR 2 / A*X — вещественная арифметика.
- CYCL    :  ,NTR,                         .        ; S6:5051
-          12,XTA,OCT-C                    .        ; S6:5052
+ OCT_CYCLE    :  ,NTR,                         .        ; S6:5051
+          12,XTA,OCT-OCT_BASE                    .        ; S6:5052
           14,UTC,C1                       .        ; S6:5053
             ,A/X,                         .        ; S6:5054
-            ,NTR,3                        .        ; S6:5055
-          12,A+X,INT0-C                   .        ; S6:5056
+            ,NTR,LIT_3.        ; S6:5055
+          12,A+X,INT0-OCT_BASE                   .        ; S6:5056
           15,ATX,                         .        ; S6:5057
-            ,NTR,2                        .        ; S6:5058
+            ,NTR,LIT_2.        ; S6:5058
           14,UTC,C1                       .        ; S6:5059
             ,A*X,                         .        ; S6:5060
-          12,X-A,OCT-C                    .        ; S6:5061
-          12,STX,OCT-C                    .        ; S6:5062
-          12,AAX,MASK15-C                 .        ; S6:5063
-          12,AOX,DEC-C                    .        ; S6:5064
-          14,VLM,/6SYMB        ; S6:5065
+          12,X-A,OCT-OCT_BASE                    .        ; S6:5061
+          12,STX,OCT-OCT_BASE                    .        ; S6:5062
+          12,AAX,MASK15-OCT_BASE                 .        ; S6:5063
+          12,AOX,DEC-OCT_BASE                    .        ; S6:5064
+          14,VLM,OCT_SYMBOL        ; S6:5065
 C  AOX ZERO — склейка ISO-кодов цифр; NTR 10; возврат через M13.
-          12,AOX,ZERO-C                   .        ; S6:5066  AOX ZERO-C — добавить коды «0»
-            ,NTR,10                       .        ; S6:5067
+          12,AOX,ZERO-OCT_BASE                   .        ; S6:5066  AOX ZERO-OCT_BASE — добавить коды «0»
+            ,NTR,LIT_10.        ; S6:5067
           13, UJ,                         .        ; S6:5068  13,UJ — возврат через M13
- /6SYMB  :  ,BSS,        ; S6:5069
-            ,ASN,64-8                     .        ; S6:5070
-          12,ATX,DEC-C                    .        ; S6:5071
-            , UJ,CYCL        ; S6:5072
+ OCT_SYMBOL  :  ,BSS,        ; S6:5069
+            ,ASN,OCT_ISO_SHIFT                     .        ; S6:5070
+          12,ATX,DEC-OCT_BASE                    .        ; S6:5071
+            , UJ,OCT_CYCLE        ; S6:5072
 C  Константы: MASK15=77777, INT0=0, REAL 100000.0 … 1.0,
 C  ZERO = «000000».
  OCT     :  ,OCT  ,                       .        ; S6:5073
- MASK15  :  ,OCT  ,0000000000077777       .        ; S6:5074  MASK15 = 0000000000077777
- INT0    :  ,INT  ,0        ; S6:5075  INT0 = 0
+ MASK15  :  ,OCT  ,DATA_WORD_0000000000077777.        ; S6:5074  MASK15 = 0000000000077777
+ INT0    :  ,INT  ,INT_ZERO        ; S6:5075  INT0 = 0
  DEC     :  ,OCT  ,                       .        ; S6:5076
-         :  ,REAL,100000.0        ; S6:5077
-         :  ,REAL ,10000.0                .        ; S6:5078
-         :  ,REAL ,1000.0                 .        ; S6:5079
-         :  ,REAL ,100.0                  .        ; S6:5080
-         :  ,REAL ,10.0                   .        ; S6:5081
+         :  ,REAL,POW10_5        ; S6:5077
+         :  ,REAL ,POW10_4                .        ; S6:5078
+         :  ,REAL ,POW10_3                 .        ; S6:5079
+         :  ,REAL ,POW10_2                  .        ; S6:5080
+         :  ,REAL ,POW10_1                   .        ; S6:5081
  C1      :  ,REAL ,1.0                    .        ; S6:5082  C1 = REAL 1.0
- ZERO    :  ,8TEXT,''000000''             .        ; S6:5083  ZERO = 8TEXT «000000»
+ ZERO    :  ,8TEXT,TEXT_LIT_000000.        ; S6:5083  ZERO = 8TEXT «000000»
 C  Конец OCTTDEC (system2).
     ,END,        ; S6:5084  END
 
-C----- 4b. OCTTDEC: вариант EXFOR (S7:427-459) -----
+C----- 4b. OCT_DEC_EXFOR (OCTTDEC): вариант EXFOR (S7:427-459) -----
 C  Тот же интерфейс, альтернативная реализация: умножение на 0.1
 C  (C1/10) и C10; возврат через M15; ZERO = ISO 6H000000.
- OCTTDEC:,NAME,        ; S7:427
+ OCT_DEC_EXFOR:,NAME,  ; (OCTTDEC)        ; S7:427
  14,BASE,*        ; S7:428  14,BASE,* — база M14
  ,AAX,B40/1        ; S7:429
- ,ITS,13        ; S7:430  ITS,13 — сохранить M13
+ ,ITS,RET_LINK_REG        ; S7:430  ITS,13 — сохранить M13
  13,VTM,        ; S7:431
- ,NTR,3        ; S7:432  NTR 3 — вещественный режим
+ ,NTR,REAL_MODE_3        ; S7:432  NTR 3 — вещественный режим
  ,XTS,        ; S7:433
- L1:15,XTS,-3        ; S7:434
+ OCT_EX_DIGIT_LOOP:15,XTS,  ; (L1)STACK_OFF_M3        ; S7:434
  ,A*X,C1/10        ; S7:435  A*X,C1/10 — умножить на 0.1
- 15,ATX,-3        ; S7:436
- ,YTA,64        ; S7:437
+ 15,ATX,STACK_OFF_M3        ; S7:436
+ ,YTA,ISO_WORD_SHIFT        ; S7:437
  ,A*X,C10        ; S7:438
- 13,ASN,64        ; S7:439
- 13,UTM,-4        ; S7:440
+ 13,ASN,ISO_WORD_SHIFT        ; S7:439
+ 13,UTM,STACK_OFF_M4        ; S7:440
  15,AOX,        ; S7:441
- 15,XTS,-3        ; S7:442
- ,UZA,RET        ; S7:443  UZA RET — конец цифр
+ 15,XTS,STACK_OFF_M3        ; S7:442
+ ,UZA,OCT_EX_RETURN        ; S7:443  UZA RET — конец цифр
  ,STX,        ; S7:444
- ,UJ,L1        ; S7:445
- RET:,STX,        ; S7:446  RET: STX
- 15,UTM,-2        ; S7:447  15,UTM,-2 — сдвиг стека
- ,ASN,64-24        ; S7:448
+ ,UJ,OCT_EX_DIGIT_LOOP        ; S7:445
+ OCT_EX_RETURN:,STX,   ; (RET)        ; S7:446  RET: STX
+ 15,UTM,STACK_OFF_M2        ; S7:447  15,UTM,-2 — сдвиг стека
+ ,ASN,DATE_MONTH_INDEX_SHIFT        ; S7:448
  ,AUX,MSK        ; S7:449
  ,AOX,ZERO        ; S7:450
- ,NTR,2        ; S7:451
- 15,WTC,1        ; S7:452  15,WTC,1
+ ,NTR,FIXED_MODE_2        ; S7:451
+ 15,WTC,ONE_WORD        ; S7:452  15,WTC,1
  ,UJ,        ; S7:453  UJ — возврат через M15
- B40/1:,LOG,17 7777 7777 7777        ; S7:454
+ B40/1:,LOG,DATA_WORD_17_7777_7777_7777        ; S7:454
  C10:,LOG,4000 0000 0000 0012        ; S7:455
  C1/10:,LOG,4001 4631 4631 4632        ; S7:456  C1/10 = LOG 4001 4631 4631 4632 (0.1)
- MSK:,GOST,6H        ; S7:457
- ZERO:,ISO,6H000000        ; S7:458  ZERO = ISO 6H000000
+ MSK:,GOST,GOST_BLANK        ; S7:457
+ ZERO:,ISO,TEXT_LIT_6H000000        ; S7:458  ZERO = ISO 6H000000
 C  Конец OCTTDEC (exfor).
  ,END,        ; S7:459  END
 
@@ -437,16 +528,16 @@ C***********************************************************************
 C*  КАРТА ВЫЗОВОВ (S1 / S3 / S5-S7)                                      *
 C*                                                                       *
 C*  INITFOR* (FOREX*) --CALL--> DATAPR*     S1:15479 / S2:0o510306      *
-C*  INITFOR*           --CALL--> GIV/PG     S1:15484 → FOREX_ROOT.mad   *
-C*  LOREX              --CALL--> LOADANGO   S1:15487,15489              *
-C*  RMON               --CALL--> OCTTDEC    S1:15498 / S2:0o510322      *
-C*  STOP/              --UJ---->  TAK/PG    S1:15510 → FOREX_ROOT.mad   *
-C*  DATAPR* -> DATE* (FUN 67B); PREPDAT -> DATE* -> DATAPR*  S5:7700,7711*
-C*  FORMAT   --UJ x11--> FT*571 … FT*003    S1:15565-15586              *
+C*  INIT_FOREX (INITFOR*) --CALL--> PAGE_GIVE (GIV/PG)     S1:15484 → FOREX_ROOT.mad   *
+C*  LOAD_OVERLAYS (LOREX) --CALL--> LOADANGO   S1:15487,15489              *
+C*  PRINT_TIME (RMON) --CALL--> OCT_DEC (OCTTDEC)    S1:15498 / S2:0o510322      *
+C*  ERR_TRANSLATOR (STOP/) --UJ----> PAGE_TAKE (TAK/PG)    S1:15510 → FOREX_ROOT.mad   *
+C*  DATE_PRINT -> DATE_GET (FUN 67B); DATE_PREPARE -> DATE_GET -> DATE_PRINT  S5:7700,7711*
+C*  FT_FORMAT_DISPATCH (FORMAT) --UJ x11--> FT*571 … FT*003    S1:15565-15586              *
 C*     FT*571 импортируется из ANL (S3:1075); FT*521/531/541/561/      *
 C*     611/621/641/721, FT*002, FT*003 экспортирует FORMAT (S3:206-216) *
-C*  FORTLIBR PRINT8 --VJM--> WRITLIBR+1, PRINT8   S1:15603,15615        *
-C*  DECODER  --экспорт--> OCTTDEC               S3:1181                 *
+C*  FT_LIBRARY_IO (FORTLIBR) PRINT8 --VJM--> WRITLIBR+1, PRINT8   S1:15603,15615        *
+C*  DECODER  --экспорт--> OCT_DEC (OCTTDEC)               S3:1181                 *
 C*  (вариант WRITLIBR из libra212.l21:3208+ вызывает PT6/G, STATSUM,    *
 C*   SAVELIST — отдельная улика, не отождествлять с FORTLIBR без проверки)*
 C***********************************************************************
@@ -455,7 +546,7 @@ C***********************************************************************
 C*  ТАБЛИЦА РЕГИСТРОВ                                                    *
 C*  M7  — рабочий регистр PRINT8: VTM *00061, XTS/ATX *00064/*00100     *
 C*  M12 — FORMAT: база таблицы 77766B, счётчик цикла VLM (S1:15549,55)  *
-C*  M13 — FORMAT/DATAPR*/OCTTDEC: база DARET (S5:7653), возврат         *
+C*  M13 — FT_FORMAT_DISPATCH/DATE_PRINT/OCT_DEC: база DARET (S5:7653), возврат         *
 C*        (S5:7659, S6:5068), linkage PRINT8 (S1:15603,15615)           *
 C*  M14 — FORMAT: индекс таблицы (S1:15541,48,53,54); PRINT8: база      *
 C*        констант *00061 (S1:15594); DATAPR*: индекс месяца (S5:7671)  *
