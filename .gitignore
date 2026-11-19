@@ -10,3 +10,4 @@ verify/*.out
 # Локальные рабочие копии эталонов
 reference/*.bin
 work/
+__pycache__/
