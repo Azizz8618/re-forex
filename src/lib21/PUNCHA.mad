@@ -17,7 +17,7 @@ EDC005 ,EQU,14                          ; роль: десятичная кон�
 EDC006 ,EQU,5                           ; роль: десятичная константа/сдвиг; S2:11949  ; (POLN: DEC_5)
 EDC007 ,EQU,6                           ; роль: десятичная константа/сдвиг; S2:11951  ; (POLN: DEC_6)
 ETX007 ,EQU,13                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:11990  ; (POLN: LIT_13)
-ETX008 ,EQU,6H                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:11991  ; (POLN: LIT_6H)
+ETX008 ,EQU,6H                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:11991  ; (POLN: LIT_6H); DEKOD GOST6 '00000000' / ISO '······' [источник: src/lib21/PUNCHA.mad:20; пустая 6H-константа]
 ETX009 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:11992  ; (POLN: LIT_1)
 С ---- конец блока констант ----
 

@@ -17,9 +17,9 @@ EDC003 ,EQU,42                          ; роль: десятичная кон�
 EDC004 ,EQU,13                          ; роль: десятичная константа/сдвиг; S3:633  ; (POLN: DEC_13)
 EDC005 ,EQU,1                           ; роль: десятичная константа/сдвиг; S3:634  ; (POLN: DEC_1)
 ETX005 ,EQU,=177                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:636  ; (POLN: LITERAL__177)
-ETX006 ,EQU,=:01                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:639  ; (POLN: LITERAL___01)
+ETX006 ,EQU,=:01                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:639  ; (POLN: LITERAL___01); DEKOD TEXT '=:01' / OCT '=:01' [источник: src/lib21/SWRITE.mad:20; восьмеричный литерал из исходника]
 EDC006 ,EQU,2                           ; роль: десятичная константа/сдвиг; S3:640  ; (POLN: DEC_2)
-ETX007 ,EQU,=:005                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:641  ; (POLN: LITERAL___005)
+ETX007 ,EQU,=:005                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:641  ; (POLN: LITERAL___005); DEKOD TEXT '=:005' / OCT '=:005' [источник: src/lib21/SWRITE.mad:22; восьмеричный литерал из исходника]
 ETX008 ,EQU,=77777                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:649  ; (POLN: LITERAL__77777)
 EDC008 ,EQU,24                          ; роль: десятичная константа/сдвиг; S3:653  ; (POLN: DEC_24)
 ETX009 ,EQU,=6HREC                      ; роль: DEKOD GOST 'ТЕГ00000' / TEXT 'REC     ' / ISO '·X····' [источник: src/lib21/SWRITE.mad:25; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:664  ; (POLN: LITERAL__6HREC)

@@ -150,10 +150,10 @@ L            7 ,   *70,  CON070    - CON061 ; S:99 . Э70 CON070 = Memory/regist
             ,     LOG,  LG7727 LG0000. ; S:115 . двоичная (LOG) константа
  CON077:,     LOG,  LG0000 LG0000. ; POLN: FTL_CONST_0077 S:116 . двоичная (LOG) константа
  CON100:,     LOG,  LG0000 LG0000. ; POLN: FTL_CONST_0100 S:117 . двоичная (LOG) константа
- DAT101:, ISO    ,6HERROR ; POLN: FTL_WORD_0101 S:118 . ISO-константа
-            , ISO    ,6HIN STA ; S:119 . ISO-константа
-            , ISO    ,6HNDART ; S:120 . ISO-константа
-            , ISO    ,6HARRAY ; S:121 . ISO-константа
+ DAT101:, ISO    ,6HERROR ; POLN: FTL_WORD_0101 S:118 . ISO-константа ; DEKOD ISO 'ERROR ' / GOST6 '↑=9()Х8А' / TEXT6 '15)23U(З' [источник: src/lib21/FORTLIBR.mad:153; confidence: high]; primary=ISO8 (8 бит/символ); GOST6/TEXT6 — 6-битная альтернатива (октеты dtran)
+            , ISO    ,6HIN STA ; S:119 . ISO-константа ; DEKOD ISO 'IN STA' / GOST6 '(×ША×Х↑1' / TEXT6 '24XЗ4U1.' [источник: src/lib21/FORTLIBR.mad:154; confidence: high]; primary=ISO8 (8 бит/символ); GOST6/TEXT6 — 6-битная альтернатива (октеты dtran)
+            , ISO    ,6HNDART ; S:120 . ISO-константа ; DEKOD ISO 'NDART ' / GOST6 ')Д↑1×Е⏨А' / TEXT6 '3D1.4E0З' [источник: src/lib21/FORTLIBR.mad:155; confidence: high]; primary=ISO8 (8 бит/символ); GOST6/TEXT6 — 6-битная альтернатива (октеты dtran)
+            , ISO    ,6HARRAY ; S:121 . ISO-константа ; DEKOD ISO 'ARRAY ' / GOST6 '⏨=9(⏨=ДА' / TEXT6 '05)205DЗ' [источник: src/lib21/FORTLIBR.mad:156; confidence: high]; primary=ISO8 (8 бит/символ); GOST6/TEXT6 — 6-битная альтернатива (октеты dtran)
 С --- BSS: BSS (строка 122 исходника) ---
  BSSA:     ,BSS, ; POLN: BSS S:122 . зарезервировать слово (BSS)
       ,END, ; S:123 . конец модуля

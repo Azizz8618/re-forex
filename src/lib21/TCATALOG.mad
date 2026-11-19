@@ -27,7 +27,7 @@ USE096 ,EQU,USE407+32                   ; роль: символический �
 EFP094 ,EQU,RA368                       ; роль: символический эквивалент из исходника; S3:2236  ; (POLN: EFPLE1)
 FPL093 ,EQU,RB369                       ; роль: символический эквивалент из исходника; S3:2235  ; (POLN: FPLE1)
 CEC092 ,EQU,N9366                       ; роль: символический эквивалент из исходника; S3:2234  ; (POLN: CECNT1)
-LIB091 ,EQU,=:2                         ; роль: символический эквивалент из исходника; S3:2227  ; (POLN: LIBMASK)
+LIB091 ,EQU,=:2                         ; роль: символический эквивалент из исходника; S3:2227  ; (POLN: LIBMASK); DEKOD TEXT '=:2' / OCT '=:2' [источник: src/lib21/TCATALOG.mad:30; восьмеричный литерал из исходника]
 BIT089 ,EQU,MAX320                      ; роль: символический эквивалент из исходника; S3:2221  ; (POLN: BIT12)
 CEC086 ,EQU,RA1371                      ; роль: символический эквивалент из исходника; S3:2189  ; (POLN: CECNT)
 EFP085 ,EQU,RB1372                      ; роль: символический эквивалент из исходника; S3:2188  ; (POLN: EFPLE)
@@ -50,7 +50,7 @@ EDC046 ,EQU,13                          ; роль: десятичная кон�
 ETX046 ,EQU,=111113                     ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1632  ; (POLN: LITERAL__111113)
 EDC047 ,EQU,1                           ; роль: десятичная константа/сдвиг; S3:1633  ; (POLN: DEC_1)
 EDC048 ,EQU,2                           ; роль: десятичная константа/сдвиг; S3:1634  ; (POLN: DEC_2)
-ETX048 ,EQU,=:4                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1656  ; (POLN: LITERAL___4)
+ETX048 ,EQU,=:4                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1656  ; (POLN: LITERAL___4); DEKOD TEXT '=:4' / OCT '=:4' [источник: src/lib21/TCATALOG.mad:53; восьмеричный литерал из исходника]
 ETX049 ,EQU,=67 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1673  ; (POLN: LITERAL__67_0000)
 EDC049 ,EQU,4                           ; роль: десятичная константа/сдвиг; S3:1675  ; (POLN: DEC_4)
 EDC050 ,EQU,14                          ; роль: десятичная константа/сдвиг; S3:1691  ; (POLN: DEC_14)
@@ -76,12 +76,12 @@ ETX063 ,EQU,= 0017777700177777          ; роль: литерал (TEXT/OCT/GOS
 EDC064 ,EQU,10                          ; роль: десятичная константа/сдвиг; S3:1815  ; (POLN: DEC_10)
 EDC065 ,EQU,5                           ; роль: десятичная константа/сдвиг; S3:1821  ; (POLN: DEC_5)
 EDC066 ,EQU,36                          ; роль: десятичная константа/сдвиг; S3:1830  ; (POLN: DEC_36)
-ETX066 ,EQU,=:2                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1834  ; (POLN: LITERAL___2)
-ETX067 ,EQU,=:0037 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1840  ; (POLN: LITERAL___0037_77)
+ETX066 ,EQU,=:2                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1834  ; (POLN: LITERAL___2); DEKOD TEXT '=:2' / OCT '=:2' [источник: src/lib21/TCATALOG.mad:79; восьмеричный литерал из исходника]
+ETX067 ,EQU,=:0037 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1840  ; (POLN: LITERAL___0037_77); DEKOD TEXT '=:0037 77' / OCT '=:0037 77' [источник: src/lib21/TCATALOG.mad:80; восьмеричный литерал из исходника]
 EDC067 ,EQU,30                          ; роль: десятичная константа/сдвиг; S3:1842  ; (POLN: DEC_30)
-ETX068 ,EQU,=:0007 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1844  ; (POLN: LITERAL___0007_77)
-ETX069 ,EQU,=:37                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1848  ; (POLN: LITERAL___37)
-ETX070 ,EQU,=:0707 0000 0707 07         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1850  ; (POLN: LITERAL___0707_0000_0707_07)
+ETX068 ,EQU,=:0007 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1844  ; (POLN: LITERAL___0007_77); DEKOD TEXT '=:0007 77' / OCT '=:0007 77' [источник: src/lib21/TCATALOG.mad:82; восьмеричный литерал из исходника]
+ETX069 ,EQU,=:37                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1848  ; (POLN: LITERAL___37); DEKOD TEXT '=:37' / OCT '=:37' [источник: src/lib21/TCATALOG.mad:83; восьмеричный литерал из исходника]
+ETX070 ,EQU,=:0707 0000 0707 07         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1850  ; (POLN: LITERAL___0707_0000_0707_07); DEKOD TEXT '=:0707 0000 0707 07' / OCT '=:0707 0000 0707 07' [источник: src/lib21/TCATALOG.mad:84; восьмеричный литерал из исходника]
 EDC070 ,EQU,18                          ; роль: десятичная константа/сдвиг; S3:1860  ; (POLN: DEC_18)
 ETX071 ,EQU,=77                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1866  ; (POLN: LITERAL__77)
 ETX072 ,EQU,=6H'77''77''77''77'''''     ; роль: DEKOD GOST '7[[77[[7' / TEXT ''77''77'' / ISO '·u··u·' | GOST '7[[77[[7' / TEXT ''77''77'' / ISO '·u··u·' | GOST '77770000' / TEXT '''''    ' / ISO '·q····' [источник: src/lib21/TCATALOG.mad:87; confidence: high]; литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1872  ; (POLN: LITERAL__6H_77__77__77__77_____)
@@ -89,7 +89,7 @@ ETX073 ,EQU,=:176                       ; роль: литерал (TEXT/OCT/GOS
 EDC073 ,EQU,24                          ; роль: десятичная константа/сдвиг; S3:1883  ; (POLN: DEC_24)
 ETX074 ,EQU,=37477                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1902  ; (POLN: LITERAL__37477)
 ETX075 ,EQU,=2000 000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1905  ; (POLN: LITERAL__2000_000)
-ETX076 ,EQU,=:022                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1919  ; (POLN: LITERAL___022)
+ETX076 ,EQU,=:022                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1919  ; (POLN: LITERAL___022); DEKOD TEXT '=:022' / OCT '=:022' [источник: src/lib21/TCATALOG.mad:92; восьмеричный литерал из исходника]
 ETX077 ,EQU,=77777                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1948  ; (POLN: LITERAL__77777)
 EDC077 ,EQU,11                          ; роль: десятичная константа/сдвиг; S3:2008  ; (POLN: DEC_11)
 EDC078 ,EQU,7                           ; роль: десятичная константа/сдвиг; S3:2038  ; (POLN: DEC_7)
@@ -98,8 +98,8 @@ ETX079 ,EQU,=1                          ; роль: литерал (TEXT/OCT/GOS
 EDC080 ,EQU,8                           ; роль: десятичная константа/сдвиг; S3:2074  ; (POLN: DEC_8)
 ETX080 ,EQU,=7700030                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2077  ; (POLN: LITERAL__7700030)
 EDC081 ,EQU,15                          ; роль: десятичная константа/сдвиг; S3:2079  ; (POLN: DEC_15)
-ETX081 ,EQU,=:776                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2083  ; (POLN: LITERAL___776)
-ETX082 ,EQU,=:0004                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2119  ; (POLN: LITERAL___0004)
+ETX081 ,EQU,=:776                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2083  ; (POLN: LITERAL___776); DEKOD TEXT '=:776' / OCT '=:776' [источник: src/lib21/TCATALOG.mad:101; восьмеричный литерал из исходника]
+ETX082 ,EQU,=:0004                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2119  ; (POLN: LITERAL___0004); DEKOD TEXT '=:0004' / OCT '=:0004' [источник: src/lib21/TCATALOG.mad:102; восьмеричный литерал из исходника]
 ETX083 ,EQU,=7 7400 0077 0037           ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2121  ; (POLN: LITERAL__7_7400_0077_0037)
 ETX084 ,EQU,=10040                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2145  ; (POLN: LITERAL__10040)
 ETX085 ,EQU,=777 0777                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2147  ; (POLN: LITERAL__777_0777)
@@ -2911,8 +2911,8 @@ ISO,ETX266 . ISO-константа  ; S3:4204
 ERR353: ISO,ETX267 . ISO-константа  ; (POLN: ERRCAT) ; S3:4205
 ERR354: ISO,ETX268 . ISO-константа  ; (POLN: ERRPAR) ; S3:4206
 NLI355: ISO,ETX269 . ISO-константа  ; (POLN: NLIB) ; S3:4207
-CONT,6HTEMP  ; S3:4208
-CONT,6HTAPE  ; S3:4209
+CONT,6HTEMP  ; S3:4208 ; DEKOD CONT 'TEMP' / GOST6 '=4=,×20А' / TEXT6 '5Д5Я4Б З' [источник: src/lib21/TCATALOG.mad:2914; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (октеты dtran)
+CONT,6HTAPE  ; S3:4209 ; DEKOD CONT 'TAPE' / GOST6 '=45⏨↑(0А' / TEXT6 '5ДФ012 З' [источник: src/lib21/TCATALOG.mad:2915; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (октеты dtran)
 TYP356: BSS . зарезервированная область  ; (POLN: TYPJOB) ; S3:4210
 ISO,ETX270 . ISO-константа  ; S3:4211
 ISO,ETX271 . ISO-константа  ; S3:4212

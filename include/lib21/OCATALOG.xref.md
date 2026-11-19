@@ -290,3 +290,21 @@
 | `17HTAKOГO OVERLAY'32'Я` | GOST `ТАКОГО О` / TEXT `R@JNCN/N` / ISO `······` | `src/lib21/OCATALOG.mad:69` | добавлено |
 | `6H'''' (+)` | GOST `777708-9` / TEXT `'''' (+)` / ISO `·q····` | `src/lib21/OCATALOG.mad:70` | добавлено |
 
+## Текстовые константы и кодировки
+
+Второй проход аудита (2026-11-19): не расшифрованные ранее текстовые
+константы в кодировках ИСО (ISO), ГОСТ, UPP/континуации (CONT).
+Первичное чтение — текст литерала из листинга Дубны/dtran; 6-битные
+GOST6/TEXT6 — альтернативная интерпретация машиного слова.
+Методика и сверка: `docs/19-dtran-text-encodings.md`,
+`tools/dtran_text.py --audit`. Полный лог — `logs/text_audit_lib21_2.txt`.
+
+| Метка/литерал | Кодировка | Первичное чтение | Источник |
+|---|---|---|---|
+| `OVERLAY` | CONT | `OVERLAY` | `src/lib21/OCATALOG.mad:272` |
+| `'EDC031''EDC032'EDC009/` | CONT | `'EDC031''EDC032'EDC009/` | `src/lib21/OCATALOG.mad:273` |
+| `EHИИ K OCA001` | CONT | `EHИИ K OCA001` | `src/lib21/OCATALOG.mad:288` |
+| `'EDC038''EDC039'` | CONT | `'EDC038''EDC039'` | `src/lib21/OCATALOG.mad:289` |
+| `HE БЫBAET 'EDC038''EDC039'` | CONT | `HE БЫBAET 'EDC038''EDC039'` | `src/lib21/OCATALOG.mad:292` |
+
+Добавлено декодирований: 5.

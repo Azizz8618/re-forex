@@ -87,9 +87,9 @@ NT3    ,EQU,3               ; роль: операнд NTR (установка �
  ,A+X,A/I0 ; S:49 . сложение с памятью [сл]
  ,AEX,A/I0 ; S:50 . логическая операция с памятью [лг]
  ,CALL,OCTTDE ; S:51 . вызов внешней подпрограммы [пв]
- ,APX,=6H'''17''17''17''17''17' ; S:52; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; =6H = адрес слова-маски (не адрес данных)
- ,AUX,=6H'17''17''17''''17''17' ; S:53 . арифметическая операция [ариф]; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; =6H = адрес слова-маски (не адрес данных)
- ,AOX,=6H'''''''16''''' ; S:54 . арифметическая операция [ариф]
+ ,APX,=6H'''17''17''17''17''17' ; S:52; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; =6H = адрес слова-маски (не адрес данных); DEKOD GOST6 '/)≠C,Y4Ч' / ISO '171717' [источник: src/lib21/FOREX_.mad:90; confidence: high]
+ ,AUX,=6H'17''17''17''''17''17' ; S:53 . арифметическая операция [ариф]; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; =6H = адрес слова-маски (не адрес данных); DEKOD GOST6 '/)≠C,Y4Ч' / ISO '171717' [источник: src/lib21/FOREX_.mad:91; confidence: high]
+ ,AOX,=6H'''''''16''''' ; S:54 . арифметическая операция [ариф]; DEKOD GOST6 '0000034Ц' / ISO '····16' [источник: src/lib21/FOREX_.mad:92; confidence: high]
  ,ATX,TIME. ; S:55 . записать аккумулятор в память [зп]
  13,VTM,TTEX ; S:56 . загрузить индексный регистр [уир]
  PRIN:,*64,INF ; POLN: PRIN S:57 . Э64 INF = УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A), стр.277 [tyurin1985]
@@ -109,11 +109,11 @@ NT3    ,EQU,3               ; роль: операнд NTR (установка �
  13,, ; S:70
  :,002,. ; S:71
  8,, ; S:72
- TTEX:,GOST,1H'212' ; POLN: TTEX S:73 . GOST-константа ( alfа)
- ,GOST,6HBPEMЯ- ; S:74 . GOST-константа ( alfа)
+ TTEX:,GOST,1H'212' ; POLN: TTEX S:73 . GOST-константа ( alfа) ; DEKOD GOST ''212'' / GOST6 '0(↑(0000' / TEXT6 ' 212    ' [источник: src/lib21/FOREX_.mad:112; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
+ ,GOST,6HBPEMЯ- ; S:74 . GOST-константа ( alfа) ; DEKOD GOST 'BPEMЯ-' / GOST6 'ВРЕН,<00' / TEXT6 'BPEMЯ-  ' [источник: src/lib21/FOREX_.mad:113; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
  TIME:,OCT, ; POLN: TIME S:75
- ,GOST,1H'231' ; S:76 . GOST-константа ( alfа)
- MIST:,GOST,18H'200'0OШ. TPAHCЛЯTOPA'231' ; POLN: MIST S:77 . GOST-константа ( alfа) ; TPAHCЛЯTOPA'231'
+ ,GOST,1H'231' ; S:76 . GOST-константа ( alfа) ; DEKOD GOST ''231'' / GOST6 '0()↑0000' / TEXT6 ' 231    ' [источник: src/lib21/FOREX_.mad:115; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
+ MIST:,GOST,18H'200'0OШ. TPAHCЛЯTOPA'231' ; POLN: MIST S:77 . GOST-константа ( alfа) ; TPAHCЛЯTOPA'231' ; DEKOD GOST ''200'0OШ. TPAHCЛЯTOPA'231'' / GOST6 '0(⏨⏨0⏨ПЬ' / TEXT6 ' 200 0OШ' [источник: src/lib21/FOREX_.mad:116; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
 С --- TEXT: LO*SYN (строка 78 исходника) ---
  TSYN:,TEXT,8HLO*SYN ; POLN: TEXT_OVERLAY_SYN S:78 . TEXT-константа "LO*SYN" (оверлей синтаксиса; было LO*SYN)  ; DEKOD GOST 'МП+УЩО00' / TEXT 'LO*SYN  ' / ISO '······' [источник: src/lib21/FOREX_.mad:118; confidence: high]
 С --- TEXT: LO*GEN (строка 79 исходника) ---

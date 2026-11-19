@@ -190,7 +190,7 @@ LG7775 ,EQU,77757           ; роль: операнд LOG (двоичная (LO
  :,XTA,B1.*BLERR ; S:142 ; *BLERR
  ,UJ,BL ERR. ; S:143 . безусловный переход [п]
  REV BIN:,AEX,B1.PEBEPC ПPИЗHAKA ; S:144 ; PEBEPC ПPИЗHAKA
- ,ATX,FL BIN. 'BINARY' ; S:145 . записать аккумулятор в память [зп] ; 'BINARY'
+ ,ATX,FL BIN. 'BINARY' ; S:145 . записать аккумулятор в память [зп] ; 'BINARY'; DEKOD GOST6 '⏨ДE.⏨=9*' / ISO 'BINARY' [источник: src/lib21/DECODER.mad:193; confidence: high]
  ,UJ,R1. ; S:146 . безусловный переход [п]
  END F:R,VTM,PUTSTM. ; S:147
  14,VJM,SAV CRD.CПACAEM KAPTY ; S:148 . вызов подпрограммы с возвратом [пв] ; CПACAEM KAPTY
@@ -203,7 +203,7 @@ LG7775 ,EQU,77757           ; роль: операнд LOG (двоичная (LO
  ERB:13,XTA,TNOB+VT4. ; POLN: ERB S:155 . считать из памяти в аккумулятор [сч]
  13,ATX,OUTC+5.ПEPEПИCЬ TEKCTA ; S:156 . записать аккумулятор в память [зп] ; ПEPEПИCЬ TEKCTA
  13,VLM,ERB.... ; S:157 . записать индексный регистр в память [зир]
- ,ATX,*ER/BIN.ФЛAГ 'OШ.BINARY' ; S:158 . записать аккумулятор в память [зп] ; ФЛAГ 'OШ.BINARY'
+ ,ATX,*ER/BIN.ФЛAГ 'OШ.BINARY' ; S:158 . записать аккумулятор в память [зп] ; ФЛAГ 'OШ.BINARY'; DEKOD GOST6 ')TAO⏨ДE.' / ISO 'O(.BIN' [источник: src/lib21/DECODER.mad:206; confidence: high]
   ,XTA, ; S:159 . считать из памяти в аккумулятор [сч]
   ,ATX,STM ; S:160 . записать аккумулятор в память [зп]
  14,VTM,LC1.БЛOKИP.BBOДA ; S:161 . загрузить индексный регистр [уир] ; БЛOKИP.BBOДA
@@ -280,12 +280,12 @@ LG7775 ,EQU,77757           ; роль: операнд LOG (двоичная (LO
  ,ATX,OUTC. ; S:231 . записать аккумулятор в память [зп]
  R,VJM,FORM NC.ЗA HOMEPOM ПK ; S:232 ; ЗA HOMEPOM ПK
  ,XTA,T/OШ. ; S:233 . считать из памяти в аккумулятор [сч]
- ,ATX,OUTC+VT2.'OШИБKA' ; S:234 . записать аккумулятор в память [зп] ; 'OШИБKA'
+ ,ATX,OUTC+VT2.'OШИБKA' ; S:234 . записать аккумулятор в память [зп] ; 'OШИБKA'; DEKOD GOST6 ')TA]4×H1' / ISO 'O(··KA' [источник: src/lib21/DECODER.mad:283; confidence: high]
  R,VTM,LC1-VT4. ; S:235
  ,UJ,ERC LC1. ; S:236 . безусловный переход [п]
  L ERC:,XTA,W/BLAN.ЗAБИBKA ; S:237 ; ЗAБИBKA
  ,ATX,OUTC+LC1.HOMEPA ; S:238 . записать аккумулятор в память [зп] ; HOMEPA
- ,ATX,OUTC+VT2.'OШИБKИ' ; S:239 . записать аккумулятор в память [зп] ; 'OШИБKИ'
+ ,ATX,OUTC+VT2.'OШИБKИ' ; S:239 . записать аккумулятор в память [зп] ; 'OШИБKИ'; DEKOD GOST6 ')TA]4×M]' / ISO 'O(··K·' [источник: src/lib21/DECODER.mad:288; confidence: high]
  ,ATX,*ER/TEX.OШ.TEKCT.ПK ; S:240 . записать аккумулятор в память [зп] ; OШ.TEKCT.ПK
  R,WTC,APROC+VT3.ЗA ИHTEPПP. ; S:241 ; ЗA ИHTEPПP.
  13,VJM,.OШИБ.KAPTЫ ; S:242 . вызов подпрограммы с возвратом [пв] ; OШИБ.KAPTЫ
@@ -344,11 +344,11 @@ LG7775 ,EQU,77757           ; роль: операнд LOG (двоичная (LO
 С******   YCTAHOBKA HAЧ.COCTOЯHИЯ ФЛAГOB ; S:293 ; COCTOЯHИЯ ФЛAГOB
  12,BASE,C. ; S:294 . база блока
  14,VTM,-LEN1.OБHYЛEHИE ; S:295 . загрузить индексный регистр [уир] ; OБHYЛEHИE
- INI 1:,XTA,.'*CODES' ; S:296 ; '*CODES'
+ INI 1:,XTA,.'*CODES' ; S:296 ; '*CODES'; DEKOD GOST6 '+Д, ↑4=)' / ISO '*CODES' [источник: src/lib21/DECODER.mad:347; confidence: high]
  14,ATX,FL BIN. ; S:297 . записать аккумулятор в память [зп]
  14,VLM,INI LC1.... ; S:298 . записать индексный регистр в память [зир]
  14,VTM,-LEN2.OБHYЛEHИE ; S:299 . загрузить индексный регистр [уир] ; OБHYЛEHИE
- INI 2:14,ATX,*ER/COS.'*ERRORS' ; S:300 ; '*ERRORS'
+ INI 2:14,ATX,*ER/COS.'*ERRORS' ; S:300 ; '*ERRORS'; DEKOD GOST6 '+Д=(×ДЮ(' / ISO '*ERROR' [источник: src/lib21/DECODER.mad:351; confidence: high]
  14,VLM,INI VT2.... ; S:301 . записать индексный регистр в память [зир]
 С......   ФЛAГИ(PEЖИMЫ) PAБOTЫ ; S:302 ; .....   ФЛAГИ(PEЖИMЫ) PAБOTЫ
  ,ATX,FL MID. ; S:303 . записать аккумулятор в память [зп]
@@ -362,24 +362,24 @@ LG7775 ,EQU,77757           ; роль: операнд LOG (двоичная (LO
 С......   CПEЦ.TEKCTOBЫE KAPTЫ ; S:311 ; .....   CПEЦ.TEKCTOBЫE KAPTЫ
 С --- BSS: STC (строка 312 исходника) ---
  STC:,BSS,. ; POLN: STC S:312 . зарезервировать слово (BSS)
- ,ISO,6H*BINAR ; S:313 . ISO-константа
- ,ISO,6H*END'201'B ; S:314 . ISO-константа
- ,ISO,6H*END'201'F ; S:315 . ISO-константа
+ ,ISO,6H*BINAR ; S:313 . ISO-константа ; DEKOD ISO '*BINAR' / GOST6 '+Д99)Д5(' / TEXT6 '*D))3DФ2' [источник: src/lib21/DECODER.mad:365; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+ ,ISO,6H*END'201'B ; S:314 . ISO-константа ; DEKOD ISO '*END'2' / GOST6 '+Д=.↑2#Т' / TEXT6 '*D5Ж1БПR' [источник: src/lib21/DECODER.mad:366; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+ ,ISO,6H*END'201'F ; S:315 . ISO-константа ; DEKOD ISO '*END'2' / GOST6 '+Д=.↑2#Т' / TEXT6 '*D5Ж1БПR' [источник: src/lib21/DECODER.mad:367; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
 С --- BSS: ESTC (строка 316 исходника) ---
  ESTC:,BSS,. ; POLN: ESTC S:316 . зарезервировать слово (BSS)
- ,ISO,6H*BLERR ; S:317 . ISO-константа
- CNAM:,ISO,6H*NAME'' ; POLN: CNAM S:318 . ISO-константа
+ ,ISO,6H*BLERR ; S:317 . ISO-константа ; DEKOD ISO '*BLERR' / GOST6 '+Д9/↑=9(' / TEXT6 '*D)Л15)2' [источник: src/lib21/DECODER.mad:370; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+ CNAM:,ISO,6H*NAME'' ; POLN: CNAM S:318 . ISO-константа ; DEKOD ISO '*NAME'' / GOST6 '+ДЩ1)××З' / TEXT6 '*DY.344G' [источник: src/lib21/DECODER.mad:371; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
  M1*5:,LOG,LG7777 LG7777 LG7777 LG7400. ; POLN: M1_STAR5 S:319 . двоичная (LOG) константа
 С......   KOHCTAHTЫ ПO 'BINARY' ; S:320 ; .....   KOHCTAHTЫ ПO 'BINARY'
  BINCOD:,LOG,LG7775. ; POLN: BINCOD S:321 . двоичная (LOG) константа
  TNOB:,LOG,VT3 LG7777. ; POLN: TNOB S:322 . двоичная (LOG) константа
- ,ISO,14HHET П/K '47'*END ; S:323 . ISO-константа
- ,CONT,10HBINARY'47'  'IS12' ; S:324 . продолжение блока
+ ,ISO,14HHET П/K '47'*END ; S:323 . ISO-константа ; DEKOD ISO 'HET П/' / GOST6 '(4=×870П' / TEXT6 '2Д54(И O' [источник: src/lib21/DECODER.mad:376; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+ ,CONT,10HBINARY'47'  'IS12' ; S:324 . продолжение блока ; DEKOD CONT 'BINARY'47'  'IS12'' / GOST6 'ВЙОБТЩ0×' / TEXT6 'BINARY 4' [источник: src/lib21/DECODER.mad:377; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
 С --- BSS: (без метки) (строка 325 исходника) ---
  ,BSS,. ; S:325 . зарезервировать слово (BSS)
 С......   ДЛЯ ДИAГHOCTИKИ TEKCT.KAPT ; S:326 ; .....   ДЛЯ ДИAГHOCTИKИ TEKCT.KAPT
  TERCA:,LOG,VT2 LG7775. ; POLN: TERCA S:327 . двоичная (LOG) константа
- T/OШ:,ISO,6HOШИБKA ; POLN: T_SLASHOШ S:328 . ISO-константа
+ T/OШ:,ISO,6HOШИБKA ; POLN: T_SLASHOШ S:328 . ISO-константа ; DEKOD ISO 'OШИБKA' / GOST6 ')ЧНЙ]ДН1' / TEXT6 '3WMI8DM.' [источник: src/lib21/DECODER.mad:382; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
  APROC:,,. ; POLN: APROC S:329
  ,,. ; S:330
  :,,. ; S:331
@@ -389,9 +389,9 @@ LG7775 ,EQU,77757           ; роль: операнд LOG (двоичная (LO
  :,, ; S:335
  ,Z00,ERRДK ; S:336 . переход/подпрограмма
 С......   PAЗHЫE KOHCTAHTOЧKИ ; S:337 ; .....   PAЗHЫE KOHCTAHTOЧKИ
- REG RET:,ISO,6HRETSWI ; S:338
- W/BLAN:,ISO,6H ; POLN: W_SLASHBLAN S:339 . ISO-константа
- S1460:,ISO,6H'''''''' ; POLN: S1_STAR4_SLASH60 S:340 . ISO-константа
+ REG RET:,ISO,6HRETSWI ; S:338 ; DEKOD ISO 'RETSWI' / GOST6 '×Д=××Х<9' / TEXT6 '4D544U-)' [источник: src/lib21/DECODER.mad:392; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+ W/BLAN:,ISO,6H ; POLN: W_SLASHBLAN S:339 . ISO-константа ; DEKOD ISO '      ' / GOST6 '820А820А' / TEXT6 '(Б З(Б З' [источник: src/lib21/DECODER.mad:393; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+ S1460:,ISO,6H'''''''' ; POLN: S1_STAR4_SLASH60 S:340 . ISO-константа ; DEKOD ISO '''''''' / GOST6 '9Т#З9Т#З' / TEXT6 ')RПG)RПG' [источник: src/lib21/DECODER.mad:394; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
  B1:,LOG,LC1. ; POLN: B1 S:341 . двоичная (LOG) константа
 С......   BHYTPEHHИE ФЛAГИ ; S:342 ; .....   BHYTPEHHИE ФЛAГИ
 С --- BSS: STM (строка 343 исходника) ---

@@ -575,11 +575,11 @@ LFSCAN:,NAME, NEW DTRAN ; POLN: LFSCAN S:1 . имя модуля
  13,VJM,IOCNT ; S:483 . вызов подпрограммы с возвратом [пв]
  13,VJM,IOEND ; S:484 . вызов подпрограммы с возвратом [пв]
  JMP403:,UJ,FSRET ; POLN: LFS_JUMP_0403 S:485 . безусловный переход [п]
- DAT404:,ISO, 6H('47'  ** . 050 047 040 040 052 052 ; POLN: LFS_WORD_0404 S:486 . ISO-константа ; 050 047 040 040 052 052
- ,ISO, 6H*  '47',LC3 . 052 040 040 047 054 063 ; S:487 . ISO-константа ; 052 040 040 047 054 063
- ,ISO, 6HA6)    . 101 066 051 040 040 040 ; S:488 . ISO-константа ; 101 066 051 040 040 040
- DAT407:,ISO, 6H(1X,CN20 . 050 061 130 054 062 060 ; POLN: LFS_WORD_0407 S:489 . ISO-константа ; 050 061 130 054 062 060
- ,ISO, 6HA6)    . 101 066 051 040 040 040 ; S:490 . ISO-константа ; 101 066 051 040 040 040
+ DAT404:,ISO, 6H('47'  ** . 050 047 040 040 052 052 ; POLN: LFS_WORD_0404 S:486 . ISO-константа ; 050 047 040 040 052 052 ; DEKOD ISO '('  **' / GOST6 '+2#А82ИК' / TEXT6 '*БПЗ(БHJ' [источник: src/lib21/LFSCAN.mad:578; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6H*  '47',LC3 . 052 040 040 047 054 063 ; S:487 . ISO-константа ; 052 040 040 047 054 063 ; DEKOD ISO '*  ',3' / GOST6 '+В0А9ТРУ' / TEXT6 '*B З)RPS' [источник: src/lib21/LFSCAN.mad:579; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HA6)    . 101 066 051 040 040 040 ; S:488 . ISO-константа ; 101 066 051 040 040 040 ; DEKOD ISO 'A6)   ' / GOST6 '⏨)]Й820А' / TEXT6 '038I(Б З' [источник: src/lib21/LFSCAN.mad:580; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT407:,ISO, 6H(1X,CN20 . 050 061 130 054 062 060 ; POLN: LFS_WORD_0407 S:489 . ISO-константа ; 050 061 130 054 062 060 ; DEKOD ISO '(1X,20' / GOST6 '+35]-38Р' / TEXT6 '*ЦФ8ЙЦ(P' [источник: src/lib21/LFSCAN.mad:581; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HA6)    . 101 066 051 040 040 040 ; S:490 . ISO-константа ; 101 066 051 040 040 040 ; DEKOD ISO 'A6)   ' / GOST6 '⏨)]Й820А' / TEXT6 '038I(Б З' [источник: src/lib21/LFSCAN.mad:582; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
  ,INT,AE4 ; S:491 . целая константа
  ,INT,CN8304 ; S:492 . целая константа
  ,INT,CN55 ; S:493 . целая константа
@@ -598,7 +598,7 @@ LFSCAN:,NAME, NEW DTRAN ; POLN: LFSCAN S:1 . имя модуля
  ,INT,-LC3 ; S:505 . целая константа
  CON430:,INT,CN0 ; POLN: LFS_CONST_0430 S:506 . целая константа
  CON431:,INT,CN8 ; POLN: LFS_CONST_0431 S:507 . целая константа
- ,ISO, 6H       . 040 040 040 040 040 040 ; S:508 . ISO-константа ; 040 040 040 040 040 040
+ ,ISO, 6H       . 040 040 040 040 040 040 ; S:508 . ISO-константа ; 040 040 040 040 040 040 ; DEKOD ISO '      ' / GOST6 '820А820А' / TEXT6 '(Б З(Б З' [источник: src/lib21/LFSCAN.mad:601; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
  ,LOG,VT1 ; S:509 . двоичная (LOG) константа
  ,INT,CN20 ; S:510 . целая константа
  CON435:,INT,VT1 ; POLN: LFS_CONST_0435 S:511 . целая константа
@@ -619,41 +619,41 @@ LFSCAN:,NAME, NEW DTRAN ; POLN: LFSCAN S:1 . имя модуля
 С --- BSS: *0577B (строка 520 исходника) ---
  BUF577:,BSS,VT1 ; POLN: LFS_BUFFER_0577 S:520 . зарезервировать слово (BSS)
  ,DATA, ; S:521
- DAT440:,ISO, 6HJOB    . 112 117 102 040 040 040 ; POLN: LFS_WORD_0440 S:522 . ISO-константа ; 112 117 102 040 040 040
- DAT441:,ISO, 6HMASTER . 115 101 123 124 105 122 ; POLN: LFS_WORD_0441 S:523 . ISO-константа ; 115 101 123 124 105 122
- DAT442:,ISO, 6HLIMIT  . 114 111 115 111 124 040 ; POLN: LFS_WORD_0442 S:524 . ISO-константа ; 114 111 115 111 124 040
- DAT443:,ISO, 6HFILE   . 106 111 114 105 040 040 ; POLN: LFS_WORD_0443 S:525 . ISO-константа ; 106 111 114 105 040 040
- DAT444:,ISO, 6HDATE   . 104 101 124 105 040 040 ; POLN: LFS_WORD_0444 S:526 . ISO-константа ; 104 101 124 105 040 040
- DAT445:,ISO, 6HUNIT   . 125 116 111 124 040 040 ; POLN: LFS_WORD_0445 S:527 . ISO-константа ; 125 116 111 124 040 040
- DAT446:,ISO, 6HREGIM  . 122 105 107 111 115 040 ; POLN: LFS_WORD_0446 S:528 . ISO-константа ; 122 105 107 111 115 040
- DAT447:,ISO, 6HNAMFR  . 116 101 115 106 122 040 ; POLN: LFS_WORD_0447 S:529 . ISO-константа ; 116 101 115 106 122 040
- DAT450:,ISO, 6HMAKEF  . 115 101 113 105 106 040 ; POLN: LFS_WORD_0450 S:530 . ISO-константа ; 115 101 113 105 106 040
- DAT451:,ISO, 6HOPENF  . 117 120 105 116 106 040 ; POLN: LFS_WORD_0451 S:531 . ISO-константа ; 117 120 105 116 106 040
- DAT452:,ISO, 6HCLOSEF . 103 114 117 123 105 106 ; POLN: LFS_WORD_0452 S:532 . ISO-константа ; 103 114 117 123 105 106
- DAT453:,ISO, 6HDELETF . 104 105 114 105 124 106 ; POLN: LFS_WORD_0453 S:533 . ISO-константа ; 104 105 114 105 124 106
- ,ISO, 6HFRIEND . 106 122 111 105 116 104 ; S:534 . ISO-константа ; 106 122 111 105 116 104
+ DAT440:,ISO, 6HJOB    . 112 117 102 040 040 040 ; POLN: LFS_WORD_0440 S:522 . ISO-константа ; 112 117 102 040 040 040 ; DEKOD ISO 'JOB   ' / GOST6 '(ДЮ2820А' / TEXT6 '2DЩБ(Б З' [источник: src/lib21/LFSCAN.mad:622; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT441:,ISO, 6HMASTER . 115 101 123 124 105 122 ; POLN: LFS_WORD_0441 S:523 . ISO-константа ; 115 101 123 124 105 122 ; DEKOD ISO 'MASTER' / GOST6 ')×5)=4=(' / TEXT6 '34Ф35Д52' [источник: src/lib21/LFSCAN.mad:623; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT442:,ISO, 6HLIMIT  . 114 111 115 111 124 040 ; POLN: LFS_WORD_0442 S:524 . ISO-константа ; 114 111 115 111 124 040 ; DEKOD ISO 'LIMIT ' / GOST6 ')4Е,(=⏨А' / TEXT6 '3ДEЯ250З' [источник: src/lib21/LFSCAN.mad:624; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT443:,ISO, 6HFILE   . 106 111 114 105 040 040 ; POLN: LFS_WORD_0443 S:525 . ISO-константа ; 106 111 114 105 040 040 ; DEKOD ISO 'FILE  ' / GOST6 '↑ДЕ/↑(0А' / TEXT6 '1DEЛ12 З' [источник: src/lib21/LFSCAN.mad:625; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT444:,ISO, 6HDATE   . 104 101 124 105 040 040 ; POLN: LFS_WORD_0444 S:526 . ISO-константа ; 104 101 124 105 040 040 ; DEKOD ISO 'DATE  ' / GOST6 '↑45×↑(0А' / TEXT6 '1ДФ412 З' [источник: src/lib21/LFSCAN.mad:626; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT445:,ISO, 6HUNIT   . 125 116 111 124 040 040 ; POLN: LFS_WORD_0445 S:527 . ISO-константа ; 125 116 111 124 040 040 ; DEKOD ISO 'UNIT  ' / GOST6 '=×Щ9=20А' / TEXT6 '54Y)5Б З' [источник: src/lib21/LFSCAN.mad:627; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT446:,ISO, 6HREGIM  . 122 105 107 111 115 040 ; POLN: LFS_WORD_0446 S:528 . ISO-константа ; 122 105 107 111 115 040 ; DEKOD ISO 'REGIM ' / GOST6 '×Д=7(×ФА' / TEXT6 '4D5И24TЗ' [источник: src/lib21/LFSCAN.mad:628; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT447:,ISO, 6HNAMFR  . 116 101 115 106 122 040 ; POLN: LFS_WORD_0447 S:529 . ISO-константа ; 116 101 115 106 122 040 ; DEKOD ISO 'NAMFR ' / GOST6 ')Д5,↑Е8А' / TEXT6 '3DФЯ1E(З' [источник: src/lib21/LFSCAN.mad:629; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT450:,ISO, 6HMAKEF  . 115 101 113 105 106 040 ; POLN: LFS_WORD_0450 S:530 . ISO-константа ; 115 101 113 105 106 040 ; DEKOD ISO 'MAKEF ' / GOST6 ')×5-↑×]А' / TEXT6 '34ФЙ148З' [источник: src/lib21/LFSCAN.mad:630; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT451:,ISO, 6HOPENF  . 117 120 105 116 106 040 ; POLN: LFS_WORD_0451 S:531 . ISO-константа ; 117 120 105 116 106 040 ; DEKOD ISO 'OPENF ' / GOST6 ')Х15)Д]А' / TEXT6 '3U.Ф3D8З' [источник: src/lib21/LFSCAN.mad:631; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT452:,ISO, 6HCLOSEF . 103 114 117 123 105 106 ; POLN: LFS_WORD_0452 S:532 . ISO-константа ; 103 114 117 123 105 106 ; DEKOD ISO 'CLOSEF' / GOST6 '⏨ФС ×Ф=6' / TEXT6 '0TQ/4T5Г' [источник: src/lib21/LFSCAN.mad:632; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ DAT453:,ISO, 6HDELETF . 104 105 114 105 124 106 ; POLN: LFS_WORD_0453 S:533 . ISO-константа ; 104 105 114 105 124 106 ; DEKOD ISO 'DELETF' / GOST6 '↑4=/↑=↑6' / TEXT6 '1Д5Л151Г' [источник: src/lib21/LFSCAN.mad:633; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HFRIEND . 106 122 111 105 116 104 ; S:534 . ISO-константа ; 106 122 111 105 116 104 ; DEKOD ISO 'FRIEND' / GOST6 '↑Е99↑×Щ4' / TEXT6 '1E))14YД' [источник: src/lib21/LFSCAN.mad:634; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
  CON455:,INT,CN10 ; POLN: LFS_CONST_0455 S:535 . целая константа
  CON456:,INT,CN58 ; POLN: LFS_CONST_0456 S:536 . целая константа
  CON457:,INT,CN44 ; POLN: LFS_CONST_0457 S:537 . целая константа
  CON460:,INT,CN61 ; POLN: LFS_CONST_0460 S:538 . целая константа
  CON461:,INT,CN42 ; POLN: LFS_CONST_0461 S:539 . целая константа
  CON462:,INT,CN32 ; POLN: LFS_CONST_0462 S:540 . целая константа
- DAT463:,ISO, 6HHEBEPH . 110 105 102 105 120 110 ; POLN: LFS_WORD_0463 S:541 . ISO-константа ; 110 105 102 105 120 110
- ,ISO, 6HЫЙ PAЗ . 171 152 040 120 101 172 ; S:542 . ISO-константа ; 171 152 040 120 101 172
- ,ISO, 6HДEЛИTE . 144 105 154 151 124 105 ; S:543 . ISO-константа ; 144 105 154 151 124 105
- ,ISO, 6HЛЬ     . 154 170 040 040 040 040 ; S:544 . ISO-константа ; 154 170 040 040 040 040
- ,ISO, 6HHEBEPH . 110 105 102 105 120 110 ; S:545 . ISO-константа ; 110 105 102 105 120 110
- ,ISO, 6HOE ИMЯ . 117 105 040 151 115 161 ; S:546 . ISO-константа ; 117 105 040 151 115 161
- ,ISO, 6H ПAPAM . 040 160 101 120 101 115 ; S:547 . ISO-константа ; 040 160 101 120 101 115
- ,ISO, 6HETPA   . 105 124 120 101 040 040 ; S:548 . ISO-константа ; 105 124 120 101 040 040
- ,ISO, 6HOШ. ЗH . 117 173 056 040 172 110 ; S:549 . ISO-константа ; ЗH . 117 173 056 040 172 110
- ,ISO, 6HAЧEHИE . 101 176 105 110 151 105 ; S:550 . ISO-константа ; 101 176 105 110 151 105
- ,ISO, 6H ПAPAM . 040 160 101 120 101 115 ; S:551 . ISO-константа ; 040 160 101 120 101 115
- ,ISO, 6HETPA   . 105 124 120 101 040 040 ; S:552 . ISO-константа ; 105 124 120 101 040 040
- ,ISO, 6HHE ЗAД . 110 105 040 172 101 144 ; S:553 . ISO-константа ; 110 105 040 172 101 144
- ,ISO, 6HAH ПAP . 101 110 040 160 101 120 ; S:554 . ISO-константа ; 101 110 040 160 101 120
- ,ISO, 6HAMETP  . 101 115 105 124 120 040 ; S:555 . ISO-константа ; 101 115 105 124 120 040
- ,ISO, 6HJOB    . 112 117 102 040 040 040 ; S:556 . ISO-константа ; 112 117 102 040 040 040
+ DAT463:,ISO, 6HHEBEPH . 110 105 102 105 120 110 ; POLN: LFS_WORD_0463 S:541 . ISO-константа ; 110 105 102 105 120 110 ; DEKOD ISO 'HEBEPH' / GOST6 '(4=2↑=18' / TEXT6 '2Д5Б15.(' [источник: src/lib21/LFSCAN.mad:641; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HЫЙ PAЗ . 171 152 040 120 101 172 ; S:542 . ISO-константа ; 171 152 040 120 101 172 ; DEKOD ISO 'ЫЙ PAЗ' / GOST6 '>;ИА×45Ы' / TEXT6 '+6HЗ4ДФZ' [источник: src/lib21/LFSCAN.mad:642; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HДEЛИTE . 144 105 154 151 124 105 ; S:543 . ISO-константа ; 144 105 154 151 124 105 ; DEKOD ISO 'ДEЛИTE' / GOST6 '*4=М`=↑5' / TEXT6 '9Д5LЬ51Ф' [источник: src/lib21/LFSCAN.mad:643; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HЛЬ     . 154 170 040 040 040 040 ; S:544 . ISO-константа ; 154 170 040 040 040 040 ; DEKOD ISO 'ЛЬ    ' / GOST6 ''7АА820А' / TEXT6 ',ИЗЗ(Б З' [источник: src/lib21/LFSCAN.mad:644; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HHEBEPH . 110 105 102 105 120 110 ; S:545 . ISO-константа ; 110 105 102 105 120 110 ; DEKOD ISO 'HEBEPH' / GOST6 '(4=2↑=18' / TEXT6 '2Д5Б15.(' [источник: src/lib21/LFSCAN.mad:645; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HOE ИMЯ . 117 105 040 151 115 161 ; S:546 . ISO-константа ; 117 105 040 151 115 161 ; DEKOD ISO 'OE ИMЯ' / GOST6 ')Ф×А`×ХС' / TEXT6 '3T4ЗЬ4UQ' [источник: src/lib21/LFSCAN.mad:646; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6H ПAPAM . 040 160 101 120 101 115 ; S:547 . ISO-константа ; 040 160 101 120 101 115 ; DEKOD ISO ' ПAPAM' / GOST6 '8711×45,' / TEXT6 '(И..4ДФЯ' [источник: src/lib21/LFSCAN.mad:647; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HETPA   . 105 124 120 101 040 040 ; S:548 . ISO-константа ; 105 124 120 101 040 040 ; DEKOD ISO 'ETPA  ' / GOST6 '↑=↑⏨⏨(0А' / TEXT6 '151002 З' [источник: src/lib21/LFSCAN.mad:648; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HOШ. ЗH . 117 173 056 040 172 110 ; S:549 . ISO-константа ; ЗH . 117 173 056 040 172 110 ; DEKOD ISO 'OШ. ЗH' / GOST6 ')ЧМО87Й8' / TEXT6 '3WLN(ИI(' [источник: src/lib21/LFSCAN.mad:649; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HAЧEHИE . 101 176 105 110 151 105 ; S:550 . ISO-константа ; 101 176 105 110 151 105 ; DEKOD ISO 'AЧEHИE' / GOST6 '⏨[Щ5(6Е5' / TEXT6 '07YФ2ГEФ' [источник: src/lib21/LFSCAN.mad:650; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6H ПAPAM . 040 160 101 120 101 115 ; S:551 . ISO-константа ; 040 160 101 120 101 115 ; DEKOD ISO ' ПAPAM' / GOST6 '8711×45,' / TEXT6 '(И..4ДФЯ' [источник: src/lib21/LFSCAN.mad:651; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HETPA   . 105 124 120 101 040 040 ; S:552 . ISO-константа ; 105 124 120 101 040 040 ; DEKOD ISO 'ETPA  ' / GOST6 '↑=↑⏨⏨(0А' / TEXT6 '151002 З' [источник: src/lib21/LFSCAN.mad:652; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HHE ЗAД . 110 105 040 172 101 144 ; S:553 . ISO-константа ; 110 105 040 172 101 144 ; DEKOD ISO 'HE ЗAД' / GOST6 '(4×А>Д5Д' / TEXT6 '2Д4З+DФD' [источник: src/lib21/LFSCAN.mad:653; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HAH ПAP . 101 110 040 160 101 120 ; S:554 . ISO-константа ; 101 110 040 160 101 120 ; DEKOD ISO 'AH ПAP' / GOST6 '⏨×АА#45⏨' / TEXT6 '04ЗЗПДФ0' [источник: src/lib21/LFSCAN.mad:654; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HAMETP  . 101 115 105 124 120 040 ; S:555 . ISO-константа ; 101 115 105 124 120 040 ; DEKOD ISO 'AMETP ' / GOST6 '⏨×Х5=50А' / TEXT6 '04UФ5Ф З' [источник: src/lib21/LFSCAN.mad:655; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+ ,ISO, 6HJOB    . 112 117 102 040 040 040 ; S:556 . ISO-константа ; 112 117 102 040 040 040 ; DEKOD ISO 'JOB   ' / GOST6 '(ДЮ2820А' / TEXT6 '2DЩБ(Б З' [источник: src/lib21/LFSCAN.mad:656; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
  CON503:,INT,NT2 ; POLN: LFS_CONST_0503 S:557 . целая константа
  ,INT,LC3 ; S:558 . целая константа
  CON505:,INT,AE4 ; POLN: LFS_CONST_0505 S:559 . целая константа

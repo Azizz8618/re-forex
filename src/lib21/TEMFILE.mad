@@ -434,7 +434,7 @@ IW053: ,NP005  ; (POLN: IW) ; S3:4632
 006  ; S3:4633
 FIR054: OCT . восьмеричная константа  ; (POLN: FIRST) ; S3:4634
 BKA055: ISO,ETX059 . ISO-константа  ; (POLN: BЫKA) ; S3:4635
-CONT,1H'EDC056'  ; S3:4636
+CONT,1H'EDC056'  ; S3:4636 ; DEKOD CONT ''EDC056'' / GOST6 '0ЕДГ⏨=;0' / TEXT6 ' EDC056 ' [источник: src/lib21/TEMFILE.mad:437; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
 BIN056: LOG,ETX060 . константа-слово  ; (POLN: BIN CA) ; S3:4637
 BSS,ETX061 . зарезервированная область  ; S3:4638
 I5057: INT,-EDC006  ; (POLN: I5) ; S3:4639

@@ -396,7 +396,7 @@ ITS,M . сохранение индексного регистра в стек  
 XTS,B1125 . считывание с модификатором  ; S2:9163
 UJ,PRI023 . переход/возврат  ; S2:9164
 FIN062: BSS . зарезервированная область  ; (POLN: FIN) ; S2:9165
-C=====   ПPИШЛA KAPTA '*END RECORD',,  ; S2:9166
+C=====   ПPИШЛA KAPTA '*END RECORD',,  ; S2:9166; DEKOD GOST6 '+Д=.↑21(' / ISO '*END R' [источник: src/lib21/OVERLOAD.mad:399; confidence: high]
 J,VTM,FIN063 . установка индексного регистра  ; S2:9167
 M,VTM,EMP149 . ПYCTOE  ; S2:9168
 A,VZM,PRI061 . ДEPEBO  ; S2:9169

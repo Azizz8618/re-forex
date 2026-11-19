@@ -27,7 +27,7 @@ ETX011 ,EQU,=7 0000 0007                ; роль: литерал (TEXT/OCT/GOS
 EDC012 ,EQU,15                          ; роль: десятичная константа/сдвиг; S1:17463  ; (POLN: DEC_15)
 ETX012 ,EQU,=30                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17464  ; (POLN: LITERAL__30)
 EDC013 ,EQU,23                          ; роль: десятичная константа/сдвиг; S1:17467  ; (POLN: DEC_23)
-ETX013 ,EQU,=:001                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17470  ; (POLN: LITERAL___001)
+ETX013 ,EQU,=:001                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17470  ; (POLN: LITERAL___001); DEKOD TEXT '=:001' / OCT '=:001' [источник: src/lib21/INPUT_.mad:30; восьмеричный литерал из исходника]
 EOC013 ,EQU,27B                         ; роль: восьмеричная константа; S1:17478  ; (POLN: OCT_27)
 ETX014 ,EQU,30 0000 0000 3001           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:17479  ; (POLN: LIT_30_0000_0000_3001)
 ETX015 ,EQU,6HISCODE                    ; роль: DEKOD GOST 'ЙУГПДЕ00' / TEXT 'ISCODE  ' / ISO '·8··P·' [источник: src/lib21/INPUT_.mad:33; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:17482  ; (POLN: LIT_6HISCODE)

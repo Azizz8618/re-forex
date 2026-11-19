@@ -97,3 +97,27 @@
 
 - `OCTTDEC` — OCT→DEC: упоминается в теле модуля.
 
+## Текстовые константы и кодировки
+
+Второй проход аудита (2026-11-19): не расшифрованные ранее текстовые
+константы в кодировках ИСО (ISO), ГОСТ, UPP/континуации (CONT).
+Первичное чтение — текст литерала из листинга Дубны/dtran; 6-битные
+GOST6/TEXT6 — альтернативная интерпретация машиного слова.
+Методика и сверка: `docs/19-dtran-text-encodings.md`,
+`tools/dtran_text.py --audit`. Полный лог — `logs/text_audit_lib21_2.txt`.
+
+| Метка/литерал | Кодировка | Первичное чтение | Источник |
+|---|---|---|---|
+| `*BINAR` | ISO | `*BINAR` | `src/lib21/DECODER.mad:365` |
+| `*END'2` | ISO | `*END'2` | `src/lib21/DECODER.mad:366` |
+| `*END'2` | ISO | `*END'2` | `src/lib21/DECODER.mad:367` |
+| `*BLERR` | ISO | `*BLERR` | `src/lib21/DECODER.mad:370` |
+| `*NAME'` | ISO | `*NAME'` | `src/lib21/DECODER.mad:371` |
+| `HET П/` | ISO | `HET П/` | `src/lib21/DECODER.mad:376` |
+| `OШИБKA` | ISO | `OШИБKA` | `src/lib21/DECODER.mad:382` |
+| `RETSWI` | ISO | `RETSWI` | `src/lib21/DECODER.mad:392` |
+| `      ` | ISO | `      ` | `src/lib21/DECODER.mad:393` |
+| `''''''` | ISO | `''''''` | `src/lib21/DECODER.mad:394` |
+| `BINARY'47'  'IS12'` | CONT | `BINARY'47'  'IS12'` | `src/lib21/DECODER.mad:377` |
+
+Добавлено декодирований: 11.

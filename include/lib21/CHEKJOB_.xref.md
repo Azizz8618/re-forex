@@ -546,3 +546,22 @@
 | `23HБЫЛИ OШИБKИ B YK PAБOTЫ` | GOST `БЫЛИ ОШИ` / TEXT `A[KH/NXH` / ISO `···>·(` | `src/lib21/CHEKJOB_.mad:111` | добавлено |
 | `18H <ЭKCПPECC-ЗAДAЧA>` | GOST `<ЭКСПРЕС` / TEXT `=]JQOPEQ` / ISO `w····q` | `src/lib21/CHEKJOB_.mad:112` | добавлено |
 
+## Текстовые константы и кодировки
+
+Второй проход аудита (2026-11-19): не расшифрованные ранее текстовые
+константы в кодировках ИСО (ISO), ГОСТ, UPP/континуации (CONT).
+Первичное чтение — текст литерала из листинга Дубны/dtran; 6-битные
+GOST6/TEXT6 — альтернативная интерпретация машиного слова.
+Методика и сверка: `docs/19-dtran-text-encodings.md`,
+`tools/dtran_text.py --audit`. Полный лог — `logs/text_audit_lib21_2.txt`.
+
+| Метка/литерал | Кодировка | Первичное чтение | Источник |
+|---|---|---|---|
+| `******` | ISO | `******` | `src/lib21/CHEKJOB_.mad:563` |
+| `''''**` | ISO | `''''**` | `src/lib21/CHEKJOB_.mad:564` |
+| `****''` | ISO | `****''` | `src/lib21/CHEKJOB_.mad:565` |
+| `ЗAПPOC PECYPCA` | CONT | `ЗAПPOC PECYPCA` | `src/lib21/CHEKJOB_.mad:570` |
+| `OБ'EDC071'ЯBЛEH` | CONT | `OБ'EDC071'ЯBЛEH` | `src/lib21/CHEKJOB_.mad:572` |
+| `HA KAPTY-*CHE081` | CONT | `HA KAPTY-*CHE081` | `src/lib21/CHEKJOB_.mad:575` |
+
+Добавлено декодирований: 6.

@@ -118,7 +118,7 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  13,VTM,STOP* ; S:36 . загрузить индексный регистр [уир]
  ,U1A,BLEIN ; S:37 . переход при ненулевом аккумуляторе [пнн]
   ,*63,CN766 ; S:38 . Э63 CN766 = ЭКСТРАКОДЫ ВРЕМЕНИ РЕШЕНИЯ ЗАДАЧИ (ИР 063 A), стр.334 [tyurin1985]
-  ,AEX,=6HOC ДYБ ; S:39 . логическая операция с памятью [лг]
+  ,AEX,=6HOC ДYБ ; S:39 . логическая операция с памятью [лг] ; DEKOD TEXT 'OC ДYБ  ' / GOST 'ПГ04Щ200' / ISO '?0?? ?' [источник: src/lib21/EXECUTE.mad:121; confidence: high]; primary=TEXT (6 бит/символ, =6H-литерал-маска)
   ,U1A,EXEC ; S:40 . переход при ненулевом аккумуляторе [пнн]
  DISP:,IFSEQ,D,DD** ; POLN: DISP S:41
   ,*76,.OTKAЗ ; S:42 ; OTKAЗ
@@ -144,7 +144,7 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  ,TAPE,INFT.ЧTEHИE KATAЛOГA ; S:62 ; ЧTEHИE KATAЛOГA
  AC,VTM,CAT ; S:63
  AC,XTA,CN1762 ; S:64
- ,AEX,CODE.=6HOVERLA ; S:65 . логическая операция с памятью [лг] ; =6HOVERLA
+ ,AEX,CODE.=6HOVERLA ; S:65 . логическая операция с памятью [лг] ; =6HOVERLA ; DEKOD TEXT 'OVERLA  ' / GOST 'ПЦЕТМБ00' / ISO '?ИР???' [источник: src/lib21/EXECUTE.mad:147; confidence: high]; primary=TEXT (6 бит/символ, =6H-литерал-маска)
   ,UZA,NEW*OV ; S:66 . переход при нулевом аккумуляторе [пн]
 С.....   BOЗMOЖHO - CTAPЫЙ OVERLAY ; S:67 ; ....   BOЗMOЖHO - CTAPЫЙ OVERLAY
   ,XTA,INF0 ; S:68 . считать из памяти в аккумулятор [сч]
@@ -259,7 +259,7 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
 С.....   OTKAЗ OT ИCПOЛЬЗOBAHHЫX MБ ; S:173 ; ....   OTKAЗ OT ИCПOЛЬЗOBAHHЫX MБ
  DISP:,IFSEQ,D,DD** ; POLN: DISP S:174
   ,*63,CN766 ; S:175 . Э63 CN766 = ЭКСТРАКОДЫ ВРЕМЕНИ РЕШЕНИЯ ЗАДАЧИ (ИР 063 A), стр.334 [tyurin1985]
-  ,AEX,=6HOC ДYБ ; S:176 . логическая операция с памятью [лг]
+  ,AEX,=6HOC ДYБ ; S:176 . логическая операция с памятью [лг] ; DEKOD TEXT 'OC ДYБ  ' / GOST 'ПГ04Щ200' / ISO '?0?? ?' [источник: src/lib21/EXECUTE.mad:262; confidence: high]; primary=TEXT (6 бит/символ, =6H-литерал-маска)
   ,U1A,CLTMP ; S:177 . переход при ненулевом аккумуляторе [пнн]
  ,XTA,KC*+LC1 ; S:178 . считать из памяти в аккумулятор [сч]
  ,ASN,AS64+UT12 ; S:179 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
@@ -505,17 +505,17 @@ LG1000 ,EQU,1000            ; роль: операнд LOG (двоичная (LO
  C371:,LOG,LG37 ; POLN: C37 S:415 . двоичная (LOG) константа
  B1:,LOG,LC1 ; POLN: B1 S:416 . двоичная (LOG) константа
  TFRAG:,TEXT,8HFRAG TPП ; POLN: TEXT_FRAG_TPP S:417 . TEXT-константа "FRAG ТРП" (фрагмент программы ТРП; было FRAG TPП)  ; DEKOD GOST '18Б2 ТРП' / TEXT '!(A"/RPO' / ISO '··B?,/' [источник: src/lib21/EXECUTE.mad:507; confidence: high]
- CODMIX:,ISO,12HMIXLOAD OT ; POLN: CODMIX S:418 . ISO-константа
+ CODMIX:,ISO,12HMIXLOAD OT ; POLN: CODMIX S:418 . ISO-константа ; DEKOD ISO 'MIXLOA' / GOST6 ')×Е])4Ю1' / TEXT6 '34E83ДЩ.' [источник: src/lib21/EXECUTE.mad:508; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
 С.....   ДИAГHOCTИЧECKИE TEKCTЫ ; S:419 ; ....   ДИAГHOCTИЧECKИE TEKCTЫ
- CODE:,ISO,6HOVERLA ; POLN: CODE S:420 . ISO-константа
-  ,ISO,18HY BAШ HE XYДO БЫ ; S:421 . ISO-константа
-  ,ISO,18HПEPECOБPATЬ. ; S:422 . ISO-константа
-  ,ISO,18HA HE XOTИTE - И TA ; S:423 . ISO-константа
-  ,ISO,18HK COЙДET. ; S:424 . ISO-константа
+ CODE:,ISO,6HOVERLA ; POLN: CODE S:420 . ISO-константа ; DEKOD ISO 'OVERLA' / GOST6 ')Х*5×ДС1' / TEXT6 '3U9Ф4DQ.' [источник: src/lib21/EXECUTE.mad:510; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (октеты dtran)
+  ,ISO,18HY BAШ HE XYДO БЫ ; S:421 . ISO-константа ; DEKOD ISO 'Y BAШ ' / GOST6 ';(12⏨[МА' / TEXT6 '62.Б07LЗ' [источник: src/lib21/EXECUTE.mad:511; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+  ,ISO,18HПEPECOБPATЬ. ; S:422 . ISO-константа ; DEKOD ISO 'ПEPECO' / GOST6 '#4=⏨↑×, ' / TEXT6 'ПД5014Я/' [источник: src/lib21/EXECUTE.mad:512; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+  ,ISO,18HA HE XOTИTE - И TA ; S:423 . ISO-константа ; DEKOD ISO 'A HE X' / GOST6 '⏨(18↑(1]' / TEXT6 '02.(12.8' [источник: src/lib21/EXECUTE.mad:513; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+  ,ISO,18HK COЙДET. ; S:424 . ISO-константа ; DEKOD ISO 'K COЙД' / GOST6 '(Т13)ЦЙД' / TEXT6 '2R.Ц3VID' [источник: src/lib21/EXECUTE.mad:514; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
   ,LOG,LG1000 ; S:425 . двоичная (LOG) константа
- TOШП:,ISO,18HOШИБKA B YKAЗATEЛE ; POLN: TOШП S:426 . ISO-константа
- TOШK:,ISO,18HПЛOXOЙ OV.-KATAЛOГ ; POLN: TOШK S:427 . ISO-константа ; -KATAЛOГ
- TMMЛ:,ISO,18HПPИ CБOPKE MAЛO MЛ ; POLN: TMMЛ S:428 . ISO-константа
+ TOШП:,ISO,18HOШИБKA B YKAЗATEЛE ; POLN: TOШП S:426 . ISO-константа ; DEKOD ISO 'OШИБKA' / GOST6 ')ЧНЙ]ДН1' / TEXT6 '3WMI8DM.' [источник: src/lib21/EXECUTE.mad:516; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+ TOШK:,ISO,18HПЛOXOЙ OV.-KATAЛOГ ; POLN: TOШK S:427 . ISO-константа ; -KATAЛOГ ; DEKOD ISO 'ПЛOXOЙ' / GOST6 '#6С ;4ЮК' / TEXT6 'ПГQ/6ДЩJ' [источник: src/lib21/EXECUTE.mad:517; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+ TMMЛ:,ISO,18HПPИ CБOPKE MAЛO MЛ ; POLN: TMMЛ S:428 . ISO-константа ; DEKOD ISO 'ПPИ CБ' / GOST6 '#51Й84,В' / TEXT6 'ПФ.I(ДЯB' [источник: src/lib21/EXECUTE.mad:518; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
 С --- BSS: (без метки) (строка 429 исходника) ---
  ,BSS, ; S:429 . зарезервировать слово (BSS)
 С.....   PAБOЧИE ЯЧEЙKИ ; S:430 ; ....   PAБOЧИE ЯЧEЙKИ

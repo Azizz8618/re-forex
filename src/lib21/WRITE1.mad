@@ -98,7 +98,7 @@ UTC,LIM004 . сравнение/переход  ; S3:5270
 ATX . запись с модификатором  ; S3:5271
 12,XTA,BUF013-C . считывание в аккумулятор  ; S3:5272
 12,ATX,WOR020-C . запись с модификатором  ; S3:5273
-'INSTRUCTION'                              WRITE               PAGE 3,,  ; S3:5274
+'INSTRUCTION'                              WRITE               PAGE 3,,  ; S3:5274; DEKOD GOST6 '(×Щ)=59=' / ISO 'INSTRU' [источник: src/lib21/WRITE1.mad:101; confidence: high]
 ITA,EDC006 . взятие из стека в индексный регистр  ; S3:5275
 12,XTS,INF021-C . считывание с модификатором  ; S3:5276
 CALL,DRUMTAP* . вызов подпрограммы  ; S3:5277
@@ -117,7 +117,7 @@ ASN,EDC008-EDC013  ; S3:5286
 12,XTA,BUF013-C . считывание в аккумулятор  ; S3:5290
 12,ATX,WOR020-C . запись с модификатором  ; S3:5291
 UJ,CYC007 . переход/возврат  ; S3:5292
-BUF013: 3,37,''EDC014''  ; (POLN: BUFER) ; S3:5293
+BUF013: 3,37,''EDC014''  ; (POLN: BUFER) ; S3:5293; DEKOD GOST6 '↑×↑3/34Ф' / ISO 'EDC014' [источник: src/lib21/WRITE1.mad:120; confidence: high]
 20,PAG002  ; S3:5294
 ADR014:   ; (POLN: ADRSC) ; S3:5295
 Z00,SAV023  ; S3:5296

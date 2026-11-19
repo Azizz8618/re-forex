@@ -57,7 +57,7 @@ F721DS           ,EQU, 77057B                       ; роль: ячейка п�
 FTDTBA      ,EQU, 77766B                       ; роль: база таблицы передач FORMAT; источник: S1:15549  ; полное имя: FTD_TABLE_BASE_ADDR
 FTADFL            ,EQU, 103B                         ; роль: маска поля адреса в FORMAT; источник: S1:15543  ; полное имя: FT_ADDR_FIELD
 FTOFMK           ,EQU, 155B                         ; роль: маска смещения в FORMAT; источник: S1:15559  ; полное имя: FT_OFFSET_MASK
-GOSTBL               ,EQU, 6H                           ; роль: пустой GOST-формат; источник: S7:457  ; полное имя: GOST_BLANK
+GOSTBL               ,EQU, 6H                           ; роль: пустой GOST-формат; источник: S7:457  ; полное имя: GOST_BLANK . GOST '000000' DEKOD '000000' (PRIMARY GOST8 «000000»; ISO NUL×6; TEXT «        »; пустой GOST-формат) [источник: src/FOREX_RUNTIME.mad:60; S7:457]
 INTZ                 ,EQU, 0                            ; роль: целое 0; источник: S6:5075  ; полное имя: INT_ZERO
 ISOCSH           ,EQU, 54B                          ; роль: сдвиг ASN 54B при сборке 8-символьного слова; источник: S1:15685  ; полное имя: ISO_CODE_SHIFT
 ISOWSH           ,EQU, 64                           ; роль: сдвиг GOST/ISO-поля на 64 разряда; источник: S5:7676  ; полное имя: ISO_WORD_SHIFT
@@ -80,7 +80,7 @@ STKOF4             ,EQU, -4                           ; роль: ; S5:7678; и�
 STKOF5             ,EQU, -5                           ; роль: ; S5:7712; источник: S5:7712  ; полное имя: STACK_OFF_M5
 STKOF6             ,EQU, -6                           ; роль: ; S5:7694; источник: S5:7694  ; полное имя: STACK_OFF_M6
 SOM             ,EQU, -8                           ; роль: ; S5:7688; источник: S5:7688  ; полное имя: STACK_OFF_M8
-TL0000          ,EQU, ''000000''                   ; роль: ; S6:5083 ZERO = 8TEXT «000000»; источник: S6:5083  ; полное имя: TEXT_LIT_000000
+TL0000          ,EQU, ''000000''                   ; роль: DEKOD GOST 'ееееее00' / TEXT '000000  ' / ISO 'A··A··' [источник: src/FOREX_RUNTIME.mad:83; dtran -D text 0o2020202020200000; confidence: high]; ; S6:5083 ZERO = 8TEXT «000000»; источник: S6:5083  ; полное имя: TEXT_LIT_000000
 TL0001          ,EQU, 1H'055'                      ; роль: DEKOD GOST '7е==7000' / TEXT ''055'   ' / ISO '··U···' [источник: src/FOREX_RUNTIME.mad:84; confidence: high]; ; S5:7717; источник: S5:7717  ; полное имя: TEXT_LIT_1H_055
 TL0002          ,EQU, 2H '200'                     ; роль: DEKOD GOST '7(ее7000' / TEXT ''200'   ' / ISO '·$····' [источник: src/FOREX_RUNTIME.mad:85; confidence: high]; ; S5:7715; источник: S5:7715  ; полное имя: TEXT_LIT_2H_200
 TL0003            ,EQU, 3H00                         ; роль: DEKOD GOST 'ее000000' / TEXT '00      ' / ISO 'A·····' [источник: src/FOREX_RUNTIME.mad:86; confidence: high]; ; S5:7718; источник: S5:7718  ; полное имя: TEXT_LIT_3H00
@@ -411,15 +411,15 @@ C ПOЗИЦИИ        ; S5:7716
  ,CONT,TL0003        ; S5:7718
  DATE2:,GOST,TL0007.        ; S5:7719
  DATE4:,BSS,        ; S5:7720
- MNTHNM:,GOST,    ; (MARR)TL0020        ; S5:7721  ; полное имя: MONTH_NAMES
+ MNTHNM:,GOST,    ; (MARR)TL0020        ; S5:7721  ; полное имя: MONTH_NAMES . GOST 'ЯНВ' DEKOD 'ЯНВ' (PRIMARY GOST8-CYR «ЯНВ» — имя месяца из TL0020; альтернатива TEXT: 6-битная интерпретация байт) [источник: src/FOREX_RUNTIME.mad:414; TL0020:103]
  ,GOST,TL0022        ; S5:7722
  ,GOST,TL0012        ; S5:7723
  ,GOST,TL0024        ; S5:7724
  ,GOST,TL0010        ; S5:7725
  DATE3:,GOST,TL0017        ; S5:7726
  DYMSK:,BSS,.       ; (DMASK)        ; S5:7727  . полное имя: DAY_MASK
- TIMMSK:,GOST,      ; (TMASK)TL0009        ; S5:7728  ; полное имя: TIME_MASK
- YRMSK:,GOST,      ; (YMASK)TL0005.        ; S5:7729  ; полное имя: YEAR_MASK
+ TIMMSK:,GOST,      ; (TMASK)TL0009        ; S5:7728  ; полное имя: TIME_MASK . TEXT '03 0' DEKOD '03 0' (PRIMARY TEXT «03 0» = TL0009, маска времени; альтернатива GOST8 «00РУАР», ISO «··03 0») [источник: src/FOREX_RUNTIME.mad:421; TL0009:92]
+ YRMSK:,GOST,      ; (YMASK)TL0005.        ; S5:7729  ; полное имя: YEAR_MASK . TEXT '0000' DEKOD '0000' (PRIMARY TEXT «0000» = TL0005, маска года; альтернатива GOST8 «G4⏨000») [источник: src/FOREX_RUNTIME.mad:422; TL0005:88]
  ,GOST,TL0016        ; S5:7730
  ,GOST,TL0023        ; S5:7731
  MNTHFD:,OCT,     ; (MONTHFI)00 776        ; S5:7732  ; полное имя: MONTH_FIELD
@@ -513,7 +513,7 @@ C  (C1/10) и C10; возврат через M15; ZERO = ISO 6H000000.
  B40/1:,LOG,DW0006        ; S7:454
  C10:,LOG,4000 0000 0000 0012        ; S7:455
  C1/10:,LOG,4001 4631 4631 4632        ; S7:456  C1/10 = LOG 4001 4631 4631 4632 (0.1)
- MSK:,GOST,GOSTBL        ; S7:457
+ MSK:,GOST,GOSTBL        ; S7:457 . GOST '000000' DEKOD '000000' (PRIMARY GOST8 «000000»; GOSTBL = пустой GOST-формат, слово 0; ISO NUL×6; TEXT «        ») [источник: src/FOREX_RUNTIME.mad:516; GOSTBL:60]
  ZERO:,ISO,TL0006        ; S7:458  ZERO = ISO 6H000000
 C  Конец OCTTDE (exfor).
  ,END,        ; S7:459  END

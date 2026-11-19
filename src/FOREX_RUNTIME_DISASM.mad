@@ -189,11 +189,11 @@ FMTENT: ,ATI,BAS14        . S1:15541 M14 := acc — база таблицы пе
         ,ATX,D003DS       . S1:15586 ATX 77775B
  FMTLST: ,ATX,            . Слово 0o510472 — конец кода / выравнивание
 C  Служебный хвост модуля (НЕ исходный МАДЛЕН, а объектная обвязка):
- FMTNAM: ,ATX,            . 0o510473 — t6-имя модуля 'FORMAT  '
+ FMTNAM: ,ATX,            . 0o510473 — t6-имя модуля 'FORMAT  ' . DEKOD TEXT 'FORMAT  ' [источник: src/FOREX_RUNTIME_DISASM.mad:192; лента 0o510473; t6 (6 бит×8); confidence: high]
  FMTXLT: ,ATX,            . 0o510474-0o510506 — 11 адресов ячеек передачи (4030..4042)
  FMTCST: ,ATX,            . 0o510507-0o510522 — 12 младших 12 бит адресов 77xxxB
  FMTXNM: ,ATX,            . 0o510523-0o510535 — t6-имена FT*571 … FT*003
- FMTEND: ,ATX,            . 0o510536-0o510537 — END-маркер библиотеки ('GFEDCBA+')
+ FMTEND: ,ATX,            . 0o510536-0o510537 — END-маркер библиотеки ('GFEDCBA+') . DEKOD TEXT 'GFEDCBA+' [источник: src/FOREX_RUNTIME_DISASM.mad:196; лента 0o510536-0o510537; t6 (6 бит×8); confidence: high]
 C ---- КАРТА СЛОВ FORTLIBR: побайтовая привязка к ленте monsys.9 ----
 С слово 0000 @0o510543 = 0o7244006170000016
 С слово 0001 @0o510544 = 0o42000700430015
@@ -286,7 +286,7 @@ C  M13 — linkage, M15 — экстракод Э70 = Memory/register dump [Besm
         ,STI,WRK07        . S1:15607 STI 7
         13,UJ,            . S1:15608 13 UJ — возврат
         ,UTC,              . S1:15609 UTC
- LIBA10:14,VTM,C101       . S1:15610 14 VTM *00101 — текст ошибки 'ERROR'
+ LIBA10:14,VTM,C101       . S1:15610 14 VTM *00101 — текст ошибки 'ERROR' . DEKOD ISO 'ERROR  ' / TEXT 'ERROR   ' [источник: src/FOREX_RUNTIME_DISASM.mad:289; S1:15610; C101; confidence: high]
         ,ITS,BAS14        . S1:15611 ITS 14
         14,UTM,TRIO       . S1:15612 14 UTM 3 — вещественный режим NTR 3
         ,ITS,BAS14        . S1:15613 ITS 14
@@ -385,11 +385,11 @@ C  Блок констант *00061 … *00100 (LOG) и диагностичес
  C076:  ,LOG,MSK76        . S1:15704 LOG 77270707 00000000
  C077:  ,LOG,ZERO         . S1:15705 *00077 LOG 0
  C100:  ,LOG,ZERO         . S1:15706 *00100 LOG 0
- C101:  ,ISO,'ERROR  '    . S1:15707 ISO ,6HERROR  (6 ASCII-байт в слове)
+ C101:  ,ISO,'ERROR  '    . S1:15707 ISO ,6HERROR  (6 ASCII-байт в слове) . ISO 'ERROR' DEKOD 'ERROR' (PRIMARY ISO/ASCII «ERROR » — 6 байт; GOST8 «N⊃⊃⩾⊃А» — альтернатива) [источник: src/FOREX_RUNTIME_DISASM.mad:388; S1:15707]
  LIBISO:,EQU,C101         ; (полное: LIB_ERROR_TEXT); роль: начало блока ISO-текстов диагностики; S1:15707
-        ,ISO,'IN STA'     . S1:15708 ISO ,6HIN STA
-        ,ISO,'NDART '     . S1:15709 ISO ,6HNDART
-        ,ISO,'ARRAY '     . S1:15710 ISO ,6HARRAY
+        ,ISO,'IN STA'     . S1:15708 ISO ,6HIN STA . ISO 'IN STA' DEKOD 'IN STA' (PRIMARY ISO/ASCII «IN STA» — 6 байт; GOST8 «U⩽А¬÷G» — альтернатива) [источник: src/FOREX_RUNTIME_DISASM.mad:390; S1:15708]
+        ,ISO,'NDART '     . S1:15709 ISO ,6HNDART . ISO 'NDART' DEKOD 'NDART' (PRIMARY ISO/ASCII «NDART » — 6 байт; GOST8 «⩽LG⊃÷А» — альтернатива) [источник: src/FOREX_RUNTIME_DISASM.mad:391; S1:15709]
+        ,ISO,'ARRAY '     . S1:15710 ISO ,6HARRAY . ISO 'ARRAY' DEKOD 'ARRAY' (PRIMARY ISO/ASCII «ARRAY » — 6 байт; GOST8 «G⊃⊃G―А» — альтернатива) [источник: src/FOREX_RUNTIME_DISASM.mad:392; S1:15710]
  LIBEND:,END,             . S1:15711-15712 BSS / END FORTLIBR
 
 C***********************************************************************

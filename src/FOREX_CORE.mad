@@ -276,7 +276,7 @@ PRTIME:  . полное имя: PRINT_TIME
             SBR,FMSBR          . сброс разрядов [сбр]
             RZB,FMRZB          . разбор [рзб]
 С   → SBR =6H17...'' / RZB =6H''17...'' — форматирование.'),
-0o510324:(None,'OR =6H'16 → ATX TIME.
+0o510324:(None,'OR =6H'16 → ATX TIME. . TEXT '16' DEKOD '16' (PRIMARY ASCII/ISO «16» = байты 0x31 0x36; GOST8 «N·0000» — альтернатива) [источник: src/FOREX_CORE.mad:279]
 
 С слово 0024  @0o510324 = 0o0015403600004024
             AOX,INFAD          . логическое ИЛИ [или]

@@ -62,3 +62,26 @@
 |-----|----------------------|-------------|------|------------|-------|
 | Э57 | -CN1 | не найдено в rukava.be | — | 1 | `src/lib21/FT_REGIM.mad:172` |
 | Э63 | CN677 | не найдено в rukava.be | — | 3 | `src/lib21/FT_REGIM.mad:90`, `src/lib21/FT_REGIM.mad:149`, `src/lib21/FT_REGIM.mad:161` |
+
+## Текстовые константы и кодировки
+
+Второй проход аудита (2026-11-19): не расшифрованные ранее текстовые
+константы в кодировках ИСО (ISO), ГОСТ, UPP/континуации (CONT).
+Первичное чтение — текст литерала из листинга Дубны/dtran; 6-битные
+GOST6/TEXT6 — альтернативная интерпретация машиного слова.
+Методика и сверка: `docs/19-dtran-text-encodings.md`,
+`tools/dtran_text.py --audit`. Полный лог — `logs/text_audit_lib21_2.txt`.
+
+| Метка/литерал | Кодировка | Первичное чтение | Источник |
+|---|---|---|---|
+| `EC    ` | ISO | `EC    ` | `src/lib21/FT_REGIM.mad:120` |
+| `KERR  ` | ISO | `KERR  ` | `src/lib21/FT_REGIM.mad:121` |
+| `RERR  ` | ISO | `RERR  ` | `src/lib21/FT_REGIM.mad:122` |
+| `TEST  ` | ISO | `TEST  ` | `src/lib21/FT_REGIM.mad:123` |
+| `STERR ` | ISO | `STERR ` | `src/lib21/FT_REGIM.mad:124` |
+| `BUF   ` | ISO | `BUF   ` | `src/lib21/FT_REGIM.mad:125` |
+| `OШИБKA` | ISO | `OШИБKA` | `src/lib21/FT_REGIM.mad:193` |
+| `Y MEHЯ` | ISO | `Y MEHЯ` | `src/lib21/FT_REGIM.mad:196` |
+| `REGIM   ` | TEXT(=6H) | `REGIM   ` | `src/lib21/FT_REGIM.mad:112` |
+
+Добавлено декодирований: 9.

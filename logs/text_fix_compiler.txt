@@ -1,0 +1,97 @@
+# Исправление расшифровок текстовых констант —编译器 (src/*.mad, НЕ lib21)
+
+Дата: 2026-11-19
+Ветка: main
+Область: только `src/*.mad` (5 файлов, 13 строк). Файлы `src/lib21/*.mad` и
+`include/*.xref.md` НЕ трогались — там работает другой агент.
+
+## Задача
+`tests/check-text-decoded.sh` давал FAIL для 189 констант: комментарий содержал
+ключ кодировки (например `ISO-константа ; 040 076 ...`), но не было явной
+расшифровки в кавычках вида `DEKOD '...'`. Для 13 строк в зоне агента
+дописана явная форма:
+  `. <ENC> '<PRIMARY>' DEKOD '<PRIMARY>' (PRIMARY ...; альтернатива ...) [источник: путь:строка]`
+
+Инструменты декодирования: `tools/besm6_text_scan.py` (готов),
+`tools/dtran_text.py --audit`, `tools/extract_words.py`,
+`monitor80-re/tools/gost10859.h` (через таблицы besm6_text_scan.py).
+Мнемоники, метки, EQU-значения и адреса НЕ изменялись — только комментарии.
+
+## Исправлено: 13 строк в 5 файлах
+
+### src/FOREX_CORE.mad:279  (1)
+БЫЛО:
+  0o510324:(None,'OR =6H'16 → ATX TIME.
+СТАЛО:
+  0o510324:(None,'OR =6H'16 → ATX TIME. . TEXT '16' DEKOD '16' (PRIMARY ASCII/ISO «16» = байты 0x31 0x36; GOST8 «N·0000» — альтернатива) [источник: src/FOREX_CORE.mad:279]
+Декод: 6H'16' → word 0o0000000000030466; ISO «····16», TEXT «     #$V», GOST8 «0000CЦ».
+
+### src/FOREX_DECODER_DISASM.mad:332  (1)
+БЫЛО:
+          ,ISO,OXZER     ; ZERO ISO 6H000000; S7:458
+СТАЛО:
+          ,ISO,OXZER     ; ZERO ISO 6H000000; S7:458 . GOST '000000' DEKOD '000000' (PRIMARY ISO NUL×6 = ZERO/пусто; GOST8 «000000» цифры; TEXT «        ») [источник: src/FOREX_DECODER_DISASM.mad:332; S7:458]
+Декод: слово 0 — ISO NUL×6 (пусто/ZERO), GOST8 «000000» (цифры), TEXT 8 пробелов.
+
+### src/FOREX_RUNTIME.mad  (5)
+:60 БЫЛО:  GOSTBL ,EQU, 6H ; ... ; полное имя: GOST_BLANK
+:60 СТАЛО: ... ; полное имя: GOST_BLANK . GOST '000000' DEKOD '000000' (PRIMARY GOST8 «000000»; ISO NUL×6; TEXT «        »; пустой GOST-формат) [источник: src/FOREX_RUNTIME.mad:60; S7:457]
+
+:414 БЫЛО:  MNTHNM:,GOST,    ; (MARR)TL0020 ; S5:7721 ; полное имя: MONTH_NAMES
+:414 СТАЛО: ... ; полное имя: MONTH_NAMES . GOST 'ЯНВ' DEKOD 'ЯНВ' (PRIMARY GOST8-CYR «ЯНВ» — имя месяца из TL0020; альтернатива TEXT: 6-битная интерпретация байт) [источник: src/FOREX_RUNTIME.mad:414; TL0020:103]
+
+:421 БЫЛО:  TIMMSK:,GOST,    ; (TMASK)TL0009 ; S5:7728 ; полное имя: TIME_MASK
+:421 СТАЛО: ... ; полное имя: TIME_MASK . TEXT '03 0' DEKOD '03 0' (PRIMARY TEXT «03 0» = TL0009, маска времени; альтернатива GOST8 «00РУАР», ISO «··03 0») [источник: src/FOREX_RUNTIME.mad:421; TL0009:92]
+
+:422 БЫЛО:  YRMSK:,GOST,    ; (YMASK)TL0005. ; S5:7729 ; полное имя: YEAR_MASK
+:422 СТАЛО: ... ; полное имя: YEAR_MASK . TEXT '0000' DEKOD '0000' (PRIMARY TEXT «0000» = TL0005, маска года; альтернатива GOST8 «G4⏨000») [источник: src/FOREX_RUNTIME.mad:422; TL0005:88]
+
+:516 БЫЛО:   MSK:,GOST,GOSTBL        ; S7:457
+:516 СТАЛО:  MSK:,GOST,GOSTBL        ; S7:457 . GOST '000000' DEKOD '000000' (PRIMARY GOST8 «000000»; GOSTBL = пустой GOST-формат, слово 0; ISO NUL×6; TEXT «        ») [источник: src/FOREX_RUNTIME.mad:516; GOSTBL:60]
+
+### src/FOREX_RUNTIME_DISASM.mad  (4)
+:388 БЫЛО:  C101:  ,ISO,'ERROR  '    . S1:15707 ISO ,6HERROR  (6 ASCII-байт в слове)
+:388 СТАЛО: ... (6 ASCII-байт в слове) . ISO 'ERROR' DEKOD 'ERROR' (PRIMARY ISO/ASCII «ERROR » — 6 байт; GOST8 «N⊃⊃⩾⊃А» — альтернатива) [источник: src/FOREX_RUNTIME_DISASM.mad:388; S1:15707]
+
+:390 БЫЛО:          ,ISO,'IN STA'     . S1:15708 ISO ,6HIN STA
+:390 СТАЛО: ... ,6HIN STA . ISO 'IN STA' DEKOD 'IN STA' (PRIMARY ISO/ASCII «IN STA» — 6 байт; GOST8 «U⩽А¬÷G» — альтернатива) [источник: src/FOREX_RUNTIME_DISASM.mad:390; S1:15708]
+
+:391 БЫЛО:          ,ISO,'NDART '     . S1:15709 ISO ,6HNDART
+:391 СТАЛО: ... ,6HNDART . ISO 'NDART' DEKOD 'NDART' (PRIMARY ISO/ASCII «NDART » — 6 байт; GOST8 «⩽LG⊃÷А» — альтернатива) [источник: src/FOREX_RUNTIME_DISASM.mad:391; S1:15709]
+
+:392 БЫЛО:          ,ISO,'ARRAY '     . S1:15710 ISO ,6HARRAY
+:392 СТАЛО: ... ,6HARRAY . ISO 'ARRAY' DEKOD 'ARRAY' (PRIMARY ISO/ASCII «ARRAY » — 6 байт; GOST8 «G⊃⊃G―А» — альтернатива) [источник: src/FOREX_RUNTIME_DISASM.mad:392; S1:15710]
+
+### src/LO_SYN.mad  (2)
+:3143 БЫЛО:  4H1427:  5,X-A,ME7444 .ВЧОБ ... ; (POLN: L_ST400_HALT_1427)
+:3143 СТАЛО: ... ; (POLN: L_ST400_HALT_1427) . ISO '1427' DEKOD '1427' (PRIMARY ISO/ASCII «1427» = адрес 0o1427 (4H-литерал); GOST8 «00CФTЧ» — альтернатива) [источник: src/LO_SYN.mad:3143]
+
+:3577 БЫЛО:   9,STOP,4H1427 .останов/завершение [1427] через М9
+:3577 СТАЛО: ... через М9 . ISO '1427' DEKOD '1427' (PRIMARY ISO/ASCII «1427» = адрес 0o1427 (4H-литерал); GOST8 «00CФTЧ» — альтернатива) [источник: src/LO_SYN.mad:3577]
+Декод: 4H1427 → word 0o0000006115031067; ISO «··1427» (ASCII «1427»), GOST8 «00CФTЧ».
+
+## Результаты проверок
+
+  bash tests/check-text-decoded.sh
+    ДО:   ИТОГО 539, FAIL 189 (13 — в зоне этого агента)
+    ПОСЛЕ: ИТОГО 539, FAIL 89, все 89 — src/lib21/* (другой агент).
+    FAIL для src/FOREX_CORE.mad, src/FOREX_DECODER_DISASM.mad,
+    src/FOREX_RUNTIME.mad, src/FOREX_RUNTIME_DISASM.mad, src/LO_SYN.mad — НЕТ.
+    CONTROL-константы (LO*SYN, FOREX, DATAPR*, месяцы и т.д.) — все OK.
+
+  python3 tests/check-source-words.py ............ rc=0
+    OK LO*SYN: все 1024 слова совпадают с дампом
+    OK LO*GEN: все 1024 слова совпадают с дампом
+
+  bash tests/check-label-semantics.sh ............ rc=0
+    OK: нарушений семантики имён не найдено
+
+  bash tests/check-constants.sh .................. rc=0
+    OK: все файлы вынесли литералы в ,EQU, (уник <= 20)
+
+  bash tests/check-extract-codes.sh .............. rc=0
+    OK: мнёмоники APX/AUX/EXT/ASN, классы аргументов, дtran -D cross-check
+
+## Итог
+Исправлено 13 констант в 5 файлах. Все проверки зоны проходят rc=0.
+Общий `check-text-decoded.sh` ещё возвращает 1 исключительно из-за lib21.

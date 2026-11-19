@@ -44,18 +44,18 @@ ETX034 ,EQU,=200 0000                   ; роль: литерал (TEXT/OCT/GOS
 ETX035 ,EQU,=7777 7777 7000 0037        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5415  ; (POLN: LITERAL__7777_7777_7000_0037)
 ETX036 ,EQU,=70 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5419  ; (POLN: LITERAL__70_0000)
 EDC036 ,EQU,1022                        ; роль: десятичная константа/сдвиг; S2:5424  ; (POLN: DEC_1022)
-ETX037 ,EQU,=:4                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5429  ; (POLN: LITERAL___4)
-ETX038 ,EQU,=:2                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5473  ; (POLN: LITERAL___2)
+ETX037 ,EQU,=:4                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5429  ; (POLN: LITERAL___4); DEKOD TEXT '=:4' / OCT '=:4' [источник: src/lib21/MAKELIBT.mad:47; восьмеричный литерал из исходника]
+ETX038 ,EQU,=:2                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5473  ; (POLN: LITERAL___2); DEKOD TEXT '=:2' / OCT '=:2' [источник: src/lib21/MAKELIBT.mad:48; восьмеричный литерал из исходника]
 ETX039 ,EQU,=7743 7777 7770 0000        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5480  ; (POLN: LITERAL__7743_7777_7770_0000)
 EDC039 ,EQU,13                          ; роль: десятичная константа/сдвиг; S2:5490  ; (POLN: DEC_13)
 ETX040 ,EQU,=7743 7777 7777 7777        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5513  ; (POLN: LITERAL__7743_7777_7777_7777)
 EDC040 ,EQU,2032                        ; роль: десятичная константа/сдвиг; S2:5519  ; (POLN: DEC_2032)
 EDC041 ,EQU,14                          ; роль: десятичная константа/сдвиг; S2:5523  ; (POLN: DEC_14)
-ETX041 ,EQU,=:0034                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5570  ; (POLN: LITERAL___0034)
+ETX041 ,EQU,=:0034                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5570  ; (POLN: LITERAL___0034); DEKOD TEXT '=:0034' / OCT '=:0034' [источник: src/lib21/MAKELIBT.mad:54; восьмеричный литерал из исходника]
 ETX042 ,EQU,=7                          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5571  ; (POLN: LITERAL__7)
-ETX043 ,EQU,=:1740                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5578  ; (POLN: LITERAL___1740)
+ETX043 ,EQU,=:1740                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5578  ; (POLN: LITERAL___1740); DEKOD TEXT '=:1740' / OCT '=:1740' [источник: src/lib21/MAKELIBT.mad:56; восьмеричный литерал из исходника]
 ETX044 ,EQU,=1740                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5579  ; (POLN: LITERAL__1740)
-ETX045 ,EQU,=:0003 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5583  ; (POLN: LITERAL___0003_77)
+ETX045 ,EQU,=:0003 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5583  ; (POLN: LITERAL___0003_77); DEKOD TEXT '=:0003 77' / OCT '=:0003 77' [источник: src/lib21/MAKELIBT.mad:58; восьмеричный литерал из исходника]
 ETX046 ,EQU,=377                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5584  ; (POLN: LITERAL__377)
 ETX047 ,EQU,=7740                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5585  ; (POLN: LITERAL__7740)
 ETX048 ,EQU,=7777                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5586  ; (POLN: LITERAL__7777)
@@ -69,7 +69,7 @@ EOC052 ,EQU,17B                         ; роль: восьмеричная к�
 EOC053 ,EQU,11B                         ; роль: восьмеричная константа; S2:5717  ; (POLN: OCT_11)
 ETX053 ,EQU,=700 0000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5781  ; (POLN: LITERAL__700_0000)
 ETX054 ,EQU,=2000 0000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5796  ; (POLN: LITERAL__2000_0000)
-ETX055 ,EQU,=:7777 7777                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5799  ; (POLN: LITERAL___7777_7777)
+ETX055 ,EQU,=:7777 7777                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5799  ; (POLN: LITERAL___7777_7777); DEKOD TEXT '=:7777 7777' / OCT '=:7777 7777' [источник: src/lib21/MAKELIBT.mad:72; восьмеричный литерал из исходника]
 EDC055 ,EQU,24                          ; роль: десятичная константа/сдвиг; S2:5803  ; (POLN: DEC_24)
 EOC055 ,EQU,4000B                       ; роль: восьмеричная константа; S2:5805  ; (POLN: OCT_4000)
 EDC056 ,EQU,42                          ; роль: десятичная константа/сдвиг; S2:5811  ; (POLN: DEC_42)
@@ -77,7 +77,7 @@ ETX056 ,EQU,=12                         ; роль: литерал (TEXT/OCT/GOS
 ETX057 ,EQU,=7741                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5822  ; (POLN: LITERAL__7741)
 ETX058 ,EQU,=2000 0077 7777 7777        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5833  ; (POLN: LITERAL__2000_0077_7777_7777)
 ETX059 ,EQU,=77 76000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5841  ; (POLN: LITERAL__77_76000)
-ETX060 ,EQU,=:0037 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5842  ; (POLN: LITERAL___0037_77)
+ETX060 ,EQU,=:0037 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:5842  ; (POLN: LITERAL___0037_77); DEKOD TEXT '=:0037 77' / OCT '=:0037 77' [источник: src/lib21/MAKELIBT.mad:80; восьмеричный литерал из исходника]
 EDC060 ,EQU,3071                        ; роль: десятичная константа/сдвиг; S2:5865  ; (POLN: DEC_3071)
 EDC061 ,EQU,48                          ; роль: десятичная константа/сдвиг; S2:5869  ; (POLN: DEC_48)
 EDC062 ,EQU,8                           ; роль: десятичная константа/сдвиг; S2:5901  ; (POLN: DEC_8)

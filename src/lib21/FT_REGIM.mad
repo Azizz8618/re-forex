@@ -74,7 +74,7 @@ UT54   ,EQU,54B             ; роль: операнд UTM (увеличить �
   PRINT8:,SUBP, ; POLN: PRINT8 S:36 . внешняя подпрограмма (SUBP)
 С ; S:37
 С --- EQU: FFP (строка 38 исходника) ---
-  FFP:,EQU,=:170.CBOБOДHЫ 43-46 ЛИCTЫ ; POLN: FFP S:38 . эквивалент (EQU) ; CBOБOДHЫ 43-46 ЛИCTЫ
+  FFP:,EQU,=:170.CBOБOДHЫ 43-46 ЛИCTЫ ; POLN: FFP S:38 . эквивалент (EQU) ; CBOБOДHЫ 43-46 ЛИCTЫ; DEKOD TEXT '=:170' / OCT '=:170' [источник: src/lib21/FT_REGIM.mad:77; восьмеричный литерал из исходника]
 С ; S:39
   1,BASE,* ; S:40 . база блока
   13,MTJ,CN2.BOЗBPAT ; S:41 . передача управления по метке [п] ; BOЗBPAT
@@ -109,7 +109,7 @@ UT54   ,EQU,54B             ; роль: операнд UTM (увеличить �
   14,UZA,BUF ; S:70 . переход при нулевом аккумуляторе [пн]
   14,VLM,CHEK ; S:71 . записать индексный регистр в память [зир]
   ,XTA,PAR ; S:72 . считать из памяти в аккумулятор [сч]
-  ,AEX,=6HREGIM ; S:73 . логическая операция с памятью [лг]
+  ,AEX,=6HREGIM ; S:73 . логическая операция с памятью [лг] ; DEKOD TEXT 'REGIM   ' / GOST 'ТЕЗЙН000' / ISO '?Y????' [источник: src/lib21/FT_REGIM.mad:112; confidence: high]; primary=TEXT (6 бит/символ, =6H-литерал-маска)
   ,ASN,AS64+AS8 ; S:74 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
   ,U1A,ERRP ; S:75 . переход при ненулевом аккумуляторе [пнн]
   ,XTA,PAR ; S:76 . считать из памяти в аккумулятор [сч]
@@ -117,12 +117,12 @@ UT54   ,EQU,54B             ; роль: операнд UTM (увеличить �
   ,ATI,AI5 ; S:78 . считать индексный регистр в аккумулятор [счи]
   ,UJ,STATUS ; S:79 . безусловный переход [п]
 С------------ ; S:80
-  FP:,ISO,6HEC ; POLN: FP S:81 . ISO-константа
-  ,ISO,6HKERR ; S:82 . ISO-константа
-  ,ISO,6HRERR ; S:83 . ISO-константа
-  ,ISO,6HTEST ; S:84 . ISO-константа
-  ,ISO,6HSTERR ; S:85 . ISO-константа
-  LP:,ISO,6HBUF ; POLN: LP S:86 . ISO-константа
+  FP:,ISO,6HEC ; POLN: FP S:81 . ISO-константа ; DEKOD ISO 'EC    ' / GOST6 '↑×/А820А' / TEXT6 '14ЛЗ(Б З' [источник: src/lib21/FT_REGIM.mad:120; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+  ,ISO,6HKERR ; S:82 . ISO-константа ; DEKOD ISO 'KERR  ' / GOST6 '(Ф=(×В0А' / TEXT6 '2T524B З' [источник: src/lib21/FT_REGIM.mad:121; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+  ,ISO,6HRERR ; S:83 . ISO-константа ; DEKOD ISO 'RERR  ' / GOST6 '×Д=(×В0А' / TEXT6 '4D524B З' [источник: src/lib21/FT_REGIM.mad:122; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+  ,ISO,6HTEST ; S:84 . ISO-константа ; DEKOD ISO 'TEST  ' / GOST6 '=4=)=20А' / TEXT6 '5Д535Б З' [источник: src/lib21/FT_REGIM.mad:123; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+  ,ISO,6HSTERR ; S:85 . ISO-константа ; DEKOD ISO 'STERR ' / GOST6 '×Х↑5×Е8А' / TEXT6 '4U1Ф4E(З' [источник: src/lib21/FT_REGIM.mad:124; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
+  LP:,ISO,6HBUF ; POLN: LP S:86 . ISO-константа ; DEKOD ISO 'BUF   ' / GOST6 '⏨Е=6820А' / TEXT6 '0E5Г(Б З' [источник: src/lib21/FT_REGIM.mad:125; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
   :3,VZM,ERRP ; S:87
   ,UJ,EC ; S:88 . безусловный переход [п]
   :5,VTM,CN1 ; S:89
@@ -190,10 +190,10 @@ UT54   ,EQU,54B             ; роль: операнд UTM (увеличить �
   8,37,WS ; S:150
   ERRP:2,MTJ,AI13 ; POLN: ERRP S:151 . передача управления по метке [п]
   14,VJM,PRINT ; S:152 . вызов подпрограммы с возвратом [пв]
-  :,ISO,24HOШИБKA B ЗAДAHИИ ПAPAM. ; S:153
+  :,ISO,24HOШИБKA B ЗAДAHИИ ПAPAM. ; S:153 ; DEKOD ISO 'OШИБKA' / GOST6 ')ЧНЙ]ДН1' / TEXT6 '3WMI8DM.' [источник: src/lib21/FT_REGIM.mad:193; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
 С --- BSS: NOBUF (строка 154 исходника) ---
   NOBUF:,BSS, ; POLN: NOBUF S:154 . зарезервировать слово (BSS)
-  ,ISO,24HY MEHЯ HET БOЛEE ЛИCTOB ; S:155 . ISO-константа
+  ,ISO,24HY MEHЯ HET БOЛEE ЛИCTOB ; S:155 . ISO-константа ; DEKOD ISO 'Y MEHЯ' / GOST6 ';(1,↑×БС' / TEXT6 '62.Я14AQ' [источник: src/lib21/FT_REGIM.mad:196; confidence: high]; primary=ISO8 (8 бит/символ, метка ,ISO, в листинге Дубны/dtran); GOST6/TEXT6 — 6-битная альтернатива байт (8-бит ISO (литерал Дубны))
 С --- BSS: FB (строка 156 исходника) ---
   FB:,BSS, ; POLN: FB S:156 . зарезервировать слово (BSS)
   ,LOG, ; S:157 . двоичная (LOG) константа

@@ -27,7 +27,7 @@ ETX017 ,EQU,=6HCONT                     ; роль: DEKOD GOST 'ГПОФ0000' / 
 EDC018 ,EQU,2                           ; роль: десятичная константа/сдвиг; S2:1043  ; (POLN: DEC_2)
 EDC019 ,EQU,1022                        ; роль: десятичная константа/сдвиг; S2:1044  ; (POLN: DEC_1022)
 ETX019 ,EQU,=21 20000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1047  ; (POLN: LITERAL__21_20000)
-ETX020 ,EQU,=:7773 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1051  ; (POLN: LITERAL___7773_77)
+ETX020 ,EQU,=:7773 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1051  ; (POLN: LITERAL___7773_77); DEKOD TEXT '=:7773 77' / OCT '=:7773 77' [источник: src/lib21/LIBDRU_.mad:30; восьмеричный литерал из исходника]
 ETX021 ,EQU,=200 0000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1057  ; (POLN: LITERAL__200_0000)
 ETX022 ,EQU,=7777 7777 7000 0037        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1060  ; (POLN: LITERAL__7777_7777_7000_0037)
 EDC022 ,EQU,1023                        ; роль: десятичная константа/сдвиг; S2:1061  ; (POLN: DEC_1023)
@@ -43,9 +43,9 @@ ETX029 ,EQU,=1777                       ; роль: литерал (TEXT/OCT/GOS
 EDC029 ,EQU,18                          ; роль: десятичная константа/сдвиг; S2:1153  ; (POLN: DEC_18)
 ETX030 ,EQU,=77 76000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1158  ; (POLN: LITERAL__77_76000)
 ETX031 ,EQU,=77 0037                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1159  ; (POLN: LITERAL__77_0037)
-ETX032 ,EQU,=:001                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1161  ; (POLN: LITERAL___001)
+ETX032 ,EQU,=:001                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1161  ; (POLN: LITERAL___001); DEKOD TEXT '=:001' / OCT '=:001' [источник: src/lib21/LIBDRU_.mad:46; восьмеричный литерал из исходника]
 EDC032 ,EQU,5                           ; роль: десятичная константа/сдвиг; S2:1165  ; (POLN: DEC_5)
-ETX033 ,EQU,=:2                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1177  ; (POLN: LITERAL___2)
+ETX033 ,EQU,=:2                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1177  ; (POLN: LITERAL___2); DEKOD TEXT '=:2' / OCT '=:2' [источник: src/lib21/LIBDRU_.mad:48; восьмеричный литерал из исходника]
 ETX034 ,EQU,=1740 0000 0000 0000        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1180  ; (POLN: LITERAL__1740_0000_0000_0000)
 ETX035 ,EQU,=1740                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1181  ; (POLN: LITERAL__1740)
 EDC035 ,EQU,3                           ; роль: десятичная константа/сдвиг; S2:1182  ; (POLN: DEC_3)

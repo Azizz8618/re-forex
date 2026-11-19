@@ -99,3 +99,28 @@
 | `8HFRAG TPП` | GOST `ЖТБЗ0ФРЯ` / TEXT `FRAG TP_` / ISO `·(g·L?` | `src/lib21/EXECUTE.mad:190` | добавлено |
 | `8HFRAG TPП` | GOST `ЖТБЗ0ФРЯ` / TEXT `FRAG TP_` / ISO `·(g·L?` | `src/lib21/EXECUTE.mad:507` | добавлено |
 
+## Текстовые константы и кодировки
+
+Второй проход аудита (2026-11-19): не расшифрованные ранее текстовые
+константы в кодировках ИСО (ISO), ГОСТ, UPP/континуации (CONT).
+Первичное чтение — текст литерала из листинга Дубны/dtran; 6-битные
+GOST6/TEXT6 — альтернативная интерпретация машиного слова.
+Методика и сверка: `docs/19-dtran-text-encodings.md`,
+`tools/dtran_text.py --audit`. Полный лог — `logs/text_audit_lib21_2.txt`.
+
+| Метка/литерал | Кодировка | Первичное чтение | Источник |
+|---|---|---|---|
+| `MIXLOA` | ISO | `MIXLOA` | `src/lib21/EXECUTE.mad:508` |
+| `OVERLA` | ISO | `OVERLA` | `src/lib21/EXECUTE.mad:510` |
+| `Y BAШ ` | ISO | `Y BAШ ` | `src/lib21/EXECUTE.mad:511` |
+| `ПEPECO` | ISO | `ПEPECO` | `src/lib21/EXECUTE.mad:512` |
+| `A HE X` | ISO | `A HE X` | `src/lib21/EXECUTE.mad:513` |
+| `K COЙД` | ISO | `K COЙД` | `src/lib21/EXECUTE.mad:514` |
+| `OШИБKA` | ISO | `OШИБKA` | `src/lib21/EXECUTE.mad:516` |
+| `ПЛOXOЙ` | ISO | `ПЛOXOЙ` | `src/lib21/EXECUTE.mad:517` |
+| `ПPИ CБ` | ISO | `ПPИ CБ` | `src/lib21/EXECUTE.mad:518` |
+| `OC ДYБ  ` | TEXT(=6H) | `OC ДYБ  ` | `src/lib21/EXECUTE.mad:121` |
+| `OVERLA  ` | TEXT(=6H) | `OVERLA  ` | `src/lib21/EXECUTE.mad:147` |
+| `OC ДYБ  ` | TEXT(=6H) | `OC ДYБ  ` | `src/lib21/EXECUTE.mad:262` |
+
+Добавлено декодирований: 12.

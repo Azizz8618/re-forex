@@ -134,3 +134,51 @@
 |-----------|----------------------------------|----------|---------|
 | `8HAH` | GOST `БИ000000` / TEXT `AH      ` / ISO `······` | `src/lib21/LFSCAN.mad:593` | добавлено |
 
+## Текстовые константы и кодировки
+
+Второй проход аудита (2026-11-19): не расшифрованные ранее текстовые
+константы в кодировках ИСО (ISO), ГОСТ, UPP/континуации (CONT).
+Первичное чтение — текст литерала из листинга Дубны/dtran; 6-битные
+GOST6/TEXT6 — альтернативная интерпретация машиного слова.
+Методика и сверка: `docs/19-dtran-text-encodings.md`,
+`tools/dtran_text.py --audit`. Полный лог — `logs/text_audit_lib21_2.txt`.
+
+| Метка/литерал | Кодировка | Первичное чтение | Источник |
+|---|---|---|---|
+| `('  **` | ISO | `('  **` | `src/lib21/LFSCAN.mad:578` |
+| `*  ',3` | ISO | `*  ',3` | `src/lib21/LFSCAN.mad:579` |
+| `A6)   ` | ISO | `A6)   ` | `src/lib21/LFSCAN.mad:580` |
+| `(1X,20` | ISO | `(1X,20` | `src/lib21/LFSCAN.mad:581` |
+| `A6)   ` | ISO | `A6)   ` | `src/lib21/LFSCAN.mad:582` |
+| `      ` | ISO | `      ` | `src/lib21/LFSCAN.mad:601` |
+| `JOB   ` | ISO | `JOB   ` | `src/lib21/LFSCAN.mad:622` |
+| `MASTER` | ISO | `MASTER` | `src/lib21/LFSCAN.mad:623` |
+| `LIMIT ` | ISO | `LIMIT ` | `src/lib21/LFSCAN.mad:624` |
+| `FILE  ` | ISO | `FILE  ` | `src/lib21/LFSCAN.mad:625` |
+| `DATE  ` | ISO | `DATE  ` | `src/lib21/LFSCAN.mad:626` |
+| `UNIT  ` | ISO | `UNIT  ` | `src/lib21/LFSCAN.mad:627` |
+| `REGIM ` | ISO | `REGIM ` | `src/lib21/LFSCAN.mad:628` |
+| `NAMFR ` | ISO | `NAMFR ` | `src/lib21/LFSCAN.mad:629` |
+| `MAKEF ` | ISO | `MAKEF ` | `src/lib21/LFSCAN.mad:630` |
+| `OPENF ` | ISO | `OPENF ` | `src/lib21/LFSCAN.mad:631` |
+| `CLOSEF` | ISO | `CLOSEF` | `src/lib21/LFSCAN.mad:632` |
+| `DELETF` | ISO | `DELETF` | `src/lib21/LFSCAN.mad:633` |
+| `FRIEND` | ISO | `FRIEND` | `src/lib21/LFSCAN.mad:634` |
+| `HEBEPH` | ISO | `HEBEPH` | `src/lib21/LFSCAN.mad:641` |
+| `ЫЙ PAЗ` | ISO | `ЫЙ PAЗ` | `src/lib21/LFSCAN.mad:642` |
+| `ДEЛИTE` | ISO | `ДEЛИTE` | `src/lib21/LFSCAN.mad:643` |
+| `ЛЬ    ` | ISO | `ЛЬ    ` | `src/lib21/LFSCAN.mad:644` |
+| `HEBEPH` | ISO | `HEBEPH` | `src/lib21/LFSCAN.mad:645` |
+| `OE ИMЯ` | ISO | `OE ИMЯ` | `src/lib21/LFSCAN.mad:646` |
+| ` ПAPAM` | ISO | ` ПAPAM` | `src/lib21/LFSCAN.mad:647` |
+| `ETPA  ` | ISO | `ETPA  ` | `src/lib21/LFSCAN.mad:648` |
+| `OШ. ЗH` | ISO | `OШ. ЗH` | `src/lib21/LFSCAN.mad:649` |
+| `AЧEHИE` | ISO | `AЧEHИE` | `src/lib21/LFSCAN.mad:650` |
+| ` ПAPAM` | ISO | ` ПAPAM` | `src/lib21/LFSCAN.mad:651` |
+| `ETPA  ` | ISO | `ETPA  ` | `src/lib21/LFSCAN.mad:652` |
+| `HE ЗAД` | ISO | `HE ЗAД` | `src/lib21/LFSCAN.mad:653` |
+| `AH ПAP` | ISO | `AH ПAP` | `src/lib21/LFSCAN.mad:654` |
+| `AMETP ` | ISO | `AMETP ` | `src/lib21/LFSCAN.mad:655` |
+| `JOB   ` | ISO | `JOB   ` | `src/lib21/LFSCAN.mad:656` |
+
+Добавлено декодирований: 35.

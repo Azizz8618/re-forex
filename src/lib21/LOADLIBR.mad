@@ -267,7 +267,7 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
  CA,VTM,CATEMP ; S:165
    ,CALL,NEW/AS30 ; S:166 . вызов внешней подпрограммы [пв]
    ,XTA,RCAT.KTO-TO ; S:167 . считать из памяти в аккумулятор [сч] ; KTO-TO
-   ,AAX,=:0004.ИЗ CBOИX ; S:168 . арифметическая операция [ариф] ; ИЗ CBOИX
+   ,AAX,=:0004.ИЗ CBOИX ; S:168 . арифметическая операция [ариф] ; ИЗ CBOИX; DEKOD TEXT '=:0004' / OCT '=:0004' [источник: src/lib21/LOADLIBR.mad:270; восьмеричный литерал из исходника]
   :,UZA,*+LC1.PEГYЛЯPHO ; S:169 ; PEГYЛЯPHO
 С           , XTA ,CN21 CN0000.ПOДCOBЫBAЛ ; S:170 ; ПOДCOBЫBAЛ
 С           , ATX ,AKAT.ФИЗ.БAPAБAH ; S:171 ; ФИЗ.БAPAБAH
@@ -303,7 +303,7 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
    ,AEX,//WRB.ЗП.B TEMPO ; S:201 . логическая операция с памятью [лг] ; ЗП.B TEMPO
    ,ATX,IWC ; S:202 . записать аккумулятор в память [зп]
  WI,VZM,LISUB ; S:203
-   ,AOX,=:001.ПOДKAЧKA ; S:204 . арифметическая операция [ариф] ; ПOДKAЧKA
+   ,AOX,=:001.ПOДKAЧKA ; S:204 . арифметическая операция [ариф] ; ПOДKAЧKA; DEKOD TEXT '=:001' / OCT '=:001' [источник: src/lib21/LOADLIBR.mad:306; восьмеричный литерал из исходника]
    ,ATX,IRC.ЛИCTA ; S:205 . записать аккумулятор в память [зп] ; ЛИCTA
    ,DRUM,IRC ; S:206
 С ; S:207
@@ -408,9 +408,9 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
    ,UZA,GETLIB ; S:297 . переход при нулевом аккумуляторе [пн]
   S,ATX, ; S:298
 С........ ФOPMИPOB. TEKCTOB ДИAГHOCTИK ; S:299 ; ....... ФOPMИPOB. TEKCTOB ДИAГHOCTИK
-   ,AUX,=2H'CN7''CN7' ; S:300 . арифметическая операция [ариф]; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; =2H = адрес слова-маски (не адрес данных)
+   ,AUX,=2H'CN7''CN7' ; S:300 . арифметическая операция [ариф]; аргумент — маска: TEXT/GOST слово, адрес слова-маски или immediate-код [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]  ; =2H = адрес слова-маски (не адрес данных); DEKOD GOST6 '⏨ФШЧ⏨ФШЧ' / ISO 'CN7CN7' [источник: src/lib21/LOADLIBR.mad:411; confidence: high]
   S,ATX, ; S:301
-   ,AEX,=3H'''''231' ; S:302 . логическая операция с памятью [лг]
+   ,AEX,=3H'''''231' ; S:302 . логическая операция с памятью [лг]; DEKOD GOST6 '0000002*' / ISO '······' [источник: src/lib21/LOADLIBR.mad:413; confidence: high]
    ,ATX,ALNUMB ; S:303 . записать аккумулятор в память [зп]
    ,ATX,BCLNUM ; S:304 . записать аккумулятор в память [зп]
    ,ATX,BPLNUM ; S:305 . записать аккумулятор в память [зп]
@@ -557,7 +557,7 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
    ,UZA,SLIST ; S:443 . переход при нулевом аккумуляторе [пн]
 С........ ; S:444 ; .......
 С  ЗAПИCЬ ПPИЗH. ДЛЯ HAЙДEHHOГO BXOДA ; S:445 ; ДЛЯ HAЙДEHHOГO BXOДA
-   ,AOX,=:4 ; S:446 . арифметическая операция [ариф]
+   ,AOX,=:4 ; S:446 . арифметическая операция [ариф]; DEKOD TEXT '=:4' / OCT '=:4' [источник: src/lib21/LOADLIBR.mad:560; восьмеричный литерал из исходника]
  CA,ATX,LC1 ; S:447
    ,XTA,FL PL ; S:448 . считать из памяти в аккумулятор [сч]
    ,U1A,SLIST ; S:449 . переход при ненулевом аккумуляторе [пнн]
@@ -689,7 +689,7 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
  CA,UTM,CATLIB ; S:572
 С........ ECTЬ ЛИ ИMЯ B HAЙДEHHЫX ; S:573 ; ....... ECTЬ ЛИ ИMЯ B HAЙДEHHЫX
  CA,XTA,LC1 ; S:574
-   ,AAX,=:4 ; S:575 . арифметическая операция [ариф]
+   ,AAX,=:4 ; S:575 . арифметическая операция [ариф]; DEKOD TEXT '=:4' / OCT '=:4' [источник: src/lib21/LOADLIBR.mad:692; восьмеричный литерал из исходника]
    ,U1A,SLIEND ; S:576 . переход при ненулевом аккумуляторе [пнн]
 С........ ECTЬ ЛИ ИMЯ B TEMPO ; S:577 ; ....... ECTЬ ЛИ ИMЯ B TEMPO
  CA,XTA, ; S:578
@@ -699,7 +699,7 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
  SE,AEX, ; S:582
  SE,ATX, ; S:583
    ,ATI,SE ; S:584 . считать индексный регистр в аккумулятор [счи]
-   ,XTA,=:4 ; S:585 . считать из памяти в аккумулятор [сч]
+   ,XTA,=:4 ; S:585 . считать из памяти в аккумулятор [сч]; DEKOD TEXT '=:4' / OCT '=:4' [источник: src/lib21/LOADLIBR.mad:702; восьмеричный литерал из исходника]
  CA,AOX,LC1 ; S:586
  CA,ATX,LC1 ; S:587
  SLIEND:,BSS, ; POLN: SLIEND S:588 . зарезервировать слово (BSS)
@@ -716,7 +716,7 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
 С ; S:599
  PRILIB:,BSS, ; POLN: PRILIB S:600 . зарезервировать слово (BSS)
    ,XTA,ALFA ; S:601 . считать из памяти в аккумулятор [сч]
-   ,AAX,=:4 ; S:602 . арифметическая операция [ариф]
+   ,AAX,=:4 ; S:602 . арифметическая операция [ариф]; DEKOD TEXT '=:4' / OCT '=:4' [источник: src/lib21/LOADLIBR.mad:719; восьмеричный литерал из исходника]
    ,U1A,WRIBR ; S:603 . переход при ненулевом аккумуляторе [пнн]
    ,ARX,REGIM ; S:604 . сдвиг/арифметическая операция с регистром [сд]
   :,UZA,*+LC1 ; S:605
@@ -732,7 +732,7 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
  CA,XTA, ; S:615
    ,UZA,PRIE ; S:616 . переход при нулевом аккумуляторе [пн]
  CA,XTA,LC1 ; S:617
-   ,AAX,=:4 ; S:618 . арифметическая операция [ариф]
+   ,AAX,=:4 ; S:618 . арифметическая операция [ариф]; DEKOD TEXT '=:4' / OCT '=:4' [источник: src/lib21/LOADLIBR.mad:735; восьмеричный литерал из исходника]
    ,UZA,PRIN ; S:619 . переход при нулевом аккумуляторе [пн]
  CA,XTS, ; S:620
    ,ITS,WA ; S:621 . установка индексного регистра [уир]
@@ -855,7 +855,7 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
    ,AAX,AA177 AA7770 CN0000 ; S:738 . арифметическая операция [ариф]
    ,AEX,LMEM ; S:739 . логическая операция с памятью [лг]
    ,ASN,AS64-AS15 ; S:740 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
-   ,AEX,=:CN2 ; S:741 . логическая операция с памятью [лг]
+   ,AEX,=:CN2 ; S:741 . логическая операция с памятью [лг]; DEKOD TEXT '=:?' / OCT '=:?' [источник: src/lib21/LOADLIBR.mad:858; восьмеричный литерал из исходника]
    ,STX,POINT ; S:742 . запись с индексацией [зпи]
    ,ARX,LDRU ; S:743 . сдвиг/арифметическая операция с регистром [сд]
    ,ASN,AS64+AS5 ; S:744 . сравнение с константой [ср]; аргумент — N=EA[7:1] (младшие 7 разрядов адреса); ,ASN,64+N — сдвиг вправо, ,ASN,64−N — сдвиг влево [Besm6_Instruction_Set.md §6; monitor80-re/chekjob/mvstack.asm:17]
@@ -1234,16 +1234,16 @@ AR7741 ,EQU,7741            ; роль: операнд ARX (сдвиг/ариф�
  MPERS:,OCT,CN7776 CN0000 CN7000 AU0037 ; POLN: MPERS S:1117
  MCATW:,OCT,AA7777 AA7777 AA7777 AA7777.!PAБ.ЯЧ! ; POLN: MCATW S:1118 ; !PAБ.ЯЧ!
  TERR4:,TEXT,8H ERROR '4' ; POLN: TEXT_ERROR_4 S:1119 . TEXT-константа " ERROR '4'" (сообщение об ошибке 4; было ERROR4)  ; DEKOD GOST 'ЕТТПТ07x' / TEXT 'ERROR '4' / ISO '·,····' | GOST '70000000' / TEXT ''       ' / ISO '······' [источник: src/lib21/LOADLIBR.mad:1236; confidence: high]
- BCTMES:,GOST,17HИCПOPЧEH KATAЛOГ'231' ; POLN: BCTMES S:1120 . GOST-константа ( alfа)
- LCTMES:,GOST,19HПEPEПOЛHEH KATAЛOГ'231' ; POLN: LCTMES S:1121 . GOST-константа ( alfа)
- LTLMES:,GOST,23HПEPEПOЛHEHA БИБЛИOTEKA'231' ; POLN: LTLMES S:1122 . GOST-константа ( alfа)
- ALNMES:,GOST,24HB HAШEM BЦ HET  LIBRARY ; POLN: ALNMES S:1123 . GOST-константа ( alfа)
+ BCTMES:,GOST,17HИCПOPЧEH KATAЛOГ'231' ; POLN: BCTMES S:1120 . GOST-константа ( alfа) ; DEKOD GOST 'ИCПOPЧEH KATAЛOГ'231'' / GOST6 '7Г#ПРЯЕИ' / TEXT6 'ИCПOPЧEH' [источник: src/lib21/LOADLIBR.mad:1237; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
+ LCTMES:,GOST,19HПEPEПOЛHEH KATAЛOГ'231' ; POLN: LCTMES S:1121 . GOST-константа ( alfа) ; DEKOD GOST 'ПEPEПOЛHEH KATAЛOГ'231'' / GOST6 '#ЕРЕ#П/И' / TEXT6 'ПEPEПOЛH' [источник: src/lib21/LOADLIBR.mad:1238; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
+ LTLMES:,GOST,23HПEPEПOЛHEHA БИБЛИOTEKA'231' ; POLN: LTLMES S:1122 . GOST-константа ( alfа) ; DEKOD GOST 'ПEPEПOЛHEHA БИБЛИOTEKA'231'' / GOST6 '#ЕРЕ#П/И' / TEXT6 'ПEPEПOЛH' [источник: src/lib21/LOADLIBR.mad:1239; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
+ ALNMES:,GOST,24HB HAШEM BЦ HET  LIBRARY ; POLN: ALNMES S:1123 . GOST-константа ( alfа) ; DEKOD GOST 'B HAШEM BЦ HET  LIBRARY' / GOST6 'В0ИБЬЕН0' / TEXT6 'B HAШEM ' [источник: src/lib21/LOADLIBR.mad:1240; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
  ALNUMB:,OCT, ; POLN: ALNUMB S:1124
- BCLMES:,GOST,30HИCПOPЧEH KATAЛOГ БИБЛИOTEKИ - ; POLN: BCLMES S:1125 . GOST-константа ( alfа)
+ BCLMES:,GOST,30HИCПOPЧEH KATAЛOГ БИБЛИOTEKИ - ; POLN: BCLMES S:1125 . GOST-константа ( alfа) ; DEKOD GOST 'ИCПOPЧEH KATAЛOГ БИБЛИOTEKИ -' / GOST6 '7Г#ПРЯЕИ' / TEXT6 'ИCПOPЧEH' [источник: src/lib21/LOADLIBR.mad:1242; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
  BCLNUM:,OCT, ; POLN: BCLNUM S:1126
- BPLMES:,GOST,36HИCПOPЧEHЫ ПPOГPAMMЫ ИЗ БИБЛИOTEKИ - ; POLN: BPLMES S:1127 . GOST-константа ( alfа)
+ BPLMES:,GOST,36HИCПOPЧEHЫ ПPOГPAMMЫ ИЗ БИБЛИOTEKИ - ; POLN: BPLMES S:1127 . GOST-константа ( alfа) ; DEKOD GOST 'ИCПOPЧEHЫ ПPOГPAMMЫ ИЗ БИБЛИOTEKИ -' / GOST6 '7Г#ПРЯЕИ' / TEXT6 'ИCПOPЧEH' [источник: src/lib21/LOADLIBR.mad:1244; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
  BPLNUM:,OCT, ; POLN: BPLNUM S:1128
- TGLIBR:,GOST,12H*LIBRA:00 = ; POLN: TGLIBR S:1129 . GOST-константа ( alfа)
+ TGLIBR:,GOST,12H*LIBRA:00 = ; POLN: TGLIBR S:1129 . GOST-константа ( alfа) ; DEKOD GOST '*LIBRA:00 =' / GOST6 '+МЙВТБ0⏨' / TEXT6 '*LIBRA 0' [источник: src/lib21/LOADLIBR.mad:1246; confidence: high]; primary=GOST-декларация Дубны (метка ,GOST,); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
 С ; S:1130
 С===================================== ; S:1131
 С ; S:1132

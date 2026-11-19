@@ -1,10 +1,10 @@
 === F77PREP v2 two-pass test ===
-date    : 2026-11-19T15:07:08Z
+date    : 2026-11-19T15:25:23Z
 dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
 ftn     : /tmp/.private/azizz/opencode/re-forex/src/f77prep/F77PREP.FTN
 case1   : /tmp/.private/azizz/opencode/re-forex/tests/f77/prep-case.f77
 case2   : /tmp/.private/azizz/opencode/re-forex/tests/f77/prep-case2.f77
-Written 5 zones (30 kbytes) from file /tmp/.private/azizz/f77-prep.4syWRg/image.bin to disk 2348
+Written 5 zones (30 kbytes) from file /tmp/.private/azizz/f77-prep.ZqE44x/image.bin to disk 2348
 [case1] PASS1 OK: lowering совпал с эталоном (11 строк)
 [case1] PASS2 OK: результат совпал с эталоном (1 строк)
 [case2] PASS1 OK: lowering совпал с эталоном (29 строк)

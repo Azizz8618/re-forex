@@ -24,23 +24,23 @@ ETX016 ,EQU,=670000                     ; роль: литерал (TEXT/OCT/GOS
 EDC016 ,EQU,4                           ; роль: десятичная константа/сдвиг; S2:1672  ; (POLN: DEC_4)
 EDC017 ,EQU,5                           ; роль: десятичная константа/сдвиг; S2:1676  ; (POLN: DEC_5)
 EDC018 ,EQU,11                          ; роль: десятичная константа/сдвиг; S2:1680  ; (POLN: DEC_11)
-ETX018 ,EQU,=6H                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1681  ; (POLN: LITERAL__6H)
+ETX018 ,EQU,=6H                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1681  ; (POLN: LITERAL__6H); DEKOD GOST6 '00000000' / ISO '······' [источник: src/lib21/LIBTAP_.mad:27; пустая 6H-константа]
 EDC019 ,EQU,1                           ; роль: десятичная константа/сдвиг; S2:1686  ; (POLN: DEC_1)
 EDC020 ,EQU,1022                        ; роль: десятичная константа/сдвиг; S2:1695  ; (POLN: DEC_1022)
-ETX020 ,EQU,=:7773 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1697  ; (POLN: LITERAL___7773_77)
+ETX020 ,EQU,=:7773 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1697  ; (POLN: LITERAL___7773_77); DEKOD TEXT '=:7773 77' / OCT '=:7773 77' [источник: src/lib21/LIBTAP_.mad:30; восьмеричный литерал из исходника]
 ETX021 ,EQU,=200 0000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1703  ; (POLN: LITERAL__200_0000)
 ETX022 ,EQU,=7777 7777 7000 0037        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1706  ; (POLN: LITERAL__7777_7777_7000_0037)
 EDC022 ,EQU,1023                        ; роль: десятичная константа/сдвиг; S2:1707  ; (POLN: DEC_1023)
 ETX023 ,EQU,=70 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1710  ; (POLN: LITERAL__70_0000)
 EDC023 ,EQU,1025                        ; роль: десятичная константа/сдвиг; S2:1712  ; (POLN: DEC_1025)
-ETX024 ,EQU,=:4                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1713  ; (POLN: LITERAL___4)
+ETX024 ,EQU,=:4                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1713  ; (POLN: LITERAL___4); DEKOD TEXT '=:4' / OCT '=:4' [источник: src/lib21/LIBTAP_.mad:36; восьмеричный литерал из исходника]
 EDC024 ,EQU,8174                        ; роль: десятичная константа/сдвиг; S2:1725  ; (POLN: DEC_8174)
 ETX025 ,EQU,=1                          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1736  ; (POLN: LITERAL__1)
 ETX026 ,EQU,=10 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1738  ; (POLN: LITERAL__10_0000)
 ETX027 ,EQU,=40 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1739  ; (POLN: LITERAL__40_0000)
 ETX028 ,EQU,=7740                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1742  ; (POLN: LITERAL__7740)
 ETX029 ,EQU,=7777 7777 7777 7777        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1754  ; (POLN: LITERAL__7777_7777_7777_7777)
-ETX030 ,EQU,=:2                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1766  ; (POLN: LITERAL___2)
+ETX030 ,EQU,=:2                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1766  ; (POLN: LITERAL___2); DEKOD TEXT '=:2' / OCT '=:2' [источник: src/lib21/LIBTAP_.mad:43; восьмеричный литерал из исходника]
 ETX031 ,EQU,=1740 0000 0000 0000        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1769  ; (POLN: LITERAL__1740_0000_0000_0000)
 ETX032 ,EQU,=1740                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1770  ; (POLN: LITERAL__1740)
 EDC032 ,EQU,3                           ; роль: десятичная константа/сдвиг; S2:1771  ; (POLN: DEC_3)
@@ -74,8 +74,8 @@ ETX052 ,EQU,=6H'''''7''7''7''7'         ; роль: DEKOD GOST '77777[77' / TEXT
 ETX053 ,EQU,=:7777 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:1999  ; (POLN: LITERAL___7777_77)
 ETX054 ,EQU,=:5777 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:2000  ; (POLN: LITERAL___5777_77)
 ETX055 ,EQU,=3777                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:2003  ; (POLN: LITERAL__3777)
-ETX056 ,EQU,=:0037 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:2004  ; (POLN: LITERAL___0037_77)
-ETX057 ,EQU,=:0000 0100                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:2049  ; (POLN: LITERAL___0000_0100)
+ETX056 ,EQU,=:0037 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:2004  ; (POLN: LITERAL___0037_77); DEKOD TEXT '=:0037 77' / OCT '=:0037 77' [источник: src/lib21/LIBTAP_.mad:77; восьмеричный литерал из исходника]
+ETX057 ,EQU,=:0000 0100                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:2049  ; (POLN: LITERAL___0000_0100); DEKOD TEXT '=:0000 0100' / OCT '=:0000 0100' [источник: src/lib21/LIBTAP_.mad:78; восьмеричный литерал из исходника]
 EDC057 ,EQU,24                          ; роль: десятичная константа/сдвиг; S2:2060  ; (POLN: DEC_24)
 EDC058 ,EQU,19                          ; роль: десятичная константа/сдвиг; S2:2156  ; (POLN: DEC_19)
 ETX058 ,EQU,6HY 0000                    ; роль: DEKOD GOST 'Щ0ееее00' / TEXT 'Y 0000  ' / ISO '···A··' [источник: src/lib21/LIBTAP_.mad:81; confidence: high]; константа-слово (LOG/OCT/TEXT/GOST/ISO); S2:2159  ; (POLN: LIT_6HY_0000)
@@ -625,7 +625,7 @@ HA068: GOST,ETX060 . GOST-константа  ; (POLN: ДЛИHA) ; S2:2162
 LIB069: OCT . восьмеричная константа  ; (POLN: LIBLEN) ; S2:2163
 GOST,ETX061 . '231'  ; S2:2164
 YCT070: GOST,ETX062 . GOST-константа  ; (POLN: ПYCTO) ; S2:2165
-CONT,19H T . K. OHA ПYCTAЯ '133''231'  ; S2:2166
+CONT,19H T . K. OHA ПYCTAЯ '133''231'  ; S2:2166 ; DEKOD CONT 'T' / GOST6 'Ф0000000' / TEXT6 'T       ' [источник: src/lib21/LIBTAP_.mad:628; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
 MAO071: GOST,ETX063 . K. MAЛO MECTA'133''231'  ; (POLN: MAЛO) ; S2:2167
 OO072: GOST,ETX064 . GOST-константа  ; (POLN: БOЛЬШOЙ) ; S2:2168
 OXO073: GOST,ETX065 . GOST-константа  ; (POLN: ПЛOXO) ; S2:2169

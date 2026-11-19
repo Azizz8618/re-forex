@@ -45,7 +45,7 @@ EDC023 ,EQU,5                           ; роль: десятичная кон�
 EDC024 ,EQU,6                           ; роль: десятичная константа/сдвиг; S2:8553  ; (POLN: DEC_6)
 EDC025 ,EQU,7                           ; роль: десятичная константа/сдвиг; S2:8554  ; (POLN: DEC_7)
 EDC026 ,EQU,13                          ; роль: десятичная константа/сдвиг; S2:8555  ; (POLN: DEC_13)
-ETX026 ,EQU,=6H                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8566  ; (POLN: LITERAL__6H)
+ETX026 ,EQU,=6H                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S2:8566  ; (POLN: LITERAL__6H); DEKOD GOST6 '00000000' / ISO '······' [источник: src/lib21/OCATALOG.mad:48; пустая 6H-константа]
 EOC026 ,EQU,10B                         ; роль: восьмеричная константа; S2:8567  ; (POLN: OCT_10)
 EOC027 ,EQU,376B                        ; роль: восьмеричная константа; S2:8572  ; (POLN: OCT_376)
 EOC028 ,EQU,377B                        ; роль: восьмеричная константа; S2:8574  ; (POLN: OCT_377)
@@ -269,8 +269,8 @@ IC029: ,LIN034  ; (POLN: IC) ; S2:8617
 INF030: 010,NL010  ; (POLN: INF0) ; S2:8631
   ; S2:8632
 HEA031: GOST,ETX031 . GOST-константа  ; (POLN: HEAD) ; S2:8633
-CONT,11HOVERLAY  ; S2:8634
-CONT,4H'EDC031''EDC032'EDC009/  ; S2:8635
+CONT,11HOVERLAY  ; S2:8634 ; DEKOD CONT 'OVERLAY' / GOST6 'ПЦЕТМБЩ0' / TEXT6 'OVERLAY ' [источник: src/lib21/OCATALOG.mad:272; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
+CONT,4H'EDC031''EDC032'EDC009/  ; S2:8635 ; DEKOD CONT ''EDC031''EDC032'EDC009/' / GOST6 '0ЕДГ⏨)↑0' / TEXT6 ' EDC031 ' [источник: src/lib21/OCATALOG.mad:273; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
 DAT032: OCT . восьмеричная константа  ; (POLN: DAT1) ; S2:8636
 DAT033: OCT . восьмеричная константа  ; (POLN: DAT2) ; S2:8637
 LIN034: GOST,ETX032 . GOST-константа  ; (POLN: LINE) ; S2:8638
@@ -285,11 +285,11 @@ MA041: GOST,ETX035 . GOST-константа  ; (POLN: БЫMA) ; S2:8646
 GI042: GOST,ETX036 . GOST-константа  ; (POLN: GI) ; S2:8647
 G2043: GOST,ETX037 . GOST-константа  ; (POLN: G2) ; S2:8648
 ETE044: GOST,ETX038 . GOST-константа  ; (POLN: ETE) ; S2:8649
-CONT,16HEHИИ K OCA001  ; S2:8650
-CONT,2H'EDC038''EDC039'  ; S2:8651
+CONT,16HEHИИ K OCA001  ; S2:8650 ; DEKOD CONT 'EHИИ K OCA001' / GOST6 'ЕИ770Л0П' / TEXT6 'EHИИ K O' [источник: src/lib21/OCATALOG.mad:288; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
+CONT,2H'EDC038''EDC039'  ; S2:8651 ; DEKOD CONT ''EDC038''EDC039'' / GOST6 '0ЕДГ⏨)]0' / TEXT6 ' EDC038 ' [источник: src/lib21/OCATALOG.mad:289; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
 CBO045: TEXT,ETX039 . текстовая константа  ; (POLN: CBOБOДHO) ; S2:8652
 TOL046: GOST,ETX040 . GOST-константа  ; (POLN: TOL) ; S2:8653
-CONT,12HHE БЫBAET 'EDC038''EDC039'  ; S2:8654
+CONT,12HHE БЫBAET 'EDC038''EDC039'  ; S2:8654 ; DEKOD CONT 'HE БЫBAET 'EDC038''EDC039'' / GOST6 'ИЕ02:ВБЕ' / TEXT6 'HE БЫBAE' [источник: src/lib21/OCATALOG.mad:292; confidence: high]; primary=текст продолжения ,CONT, (литерал Дубны); GOST6/TEXT6 — 6-битная альтернатива (6-бит TEXT (литерал Дубны))
 PLS047: GOST,ETX041 . GOST-константа  ; (POLN: PLS) ; S2:8655
 INF048: OCT . восьмеричная константа  ; (POLN: INF) ; S2:8656
 END,OVCATAL . конец модуля  ; S2:8657

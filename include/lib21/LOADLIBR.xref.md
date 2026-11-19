@@ -197,3 +197,23 @@
 |-----------|----------------------------------|----------|---------|
 | `8H ERROR '4'` | GOST `ЕТТПТ07x / 70000000` / TEXT `ERROR '4 / '       ` / ISO `·,···· / ······` | `src/lib21/LOADLIBR.mad:1236` | добавлено |
 
+## Текстовые константы и кодировки
+
+Второй проход аудита (2026-11-19): не расшифрованные ранее текстовые
+константы в кодировках ИСО (ISO), ГОСТ, UPP/континуации (CONT).
+Первичное чтение — текст литерала из листинга Дубны/dtran; 6-битные
+GOST6/TEXT6 — альтернативная интерпретация машиного слова.
+Методика и сверка: `docs/19-dtran-text-encodings.md`,
+`tools/dtran_text.py --audit`. Полный лог — `logs/text_audit_lib21_2.txt`.
+
+| Метка/литерал | Кодировка | Первичное чтение | Источник |
+|---|---|---|---|
+| `ИCПOPЧEH KATAЛOГ'231'` | GOST | `ИCПOPЧEH KATAЛOГ'231'` | `src/lib21/LOADLIBR.mad:1237` |
+| `ПEPEПOЛHEH KATAЛOГ'231'` | GOST | `ПEPEПOЛHEH KATAЛOГ'231'` | `src/lib21/LOADLIBR.mad:1238` |
+| `ПEPEПOЛHEHA БИБЛИOTEKA'231'` | GOST | `ПEPEПOЛHEHA БИБЛИOTEKA'231'` | `src/lib21/LOADLIBR.mad:1239` |
+| `B HAШEM BЦ HET  LIBRARY` | GOST | `B HAШEM BЦ HET  LIBRARY` | `src/lib21/LOADLIBR.mad:1240` |
+| `ИCПOPЧEH KATAЛOГ БИБЛИOTEKИ -` | GOST | `ИCПOPЧEH KATAЛOГ БИБЛИOTEKИ -` | `src/lib21/LOADLIBR.mad:1242` |
+| `ИCПOPЧEHЫ ПPOГPAMMЫ ИЗ БИБЛИOTEKИ -` | GOST | `ИCПOPЧEHЫ ПPOГPAMMЫ ИЗ БИБЛИOTEKИ -` | `src/lib21/LOADLIBR.mad:1244` |
+| `*LIBRA:00 =` | GOST | `*LIBRA:00 =` | `src/lib21/LOADLIBR.mad:1246` |
+
+Добавлено декодирований: 7.

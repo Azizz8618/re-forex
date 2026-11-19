@@ -74,3 +74,21 @@
 | Э67 | DEB | не найдено в rukava.be | — | 1 | `src/lib21/LINK#IPM.mad:120` |
 | Э70 | 21 | не найдено в rukava.be | — | 1 | `src/lib21/LINK#IPM.mad:237` |
 | Э72 | COTK2+NT3 | не найдено в rukava.be | — | 1 | `src/lib21/LINK#IPM.mad:111` |
+
+## Текстовые константы и кодировки
+
+Второй проход аудита (2026-11-19): не расшифрованные ранее текстовые
+константы в кодировках ИСО (ISO), ГОСТ, UPP/континуации (CONT).
+Первичное чтение — текст литерала из листинга Дубны/dtran; 6-битные
+GOST6/TEXT6 — альтернативная интерпретация машиного слова.
+Методика и сверка: `docs/19-dtran-text-encodings.md`,
+`tools/dtran_text.py --audit`. Полный лог — `logs/text_audit_lib21_2.txt`.
+
+| Метка/литерал | Кодировка | Первичное чтение | Источник |
+|---|---|---|---|
+| `P B C ` | ISO | `P B C ` | `src/lib21/LINK#IPM.mad:253` |
+| ` NT3/7` | ISO | ` NT3/7` | `src/lib21/LINK#IPM.mad:254` |
+| `ЗAM     ` | TEXT(=6H) | `ЗAM     ` | `src/lib21/LINK#IPM.mad:196` |
+| `KOHEЦ   ` | TEXT(=6H) | `KOHEЦ   ` | `src/lib21/LINK#IPM.mad:219` |
+
+Добавлено декодирований: 4.

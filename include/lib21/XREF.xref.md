@@ -350,3 +350,32 @@
 | `8H*OUTPUT*` | GOST `+ПХФРХФ+` / TEXT `*OUTPUT*` / ISO `*·t·]·` | `src/lib21/XREF.mad:1055` | добавлено |
 | `8H  OUTPUT` | GOST `ПХФРХФ00` / TEXT `OUTPUT  ` / ISO `·]0·@·` | `src/lib21/XREF.mad:1056` | добавлено |
 
+## Текстовые константы и кодировки
+
+Второй проход аудита (2026-11-19): не расшифрованные ранее текстовые
+константы в кодировках ИСО (ISO), ГОСТ, UPP/континуации (CONT).
+Первичное чтение — текст литерала из листинга Дубны/dtran; 6-битные
+GOST6/TEXT6 — альтернативная интерпретация машиного слова.
+Методика и сверка: `docs/19-dtran-text-encodings.md`,
+`tools/dtran_text.py --audit`. Полный лог — `logs/text_audit_lib21_2.txt`.
+
+| Метка/литерал | Кодировка | Первичное чтение | Источник |
+|---|---|---|---|
+| ` >>>  ` | ISO | ` >>>  ` | `src/lib21/XREF.mad:1092` |
+| `<<<   ` | ISO | `<<<   ` | `src/lib21/XREF.mad:1094` |
+| ` IDENT` | ISO | ` IDENT` | `src/lib21/XREF.mad:1095` |
+| `IFIERS` | ISO | `IFIERS` | `src/lib21/XREF.mad:1096` |
+| `      ` | ISO | `      ` | `src/lib21/XREF.mad:1097` |
+| ` OCCUR` | ISO | ` OCCUR` | `src/lib21/XREF.mad:1098` |
+| `RENCES` | ISO | `RENCES` | `src/lib21/XREF.mad:1099` |
+| `      ` | ISO | `      ` | `src/lib21/XREF.mad:1100` |
+| ` LINES` | ISO | ` LINES` | `src/lib21/XREF.mad:1101` |
+| ` *** P` | ISO | ` *** P` | `src/lib21/XREF.mad:1111` |
+| `ASCAL ` | ISO | `ASCAL ` | `src/lib21/XREF.mad:1112` |
+| `CROSSR` | ISO | `CROSSR` | `src/lib21/XREF.mad:1113` |
+| `EFEREN` | ISO | `EFEREN` | `src/lib21/XREF.mad:1114` |
+| `CER. 1` | ISO | `CER. 1` | `src/lib21/XREF.mad:1115` |
+| `2.9.79` | ISO | `2.9.79` | `src/lib21/XREF.mad:1116` |
+| `. *** ` | ISO | `. *** ` | `src/lib21/XREF.mad:1117` |
+
+Добавлено декодирований: 16.

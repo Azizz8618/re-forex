@@ -227,7 +227,7 @@ GOST,ETX030 . -,  ; S2:10801
 GOST,ETX031 . GOST-константа  ; S2:10802
 GOST,ETX032 . GOST-константа  ; S2:10803
 GOST,ETX033 . GOST-константа  ; S2:10804
-GOST,4H'21''036'ETX034 . GOST-константа  ; S2:10805
+GOST,4H'21''036'ETX034 . GOST-константа  ; S2:10805; DEKOD GOST6 '/Г4>↑=↑]' / ISO '21·ETX' [источник: src/lib21/PRINT80.mad:230; confidence: high]
 GOST,ETX035 . GOST-константа  ; S2:10806
 GOST,ETX036 . GOST-константа  ; S2:10807
 GOST,ETX037 . GOST-константа  ; S2:10808

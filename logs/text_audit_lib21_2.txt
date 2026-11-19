@@ -1,0 +1,180 @@
+АУДИТ НЕРАСШИФРОВАННЫХ ТЕКСТОВЫХ КОНСТАНТ — src/lib21/*.mad (2-й проход)
+====================================================================================================
+Дата: 2026-11-19. Область: только 45 аннотированных модулей библиотеки 21.
+НЕ трогались: src/*.mad, мнемоники, метки, EQU, адреса (только комментарии).
+
+МЕТОДИКА
+  Сканированы все 45 файлов на: ,TEXT,, 8H, nH, =6H, ,GOST,, ,ISO,,
+  ,UPP,, ,OCT, (с текстом), =:..., кавычки, 6/7/8-бит слово-константы,
+  ,CONT,-продолжения, директива , ISO , с пробелами.
+  Проверка наличия decoding: ',DEKOD' в комментарии строки.
+  Первичное чтение — текст литерала из листинга Дубны/dtran (ISO 8 бит/символ
+  или GOST-декларация); альтернативы GOST6/TEXT6 — по gost10859.h и TEXT
+  (8 шестибитных групп). Октеты dtran использованы как авторитетные.
+  Сверка: docs/19-dtran-text-encodings.md; tools/dtran_text.py --audit.
+
+СЧЁТЧИКИ
+  Просканировано файлов: 45
+  Найдено нерасшифрованных текстовых констант: 117
+  Добавлено декодирований: 117
+  Затронуто модулей: 14
+  Кодировки: CONT=13, GOST=11, ISO=87, TEXT(=6H)=6
+
+  По модулям:
+    CHEKJOB_     6
+    DECODER      11
+    EXECUTE      12
+    FOREX_       4
+    FORTLIBR     4
+    FT_REGIM     9
+    LFSCAN       35
+    LIBTAP_      1
+    LINK#IPM     4
+    LOADLIBR     7
+    OCATALOG     5
+    TCATALOG     2
+    TEMFILE      1
+    XREF         16
+
+НЕОДНОЗНАЧНЫЕ СЛОВА (сценарий задания)
+  0o4357624570000000 -> TEXT 'COREX   ' (НЕ FOREX!)
+  FOREX             = 0o4657624570000000 -> TEXT 'FOREX   '
+  Альтернатива выбрана primary по 6-битной TEXT-таблице dtran; слово COREX
+  даёт 'COREX   ', слово FOREX — 'FOREX   '. Ошибка в условии задания
+  зафиксирована в первом проходе (logs/text_constants_audit.txt) и в
+  docs/19; в lib21 это слово не встречается (находится в src/FOREX_CORE.mad).
+
+СПИСОК КОДИРОВОК
+  ISO   — 8 бит/символ, 6 байт/слово, метка ,ISO, (в т.ч. , ISO , и ,CONT,)
+  GOST  — 8 бит/символ, ГОСТ-декларация Дубны (метка ,GOST,)
+  GOST6 — 6 бит/символ, альтернатива по gost10859.h (8 групп/слово)
+  TEXT6 — 6 бит/символ, альтернатива по TEXT dtran (8 групп/слово)
+  UPP   — отдельные метки ,UPP, в lib21 отсутствуют (0 найдено)
+
+ДЕТАЛИ (модуль:строка | кодировка | литерал | primary | GOST6 | TEXT6)
+----------------------------------------------------------------------------------------------------
+src/lib21/CHEKJOB_.mad:563 | ISO        | '******' | GOST6 '+ВИК+ВИК' | TEXT6 '*BHJ*BHJ'
+src/lib21/CHEKJOB_.mad:564 | ISO        | "''''**" | GOST6 '9Т#З9ТИК' | TEXT6 ')RПG)RHJ'
+src/lib21/CHEKJOB_.mad:565 | ISO        | "****''" | GOST6 '+ВИК+В#З' | TEXT6 '*BHJ*BПG'
+src/lib21/DECODER.mad:365 | ISO        | '*BINAR' | GOST6 '+Д99)Д5(' | TEXT6 '*D))3DФ2'
+src/lib21/DECODER.mad:366 | ISO        | "*END'2" | GOST6 '+Д=.↑2#Т' | TEXT6 '*D5Ж1БПR'
+src/lib21/DECODER.mad:367 | ISO        | "*END'2" | GOST6 '+Д=.↑2#Т' | TEXT6 '*D5Ж1БПR'
+src/lib21/DECODER.mad:370 | ISO        | '*BLERR' | GOST6 '+Д9/↑=9(' | TEXT6 '*D)Л15)2'
+src/lib21/DECODER.mad:371 | ISO        | "*NAME'" | GOST6 '+ДЩ1)××З' | TEXT6 '*DY.344G'
+src/lib21/DECODER.mad:376 | ISO        | 'HET П/' | GOST6 '(4=×870П' | TEXT6 '2Д54(И O'
+src/lib21/DECODER.mad:382 | ISO        | 'OШИБKA' | GOST6 ')ЧНЙ]ДН1' | TEXT6 '3WMI8DM.'
+src/lib21/DECODER.mad:392 | ISO        | 'RETSWI' | GOST6 '×Д=××Х<9' | TEXT6 '4D544U-)'
+src/lib21/DECODER.mad:393 | ISO        | '      ' | GOST6 '820А820А' | TEXT6 '(Б З(Б З'
+src/lib21/DECODER.mad:394 | ISO        | "''''''" | GOST6 '9Т#З9Т#З' | TEXT6 ')RПG)RПG'
+src/lib21/EXECUTE.mad:508 | ISO        | 'MIXLOA' | GOST6 ')×Е])4Ю1' | TEXT6 '34E83ДЩ.'
+src/lib21/EXECUTE.mad:510 | ISO        | 'OVERLA' | GOST6 ')Х*5×ДС1' | TEXT6 '3U9Ф4DQ.'
+src/lib21/EXECUTE.mad:511 | ISO        | 'Y BAШ ' | GOST6 ';(12⏨[МА' | TEXT6 '62.Б07LЗ'
+src/lib21/EXECUTE.mad:512 | ISO        | 'ПEPECO' | GOST6 '#4=⏨↑×, ' | TEXT6 'ПД5014Я/'
+src/lib21/EXECUTE.mad:513 | ISO        | 'A HE X' | GOST6 '⏨(18↑(1]' | TEXT6 '02.(12.8'
+src/lib21/EXECUTE.mad:514 | ISO        | 'K COЙД' | GOST6 '(Т13)ЦЙД' | TEXT6 '2R.Ц3VID'
+src/lib21/EXECUTE.mad:516 | ISO        | 'OШИБKA' | GOST6 ')ЧНЙ]ДН1' | TEXT6 '3WMI8DM.'
+src/lib21/EXECUTE.mad:517 | ISO        | 'ПЛOXOЙ' | GOST6 '#6С ;4ЮК' | TEXT6 'ПГQ/6ДЩJ'
+src/lib21/EXECUTE.mad:518 | ISO        | 'ПPИ CБ' | GOST6 '#51Й84,В' | TEXT6 'ПФ.I(ДЯB'
+src/lib21/FOREX_.mad:112 | GOST       | "'212'" | GOST6 '0(↑(0000' | TEXT6 ' 212    '
+src/lib21/FOREX_.mad:113 | GOST       | 'BPEMЯ-' | GOST6 'ВРЕН,<00' | TEXT6 'BPEMЯ-  '
+src/lib21/FOREX_.mad:115 | GOST       | "'231'" | GOST6 '0()↑0000' | TEXT6 ' 231    '
+src/lib21/FOREX_.mad:116 | GOST       | "'200'0OШ. TPAHCЛЯTOPA'231'" | GOST6 '0(⏨⏨0⏨ПЬ' | TEXT6 ' 200 0OШ'
+src/lib21/FT_REGIM.mad:120 | ISO        | 'EC    ' | GOST6 '↑×/А820А' | TEXT6 '14ЛЗ(Б З'
+src/lib21/FT_REGIM.mad:121 | ISO        | 'KERR  ' | GOST6 '(Ф=(×В0А' | TEXT6 '2T524B З'
+src/lib21/FT_REGIM.mad:122 | ISO        | 'RERR  ' | GOST6 '×Д=(×В0А' | TEXT6 '4D524B З'
+src/lib21/FT_REGIM.mad:123 | ISO        | 'TEST  ' | GOST6 '=4=)=20А' | TEXT6 '5Д535Б З'
+src/lib21/FT_REGIM.mad:124 | ISO        | 'STERR ' | GOST6 '×Х↑5×Е8А' | TEXT6 '4U1Ф4E(З'
+src/lib21/FT_REGIM.mad:125 | ISO        | 'BUF   ' | GOST6 '⏨Е=6820А' | TEXT6 '0E5Г(Б З'
+src/lib21/FT_REGIM.mad:193 | ISO        | 'OШИБKA' | GOST6 ')ЧНЙ]ДН1' | TEXT6 '3WMI8DM.'
+src/lib21/FT_REGIM.mad:196 | ISO        | 'Y MEHЯ' | GOST6 ';(1,↑×БС' | TEXT6 '62.Я14AQ'
+src/lib21/LFSCAN.mad:578 | ISO        | "('  **" | GOST6 '+2#А82ИК' | TEXT6 '*БПЗ(БHJ'
+src/lib21/LFSCAN.mad:579 | ISO        | "*  ',3" | GOST6 '+В0А9ТРУ' | TEXT6 '*B З)RPS'
+src/lib21/LFSCAN.mad:580 | ISO        | 'A6)   ' | GOST6 '⏨)]Й820А' | TEXT6 '038I(Б З'
+src/lib21/LFSCAN.mad:581 | ISO        | '(1X,20' | GOST6 '+35]-38Р' | TEXT6 '*ЦФ8ЙЦ(P'
+src/lib21/LFSCAN.mad:582 | ISO        | 'A6)   ' | GOST6 '⏨)]Й820А' | TEXT6 '038I(Б З'
+src/lib21/LFSCAN.mad:601 | ISO        | '      ' | GOST6 '820А820А' | TEXT6 '(Б З(Б З'
+src/lib21/LFSCAN.mad:622 | ISO        | 'JOB   ' | GOST6 '(ДЮ2820А' | TEXT6 '2DЩБ(Б З'
+src/lib21/LFSCAN.mad:623 | ISO        | 'MASTER' | GOST6 ')×5)=4=(' | TEXT6 '34Ф35Д52'
+src/lib21/LFSCAN.mad:624 | ISO        | 'LIMIT ' | GOST6 ')4Е,(=⏨А' | TEXT6 '3ДEЯ250З'
+src/lib21/LFSCAN.mad:625 | ISO        | 'FILE  ' | GOST6 '↑ДЕ/↑(0А' | TEXT6 '1DEЛ12 З'
+src/lib21/LFSCAN.mad:626 | ISO        | 'DATE  ' | GOST6 '↑45×↑(0А' | TEXT6 '1ДФ412 З'
+src/lib21/LFSCAN.mad:627 | ISO        | 'UNIT  ' | GOST6 '=×Щ9=20А' | TEXT6 '54Y)5Б З'
+src/lib21/LFSCAN.mad:628 | ISO        | 'REGIM ' | GOST6 '×Д=7(×ФА' | TEXT6 '4D5И24TЗ'
+src/lib21/LFSCAN.mad:629 | ISO        | 'NAMFR ' | GOST6 ')Д5,↑Е8А' | TEXT6 '3DФЯ1E(З'
+src/lib21/LFSCAN.mad:630 | ISO        | 'MAKEF ' | GOST6 ')×5-↑×]А' | TEXT6 '34ФЙ148З'
+src/lib21/LFSCAN.mad:631 | ISO        | 'OPENF ' | GOST6 ')Х15)Д]А' | TEXT6 '3U.Ф3D8З'
+src/lib21/LFSCAN.mad:632 | ISO        | 'CLOSEF' | GOST6 '⏨ФС ×Ф=6' | TEXT6 '0TQ/4T5Г'
+src/lib21/LFSCAN.mad:633 | ISO        | 'DELETF' | GOST6 '↑4=/↑=↑6' | TEXT6 '1Д5Л151Г'
+src/lib21/LFSCAN.mad:634 | ISO        | 'FRIEND' | GOST6 '↑Е99↑×Щ4' | TEXT6 '1E))14YД'
+src/lib21/LFSCAN.mad:641 | ISO        | 'HEBEPH' | GOST6 '(4=2↑=18' | TEXT6 '2Д5Б15.('
+src/lib21/LFSCAN.mad:642 | ISO        | 'ЫЙ PAЗ' | GOST6 '>;ИА×45Ы' | TEXT6 '+6HЗ4ДФZ'
+src/lib21/LFSCAN.mad:643 | ISO        | 'ДEЛИTE' | GOST6 '*4=М`=↑5' | TEXT6 '9Д5LЬ51Ф'
+src/lib21/LFSCAN.mad:644 | ISO        | 'ЛЬ    ' | GOST6 "'7АА820А" | TEXT6 ',ИЗЗ(Б З'
+src/lib21/LFSCAN.mad:645 | ISO        | 'HEBEPH' | GOST6 '(4=2↑=18' | TEXT6 '2Д5Б15.('
+src/lib21/LFSCAN.mad:646 | ISO        | 'OE ИMЯ' | GOST6 ')Ф×А`×ХС' | TEXT6 '3T4ЗЬ4UQ'
+src/lib21/LFSCAN.mad:647 | ISO        | ' ПAPAM' | GOST6 '8711×45,' | TEXT6 '(И..4ДФЯ'
+src/lib21/LFSCAN.mad:648 | ISO        | 'ETPA  ' | GOST6 '↑=↑⏨⏨(0А' | TEXT6 '151002 З'
+src/lib21/LFSCAN.mad:649 | ISO        | 'OШ. ЗH' | GOST6 ')ЧМО87Й8' | TEXT6 '3WLN(ИI('
+src/lib21/LFSCAN.mad:650 | ISO        | 'AЧEHИE' | GOST6 '⏨[Щ5(6Е5' | TEXT6 '07YФ2ГEФ'
+src/lib21/LFSCAN.mad:651 | ISO        | ' ПAPAM' | GOST6 '8711×45,' | TEXT6 '(И..4ДФЯ'
+src/lib21/LFSCAN.mad:652 | ISO        | 'ETPA  ' | GOST6 '↑=↑⏨⏨(0А' | TEXT6 '151002 З'
+src/lib21/LFSCAN.mad:653 | ISO        | 'HE ЗAД' | GOST6 '(4×А>Д5Д' | TEXT6 '2Д4З+DФD'
+src/lib21/LFSCAN.mad:654 | ISO        | 'AH ПAP' | GOST6 '⏨×АА#45⏨' | TEXT6 '04ЗЗПДФ0'
+src/lib21/LFSCAN.mad:655 | ISO        | 'AMETP ' | GOST6 '⏨×Х5=50А' | TEXT6 '04UФ5Ф З'
+src/lib21/LFSCAN.mad:656 | ISO        | 'JOB   ' | GOST6 '(ДЮ2820А' | TEXT6 '2DЩБ(Б З'
+src/lib21/LINK#IPM.mad:253 | ISO        | 'P B C ' | GOST6 '×21284/А' | TEXT6 '4Б.Б(ДЛЗ'
+src/lib21/LINK#IPM.mad:254 | ISO        | ' NT3/7' | GOST6 '84Щ×/ТЭЧ' | TEXT6 '(ДY4ЛRЭW'
+src/lib21/LOADLIBR.mad:1237 | GOST       | "ИCПOPЧEH KATAЛOГ'231'" | GOST6 '7Г#ПРЯЕИ' | TEXT6 'ИCПOPЧEH'
+src/lib21/LOADLIBR.mad:1238 | GOST       | "ПEPEПOЛHEH KATAЛOГ'231'" | GOST6 '#ЕРЕ#П/И' | TEXT6 'ПEPEПOЛH'
+src/lib21/LOADLIBR.mad:1239 | GOST       | "ПEPEПOЛHEHA БИБЛИOTEKA'231'" | GOST6 '#ЕРЕ#П/И' | TEXT6 'ПEPEПOЛH'
+src/lib21/LOADLIBR.mad:1240 | GOST       | 'B HAШEM BЦ HET  LIBRARY' | GOST6 'В0ИБЬЕН0' | TEXT6 'B HAШEM '
+src/lib21/LOADLIBR.mad:1242 | GOST       | 'ИCПOPЧEH KATAЛOГ БИБЛИOTEKИ -' | GOST6 '7Г#ПРЯЕИ' | TEXT6 'ИCПOPЧEH'
+src/lib21/LOADLIBR.mad:1244 | GOST       | 'ИCПOPЧEHЫ ПPOГPAMMЫ ИЗ БИБЛИOTEKИ -' | GOST6 '7Г#ПРЯЕИ' | TEXT6 'ИCПOPЧEH'
+src/lib21/LOADLIBR.mad:1246 | GOST       | '*LIBRA:00 =' | GOST6 '+МЙВТБ0⏨' | TEXT6 '*LIBRA 0'
+src/lib21/XREF.mad:1092 | ISO        | ' >>>  ' | GOST6 '83ШЯ В0А' | TEXT6 '(ЦXЧ/B З'
+src/lib21/XREF.mad:1094 | ISO        | '<<<   ' | GOST6 ' 3РЭ820А' | TEXT6 '/ЦPЭ(Б З'
+src/lib21/XREF.mad:1095 | ISO        | ' IDENT' | GOST6 '84Е4↑×Щ×' | TEXT6 '(ДEД14Y4'
+src/lib21/XREF.mad:1096 | ISO        | 'IFIERS' | GOST6 '(×*9↑=9)' | TEXT6 '249)15)3'
+src/lib21/XREF.mad:1097 | ISO        | '      ' | GOST6 '820А820А' | TEXT6 '(Б З(Б З'
+src/lib21/XREF.mad:1098 | ISO        | ' OCCUR' | GOST6 '84Ю3⏨Х=(' | TEXT6 '(ДЩЦ0U52'
+src/lib21/XREF.mad:1099 | ISO        | 'RENCES' | GOST6 '×Д=.⏨Ф=)' | TEXT6 '4D5Ж0T53'
+src/lib21/XREF.mad:1100 | ISO        | '      ' | GOST6 '820А820А' | TEXT6 '(Б З(Б З'
+src/lib21/XREF.mad:1101 | ISO        | ' LINES' | GOST6 '84С9)Д=)' | TEXT6 '(ДQ)3D53'
+src/lib21/XREF.mad:1111 | ISO        | ' *** P' | GOST6 '82ИК+В1⏨' | TEXT6 '(БHJ*B.0'
+src/lib21/XREF.mad:1112 | ISO        | 'ASCAL ' | GOST6 '⏨=,3⏨×РА' | TEXT6 '05ЯЦ04PЗ'
+src/lib21/XREF.mad:1113 | ISO        | 'CROSSR' | GOST6 '⏨Х9 ×Х,(' | TEXT6 '0U)/4UЯ2'
+src/lib21/XREF.mad:1114 | ISO        | 'EFEREN' | GOST6 '↑×*5×Д=.' | TEXT6 '149Ф4D5Ж'
+src/lib21/XREF.mad:1115 | ISO        | 'CER. 1' | GOST6 '⏨Ф=(-В0С' | TEXT6 '0T52ЙB Q'
+src/lib21/XREF.mad:1116 | ISO        | '2.9.79' | GOST6 '/ВШЩ-Г#Щ' | TEXT6 'ЛBXYЙCПY'
+src/lib21/XREF.mad:1117 | ISO        | '. *** ' | GOST6 '-В0К+ВИА' | TEXT6 'ЙB J*BHЗ'
+src/lib21/CHEKJOB_.mad:570 | CONT       | 'ЗAПPOC PECYPCA' | GOST6 '??0?00' | TEXT6 'АБ#РПГ0Р'
+src/lib21/CHEKJOB_.mad:572 | CONT       | "OБ'EDC071'ЯBЛEH" | GOST6 '? %?4?' | TEXT6 'П20ЕДГ⏨['
+src/lib21/CHEKJOB_.mad:575 | CONT       | 'HA KAPTY-*CHE081' | GOST6 '??+??9' | TEXT6 'ИБ0ЛБРФЩ'
+src/lib21/DECODER.mad:377 | CONT       | "BINARY'47'  'IS12'" | GOST6 '??????' | TEXT6 'ВЙОБТЩ0×'
+src/lib21/FORTLIBR.mad:153 | ISO        | 'ERROR' | GOST6 'ERROR ' | TEXT6 '↑=9()Х8А'
+src/lib21/FORTLIBR.mad:154 | ISO        | 'IN STA' | GOST6 'IN STA' | TEXT6 '(×ША×Х↑1'
+src/lib21/FORTLIBR.mad:155 | ISO        | 'NDART' | GOST6 'NDART ' | TEXT6 ')Д↑1×Е⏨А'
+src/lib21/FORTLIBR.mad:156 | ISO        | 'ARRAY' | GOST6 'ARRAY ' | TEXT6 '⏨=9(⏨=ДА'
+src/lib21/LIBTAP_.mad:628 | CONT       | 'T' | GOST6 '??????' | TEXT6 'Ф0000000'
+src/lib21/OCATALOG.mad:272 | CONT       | 'OVERLAY' | GOST6 '?ИР??@' | TEXT6 'ПЦЕТМБЩ0'
+src/lib21/OCATALOG.mad:273 | CONT       | "'EDC031''EDC032'EDC009/" | GOST6 '?Y#A4@' | TEXT6 '0ЕДГ⏨)↑0'
+src/lib21/OCATALOG.mad:288 | CONT       | 'EHИИ K OCA001' | GOST6 '?????/' | TEXT6 'ЕИ770Л0П'
+src/lib21/OCATALOG.mad:289 | CONT       | "'EDC038''EDC039'" | GOST6 '?Y#A6?' | TEXT6 '0ЕДГ⏨)]0'
+src/lib21/OCATALOG.mad:292 | CONT       | "HE БЫBAET 'EDC038''EDC039'" | GOST6 '?P?Ч(Е' | TEXT6 'ИЕ02:ВБЕ'
+src/lib21/TCATALOG.mad:2914 | CONT       | 'TEMP' | GOST6 'TEMP  ' | TEXT6 '=4=,×20А'
+src/lib21/TCATALOG.mad:2915 | CONT       | 'TAPE' | GOST6 'TAPE  ' | TEXT6 '=45⏨↑(0А'
+src/lib21/TEMFILE.mad:437 | CONT       | "'EDC056'" | GOST6 '?Y#AU?' | TEXT6 '0ЕДГ⏨=;0'
+src/lib21/EXECUTE.mad:121 | TEXT(=6H)  | 'OC ДYБ  ' | GOST6 'ПГ04Щ200' | TEXT6 'OC ДYБ  '
+src/lib21/EXECUTE.mad:147 | TEXT(=6H)  | 'OVERLA  ' | GOST6 'ПЦЕТМБ00' | TEXT6 'OVERLA  '
+src/lib21/EXECUTE.mad:262 | TEXT(=6H)  | 'OC ДYБ  ' | GOST6 'ПГ04Щ200' | TEXT6 'OC ДYБ  '
+src/lib21/FT_REGIM.mad:112 | TEXT(=6H)  | 'REGIM   ' | GOST6 'ТЕЗЙН000' | TEXT6 'REGIM   '
+src/lib21/LINK#IPM.mad:196 | TEXT(=6H)  | 'ЗAM     ' | GOST6 'АБН00000' | TEXT6 'ЗAM     '
+src/lib21/LINK#IPM.mad:219 | TEXT(=6H)  | 'KOHEЦ   ' | GOST6 'ЛПИЕ3000' | TEXT6 'KOHEЦ   '
+
+ПРОВЕРКИ (rc=0)
+  python3 tests/check-source-words.py
+  bash tests/check-label-semantics.sh
+  bash tests/check-constants.sh
+  bash tests/check-lib21.sh
+  bash tests/check-extract-codes.sh
+

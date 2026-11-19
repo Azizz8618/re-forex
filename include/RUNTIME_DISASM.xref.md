@@ -104,3 +104,25 @@
 FORMAT — `S1:15541-15586`, FORTLIBR — `S1:15594-15690`. Отличия только в
 объектной обвязке (LINK-адреса 740xx вместо символических `FT*`, L-адреса
 вынесены в рело-таблицу, t6/ASCII-тексты вместо `ISO ,6H...`).
+
+## 6. Текстовые константы и кодировки
+
+Повторный аудит (2026-11-19, `logs/text_audit_compiler2.txt`). Файл
+`src/FOREX_RUNTIME_DISASM.mad` не входил в предыдущий проход
+(`logs/text_constants_audit.txt`); все текстовые константы проверены впервые.
+Методика: `tools/dtran_text.py`, `tools/besm6_text_scan.py`, сверка с лентой
+`monsys.9` (адреса 0o510473, 0o510536-0o510537) и `reference/libra211.format.inc`.
+
+| Константа | Источник | Кодировка | Декодирование (UTF-8) | Было → стало |
+|---|---|---|---|---|
+| t6-имя `FORMAT  ` | `src/FOREX_RUNTIME_DISASM.mad:192`, лента 0o510473 | TEXT (6 бит×8, t6) | `FORMAT  ` | `t6-имя модуля 'FORMAT  '` → + `DEKOD TEXT 'FORMAT  '` |
+| END-маркер `GFEDCBA+` | `src/FOREX_RUNTIME_DISASM.mad:196`, лента 0o510536-0o510537 | TEXT (6 бит×8, t6) | `GFEDCBA+` | `END-маркер ('GFEDCBA+')` → + `DEKOD TEXT 'GFEDCBA+'` |
+| `C101` / `ERROR` | `src/FOREX_RUNTIME_DISASM.mad:289,388`, S1:15610/15707 | ISO (6 ASCII-байт) | `ERROR  ` | `текст ошибки 'ERROR'` → + `DEKOD ISO 'ERROR  ' / TEXT 'ERROR   '` |
+| `,ISO,'ERROR  '` | `src/FOREX_RUNTIME_DISASM.mad:388`, S1:15707 | ISO | `ERROR  ` | расшифровка уже была (`ISO ,6HERROR`) — проверено |
+| `,ISO,'IN STA'` | `src/FOREX_RUNTIME_DISASM.mad:390`, S1:15708 | ISO | `IN STA` | расшифровка уже была (`ISO ,6HIN STA`) — проверено |
+| `,ISO,'NDART '` | `src/FOREX_RUNTIME_DISASM.mad:391`, S1:15709 | ISO | `NDART` | расшифровка уже была (`ISO ,6HNDART`) — проверено |
+| `,ISO,'ARRAY '` | `src/FOREX_RUNTIME_DISASM.mad:392`, S1:15710 | ISO | `ARRAY` | расшифровка уже была (`ISO ,6HARRAY`) — проверено |
+
+Диагностические ISO-строки `ERROR/IN STA/NDART/ARRAY` совпадают с
+GOST/TEXT-литералами `6HERROR`, `6HIN STA`, `6HNDART`, `6HARRAY` в
+`src/FOREX_RUNTIME.mad:96-98,94` (DEKOD добавлен предыдущим проходом).
