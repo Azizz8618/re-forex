@@ -1,0 +1,29 @@
+шифр 419999 зс5^
+лен 60(2348-wr)^
+ееВ1а3
+*name ARFAWR
+*call yesmemory
+*perso:602300
+*no list
+*assembler
+  ZAREQ:,NAME,
+        ,XTA,=:00000100 00000000
+        ,UZA,*+1
+        ,XTA,=:12510000 00000010
+        ,ATX,ISW
+        ,XTA,=:14422510 14406004
+        ,ATX,NM1
+        ,XTA,=:00204411 02204777
+        ,ATX,NM2
+        ,XTA,=:52053075 67040060
+        ,*63,ISW
+   13  ,UJ,
+  ISW:,BSS,1
+  NM1:,BSS,1
+  NM2:,BSS,1
+  RES:,BSS,1
+       ,END,
+*to perso:602320
+*end file
+``````
+еконец

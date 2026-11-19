@@ -1,4 +1,4 @@
-# F77 full verification manifest — 2026-11-19T19:52:57Z
+# F77 full verification manifest — 2026-11-19T21:59:32Z
 2a9d5038367105aebc5c7f8bd6e43f049919c9ced179682a9126e76ac402253d  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/cross/cases.txt
 db31e28559fabfa649dca94a069f1c94de2f9c0c47117854d27867861d0223de  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gate/endread_ok.b6
 39ef6055f933b193878ec20085e00dcab0f9e9b6534aa960311df73499d0414b  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gate/endread_ok.gold
@@ -45,11 +45,15 @@ fe837de50cb48af735290d1774e9842a4498505e59c7d1c476dddcf847e8b686  /home/azizz/Ya
 36dcf690957a322e7a81b2ee571f8a28ab6a929737adf69af47bf1a3f5e6716e  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J22_nested_format2.gold
 b0c0fd7348ed8f5cd0f78aea1ad9e823f60f6070be2eaaa24e002532db73fd74  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J22_nested_format.gold
 561c1cdc24aff0307497031a9ad6e3380b14bd158b815d31203506bfceeb7caa  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J23_unformatted_syntax.gold
+07b6a1e59868ee9b6363e5e370b041c3e0b610b54c37ab401691e9a60e69f430  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J24_ARFA_OPEN_INQ.gold
 2b9d2d63874d8e59c1591d27c1ee6468f58b593be28a8fc4e5c183bd28da9de4  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J25_rewind.gold
 2b9d2d63874d8e59c1591d27c1ee6468f58b593be28a8fc4e5c183bd28da9de4  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J26_backspace.gold
 acd74ec6492477619dfdf516b12836fa9d66459b2d6efdd0a46b7185d10aa66b  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J27_endfile.gold
 3beb951870f3646fc28734ea069dd7bec395d7747351544ba6f0b4e4c7ac21be  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J28_assigned_format.gold
+882e2c8e14b5667e1f25ae94ea6883505abd319d3658068022209946394a2635  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J2_ARFA_WRITE.gold
 20add648ea927d31b6a8d7f3633577d702870e047d416d95ec1170edc9c73b2d  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J2_write_unit54.gold
+e905a363a477e81ba4c4567152018b6b5d69463297fc8b8c5b52e2b0214f706b  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J3_ARFA_READ.gold
+293921d76634888611969e65191005b00bd1751410a1e2128e063ca742f54682  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J4_ARFA_READ_UNIT.gold
 932f14c4a2cab1ea4a1fe7a1800893ac40968b92df653b18038ef3ced88080cc  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J5_list_print.gold
 b410dc4a791beab0d10554da151c110c4f0768791a1945409cb4ca6be5139504  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J5_list_print_multi.gold
 39ef6055f933b193878ec20085e00dcab0f9e9b6534aa960311df73499d0414b  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/J6_list_read.gold
@@ -60,7 +64,7 @@ d698512b0fbdd763d3fee557a7995872191648fe120fc1e215d3565071133e30  /home/azizz/Ya
 5493331f59ccdeeb8f67f90c0929222adff7395764149aaa83eb9f33a59b0fb7  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/K02_amod.gold
 813479e497833f69eacf0f9fb9a5fce6abbf29c390d439ef8b1e6ce5f7a68aea  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/K03_cabs.gold
 65846adddeca90e27b7ed06fb2a643cf1738472cb28c38a65cb1bf6fa90b7181  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/K04_dsqrt.gold
-b8427cf6026e5df0fd38821ea820f774c0544d1da0ab476102463d23bda79df5  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/REGISTRY.txt
+4d692805f9982fa20587af0fbb847c129528e34a7d343a57702c844be9121f44  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gold/REGISTRY.txt
 fa832f41125dc5d7c3914f8730fadd887f593e21c191cd4e0abee534a6092b95  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/negative/cases.txt
 a24c2b1728a96ad4d7dbcc5c86a8e6d155268eb404cca138598fec81eb819e7b  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/real/cases.txt
 1de9acdb482e7458af4ff87b803e3cad494c5deb21e29042a2122c008b62d377  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/A01_fixed_form/a01_fixed_form.b6
@@ -301,6 +305,7 @@ b0c0fd7348ed8f5cd0f78aea1ad9e823f60f6070be2eaaa24e002532db73fd74  /home/azizz/Ya
 1f9d691871db904530782569e6fa475cbe3f1e0c0c4de5af28b7d3d1e6d0fab6  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J23_unformatted_syntax/j23_unformatted_syntax.b6
 561c1cdc24aff0307497031a9ad6e3380b14bd158b815d31203506bfceeb7caa  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J23_unformatted_syntax/J23_unformatted_syntax.gold
 a12f2a62280198f1ccf2dbc09fa61adf6b711d0674ea6cee1da210341b7239b9  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J23_unformatted_syntax/options.txt
+5febb37a1efe4a70a373e15a54ff00659b05b431c578daba0cbe9987130cddfe  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J24_ARFA_OPEN_INQ/j24_arfa_open_inq.b6
 58b4b920e265eaf202914d6074aaa3cab79b7c5fcb29cc9c9f23100485ba33f0  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J25_rewind/j25_rewind.b6
 2b9d2d63874d8e59c1591d27c1ee6468f58b593be28a8fc4e5c183bd28da9de4  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J25_rewind/J25_rewind.gold
 8eb6e766f525a64dbe0eb2abfc217c167955addc4fff542153146552019abb33  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J25_rewind/options.txt
@@ -313,9 +318,12 @@ dd490efa834ea08639d79b60b14fa8e127a4b014a1445a8b02af3becd060dc04  /home/azizz/Ya
 43e08dcd6a3c12b218cd552a8039b2a9daf2b4e4fad03fb12a1eea577124f3de  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J28_assigned_format/j28_assigned_format.b6
 3beb951870f3646fc28734ea069dd7bec395d7747351544ba6f0b4e4c7ac21be  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J28_assigned_format/J28_assigned_format.gold
 6a483d3a8b60b654bca26428ba5f38bca368b6b5b91262fb2024341c9d20dc51  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J28_assigned_format/options.txt
+8c88c6641e684bc84ea11ad11780be9bc3664dc6f9f2c520f118983c5c97879e  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J2_ARFA_WRITE/j2_arfa_write.b6
 3fe26d2e03d782e3b49922588f4aa498be10c131ad011920fb6d177d2f607671  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J2_write_unit54/j2_write_unit54.b6
 20add648ea927d31b6a8d7f3633577d702870e047d416d95ec1170edc9c73b2d  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J2_write_unit54/J2_write_unit54.gold
 20ea6dba398a79bd7473aa3d3db483c85b0c0ba376441d77a3ac21c5559e78ed  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J2_write_unit54/options.txt
+36c471204771ea90dcc40db3bd06430daa35640518410a9a64401bd6ed32fc48  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J3_ARFA_READ/j3_arfa_read.b6
+482375b924ddb6dbb22bba3a70d159abe9f385e41740a73097eaa27a7b5d8467  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J4_ARFA_READ_UNIT/j4_arfa_read_unit.b6
 ae951e6d194939c87ad9f8181575485e264a8508be1ff21d0b20efa92c997290  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J5_list_print/j5_list_print.b6
 932f14c4a2cab1ea4a1fe7a1800893ac40968b92df653b18038ef3ced88080cc  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J5_list_print/J5_list_print.gold
 326a37f782e171aacd7fcea598dbf59a6278c36cb8d674e011de79552c88b147  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/J5_list_print_multi/j5_list_print_multi.b6
@@ -353,4 +361,4 @@ aaa9e11558a055877629e2a4d8b672025d2e9e432f4ec04398165f1ab652bc57  /home/azizz/Ya
 9855b57aba7c22df9746cb969d6287fad5c5e49c1268bbb32b7820df6846835a  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/K06_intrinsics_absent/K06_intrinsics_absent.gold
 db49f1a8744c2825e34b383483efc7a8869c96de467e952df043afa72ba2d275  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/K06_intrinsics_absent/options.txt
 2cc2fbbec28883e45bb62ee72d6c4ed9747ce582ad1e6b39efd87d66c157e2b6  /home/azizz/Yandex.Disk/re-forex/build/FOREX_PERSO_2300.bin
-30fd6355b25d9ed3f06f57d84a3eac6ecfde2d6d5b7d34b1c27a7b44a6513152  /usr/local/share/besm6/2348
+b6fa9f67c9d9201e4968d1565f5593b066a5e292b809cab4cfbfa9105d5846d6  /usr/local/share/besm6/2348

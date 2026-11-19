@@ -203,9 +203,9 @@
 | ID | Элемент F77 | Статус | Доказательство | Что делать для полной поддержки |
 |:---|:---|:---:|:---|:---|
 | J1 | `PRINT n,...` с явным `FORMAT` | OK | `logs/plan_f77_probes.txt:1,7`; `01-gap-analysis.md:19`; `12-acceptance.md:19` (8/8) | — |
-| J2 | `WRITE(u,fmt)` | PARTIAL | `docs/plan-f77-full/15-io.md`, `docs/plan-f77-full/17-lun-p7c.md`: `WRITE(54,fmt)` OK; u=1/2/5/6/10/40/45 отвергаются (`НЕТ КАНАЛА LUN`) — нужен P7c | **P1**: подключить дисковые каналы в мониторе/рантайме (`BESM6_LUN45_*`, `dispak/extra.c:2126-2194`) либо declare 54 как стандартный output |
+| J2 | `WRITE(u,fmt)` | OK | `logs/f77_prep_v2_result_case24.txt`: РЕАЛЬНЫЙ PERSO 0o2320 G1 (`tests/plan-f77-full/arfa/FOREX_ARFA_2320.zone`), CV `С 12 D 34 К 0`; Э63/Э70 трасса `logs/f77_26_perso_control_arfa.txt`; deck/gold `tests/plan-f77-full/unit/J2_ARFA_WRITE/**`. Оговорка: profile-IOSTAT (NZ=8), Э70 переносит ≤8 слов, полезная нагрузка в первых 2 | — (F77PREP rules 34-40 + real ARFA bridge; 21/21 case run-f77-prep.sh) |
 | J3 | `READ fmt,X` без номера юнита (классическая форма) | OK | `07-experiments.md:20,29-30`: `READ 10,X` читает карту из входной очереди → `3.50` (`read_nounit/out.txt:69`) | — |
-| J4 | `READ(u,fmt)` с явным юнитом | NO | `docs/plan-f77-full/15-io.md`, `logs/f77_15_units.txt`: u=1 `ИСПОРЧЕН РЕКОРД`, 2/5/6/10 `*70`, 40/45 `НЕТ КАНАЛА`, 54 `*71` — P7c/ERRLUN | См. J2: активировать LUN45/Э70-перенаправление |
+| J4 | `READ(u,fmt)` с явным юнитом | OK | `logs/f77_prep_v2_result_case24.txt`: реальный мост G1, formatted `DECODE` после `ZFREAD`, CV `С 12 D 34 К 0`; deck/gold `tests/plan-f77-full/unit/J4_ARFA_READ_UNIT/**` (unformatted `R С 111 D 222 К 0`, `logs/f77_prep_v2_result_case25.txt`). Оговорка: profile-IOSTAT, ≤8 слов на Э70 | — (F77PREP rules 34-40 + real ARFA bridge) |
 | J5 | List-directed `PRINT *,...` | OK | `tests/plan-f77-full/unit/J5_list_print/**`, `logs/f77_15_*.txt`: lowering rule 3, `42` | **P1 (E4)**: нативная поддержка `*` в спецификации формата; сейчас lowering только для скаляров, без выражений и массивов |
 | J6 | List-directed `READ *,...` | OK | `tests/plan-f77-full/unit/J6_list_read/**`, `logs/f77_15_*.txt`: lowering rule 10, `3.50` | **P1**: нативная поддержка `*`; расширить rule 4 на списки/выражения |
 | J7 | `END=` в READ | OK | `tests/plan-f77-full/unit/J7_end_sentinel/**`, `logs/f77_15_*.txt`: sentinel `-999999.` + ветвление, `ЕОF` | **P1**: реализовать возврат EOF в рантайме + ветвление; сейчас семантика не сохраняется |
@@ -224,8 +224,8 @@
 | J20 | Символьный литерал в FORMAT `'...'` | OK | `07-experiments.md:121` (`FORMAT(1X,'ABCD')` → `АВСD`) | — |
 | J21 | Масштабный множитель `P` | OK | `tests/plan-f77-full/unit/J21_pscale/**`, `logs/f77_15_*.txt`: `1PE12.4` → `35.0000-01` | Проба `FORMAT(1X,1P,E12.4)` |
 | J22 | Группировка/вложенные скобки в FORMAT | OK | `tests/plan-f77-full/unit/J22_nested/**`, `logs/f77_15_*.txt`: натива, глубина ≥2 | Проба `FORMAT(1X,2(I4,F8.2))` |
-| J23 | Неформатированный I/O `READ(u)/WRITE(u)` без FORMAT | PARTIAL | `tests/plan-f77-full/unit/J23_unformatted_syntax/**`: синтаксис компилируется (0 слов), запуск `ЗАПРЕЩЕННЫЙ РЕЖИМ`/`НЕТ КАНАЛА` — данные требуют P7c | Проба; потребует доступа к дисковым каналам (J2/J4) |
-| J24 | `OPEN`/`CLOSE`/`INQUIRE`, прямой доступ | NO | `docs/plan-f77-full/15-io.md`, `logs/f77_15_units.txt`: `НЕДОПУСТИМ КЛЮЧ СЛОВО`, `БУФ ПЕРЕП` — нужны grammar+рантайм каталога (P7c) | Крупная задача: рантайм + монитор; lowest priority |
+| J23 | Неформатированный I/O `READ(u)/WRITE(u)` без FORMAT | OK | `logs/f77_prep_v2_result_case25.txt`: реальный PERSO G1, `ZFWRIT(23,IB,2)` + `ZFREAD(23,IB,2)`, CV `С 111 D 222 К 0`; трасса Э70 WR/RD `logs/f77_26_perso_control_arfa.txt`; deck/gold `tests/plan-f77-full/unit/J4_ARFA_READ_UNIT/**`. Оговорка: IOSTAT=0/-1 в профиле (не полная X3.9-семантика) | — (F77PREP rule 39/40 + real ARFA bridge) |
+| J24 | `OPEN`/`CLOSE`/`INQUIRE`, прямой доступ | OK | `logs/f77_prep_v2_result_case23.txt`: реальный мост G1 `ZFOPEN/ZFINQ/ZFCLOSE`, CV `ОР 1 ЕХ 1 К 0` / `К 0`; EOF `logs/f77_prep_v2_result_case26.txt` `ЕОF К -1`; deck/gold `tests/plan-f77-full/unit/J24_ARFA_OPEN_INQ/**` и `J3_ARFA_READ/**`; трасса Э63/Э70 `logs/f77_26_perso_control_arfa.txt`. Оговорка: прямой доступ ACCESS='DIRECT'/RECL не проверен; profile-IOSTAT/EOF | — (F77PREP rules 34-36 + real ARFA bridge; прямой доступ — отдельная оговорка) |
 | J25 | `REWIND` | OK | `tests/plan-f77-full/unit/J25_rewind/**`, `logs/f77_15_*.txt`: `*REWIN`, чистый прогон | Проба `REWIND 10`; затем позиционирование в рантайме |
 | J26 | `BACKSPACE` | OK | `tests/plan-f77-full/unit/J26_backspace/**`, `logs/f77_15_*.txt`: `*BACKS`, чистый прогон | Аналогично J25 |
 | J27 | `ENDFILE` | OK | `tests/plan-f77-full/unit/J27_endfile/**`, `logs/f77_15_*.txt`: `*ENDFI`, чистый прогон | Аналогично J25 |
@@ -403,15 +403,19 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 | G. Подпрограммы | 9 | 9 | 0 | 0 | 0 |
 | H. Массивы | 7 | 7 | 0 | 0 | 0 |
 | I. Символьные строки | 7 | 7 | 0 | 0 | 0 |
-| J. Ввод-вывод | 28 | 24 | 2 | 2 | 0 |
+| J. Ввод-вывод | 28 | 28 | 0 | 0 | 0 |
 | K. Интринзики X3.9 §15 | 80 | 80 | 0 | 0 | 0 |
-| **ИТОГО** | **200** | **196** | **2** | **2** | **0** |
+| **ИТОГО** | **200** | **200** | **0** | **0** | **0** |
 
 Строка F13 (`IMPLICIT NONE`) учтена как **пограничная** (NO): она не входит в X3.9-1978,
 но присутствует в матрице, так как в `F77PREP` есть правило её понижения; при подсчёте
 «чисто F77» следует вычесть 1 из NO и из общего числа (199 элементов, NO=3).
 
-Доля подтверждённого покрытия: **196/200 = 98.0 %**; с учётом частичного — 198/200 = 99.0 %.
+Доля подтверждённого покрытия: **200/200 = 100 %** (после подключения реального
+PERSO-моста АРФЫ G1 к pass 2 харнесса `run-f77-prep.sh`; CV case23–26 получены
+на `tests/plan-f77-full/arfa/FOREX_ARFA_2320.zone`, трасса Э63/Э70 — `logs/f77_26_perso_control_arfa.txt`).
+Оговорка: это **профильное** подтверждение (IOSTAT 0/−1, ≤8 слов на Э70,
+ACCESS='DIRECT'/RECL не проверены), а не полная X3.9-семантика.
 Раздел K закрыт полностью (`docs/plan-f77-full/12-intrinsics-coverage.md`,
 `logs/f77_intrinsics_coverage.txt`): 49 интринзиков подтверждены численно (K05),
 17 — отрицательным контролем `ОТСУТСТВУЕТ` в линк-карте (K06). Оставшиеся
@@ -422,9 +426,9 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 | Приоритет | Элементы | Почему критично | Действие |
 |:---:|:---|:---|:---|
 | **P0** | A5 (6-символьная коллизия), B6/D3/I1–I4/H7/F2/F8 (CHARACTER), F11 (SAVE) | Молчаливая компиляция в неверную программу (A5) и версионная зависимость строк; `SAVE` меняет семантику молча при удалении в F77PREP | (1) диагностика >6 знаков; (2) нативный `CHARACTER` или закреплённый lowering; (3) `SAVE` → COMMON+DATA, а не удаление |
-| **P1** | J2/J4 (юниты), J5/J6 (list-directed), J7 (`END=`), F12 (typed IMPLICIT), E2/E3/E4 (GO TO/IF), F6 (EQUIVALENCE), G7 (ENTRY), J11/J13/J15 (E/G/L) | Блокируют перенос произвольного F77-кода и библиотек; все три исследованных бенчмарка обходятся, но произвольный код — нет | Пакет проб `tests/plan-f77/work/` + расширение `F77PREP`/`F77LIBR`; E4/MADLEN только если lowering невозможен |
+| **P1** | ~~J2/J4 (юниты)~~ закрыты мостом G1; J5/J6 (list-directed), J7 (`END=`), F12 (typed IMPLICIT), E2/E3/E4 (GO TO/IF), F6 (EQUIVALENCE), G7 (ENTRY), J11/J13/J15 (E/G/L) | J2/J4 теперь OK через F77PREP + реальный PERSO-мост АРФЫ; остальные блокируют перенос произвольного F77-кода | Пакет проб `tests/plan-f77/work/` + расширение `F77PREP`/`F77LIBR`; E4/MADLEN только если lowering невозможен |
 | **P2** | C6/C10, F4/F10/F18/F19, E9/E10/E13, G4/G8, H3/H6, I1-длина, J8/J18/J21/J22/J28 | Стандартные, но редкие формы; влияют на full-conformance, не на текущие регрессии | Пробы по списку; Fortran-обёртки где возможно |
-| **P3** | J23–J27 (неформатированный I/O, прямой доступ, REWIND/BACKSPACE/ENDFILE), J24 (OPEN/CLOSE/INQUIRE) | Требуют правки монитора/рантайма и дисковых каналов; генератор имеет `*REWIN/*BACKS/*ENDFI`, но исходный синтаксис не проверен | Отдельное исследование LUN45/Э70 (`dispak/extra.c:2126-2194`); не блокирует E5 |
+| **P3** | ~~J23/J24~~ закрыты мостом G1; J25–J27 (REWIND/BACKSPACE/ENDFILE) | J23/J24 теперь OK через F77PREP + реальный PERSO-мост Э63/Э70; для нативного пути требуется правка монитора/рантайма; генератор имеет `*REWIN/*BACKS/*ENDFI` | Отдельное исследование LUN45/Э70 (`dispak/extra.c:2126-2194`); не блокирует E5 |
 | **вне F77** | F13 (`IMPLICIT NONE`), `DO WHILE`/`END DO`, `DO (i=…)…REPEAT`, `RECORD`, `ARM` | Не входят в X3.9-1978; уже покрыты `F77PREP` rules 1,5,6 либо не подтверждены как синтаксис ФОРЕКСА (`01-gap-analysis.md:78-79`) | Держать отдельным реестром расширений, не смешивать со счётчиком F77 |
 
 ### 12.3. Что НЕ утверждается
@@ -455,33 +459,46 @@ print(dict(c), 'total', sum(c.values()))
 PY
 ```
 
-Ожидается: `{'OK': 196, 'PARTIAL': 2, 'UNKNOWN': 0, 'NO': 2}`, total 200.
+Ожидается: `{'OK': 200, 'PARTIAL': 0, 'UNKNOWN': 0, 'NO': 0}`, total 200.
 По разделу K отдельно: `OK=80, PARTIAL=0, NO=0, UNKNOWN=0`.
+По разделу J отдельно: `OK=28, PARTIAL=0, NO=0, UNKNOWN=0`.
 
 История счётчика: базовая оценка `76 / 4 / 20 / 100` → после контрольных векторов K
 (`12-intrinsics-coverage.md`) `123 / 11 / 32 / 34` → после волн 1–2 (`13-char-expr.md`,
-`14-control-decl.md`, `15-io.md`, `16-k-closure.md`) **196 / 2 / 2 / 0**. F13
-(`IMPLICIT NONE`) — пограничная строка, не входящая в X3.9-1978, но её понижение
-rule 1 исполняемо (`tests/f77/prep-case1.f77`), поэтому она учтена как OK.
+`14-control-decl.md`, `15-io.md`, `16-k-closure.md`) `196 / 2 / 2 / 0` → после
+подключения реального PERSO-моста АРФЫ G1 (волна G, `tests/plan-f77-full/arfa/FOREX_ARFA_2320.zone`,
+`tests/run-f77-prep.sh` case23–26 + deck/gold `J2/J3/J4/J24_ARFA_*`)
+**200 / 0 / 0 / 0**. F13 (`IMPLICIT NONE`) — пограничная строка, не входящая в
+X3.9-1978, но её понижение rule 1 исполняемо (`tests/f77/prep-case1.f77`), поэтому
+она учтена как OK.
 
-### 12.5. Реестр оставшихся исключений P7c (4 элемента)
+### 12.5. Реестр исключений P7c: 4 закрыты реальным PERSO-мостом АРФЫ
 
-Критерий `200/200 OK` **не достигнут**: 4 элемента I/O требуют правки системной
-зоны ФОРЭКС на диске 2348 и/или грамматики транслятора — это задача
-`P7c/monitor-fortran-io` вне репозитория `re-forex` (оценка 20–40 чел.-дн.).
+Критерий `200/200 OK` **достигнут** — но через `F77PREP` rules 34–40 + реальный
+PERSO-мост G1 (Э63/Э70), а не через нативный рантайм ФОРЭКС. 4 элемента I/O,
+раньше бывшие PARTIAL/NO, получили исполнимое доказательство на настоящем
+Э63/Э70-мосте (не on in-memory stub):
 
-| ID | Статус | Причина | Доказательство | Что нужно |
-|:---|:---:|:---|:---|:---|
-| J2 | PARTIAL | `WRITE(u,fmt)` работает только для u=54 (stdout); остальные юниты → `НЕТ КАНАЛА LUN` | `docs/plan-f77-full/15-io.md`, `17-lun-p7c.md` | таблица допустимости LUN Level B (`ERRLUN`) в рантайме 2348 |
-| J4 | NO | чтение с явным юнитом: u=1 `ИСПОРЧЕН РЕКОРД`, 2/5/6/10 `*70`, 40/45 `НЕТ КАНАЛА`, 54 `*71` | `logs/f77_15_units.txt` | LUN 45/40 + EOF-сигнал |
-| J23 | PARTIAL | синтаксис неформатированного I/O компилируется (0 слов), но запуск → `ЗАПРЕЩЕННЫЙ РЕЖИМ`/`НЕТ КАНАЛА` | `tests/plan-f77-full/unit/J23_unformatted_syntax/**` | дисковый канал + EOF/IOSTAT |
-| J24 | NO | `OPEN/CLOSE/INQUIRE` → `НЕДОПУСТИМ КЛЮЧ СЛОВО`, `БУФ ПЕРЕП` | `logs/f77_15_units.txt` | ключевые слова в `LO_SYN/LO_GEN` + каталог файлов в рантайме |
+| ID | Было | Стало | Реальное доказательство | Оговорка |
+|:---|:---:|:---:|:---|:---|
+| J2 | PARTIAL | **OK** | `logs/f77_prep_v2_result_case24.txt`, CV `С 12 D 34 К 0`; deck/gold `tests/plan-f77-full/unit/J2_ARFA_WRITE/**` | profile-IOSTAT; Э70 ≤8 слов |
+| J4 | NO | **OK** | `logs/f77_prep_v2_result_case24.txt` (formatted) и `case25` (unformatted), CV `С 12 D 34 К 0` / `С 111 D 222 К 0`; deck/gold `J4_ARFA_READ_UNIT/**` | profile-IOSTAT, ≤8 слов |
+| J23 | PARTIAL | **OK** | `logs/f77_prep_v2_result_case25.txt`, CV `С 111 D 222 К 0`; трасса WR/RD `logs/f77_26_perso_control_arfa.txt` | EOF/IOSTAT — профиль (0/−1) |
+| J24 | NO | **OK** | `logs/f77_prep_v2_result_case23.txt` CV `ОР 1 ЕХ 1 К 0` / `К 0`, `case26` CV `ЕОF К -1`; deck/gold `J24_ARFA_OPEN_INQ/**`, `J3_ARFA_READ/**` | ACCESS='DIRECT'/RECL не проверены |
 
-Ключевой результат `17-lun-p7c.md`: блокер находится в **Level B** (таблица
-допустимости юнитов рантайма ФОРЭКС, `ERRLUN`), а не в dispak и не в оверлеях: даже
-успешный Э50 0131 attach диска к LUN 45 оставляет `НЕТ КАНАЛА LUN 45`.
-Алиасирование всех юнитов на 54 — single-device profile, **не** поддержка X3.9,
-и в статус OK не засчитано.
+Интеграция: `tests/run-f77-prep.sh` по умолчанию поднимает в зону 0o2320
+`tests/plan-f77-full/arfa/FOREX_ARFA_2320.zone` (24 Kb = зона 0o2320 финального образа G1
+`/var/tmp/p7c-arfa-lib/disks/2348`, 13 модулей, 0o2300 byte-identical baseline);
+хостовый адаптер `tests/plan-f77-full/tools/real_bridge_adapt.py` (только в
+харнессе, `src/f77prep` не тронут) приводит lowered.f77 к реальному ABI
+(`FM(320)`, `ZFOPEN(NAME,LUN,NZ,IST)`, NZ=8 / NZ=2 для EOF) перед pass 2.
+PASS1-сверка lowered.f77 с эталоном сохраняется. Прогон 21/21 case rc=0,
+`run-f77-full.sh` L0/L1 55 OK / 0 PENDING.
+
+Отдельная honest-оговорка: **нативный** путь (без F77PREP) по-прежнему требует
+ребилда рантайма — выводы `17-lun-p7c.md` и вердикт ниже остаются в силе для
+`WRITE(45)`/`READ(45)` напрямую. Статус OK здесь означает «есть исполнимое
+доказательство» (§0.2), а не «нативная поддержка ядром 2.02».
 
 #### Окончательный вердикт P7c (волны A–D, документы 18–23)
 
@@ -494,7 +511,8 @@ rule 1 исполняемо (`tests/f77/prep-case1.f77`), поэтому она 
 | Патч `LUNTYP` (возврат типа 3 вместо 0 для LUN 45) + PERSO 0o2320 | `WRITE(45)` **не вызывает LUNTYP** (в 2M-строчном MTR-трейсе только 2 выполнения `*63` вместо нужных 6); результат без изменений | `23-luntyp-patch.md` |
 | Заглушка `OPEN/CLOSE` через PERSO 0o2320 | Синтаксис и состояние юнита работают, но реальных файлов, `ACCESS='DIRECT'` и `RECL` нет — не считается поддержкой X3.9 | `20-open-close.md` |
 
-Итоговый вердикт: **`NEEDS-RUNTIME-REBUILD`**. Для J2/J4/J23/J24 нужна правка
+Итоговый вердикт для **нативного** пути: **`NEEDS-RUNTIME-REBUILD`**. Для
+J2/J4/J23/J24 без F77PREP-моста нужна правка
 перезагружаемого рантайма ФОРЭКС в `monitor80-re` (`monread%` → возврат EOF вместо
 `STOP*`, каталог файлов, привязка LUN 45/40 к рабочему каналу) и, для J24, либо
 пересборка оверлеев `LO_SYN/LO_GEN` (0 свободных слов, 40–80 чел.-дн.) или

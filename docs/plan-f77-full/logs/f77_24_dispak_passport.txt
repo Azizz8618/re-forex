@@ -1,0 +1,81 @@
+=== P7c / f77 wave 24: dispak passport + *FILE probe ===
+date: 2026-11-19T20:04:44Z
+repo: /home/azizz/Yandex.Disk/dispak (READ-ONLY)
+bin : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+work: /var/tmp/f77-24-dispak-run1
+
+=== A. Passport parser (vsinput.c) ===
+vsinput.c:230-247  passport line reader (until GOST_E, ^-terminated)
+vsinput.c:248       BXO/BEG
+vsinput.c:257       ABOCT
+vsinput.c:261       ALP/LPR
+vsinput.c:271       TEL
+vsinput.c:277       SPE
+vsinput.c:283       O3Y (ignored)
+vsinput.c:287       BPE/TIM (ignored)
+vsinput.c:292       TPA/TRA (ignored)
+vsinput.c:297       LIC/PAG (ignored)
+vsinput.c:302       POC/WRI
+vsinput.c:307       FIZ/PHY
+vsinput.c:320-375   LEN/TAP/DIS/DISK -> psp.vol[]  (mount volume on LUN)
+vsinput.c:376-381   else -> printf('Unknown passport entry: ...'); IGNORED
+vsinput.c:413       nextc() eats 'E' terminator
+input.c:61-79        psp.vol[] -> disks[u] (Level A channels)
+iobuf.h:19-34       struct passport { ..., struct vol vol[MAXVOL] }
+defs.h:77-82        ddisk_t; defs.h:351 disks[NDISKS]
+extra.c:1614        E50 0131 'attach volume to handle'
+
+=== B. grep for *FILE / SCRATCH / mount in dispak C sources ===
+(no matches for '*FILE' | 'FILE:' | 'SCRATCH' | 'attach' in dispak/*.c)
+only: extra.c:1614 comment 'attach volume to handle'; disk.c d_fileno host fd;
+      tests/README.md:83 'scratch ARFA volume' (unrelated)
+
+=== RUN A1_file_pass_ro_caret ===
+/var/tmp/f77-24-dispak-run1/runs/A1_file_pass_ro_caret/out.txt:Unknown passport entry: ﻿*FILЕ:FUВАR,41,W
+/var/tmp/f77-24-dispak-run1/runs/A1_file_pass_ro_caret/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/A1_file_pass_ro_caret/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN A2_file_pass_nolen_caret ===
+/var/tmp/f77-24-dispak-run1/runs/A2_file_pass_nolen_caret/out.txt:Unknown passport entry: ﻿*FILЕ:FUВАR,41,W
+/var/tmp/f77-24-dispak-run1/runs/A2_file_pass_nolen_caret/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/A2_file_pass_nolen_caret/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN A3_file_os_wr ===
+/var/tmp/f77-24-dispak-run1/runs/A3_file_os_wr/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/A3_file_os_wr/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN A4_file_after_name ===
+/var/tmp/f77-24-dispak-run1/runs/A4_file_after_name/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/A4_file_after_name/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN A5_file_before_execute ===
+/var/tmp/f77-24-dispak-run1/runs/A5_file_before_execute/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/A5_file_before_execute/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN A6_file_lower ===
+/var/tmp/f77-24-dispak-run1/runs/A6_file_lower/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/A6_file_lower/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN A7_file_space ===
+/var/tmp/f77-24-dispak-run1/runs/A7_file_space/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/A7_file_space/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN B1_len_wr ===
+/var/tmp/f77-24-dispak-run1/runs/B1_len_wr/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/B1_len_wr/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN B2_len_ro ===
+/var/tmp/f77-24-dispak-run1/runs/B2_len_ro/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/B2_len_ro/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN C_control ===
+/var/tmp/f77-24-dispak-run1/runs/C_control/out.txt:  НЕТ КАНАЛА  LUN 41
+/var/tmp/f77-24-dispak-run1/runs/C_control/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN D_write6 ===
+/var/tmp/f77-24-dispak-run1/runs/D_write6/out.txt: КОНЕЦ ЗАДАЧИ
+
+=== RUN base_u45 ===
+/var/tmp/f77-24-dispak-run1/runs/base_u45/out.txt:  НЕТ КАНАЛА  LUN 45
+/var/tmp/f77-24-dispak-run1/runs/base_u45/out.txt: КОНЕЦ ЗАДАЧИ
+

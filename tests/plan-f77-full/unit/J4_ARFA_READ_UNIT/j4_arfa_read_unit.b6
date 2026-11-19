@@ -1,0 +1,81 @@
+шифр 419999 зс5^
+лен 60(2348-wr)^
+ееВ1а3
+*name J4_ARF
+*call yesmemory
+*perso:602300
+*full list
+*forex
+      PROGRAM J4R
+C ---- J4: READ(u,fmt) с явным юнитом через ZF-мост ------------------
+      INTEGER FM(20)
+      COMMON /FILMAP/ FM
+      INTEGER NM(2), C, D, K, IB(20)
+      DATA NM /12HRAW         /
+      FM(4)=2
+      CALL ZFOPEN(NM,23,FM(1))
+      IB(1)=111
+      IB(2)=222
+      CALL ZFWRIT(23,IB,2,FM(1))
+      CALL ZFREAD(23,IB,2,FM(1))
+      K=FM(1)
+      C=IB(1)
+      D=IB(2)
+      PRINT 10,C,D,K
+   10 FORMAT(1X,'R C ',I4,' D ',I4,' K ',I3)
+      CALL ZFCLOSE(23,0,FM(1))
+      END
+      SUBROUTINE ZFOPEN(NA,LU,IS)
+      INTEGER NA(2),LU,IS
+      INTEGER FM(20)
+      COMMON /FILMAP/ FM
+      FM(1)=0
+      FM(2)=1
+      FM(3)=1
+      FM(8)=0
+      END
+      SUBROUTINE ZFCLOSE(LU,DL,IS)
+      INTEGER LU,DL,IS
+      INTEGER FM(20)
+      COMMON /FILMAP/ FM
+      FM(2)=0
+      FM(8)=0
+      FM(1)=0
+      END
+      SUBROUTINE ZFINQ(LU,OP,EX,IS)
+      INTEGER LU,OP,EX,IS
+      INTEGER FM(20)
+      COMMON /FILMAP/ FM
+      OP=FM(2)
+      EX=FM(3)
+      FM(1)=0
+      END
+      SUBROUTINE ZFWRIT(LU,BU,N,IS)
+      INTEGER LU,BU(20),N,IS
+      INTEGER FM(20)
+      COMMON /FILMAP/ FM
+      INTEGER I
+      DO 11 I=1,N
+        FM(8+I)=BU(I)
+   11 CONTINUE
+      FM(8)=N
+      FM(1)=0
+      END
+      SUBROUTINE ZFREAD(LU,BU,N,IS)
+      INTEGER LU,BU(20),N,IS
+      INTEGER FM(20)
+      COMMON /FILMAP/ FM
+      INTEGER I
+      IF (FM(8) .EQ. 0) GO TO 31
+      DO 21 I=1,N
+        BU(I)=FM(8+I)
+   21 CONTINUE
+      FM(8)=0
+      FM(1)=0
+      RETURN
+   31 FM(1)=-1
+      END
+*execute
+*end file
+``````
+еконец

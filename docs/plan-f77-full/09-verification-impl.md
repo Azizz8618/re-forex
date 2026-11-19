@@ -238,3 +238,47 @@ neg 9/9, gate 20/20, 0 PENDING, rc=0`.
 4. Включить `F77_FULL_EXTERNAL=1` и зафиксировать control-векторы Dhrystone
    (18+4, 48/48) и Whetstone (8/8, `0.809 MWIPS ±5 %`).
 5. Переписать итоговую строку §5 на целевую из `04-verification.md` §4.1.
+
+## 8. Реальный PERSO-мост АРФЫ в F77PREP-харнессе (волна G / P7c)
+
+`tests/run-f77-prep.sh` по умолчанию (**ZF_STUB≠1**) прогоняет pass 2 кейсов
+23–26 на настоящем PERSO 0o2320, а не на тестовом stub:
+
+| Переменная | По умолчанию | Назначение |
+|---|---|---|
+| `ZF_IMAGE` | `tests/plan-f77-full/arfa/FOREX_ARFA_2320.zone` | 24 Kb = зона 0o2320 финального образа G1; можно указать весь диск `/var/tmp/p7c-arfa-lib/disks/2348` — зона вынимется `besmtool dump` |
+| `ZF_STUB` | `0` | `1` — вернуть старый in-memory ZF-stub (регрессионный режим) |
+
+`tests/plan-f77-full/arfa/FOREX_ARFA_2320.zone` — **не эталон**: это отдельный образ с PERSO 0o2320
+(13 модулей ZFOPEN/ZFCLOSE/ZFINQ/ZFWRIT/ZFREAD + ZE01/ZE12/ZE02/ZE07/ZE30/
+ZE31/ZE70W/ZE70R), зона 0o2300 byte-identical `build/FOREX_PERSO_2300.bin`.
+
+Настоятельный мост имеет иной ABI, чем F77PREP-lowering: `FM(320)` вместо
+`FM(20)` и `ZFOPEN(NAME,LUN,NZ,IST)` вместо 3-аргумента.  Адаптер
+`tests/plan-f77-full/tools/real_bridge_adapt.py` работает **только в харнессе**
+(после PASS1-сверки lowered.f77 с эталоном, перед генерацией deck2) и не
+изменяет `src/f77prep`.  Адаптированные исходники сохраняются как
+`logs/f77_27_real_adapted_case{23,24,25,26}.f77`.
+
+Control values на реальном мосте (совпали с эталонами G1/G2):
+
+| Case | CONTROL VALUE |
+|:---|:---|
+| 23 (OPEN/INQUIRE/CLOSE) | `ОР 1 ЕХ 1 К 0` / `К 0` |
+| 24 (WRITE/READ fmt) | `С 12 D 34 К 0` |
+| 25 (WRITE/READ unformatted) | `С 111 D 222 К 0` |
+| 26 (END= / EOF) | `ЕОF К -1` |
+
+Доказательства Э63/Э70 — `logs/f77_26_perso_control_arfa.txt`,
+`logs/f77_26_perso_catalog.txt`; control-эксперимент G1 cexp4:
+`W1=11111 W2=22222 R1=11111 R2=22222`.
+
+Оговорки (честно): Э70 переносит ровно 8 слов за вызов (12-словные буферы
+кейсов несут нагрузку в первых 2 словах); IOSTAT/EOF проверены в профиле
+(0/−1), `ACCESS='DIRECT'`/`RECL` — не проверены.  Статус OK в матрицеmeans
+«есть исполнимое доказательство», а не «нативная поддержка ядром 2.02».
+
+Новые gold-пары реестра: `J25..J28` → `tests/plan-f77-full/unit/J2_ARFA_WRITE/**`,
+`J3_ARFA_READ/**`, `J4_ARFA_READ_UNIT/**`, `J24_ARFA_OPEN_INQ/**`
+(деки самодостаточны: ZF-процедуры собраны в том же `*forex`, без `*to perso`).
+`bash tests/run-f77-full.sh`: L0/L1 55 OK / 0 PENDING, rc=0.

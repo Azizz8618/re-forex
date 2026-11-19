@@ -1,0 +1,331 @@
+=== P7c/E TASK5: Dubna E57 operations (e57.cpp) ===
+31:void Processor::e57()
+39:    case 0:
+42:    case 2:
+47:    case 3:
+51:    case 7:
+53:        throw Exception("Task paused waiting for tape");
+54:    case 1:
+55:    case 4:
+57:        throw Exception("*57 " + to_octal(addr) + ": Tape drive is not supported");
+58:    case 5:
+62:    case 077777:
+72:        throw Exception("Unimplemented extracode *57 " + to_octal(addr));
+79:void Processor::e57_tape()
+129:void Processor::e57_file()
+137:    if ((info.word & E57_Request_Info::KEY_BITMASK) != E57_Request_Info::KEY_VALUE) {
+138:        throw Exception("Wrong access key in *57 77777");
+141:    case E57_Request_Info::VOLUME_OPEN: {
+149:        case Machine::DISC_LOCAL:
+150:        case Machine::DISC_HOME:
+151:        case Machine::DISC_TMP:
+156:            throw Exception("Unsupported disc name: " + tape_name_string(disc_id));
+160:    case E57_Request_Info::VOLUME_RELEASE:
+161:        throw Exception("Extracode *57 77777: operation 'Release Volume' not supported yet");
+164:    case E57_Request_Info::FILE_SEARCH: {
+194:                machine.file_search(disc_id, item.field.file_name, item.field.write_mode);
+209:    case E57_Request_Info::FILE_OPEN:
+230:                machine.file_mount(item.field.disk_unit, item.field.offset, item.field.write_mode);
+236:    case E57_Request_Info::SCRATCH_OPEN:
+254:            machine.scratch_mount(item.field.disk_unit, item.field.size * 040);
+259:    case E57_Request_Info::FILE_RELEASE:
+260:        throw Exception("Extracode *57 77777: operation 'Release File' not supported yet");
+263:    case E57_Request_Info::ALL_RELEASE:
+264:        throw Exception("Extracode *57 77777: operation 'Release All' not supported yet");
+267:    case E57_Request_Info::FILE_CONTROL:
+269:        throw Exception("Extracode *57 77777: operation 'Change File Status' not supported yet");
+273:        throw Exception("Extracode *57 77777: unknown operation " + to_octal(info.field.op));
+
+=== E57 struct layouts (extracode.h:188-287) ===
+// Экстракод 057 77777: заказ файловых ресурсов.
+//
+// Информационное слово на сумматоре задаёт параметры обмена.
+//
+union E57_Request_Info {
+    Word word;
+
+    struct {
+        // Разряды 15-1 - адрес информационного поля
+        // Разряды 20-16 - код операции
+        // Разряды 24-21, 48-30 содержат ключ доступа
+        // Разряды 29-25 - дополнительная информация
+        //
+        unsigned addr : 15; // Address of info field
+        unsigned op : 5;    // Operation
+        unsigned key1 : 4;  // Access key, part 1
+        unsigned flags : 5; // Additional info
+        unsigned key2 : 19; // Access key, part 2
+    } field;
+
+    // Коды операций
+    enum {
+        VOLUME_OPEN    = 0,   // заказ пакетов
+        VOLUME_RELEASE = 1,   // отказ от пакетов
+        FILE_SEARCH    = 2,   // запрос координат файлов
+        FILE_OPEN      = 3,   // заказ обычных файлов
+        SCRATCH_OPEN   = 4,   // заказ scratch файлов
+        FILE_RELEASE   = 5,   // отказ от файлов
+        ALL_RELEASE    = 6,   // отказ от всех дисковых ресурсов
+        FILE_CONTROL   = 037, // изменение статуса файла
+    };
+
+    // Access key
+    static const Word KEY_VALUE   = 0'6470'7240'4000'0000;
+    static const Word KEY_BITMASK = 0'7777'7740'7400'0000;
+};
+
+union E57_Scratch_Info {
+    Word word;
+
+    struct {
+        // Разряды 5-1 - количество экстентов
+        // Разряды 42-37 - мат.номер
+        //
+        unsigned size : 5;      // Size in blocks of 040 zones
+        unsigned _1 : 31;       // ---
+        unsigned disk_unit : 6; // Disk unit number
+        unsigned _2 : 6;        // ---
+    } field;
+};
+
+union E57_Search_Info {
+    Word word[4];
+
+    struct {
+        // Name of owner as ISO string, up to 6 characters.
+        Word owner;
+
+        // File name as ISO string, up to 6 characters.
+        Word file_name;
+
+        // Bit 30 means write mode. Put reply here.
+        unsigned offset : 29;       // Result: file offset on disk
+        unsigned write_mode : 1;    // 0-Read only, 1-Write/read
+        unsigned long long _1 : 12; // ---
+        unsigned error : 6;         // Return status here
+
+        // Разряды 6-1 - мат.номер
+        // Разряд 48 всегда единица
+        //
+        unsigned disk_unit : 6;     // Disk unit to mount
+        unsigned long long _2 : 41; // ---
+        unsigned bit48 : 1;         // Always 1
+    } field;
+};
+
+union E57_Open_Info {
+    Word word;
+
+    struct {
+        // Bit 30 means write mode. Put reply here.
+        unsigned offset : 29;      // Result: file offset on disk
+        unsigned write_mode : 1;   // 0-Read only, 1-Write/read
+        unsigned long long _1 : 6; // ---
+        unsigned disk_unit : 6;    // Disk unit to mount
+        unsigned error : 6;        // Return status here
+    } field;
+};
+
+//
+// В поле ответа для каждого файла будут признаки всяких бяк.
+//
+enum {
+    E57_DISK_OFFLINE = 010, // бит 43 - нет диска
+    E57_DISK_BUSY    = 020, // бит 44 - занят мат.номер
+    E57_FILE_BUSY    = 040, // бит 45 - занят файл
+    E57_NO_ACCESS    = 010, // бит 46 - нет доступа к файлу или нет места для файла
+    E57_NOT_FOUND    = 020, // бит 47 - файла нет на диске
+    E57_BAD_REQUEST  = 040, // бит 48 - плохое обращение
+};
+
+=== Machine file catalog (machine.cpp) ===
+//
+// Find file by name on given disk.
+// Return unique 'offset' of the file on the disk.
+// In case of error return zero.
+//
+unsigned Machine::file_search(Word disc_id, Word file_name, bool write_mode)
+{
+    // Get directory path, based on disc name.
+    std::string dir;
+    switch (disc_id & ~0xfff) {
+    case DISC_LOCAL:
+        dir = ".";
+        break;
+    case DISC_HOME:
+        dir = std::getenv("HOME");
+        if (dir.size() == 0)
+            return 0;
+        break;
+    case DISC_TMP:
+        dir = "/tmp";
+        break;
+    default:
+        return 0;
+    }
+    const std::string path = dir + "/" + word_iso_filename(file_name) + ".bin";
+
+    // Let's figure out whether file exists.
+    bool file_exists{};
+    {
+        // Try to read the file.
+        std::ifstream file(path);
+        file_exists = file.good();
+    }
+
+    if (write_mode) {
+        // Write mode: try to write file.
+        std::fstream file(path, std::ios::out);
+        bool is_writable = file.good();
+        if (!file_exists) {
+            // Remove the file we just created.
+            file.close();
+            std::filesystem::remove(path);
+        }
+        if (!is_writable) {
+            return 0;
+        }
+    } else {
+        // Read mode: the file must exist.
+        if (!file_exists) {
+            // Check for *.txt instead.
+            const std::string txt_path = dir + "/" + word_iso_filename(file_name) + ".txt";
+            std::ifstream file(txt_path);
+            file_exists = file.good();
+            if (!file_exists) {
+                // Check for *.utxt instead.
+                const std::string utxt_path = dir + "/" + word_iso_filename(file_name) + ".utxt";
+                std::ifstream wfile(utxt_path);
+                file_exists = wfile.good();
+                if (!file_exists) {
+                    return 0;
+                }
+            }
+        }
+    }
+
+    // Append file path to the list.
+    // This list always increases, never shrinks.
+    // Return file index (plus 1).
+    file_paths.push_back(path);
+    if (trace_enabled()) {
+        std::cout << "Access file '" << path << "' at index " << file_paths.size() << std::endl;
+    }
+    return file_paths.size();
+}
+//
+// Open file and assign it to the disk unit.
+// Return error code.
+// In case of success return zero.
+//
+unsigned Machine::file_mount(unsigned disk_unit, unsigned file_index, bool write_mode, unsigned file_offset)
+{
+    if (disk_unit < 030 || disk_unit >= 070)
+        throw std::runtime_error("Invalid disk unit " + to_octal(disk_unit) + " in file_mount()");
+
+    if (disks[disk_unit - 030]) {
+        // Already mounted.
+        return E57_DISK_BUSY;
+    }
+
+    // Get file path.
+    // Note file index has offset +1.
+    auto const &path = file_paths[file_index - 1];
+
+    // When file.bin is absent, but file.txt exists -
+    //  * convert file.txt -> file.bin
+    //  * in read-only mode: set flag to remove file.bin when finished
+    //
+    bool bin_created = file_txt_to_cosy(path);
+    if (!bin_created) {
+        // Convert file.utxt -> file.bin
+        bin_created = file_utxt_to_iso(path);
+    }
+
+    if (write_mode) {
+        // Create file and close it.
+        std::fstream file(path, std::ios::out);
+        if (!file.good()) {
+            return E57_NO_ACCESS;
+        }
+    }
+    disks[disk_unit - 030] = std::make_unique<Disk>(0, memory, path, write_mode, file_offset);
+    if (bin_created && !write_mode) {
+        // Remove binary image of the disk when finished.
+        disks[disk_unit - 030]->remove_when_finished();
+    }
+
+    if (trace_enabled()) {
+        std::cout << "Mount file '" << path << "' as disk " << to_octal(disk_unit) << std::endl;
+    }
+    return 0;
+}
+
+//
+// Create scratch file and assign it to the disk unit.
+//
+void Machine::scratch_mount(unsigned disk_unit, unsigned num_zones)
+{
+    if (disk_unit < 030 || disk_unit >= 070)
+        throw std::runtime_error("Invalid disk unit " + to_octal(disk_unit) +
+                                 " in scratch_mount()");
+
+    const auto digit_lo = disk_unit % 8;
+    const auto digit_hi = disk_unit / 8;
+    const Word tape_id  = TAPE_SCRATCH | (digit_hi << 4) | digit_lo;
+
+    disk_unit -= 030;
+    if (disks[disk_unit]) {
+        // Already mounted.
+        auto mounted_id = disks[disk_unit]->get_id();
+        throw std::runtime_error("Disk unit " + to_octal(disk_unit + 030) +
+                                 " is already mounted as " + tape_name_string(mounted_id));
+    }
+
+    // Create temporary file.
+    std::string pattern = "scratch" + std::to_string(digit_hi) + std::to_string(digit_lo);
+    disks[disk_unit]    = std::make_unique<Disk>(tape_id, memory, pattern, num_zones);
+    auto &path          = disks[disk_unit]->get_path();
+
+    if (trace_enabled()) {
+        std::cout << "Mount image '" << path << "' as disk " << to_octal(disk_unit + 030)
+                  << std::endl;
+    }
+    if (!keep_temporary_files) {
+        // Remove temporary file.
+        std::filesystem::remove(path);
+    }
+}
+
+=== Disk I/O address math (disk.cpp) ===
+68:        num_zones = stat.st_size / DISK_ZONE_NWORDS;
+73:            num_zones = 02000;
+76:            num_zones = stat.st_size / PAGE_NBYTES;
+85:    : volume_id(id), memory(m), path(p + ".@XXXXXX"), write_permit(true), num_zones(nz)
+97:    : volume_id(id), memory(m), num_zones(nz)
+107:      write_permit(other.write_permit), num_zones(other.num_zones),
+130:    if (volume_id == 0 && write_permit) {
+155:    } else if (volume_id == 0) {
+169:    } else if (volume_id == 0) {
+182:    zone += DISK_ZONE_OFFSET;
+183:    if (zone >= num_zones)
+185:            zone_bounds_message("disk", req_zone, num_zones - DISK_ZONE_OFFSET, path));
+191:    unsigned offset_bytes = offset_nwords * sizeof(Word) + file_offset;
+192:    if (lseek(file_descriptor, offset_bytes, SEEK_SET) < 0)
+216:    zone += DISK_ZONE_OFFSET;
+217:    if (zone >= num_zones)
+219:            zone_bounds_message("disk", req_zone, num_zones - DISK_ZONE_OFFSET, path));
+225:    unsigned offset_bytes = offset_nwords * sizeof(Word) + file_offset;
+226:    if (lseek(file_descriptor, offset_bytes, SEEK_SET) < 0)
+240:    if (zone >= num_zones)
+241:        throw std::runtime_error(zone_bounds_message("file", zone, num_zones, path));
+243:    unsigned offset_bytes = (4 * zone + sector) * PAGE_NBYTES / 4 + file_offset;
+244:    if (lseek(file_descriptor, offset_bytes, SEEK_SET) < 0)
+272:    if (zone >= num_zones)
+273:        throw std::runtime_error(zone_bounds_message("file", zone, num_zones, path));
+275:    unsigned offset_bytes = (4 * zone + sector) * PAGE_NBYTES / 4 + file_offset;
+276:    if (lseek(file_descriptor, offset_bytes, SEEK_SET) < 0)
+298:    if (zone >= num_zones)
+299:        throw std::runtime_error(zone_bounds_message("embedded data", zone, num_zones));
+301:    unsigned offset_bytes = (4 * zone + sector) * PAGE_NBYTES / 4;
+302:    const uint8_t *ptr    = &embedded_data[offset_bytes];

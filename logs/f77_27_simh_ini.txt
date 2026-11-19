@@ -1,0 +1,39 @@
+; P7c isolated full DISPAK OS (working copies only)
+set -n console log=logs/os_console.txt
+set console wru=7
+set autotime=on
+
+attach -n drum0 disks/drum1x.bin
+attach -n drum1 disks/drum2x.bin
+attach -n md06 disks/2052
+
+set md1 ec-5061
+set md4 ec-5061
+attach -e md01 disks/2148
+attach -r md02 disks/2248
+attach -e md04 disks/2095
+attach -e md05 disks/2063
+attach -e md07 disks/2253
+attach -e md21 disks/2061
+attach -e md41 disks/EC5061/2070
+attach -e md42 disks/EC5061/2094
+attach -e md43 disks/EC5061/2086
+attach -e md44 disks/RAK/2073
+attach -e md45 disks/2348
+
+set mg4 es
+attach -n prn0 logs/os_prn0.txt
+attach -n prn1 logs/os_prn1.txt
+attach -n vu0 logs/os_vu0.txt
+attach -n pi0 logs/os_pi0.txt
+attach -n pl0 logs/os_pl0.txt
+
+attach tty1 console
+set tty1 unicode,authbs
+
+d -ml 1 xta, vtm 1777(1)
+d -ml 2 atx (1), utm -1(1)
+d -ml 3 v1m 2(1), stop
+run 1
+load boot_dispak.b6
+run 2000

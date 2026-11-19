@@ -1,0 +1,497 @@
+=== f77_24_monitor_sources.txt ===
+Date: 2026-11-19. READ-ONLY source excerpts.
+
+--- chekjob/g02407.f:50-60 (k552 table: *FILE pattern) ---
+     *0631 1220 2140 0000B,
+     *6H*DISC ,
+     *0112 1621 6000 0000B,
+     *6H*FILE ,
+     *01220 1317 2150 0000B,
+     *6H*CHECK,
+     *0120 1221 6226 0000B,
+     *6H*TAPE ,
+     *0112 1601 2022 0200B,
+     *6H*NEW  ,
+     *0110 1401 4112 0000B,
+
+--- chekjob/g02407.f:171-208 (computed goto + *FILE branch) ---
+ 175  k547=CLARG(4)
+      if(k547.eq.0)goto 467
+ 200  goto(242,242,242,242,253,242,242,242,242,242,
+     c     255,242,242,242,260,262,242,303,311,242,
+     c     313,242,317,320,242,242,322,335,352,413,
+     c     242,242,242),k547
+C     26: *BLERR, 33: *MS
+ 242  goto 244
+      entry G02652
+ 244  continue
+      if(PRIOFL.ne.0b) call printa(CARD(1),CARD(14),1)
+      call PRCARD
+      goto 153
+C *RESPO
+ 253  continue
+      call G04175(CARD)
+      goto 244
+C *LIBRA
+ 255  continue
+      call CHECK(CARD,ERROR)
+      goto 244
+C *DISC - immediate termination here
+ 260  continue
+      call HANDLE(CARD)
+      goto  244
+C *FILE
+ 262  continue
+      if (M(2).eq.'scratc') goto 244
+      if(d03612.ne.0b) goto 271
+      call G04720(CARD, k550)
+      goto 274
+ 271  continue
+      call HANDLE(CARD, k550)
+ 274  continue
+      if(CARD(2).eq.'scratc')goto 244
+      if(d03611.eq.0b) call G04052
+      call G04066(k550)
+      goto 244
+
+--- chekjob/handle.asm ---
+C Вызывается с параметрами; видимо, для DMS подставляется нечто полезное
+ HANDLE:,NAME,
+ ,SJ,
+ ,END,
+
+--- chekjob/g04720.asm:1-30,55-85,85-101 ---
+﻿          G04720:,NAME,DTRAN  /01.06.84/
+          MONCARD*:,SUBP,
+          LUN*MON:,SUBP,
+          *FLAGS*:LC,BLOCK,D03611,D03612(2),PRIOFL,ERROR
+          G05634:,SUBP,
+          GAL/1:,EQU,MONCARD*+8
+          *0000B:8,BASE,*
+          ,STI,9
+          ,ATI,10
+          ,ITA,13
+          ,ITS,
+          10,XTA,1
+          ,ATX,D03612+1
+          ,XTA,
+          9,ATX,
+          12,VTM,-2
+          11,VTM,
+          *0006B:12,XTA,GAL/1
+          ,APX,*0060B.=GOST777777
+          11,ASN,64
+          9,AEX,
+          9,ATX,
+          ,XTA,*0057B.=6H
+          12,ATX,GAL/1
+          11,UTM,22B
+          12,VLM,*0006B
+          9,XTA,
+          ,ASN,64+12
+          ,ASN,64-12
+          9,ATX,
+          9,AEX,
+          15,AOX,
+          9,ATX,
+          *0032B:10,XTA,4
+          ,AEX,*0063B.=6H*B
+          ,ASN,64+32
+          ,U1A,*0043B
+          9,XTA,
+          ,AAX,*0066B.=77 0000
+          9,XTS,
+          ,ASN,64+24
+          ,AAX,*0051B.=7777
+          9,ARX,
+          ,AAX,*0051B.=7777
+          15,AOX,
+          13,VJM,G05634
+          14,V1M,*0045B
+          ,*50,112B
+          ,XTA,*0065B.=6HSCRATC
+          10,ATX,1
+          *0043B:,STI,
+          ,STI,13
+          13,UJ,
+          *0045B:14,VTM,*0053B.=6HOШ/CДГ
+          ,ITS,14
+          ,ITS,14
+          ,XTS,*0052B.=1
+          13,VJM,LUN*MON
+          ,STI,
+          ,SJ,
+          *0051B:,LOG,7777
+          *0052B:,LOG,1
+          *0053B:,ISO,6HOШ/CДГ
+          *0054B:,GOST,6H007777
+          *0055B:,OCT,2
+          *0056B:,ISO,6HNZ
+          *0057B:,ISO,6H
+          *0060B:,GOST,6H777777
+          *0061B:,GOST,6H000777
+          *0062B:,OCT,0001
+          *0063B:,ISO,6H*B
+          *0064B:,OCT,1777
+          *0065B:,ISO,6HSCRATC
+          *0066B:,LOG,77 0000
+          *0067B:,LOG,777
+          *0070B:,BSS,1
+          ,END,
+
+--- chekjob/clopen.asm:296-340 (SCRATCH / READ / WRITE decode) ---
+          *0237B:10,XTA,
+          ,AAX,*0356B.=377
+          ,ATI,4
+          6,VTM,
+          4,UTM,-82
+          4,VZM,*0074B
+          4,UTM,-5
+          4,VZM,*0074B
+          ,UJ,*0142B
+          *0244B:,XTA,*0344B.=6H READ
+          ,UJ,*0246B
+          *0245B:,XTA,*0335B.=6H WRITE
+          *0246B:9,ATX,4
+          ,ASN,64+32
+          ,AOX,*0336B.=:1002 0040 1002 01
+          10,ATX,
+          7,UJ,
+          *0251B:10,XTA,
+          ,AEX,*0355B.=6HSCRATC
+          ,UZA,*0074B
+          ,XTA,*0333B.=:2135 0322 4
+          ,ATX,*0362B
+          ,XTA,*0350B.=212
+          ,ATX,*0363B
+          *0255B:4,UTM,-32
+          4,V1M,*0074B
+          11,VZM,*0074B
+          5,VTM,
+          ,UJ,*0074B
+          *0260B:10,XTA,
+          ,AAX,*0316B.=:4771 7637 4210 421
+          ,U1A,*0237B
+          10,XTA,
+          10,ATX,1
+          ,UJ,*0245B
+          *0263B:,XTA,*0345B.=6H   040
+          10,ATX,
+          *0264B:10,110,7776B
+          ,ASN,64+24
+          ,AOX,*0354B.=6H/S/
+          10,100,7775B
+          ,UJ,*0074B
+          *0267B:10,XTA,
+          10,115,7777B
+          ,AEX,*0337B.=6H
+
+--- permanent/monitor%.asm:83-99 (monitor common: IODCB*, TAPELIST, REGIM, MONCARD*) ---
+ LOADANGO:  , SUBP,
+ LOADCALL:  , SUBP,
+ SETIODCB:  , SUBP,
+ IODCB*  :  ,LC ,31
+ TAPELIST:  ,LC ,25
+ WORINF* :  ,LC ,1
+ DATA*   :  ,LC ,2
+ TRNAME* :  ,LC ,1
+ КCOUNT* :  ,LC ,4
+ *REGIM//:  ,LC ,1
+ ARREAD* :  ,LC ,2
+ MONCARD*:  ,LC ,25
+ STLOAD* :  , SUBP,
+ RFMRTFLG:  ,LC ,1
+ IOLIST* :  ,LC ,5
+ *IOXLCB*:  ,LC ,1
+ RESTOP* :  ,LC ,1
+
+--- permanent/setiodcb.asm:1-12,36-45 ---
+ SETIODCB:  , NAME,
+ IODCB*  :  , LC  ,1
+ *1      :  ,BLOCK,M1,M2,M3,M4,M5,M6,M7,M8,M9
+            , CONT,M10,M11,M12,M13,M14,M15
+c
+            , DATA,
+ tabiodcb  :  , OCT ,5444 0400 7
+            , OCT ,5465 3100 71
+            , OCT ,5547 2500 74
+            , OCT ,5504 3100 72
+            , LOG ,4021 3740 4100 0012
+            , LOG ,3777 0000
+            , LOG ,3777 0000
+            , LOG ,4341 3740 5600 0012
+            , LOG ,3777 0000
+            , LOG ,4361 3740 5700 0012
+            , LOG ,3777 0000
+            , LOG ,4401 3740 1600 0012
+            , LOG ,17 6000
+          36, SET ,tabiodcb
+           1,     ,IODCB*
+            , END ,
+
+--- permanent/lun%mon.asm ---
+ LUN*MON :  , NAME,
+ PRINT80 :  , SUBP,
+ TTPRINT :  , SUBP,
+ *1      :  ,BLOCК,M1,M2,M3,M4,M5,M6,M7,M8,M9
+           , CONT,M10,M11,M12,M13,M14,M15
+           , XTS ,
+           , *71 ,
+           , UZA ,NE*VT .Tерминала нет или
+с терм. не VT
+           , ITS ,M13
+        M15, XTS ,-5
+        M15, XTS ,-5
+        M15, XTS ,-5
+        M13, VJM ,TTPRINT
+           , STI ,M13
+ NE*VT  :  , STX ,
+           , UJ  ,PRINT80
+           , END ,
+
+--- permanent/iocont%.asm:1-5,26-36,60-93,137-170,163-221,373-377,525-548 ---
+c IOCONT* :  , NAME,
+C
+C** FPACK-IOCONT*(A,E)
+C      ПOЛЬЗOBATEЛЬСКAЯ ПPOЦEДУPA ДЛЯ
+c      ПPOДOЛЖEНИЯ BBOДA-BЫBOДA
+ , CONT  , AUSG2,D,NSP, CENC,NSYMB                       .05
+ , CONT  , II13,   ER/AB,  ADCONT, ADR/W,  ADEND,  FORMAT, LUN,
+ , CONT  , I/O, GLREG(7),BEGREC, ADNBPROG,(1)            .11
+ , CONT  , RECORD(25),     GWF(5), EAD(5), FTT, SWUEBERL, WF .38
+ , CONT  , W,      NIW,    KBASP,  STLUN,  AC,               .05
+ , CONT  , INOUT,  LUN*,   L/NLGLRE,       KOFSPEC,        TRWADR,
+ , CONT  , FNR,    II15,   NSP3,   ZHLR,   FTBE/SONST,        .05
+ , CONT  , LASP                .LAENGE DES ARBEITSSPEICHERS    01
+ LUNMUN  :  , LC  ,1
+ CHECKFL*:  , LC  ,1
+  KLUN    :   , EQU   , FTXT + 6
+  I1      :   , EQUAL ,  1
+  I3      :   , EQUAL , 3
+  I4      :   , EQUAL , 4
+  I8      :   , EQUAL , 8
+  I12     :   , EQUAL , 12
+  I14     :   , EQUAL , 14
+ LUN*MON :  , SUBP,
+ SUBPERR*:  , SUBP,
+ OCTTDEC :  , SUBP,
+ *1      :  ,BLOCK,M1,M2,M3,M4,M5,M6,M7,M8,M9
+            , CONT,M10,M11,M12,M13,M14,M15
+c
+ IOCONT*:M14,VTM,IOC1
+            , UJ  ,RGTRI13*
+          M1, XTA ,           . ENTRY: IOEND*1
+            , UJ  ,IO1
+            , UJ  ,FPF*ABBR
+         :  , UJ  ,FPF*ABBR+2
+ :M14,VTM,LUNMUN-1
+            , UJ  ,SETLUN*
+            , UJ  ,READSY2
+         :  , UJ  ,READSY2F
+         :  , UJ  ,*0312B
+ :M15,ATX,
+            , UJ  ,*0345B
+         M11, VTM ,*0346B
+            , UJ  ,*0354B
+            , UJ  ,RGTRI13*
+         :  , UJ  ,*0371B
+         :  , UJ  ,*0366B
+         :  , UJ  ,*0316B
+         :  , UJ  ,*0334B
+         :  , UJ  ,*0341B
+ IOC1  :M8, STX ,1
+ FT*002  :  ,ENTRY,
+C======================================
+ *0045B  :  , ITS ,M14
+            , UJ  ,IOCONT*
+C======================================
+ FD*642  :  ,ENTRY,
+C======================================
+ FD*722  :  ,ENTRY,
+C======================================
+ FC*722  :  ,ENTRY,
+C======================================
+ FC*642  :  ,ENTRY,
+C======================================
+ FC*002  :  ,ENTRY,
+C======================================
+         M14, UTM ,1
+            , UJ  ,*0045B
+ *0047B  :M2, A+X ,4517B
+          M4, *64 ,7516B
+          M5, 102 ,5040B
+            , ATX ,
+ *0051B  :M2, A+X ,4517B
+          M4, E+X ,1452B
+          M2, ATX ,
+            , ATX ,
+C======================================
+ IOEND*  :  ,ENTRY,
+ IOEND*  :  ,ENTRY,
+C======================================
+C======================================
+ FT*003  :  ,ENTRY,
+ FT*003  :  ,ENTRY,
+C======================================
+C======================================
+         M14, VJM ,RGTRI13*
+         M14, VJM ,RGTRI13*
+            , XTS ,
+            , XTS ,
+ IO1  :M8, ATX ,114B
+ IO1  :M8, ATX ,114B
+         M14, VTM ,
+         M14, VTM ,
+          M8, XTA ,15B
+            , UZA ,*0064B
+          M8, XTA ,106B
+            , ANX ,
+            , ATI ,M14
+            , XTA ,
+          M8, ATX ,15B
+          M8, ATX ,21B
+          M8, ATX ,106B
+          M8, WTC ,20B
+         M14, VZM ,
+ *0064B  :M8, XTA ,114B
+         M13, U1A ,
+            , UJ  ,*0345B
+ *0066B  :  , ITA ,M5
+          M5, VJM ,*0127B
+          M5, VTM ,*0217B
+            , UJ  ,*0134B
+ FPF*ABBR  :  , ITA ,M5
+          M5, VJM ,*0127B
+          M5, VTM ,*0113B
+            , UJ  ,*0134B
+         :  , ITA ,M5
+          M5, VJM ,*0127B
+          M5, VJM ,*0134B
+          M5, VTM ,*0113B
+          M8, XTA ,12B
+            , U1A ,*0103B
+          M8, UTC ,35B
+         M13, VTM ,
+          M1, XTA ,252B
+         M13, ATX ,
+            , ITS ,M13
+         M13, UTM ,30B
+            , ITS ,M13
+            , XTS ,
+          M5, MTJ ,M13
+            , UJ  ,LUN*MON
+ *0103B  :M8, WTC ,33B
+          M2, VTM ,-1
+          M2, XTA ,
+          M1, XTS ,252B
+          M2, ATX ,
+            , ITA ,M2
+          M8, WTC ,22B
+         M13, VTM ,-1
+            , ITS ,M13
+            , XTS ,
+         M13, VJM ,LUN*MON
+          M2, CTX ,
+          M5, UJ  ,
+ SETLUN*  :M8, XTA ,22B
+          M8, ATX ,113B
+            , XTA ,
+          M8, ATX ,107B
+         M13, UJ  ,
+            , Z00 ,ASP
+C======================================
+ IOSVFR  :  ,ENTRY,
+C======================================
+            , ATI ,M14
+            , UTC ,*0361B
+            , XTA ,
+         M14, XTS ,
+            , UTC ,*0361B
+            , STX ,
+            , NTR ,6
+         M13, UJ  ,
+ *0366B  :M8, WTC ,120B
+         M15, VTM ,
+         M11, VJM ,*0354B
+          M8, WTC ,14B
+            , UJ  ,
+ *0371B:M15,ATX,
+         M15, UTM ,-2
+            , ITA ,M15
+         M15, UTM ,2
+          M8, STX ,120B
+         M13, UJ  ,
+C======================================
+
+--- chekjob/g04052.asm:33-76 (G04066 duplicate LUN check) ---
+          G04066:,ENTRY,
+          8,VTM,*0000B
+          ,ATI,11
+          ,ITA,13
+          ,ATX,I13
+          ,WTC,*D05454*
+          14,VTM,
+          11,XTA,
+          14,ATX,
+          ,WTC,*D05453*
+          12,VTM,
+          *0021B:,ITA,12
+          ,AEX,*D05454*
+          ,UZA,*0027B
+          12,XTA,
+          14,AEX,
+          ,AAX,*0117B.=77 0000
+          ,U1A,*0026B
+          :14,VTM,*0102B.=6HBTOPИЧ
+          ,UJ,*0036B
+          *0026B:12,UTM,1
+          ,UJ,*0021B
+          *0027B:14,UTM,1
+          ,ITA,14
+          ,ATX,*D05454*
+          14,UTM,-1
+          14,XTA,
+          ,WTC,PRIOFL
+          13,VTM,
+          13,VZM,*0034B
+          13,VJM,IFPRIO
+          *0034B:,STI,
+          ,WTC,I13
+          ,UJ,
+          *0036B:,XTA,D03612+1
+          14,ATX,4
+          ,ITS,14
+          14,UTM,4
+          ,ITS,14
+          ,XTS,*0107B.=17
+          13,VJM,LUN*MON
+          ,XTA,*0114B.=1
+          ,ATX,ERROR
+          ,UJ,*0034B
+
+--- besm6.net book fortran-1976/01-besm6.md:382-406 (*FILE syntax) ---
+Приведем новую форму записи карты заказа магнитных лент (см. [8]):
+
+```text
+*TAPE: <№ кассеты> <имя ленты>, <указатель МЛ>, <R или W>, <№ зоны подвода>
+```
+
+Здесь № кассеты обычно задается числом от 1 до 4095, имя ленты — идентификатором, содержащим не более 6 символов. В качестве указателя МЛ можно использовать двузначное восьмеричное число, первая цифра которого (от 3 до 6) обозначает математический номер направления, а вторая (от 0 до 7) — математический номер устройства. Можно указывать также «фортранный» номер магнитофона (от F1 до F15). Указатель R означает, что МЛ будет использоваться только в режиме чтения, а указатель W — что МЛ можно использовать как в режиме записи, так и в режиме чтения. Номер зоны подвода указывается в восьмеричном виде.
+
+Рассмотренная карта содержит полную информацию о заказываемой МЛ и поэтому она заменяет карту заказа МЛ в старой форме записи (см. [27]) и одновременно карту `*CHECK`. Отметим, что личная лента пользователя должна быть поименована. Если надо отключить проверку имени ленты, то на месте ее имени указывают `NO CHECK`. На машинах, имеющих накопители на МД, можно заказывать файлы на дисках. Для дисков, отведенных в личное пользование, требуются предварительные процедуры, связанные с подготовкой их к работе (см. [8]). В случае использования рабочих файлов (или SCRATCH-файлов) никаких дополнительных процедур, кроме заказа этих файлов, не требуется.
+
+Заказ рабочего файла на дисках производится картой вида
+
+```text
+*FILE: SCRATCH, <указатель МЛ>, W, <длина>
+```
+
+Здесь указатель МЛ соответствует той рабочей МЛ, вместо которой будет использован данный рабочий файл. Длина файла указывается в виде восьмеричного числа, обозначающего количество зон на диске (объемом 1К каждая).
+
+Пример.
+
+```text
+*FILE: SCRATCH, 41000, W, 40
+```
+
+Здесь заказан рабочий дисковый файл длиной 40В зон, заменяющий рабочую МЛ с математическим номером 41 или, что то же самое, МЛ с фортранным номером 1.

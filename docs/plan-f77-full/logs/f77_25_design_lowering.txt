@@ -1,0 +1,52 @@
+P7c / ВОЛНА F / ЗАДАЧА 3 — research log: LOWERING CONTRACT for prep_tools.py
+Date: 2026-11-19. Spec only; rule owner is another agent. READ-ONLY sources.
+
+STEP 1 — existing lowering patterns (do not reinvent)
+  20-open-close.md §1.1-1.3: OPEN/CLOSE/INQUIRE -> CALL FOPEN/FCLOSE/FINQ;
+    FILE=/STATUS=/ACCESS=/RECL accepted but ignored; 0 words in overlays;
+    external names <=6 chars resolved via PERSO.
+  /tmp/.private/azizz/opencode/p7c-proto/open/src/lower_j24.py (read, not installed):
+    fixed-form body = line[6:72]; regex on OPEN/CLOSE/INQUIRE; emits
+    "INTEGER ISTAT" once + CALL; comments "C@ J24 ...".
+  19-eof-iostat.md §3.2: exact 6-line emission order for
+    READ(...,END=/ERR=/IOSTAT=): k=0; READ fmt,v1..vn; IF(v1 .EQ. -999999.) k=-1;
+    IF(v1 .EQ. -888888.) k=1; IF(...) GO TO Lend; IF(...) GO TO Lerr;
+    plus host obligations H1-H5; END+IOSTAT together => set k=-1 THEN goto Lend
+    (declared profile deviation from X3.9).
+
+STEP 2 — design decisions for 32-f77-on-arfa.md §4
+  R32-OPEN  -> CALL FOPEN(u,FMN<u>,st,ac,fm,rl,k). Name passed as 2 INTEGER words
+    of GOST bytes; host transcodes FILE= literal STATICALLY at lowering time
+    (avoids runtime CHARACTER<->GOST conversion).
+    Codes: st UNKNOWN=0/OLD=1/NEW=2/SCRATCH=3; ac SEQ=0/DIRECT=1;
+    fm FORMATTED=0/UNFORMATTED=1.
+  R32-CLOSE -> CALL FCLOSE(u,del,k), del=1 DELETE / 0 KEEP.
+  R32-INQUIRE -> CALL FINQ(u,v,k) [base, backward compatible] +
+    optional FINQE(u,e,k) [EXIST via Э63 07], FINQX(u,ac,fm,rl,k) [cache].
+    EXIST=.FALSE. is NOT an IOSTAT error (M16=1 NO_NAME -> k=0).
+  R32-READ/WRITE: two mutually exclusive profiles:
+    A (ARFA unformatted): CALL FREAD/FWRIT(u,buf,n,k); k=-1 from FMPOS>=FMZON;
+    B (formatted/stdin): doc 19 §3.2 sentinel verbatim.
+  IOSTAT map: M16 octal -> small positive profile codes 1..15; EOF=-1;
+    AVOST not returned (E_TERM). Raw code kept in FMRAW.
+
+STEP 3 — host obligations added beyond doc 19 H1-H5
+  H6 FILE= must be GOST <=12 chars; static transcode DUBNA TEXT->GOST 10859;
+    illegal char / >12 = hard error; MS-80 unsupported (arfa.c:671-673).
+  H7 NEW/SCRATCH need owner schifr (profile option), else ARF_BAD_SCHIFR
+    (arfa.c:792-793); SCRATCH gets synthetic GOST name.
+  H8 deck loads *perso:602300 + *perso:602320,cont (20-open-close.md:134).
+  H9 ARFA volume available pre-start (BESM6_ARFA or LUN 030..067 label).
+  H10 FOPEN must call Э63 12, not Э50 0131: direct exchange blocked without
+    arfa_area_unit(U) (extra.c:2086-2089); save U from acc.r (arfa.c:1174).
+  H11 Level B still blocks FOREX LUN channels (17-lun-p7c.md §3; 23-luntyp-patch.md)
+    => exchange inside PERSO or monitor patch; unresolved.
+  H12 RECL/ACCESS cached only; profile must declare ignored.
+  H13 DELETE needs schifr + password W (arfa.c:885-891).
+  H14 INQUIRE(FILE=) via 07 returns owner/nzones, not OPENED/FORM/RECL.
+
+STEP 4 — verification status
+  SPEC-ONLY. Prototype lower_j24.py demonstrates the TEXT-SUBSTITUTION mechanism
+  only; ARFA-aware signatures, name transcoding, FILMAP procedures and the
+  FREAD/FWRIT path are NOT implemented or run in this wave. Nothing promoted
+  to OK. Rule ownership remains with prep_tools.py agent.

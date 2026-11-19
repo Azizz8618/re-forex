@@ -1,4 +1,4 @@
-F77 full verification — 2026-11-19T19:52:51Z
+F77 full verification — 2026-11-19T21:59:25Z
 dispak=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak etalon=/usr/local/share/besm6/2348 image=/home/azizz/Yandex.Disk/re-forex/build/FOREX_PERSO_2300.bin
 F77LIBR: 13 процедур собраны в PERSO 0o2310 (для *perso:602310,cont)
 
@@ -105,8 +105,16 @@ OK J23  J7_end_sentinel              01-matrix:J7_end_sentinel
 OK J23  J7_end_sentinel.gold new 01-matrix:J7_end_sentinel
 OK J24  J8_err_sentinel              01-matrix:J8_err_sentinel
 OK J24  J8_err_sentinel.gold new 01-matrix:J8_err_sentinel
-Итог L0: 51 OK / 0 PENDING (E4/MADLEN)
-Итог L1: 51 OK / 0 PENDING; suite-пар переиспользовано 8, расхождений 0
+OK J25  J2_ARFA_WRITE                01-matrix:J2_ARFA (ZF-bridge contract; real G1 ARFA in run-f77-prep case24)
+OK J25  J2_ARFA_WRITE.gold new 01-matrix:J2_ARFA (ZF-bridge contract; real G1 ARFA in run-f77-prep case24)
+OK J26  J3_ARFA_READ                 01-matrix:J3_ARFA/J7 (ZF-bridge EOF; real G1 ARFA in run-f77-prep case26)
+OK J26  J3_ARFA_READ.gold new 01-matrix:J3_ARFA/J7 (ZF-bridge EOF; real G1 ARFA in run-f77-prep case26)
+OK J27  J4_ARFA_READ_UNIT            01-matrix:J4_ARFA (ZF-bridge READ(u); real G1 ARFA in run-f77-prep case25)
+OK J27  J4_ARFA_READ_UNIT.gold new 01-matrix:J4_ARFA (ZF-bridge READ(u); real G1 ARFA in run-f77-prep case25)
+OK J28  J24_ARFA_OPEN_INQ            01-matrix:J24_ARFA (ZF-bridge OPEN/INQUIRE; real G1 ARFA in run-f77-prep case23)
+OK J28  J24_ARFA_OPEN_INQ.gold new 01-matrix:J24_ARFA (ZF-bridge OPEN/INQUIRE; real G1 ARFA in run-f77-prep case23)
+Итог L0: 55 OK / 0 PENDING (E4/MADLEN)
+Итог L1: 55 OK / 0 PENDING; suite-пар переиспользовано 8, расхождений 0
 
 === L2: кросс-компиляция *FTN / *FORTRAN (диск 2048) ===
 CROSS OK X01  FTN      1 чисел совпали (допуск max(1e-06, 1e-05*max))
@@ -160,11 +168,11 @@ OK   20 save_ok        ожидалось=gold факт=gold совпал
 ------------------------------------------------------------------------
 Итоговая таблица F77 full
 LEVEL    OK     PENDING    SKIP     DETAIL
-L0       51     0          0        unit A-K
-L1       51     0          0        gold pairs
+L0       55     0          0        unit A-K
+L1       55     0          0        gold pairs
 L2       8      0          0        cross FTN/FORTRAN
 L3       2      0          2        real programs
 L4       9      0          0        negative
 GATE     20     0(FAIL)    0        20/20 mandatory
 Логи: logs/f77_full_*.txt; манифест: logs/f77_full.sha256
-OK: gate 20/20; L0 51 OK / 0 PENDING, L1 51 OK / 0 PENDING
+OK: gate 20/20; L0 55 OK / 0 PENDING, L1 55 OK / 0 PENDING

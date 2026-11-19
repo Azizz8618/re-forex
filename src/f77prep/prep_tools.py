@@ -121,9 +121,29 @@ R13 = 30         # G edit descriptor -> typed E/F/D/L/I
 R21 = 31         # 1P, E12.4 -> 1PE12.4
 R11 = 32         # END=/ERR= sentinel branch (rule 4 and rule 10)
 
+# Wave F / P7c: F77 file I/O -> PERSO 0o2320 CALL bridge (rules 34-40).
+# Rule 33 is intentionally left unused (reserved for the J24 stub of 20-open-close.md).
+R_OPEN = 34      # OPEN(...)  -> CALL ZFOPEN
+R_CLOSE = 35     # CLOSE(...) -> CALL ZFCLOSE
+R_INQ = 36       # INQUIRE(...) -> CALL ZFINQ
+R_FWRIT = 37     # WRITE(u,fmt) list -> ENCODE + CALL ZFWRIT
+R_FREAD = 38     # READ(u,fmt) list -> CALL ZFREAD + DECODE
+R_UWRIT = 39     # WRITE(u) list -> CALL ZFWRIT (unformatted)
+R_UREAD = 40     # READ(u) list -> CALL ZFREAD (unformatted)
+
+# PERSO bridge constants (contract with the 0o2320 implementation, doc 34).
+#   COMMON /FILMAP/ FM(20): FM(1)=last ISTAT, FM(2)=OPENED, FM(3)=EXIST.
+#   ISTAT=-1 means EOF.  FOREX 2.02 returns status via COMMON because scalar
+#   actual arguments are passed by value (31-fortran-arfa-bridge.md §2.3).
+FILMAP_WORDS = 20
+IOBUF_WORDS = 12                 # 12 * 6 = 72 characters per formatted record
+NAME_WORDS = 2                   # INTEGER(2); 12 ASCII/GOST bytes (doc 32 H6)
+STATUS_CODES = {"UNKNOWN": 0, "OLD": 1, "NEW": 2, "SCRATCH": 3}
+
 # Rules that must replace a non-zero classification produced by F77PREP.FTN
 # (CHARACTER*n is currently reported as rule 7/12, SAVE as rule 2).
-FORCE_HOST = {R_F11, R_G4, R_H7}
+FORCE_HOST = {R_F11, R_G4, R_H7, R_OPEN, R_CLOSE, R_INQ,
+              R_FWRIT, R_FREAD, R_UWRIT, R_UREAD}
 
 
 def _split_top(s):
@@ -146,6 +166,107 @@ def _split_top(s):
 def _implicit_type(name):
     """F77 implicit typing: I-N -> INTEGER, otherwise REAL."""
     return "INTEGER" if name[:1].upper() in INT_FIRST else "REAL"
+
+
+# --------------------------------------------------------------------------
+# file-I/O lowering helpers (rules 34-40, doc 34)
+# --------------------------------------------------------------------------
+
+def _io_control(s):
+    """Parse the comma-separated control list of OPEN/CLOSE/INQUIRE.
+
+    Returns a dict of upper-cased keyword -> value string.  Positional unit
+    (the first item of OPEN/CLOSE) is returned under key 'U'.  Quoted literals
+    keep their quotes so that the caller can decide about transcoding.
+    """
+    m = re.match(r"^[A-Z]+\s*\(([^()]*)\)", s.strip(), re.S)
+    if not m:
+        return {}
+    items, depth, cur, quoted = [], 0, "", False
+    for ch in m.group(1):
+        if ch == "'":
+            quoted = not quoted
+        if ch == "(" and not quoted:
+            depth += 1
+        elif ch == ")" and not quoted:
+            depth -= 1
+        if ch == "," and depth == 0 and not quoted:
+            items.append(cur.strip())
+            cur = ""
+        else:
+            cur += ch
+    if cur.strip():
+        items.append(cur.strip())
+    out = {}
+    pos = 0
+    for it in items:
+        if "=" in it:
+            k, v = it.split("=", 1)
+            out[k.strip().upper()] = v.strip()
+        else:
+            pos += 1
+            out["P%d" % pos] = it
+            if pos == 1:
+                out["U"] = it
+    return out
+
+
+def _io_iostat(ctrl):
+    """Name of the user IOSTAT= variable, or None."""
+    v = ctrl.get("IOSTAT")
+    return v if v and re.match(r"^[A-Za-z]\w*$", v) else None
+
+
+def _gost_name_words(literal, var):
+    """Emit INTEGER(2) DATA words carrying the FILE= name bytes.
+
+    FOREX 2.02 ``nH`` stores 8-bit ASCII bytes, six per 48-bit word
+    (10-implementation-libr.md §3.1, proved again by this wave's probe).
+    Exact GOST-10859 bytes cannot be materialised from source: GOST codes
+    000..011 (digits) map to control characters that dispak's card reader
+    mangles.  The host therefore emits the ASCII name; the PERSO ZFOPEN is
+    responsible for the ASCII -> GOST-10859 transcode (doc 34 §2, honest
+    deviation from doc 32 H6).  Names longer than 12 bytes are a hard error.
+    """
+    lit = literal.strip()
+    if len(lit) >= 2 and lit[0] == "'" and lit[-1] == "'":
+        lit = lit[1:-1]
+    raw = lit.encode("latin-1", errors="replace")
+    if not (1 <= len(raw) <= NAME_WORDS * 6):
+        raise SystemExit("FILE= name must be 1..%d bytes, got %d" %
+                         (NAME_WORDS * 6, len(raw)))
+    padded = raw.ljust(NAME_WORDS * 6)
+    hol = "".join(chr(b) if 32 <= b < 127 else " " for b in padded)
+    return ["      INTEGER %s(%d)" % (var, NAME_WORDS),
+            "      DATA %s /%dH%s/" % (var, NAME_WORDS * 6, hol)]
+
+
+def _classify_file_io(s):
+    """Host classification for rules 34-40 (F77PREP.FTN is frozen)."""
+    s = re.sub(r"^\s*\d+\s+", "", s)
+    m = re.match(r"^OPEN\s*\(", s)
+    if m:
+        return R_OPEN
+    m = re.match(r"^CLOSE\s*\(", s)
+    if m:
+        return R_CLOSE
+    m = re.match(r"^INQUIRE\s*\(", s)
+    if m:
+        return R_INQ
+    # WRITE(u,fmt[,...]) / READ(u,fmt[,END=,IOSTAT=...]) -> formatted.
+    m = re.match(r"^WRITE\s*\(\s*\d+\s*,\s*(\d+|\*)\s*[,)]", s)
+    if m:
+        return R_FWRIT
+    m = re.match(r"^READ\s*\(\s*\d+\s*,\s*(\d+|\*)\s*[,)]", s)
+    if m:
+        return R_FREAD
+    m = re.match(r"^WRITE\s*\(\s*\d+\s*(\)|,\s*(END|IOSTAT|ERR)\s*=)", s)
+    if m:
+        return R_UWRIT
+    m = re.match(r"^READ\s*\(\s*\d+\s*(\)|,\s*(END|IOSTAT|ERR)\s*=)", s)
+    if m:
+        return R_UREAD
+    return None
 
 
 def _unit_of(lines, idx):
@@ -200,6 +321,7 @@ KEYWORDS = {
     "COMPLEX", "DOUBLE", "PRECISION", "CHARACTER", "DIMENSION", "COMMON",
     "DATA", "PARAMETER", "EQUIVALENCE", "ASSIGN", "IMPLICIT", "CONTINUE",
     "FORMAT", "PRINT", "READ", "WRITE", "WHILE", "GOTO", "GO", "STOP",
+    "OPEN", "CLOSE", "INQUIRE", "REWIND", "BACKSPACE", "ENDFILE",
     "RETURN", "ENDDO", "BLOCK", "EXTERNAL", "INTRINSIC", "SAVE", "NONE", "CALL",
     "IF", "THEN", "ELSE", "ELSEIF", "ENDIF", "DO", "TO", "TYPE",
     "SQRT", "SIN", "COS", "EXP", "ABS", "MOD", "AMOD", "FLOAT", "IFIX",
@@ -277,6 +399,7 @@ def make_deck1(src_path, ftn_path):
         "*name Prep1",
         "*call yesmemory",
         "*perso:602300",
+        "*perso:602320,cont",   # doc 34 H8: PERSO 0o2320 file bridge
         "*no list",
         "*no load list",
         "*forex",
@@ -423,7 +546,10 @@ def build_lowered(src_path, json_path):
             if dwh_stack:
                 dwh_stack.pop()
             continue
-        if re.match(r"^(\d+\s+)?FORMAT\s*\(", _s) and re.search(r"G\d+\.\d+", _s):
+        _fio = _classify_file_io(_s)
+        if _fio is not None:
+            host_rules[_idx] = _fio   # wave F: F77 file I/O -> PERSO bridge
+        elif re.match(r"^(\d+\s+)?FORMAT\s*\(", _s) and re.search(r"G\d+\.\d+", _s):
             host_rules[_idx] = R13   # J13: G descriptor -> typed E/F/D/L/I
         elif re.match(r"^(\d+\s+)?FORMAT\s*\(", _s) and re.search(r"\d+P\s*,", _s):
             host_rules[_idx] = R21   # J21: scale factor P with comma is illegal
@@ -542,6 +668,12 @@ def build_lowered(src_path, json_path):
     g8_ret_units = {}       # RETURN j line -> unit
     g8_declared = set()
     g4_declared = set()
+    # wave F (rules 34-40): declarations are hoisted to the top of the unit
+    # (FOREX 2.02 rejects a declaration after an executable statement).
+    filmap_units = set()
+    iobuf_units = set()
+    fname_units = set()
+    fio_decls = {}           # program unit -> [declaration / DATA lines]
     out = []
 
     # ---------------- Pass A: declarations, implicit maps, rename maps -----
@@ -673,6 +805,45 @@ def build_lowered(src_path, json_path):
             e9_done.add(idx)
             for lab in e9_after[idx]:
                 out.append(_label_field(lab) + " CONTINUE")
+
+    def _decl(unit, *lines):
+        fio_decls.setdefault(unit, []).extend(lines)
+
+    def emit_filmap(unit):
+        """COMMON /FILMAP/ FM(20) once per program unit (doc 34 §2)."""
+        if unit in filmap_units:
+            return
+        filmap_units.add(unit)
+        _decl(unit,
+              "C@ F77A FILMAP: FM(1)=ISTAT FM(2)=OPENED FM(3)=EXIST",
+              "      INTEGER FM(%d)" % FILMAP_WORDS,
+              "      COMMON /FILMAP/ FM")
+
+    def emit_iobuf(unit, u):
+        """Formatted I/O buffer INTEGER IB<u>(12) once per unit."""
+        key = (unit, u)
+        if key in iobuf_units:
+            return
+        iobuf_units.add(key)
+        _decl(unit, "      INTEGER IB%s(%d)" % (u, IOBUF_WORDS))
+
+    def io_status(k):
+        """Status lvalue: the user's IOSTAT variable, else FM(1)."""
+        return k if k else "FM(1)"
+
+    def io_list_format(items):
+        """Synthesize a FORMAT label for list-directed WRITE(u,*)/READ(u,*)."""
+        names = [t.strip() for t in _split_top(items) if t.strip()]
+        specs = []
+        for v in names:
+            specs += _descriptor(v, char_info, char_rename, dp_vars,
+                                 typed_int).split(",")
+        lab = alloc(fmt_counter[0])
+        fmt_counter[0] = lab + 1
+        formats.append((lab, ",".join(specs)))
+        out.append("C@ F77A list-directed -> %d FORMAT(%s)" %
+                   (lab, ",".join(specs)))
+        return lab
 
     # ---------------- Pass B: lower each classified line -------------------
     for idx, line in enumerate(lines, 1):
@@ -1284,6 +1455,118 @@ def build_lowered(src_path, json_path):
             out.append(new)
             continue
 
+        elif rule in (R_OPEN, R_CLOSE, R_INQ, R_FWRIT, R_FREAD,
+                      R_UWRIT, R_UREAD):
+            # ---- wave F: F77 file I/O -> PERSO 0o2320 CALL bridge --------
+            unit = _unit_of(lines, idx)
+            emit_filmap(unit)
+            body = re.sub(r"^\s*\d+\s+", "", orig)
+            ctrl = _io_control(body)
+            u = ctrl.get("UNIT") or ctrl.get("U")
+            if not u or not re.match(r"^\d+$", u):
+                raise SystemExit("cannot parse unit on line %d: %s" % (idx, orig))
+            k = _io_iostat(ctrl)
+            if k and k.upper() not in var_types:
+                _decl(unit, "      INTEGER %s" % k)
+            kv = io_status(k)
+            errlab = ctrl.get("ERR")
+            endlab = ctrl.get("END")
+            out.append("C@ F77A %s -> ZF bridge" % body[:64])
+            # Preserve a source statement label (e.g. "90 CLOSE(u)"): the
+            # lowered CALL otherwise drops it and GO TO 90 becomes undefined.
+            lm = re.match(r"^\s*(\d+)\s+", orig)
+            if lm:
+                out.append(_label_field(int(lm.group(1))) + " CONTINUE")
+
+            if rule == R_OPEN:
+                st = STATUS_CODES.get(
+                    (ctrl.get("STATUS") or "'UNKNOWN'").strip("'").upper(), 0)
+                ac = 1 if (ctrl.get("ACCESS") or "").strip("'").upper() == "DIRECT" else 0
+                fm = 1 if (ctrl.get("FORM") or "").strip("'").upper() == "UNFORMATTED" else 0
+                rl = ctrl.get("RECL") or "0"
+                # Extra attributes ride in FILMAP slots 4..7: the PERSO API
+                # deliberately has only (NAME,LUN,IST) (doc 34 §2).
+                out.append("      FM(4)=%d" % st)
+                out.append("      FM(5)=%d" % ac)
+                out.append("      FM(6)=%d" % fm)
+                out.append("      FM(7)=%s" % rl)
+                fname = ctrl.get("FILE")
+                if fname:
+                    nmvar = "FMN%s" % u
+                    if (unit, nmvar) not in fname_units:
+                        fname_units.add((unit, nmvar))
+                        _decl(unit, *_gost_name_words(fname, nmvar))
+                    nmarg = nmvar
+                else:
+                    nmarg = "0"
+                out.append("      CALL ZFOPEN(%s,%s,FM(1))" % (nmarg, u))
+
+            elif rule == R_CLOSE:
+                delv = 1 if (ctrl.get("STATUS") or "").strip("'").upper() == "DELETE" else 0
+                out.append("      CALL ZFCLOSE(%s,%d,FM(1))" % (u, delv))
+
+            elif rule == R_INQ:
+                op = ctrl.get("OPENED") or "FM(2)"
+                ex = ctrl.get("EXIST") or "FM(3)"
+                out.append("      CALL ZFINQ(%s,%s,%s,FM(1))" % (u, op, ex))
+
+            elif rule == R_FWRIT:
+                fmt = ctrl.get("P2") or "*"
+                items = re.sub(r"^\s*WRITE\s*\([^)]*\)\s*", "", body, flags=re.I).strip()
+                if fmt == "*":
+                    fmt = str(io_list_format(items))
+                emit_iobuf(unit, u)
+                out.append("      ENCODE(%d,%s,IB%s) %s" %
+                           (IOBUF_WORDS * 6, fmt, u, items))
+                out.append("      CALL ZFWRIT(%s,IB%s,%d,FM(1))" %
+                           (u, u, IOBUF_WORDS))
+
+            elif rule == R_FREAD:
+                fmt = ctrl.get("P2") or "*"
+                items = re.sub(r"^\s*READ\s*\([^)]*\)\s*", "", body, flags=re.I).strip()
+                if fmt == "*":
+                    fmt = str(io_list_format(items))
+                emit_iobuf(unit, u)
+                out.append("      CALL ZFREAD(%s,IB%s,%d,FM(1))" %
+                           (u, u, IOBUF_WORDS))
+                if k:
+                    out.append("      %s = FM(1)" % k)
+                if endlab:
+                    out.append("      IF (FM(1) .EQ. -1) GO TO %s" % endlab)
+                out.append("      DECODE(%d,%s,IB%s) %s" %
+                           (IOBUF_WORDS * 6, fmt, u, items))
+
+            else:  # R_UWRIT / R_UREAD: pack the list into one INTEGER record
+                items = re.sub(r"^\s*(WRITE|READ)\s*\([^)]*\)\s*", "",
+                               body, flags=re.I).strip()
+                vals = [v.strip() for v in _split_top(items) if v.strip()]
+                if not vals:
+                    raise SystemExit("empty unformatted I/O list on line %d" % idx)
+                if len(vals) > IOBUF_WORDS:
+                    raise SystemExit("unformatted list > %d words on line %d"
+                                     % (IOBUF_WORDS, idx))
+                emit_iobuf(unit, u)
+                if rule == R_UWRIT:
+                    for i, v in enumerate(vals, 1):
+                        out.append("      IB%s(%d)=%s" % (u, i, v))
+                    out.append("      CALL ZFWRIT(%s,IB%s,%d,FM(1))" %
+                               (u, u, len(vals)))
+                else:
+                    out.append("      CALL ZFREAD(%s,IB%s,%d,FM(1))" %
+                               (u, u, len(vals)))
+                    if k:
+                        out.append("      %s = FM(1)" % k)
+                    if endlab:
+                        out.append("      IF (FM(1) .EQ. -1) GO TO %s" % endlab)
+                    for i, v in enumerate(vals, 1):
+                        out.append("      %s=IB%s(%d)" % (v, u, i))
+
+            if k and rule not in (R_FREAD, R_UREAD):
+                out.append("      %s = FM(1)" % k)
+            if errlab:
+                out.append("      IF (%s .NE. 0) GO TO %s" % (kv, errlab))
+            continue
+
         else:
             raise SystemExit("unknown rule %d on line %d" % (rule, idx))
 
@@ -1321,6 +1604,19 @@ def build_lowered(src_path, json_path):
                 ins.append("C@ implicit COMPLEX %s (rule 22 complex-literal)" % v)
                 ins.append("      COMPLEX %s" % v)
             out[pos:pos] = ins
+
+    # wave F (rules 34-40): hoist the FILMAP / buffer / name declarations to
+    # the top of each program unit.  FOREX 2.02 rejects a declaration that
+    # appears after an executable statement (ERR 04441).
+    if fio_decls:
+        inserts = []
+        for i, ln in enumerate(out):
+            hm = re.match(r"\s*(PROGRAM|SUBROUTINE|FUNCTION|BLOCK\s+DATA)\s+([A-Za-z]\w*)",
+                          ln, re.I)
+            if hm and hm.group(2).upper() in fio_decls:
+                inserts.append((i + 1, fio_decls[hm.group(2).upper()]))
+        for pos, decls in reversed(inserts):
+            out[pos:pos] = decls
 
     if loop_stack:
         # rule 17: no matching END DO -- close every open DO WHILE at the
@@ -1440,6 +1736,7 @@ def make_deck2(low_path, data_path=None, sentinels=None):
         "*name Target",
         "*call yesmemory",
         "*perso:602300",
+        "*perso:602320,cont",   # doc 34 H8: PERSO 0o2320 file bridge
         "*no list",
         "*no load list",
         "*forex",

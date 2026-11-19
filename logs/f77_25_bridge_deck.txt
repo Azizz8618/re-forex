@@ -1,0 +1,22 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name ZAWRT
+*call yesmemory
+*perso:602300
+*perso:602320,cont
+*no list
+*forex
+      PROGRAM ZWRT1
+      CALL ZAWRT
+      WRITE(41,10) 123
+   10 FORMAT(1X,'DATA=',I3)
+      PRINT 20
+   20 FORMAT(1X,'AFTER WRITE OK')
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

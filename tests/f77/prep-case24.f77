@@ -1,0 +1,13 @@
+      PROGRAM F24
+      INTEGER A,B,C,D,K
+      OPEN(22,FILE='DATA',STATUS='NEW',IOSTAT=K)
+      A=12
+      B=34
+      WRITE(22,10) A,B
+   10 FORMAT(1X,2I6)
+      READ(22,10,IOSTAT=K) C,D
+      PRINT 20,C,D,K
+   20 FORMAT(1X,'C ',I4,' D ',I4,' K ',I3)
+      CLOSE(22,STATUS='DELETE')
+      STOP
+      END

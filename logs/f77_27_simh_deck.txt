@@ -1,0 +1,69 @@
+ШИФР 419999 ЗС5^
+ОЗУ 32^ТРА 100^АЦП 64^
+ЛЕН 41(2048)^
+ЛЕН 60(2348)^
+EEВ1А3
+*NAME P7CT
+*CALL YESMEMORY
+*PERSO:602300
+*PERSO:602320,CONT
+*FULL LIST
+*FOREX
+      PROGRAM P7CT
+      INTEGER FM(256)
+      COMMON /FILMAP/ FM
+      INTEGER NM(2), LUN, NZ, IST, OP, EX, N, I
+      INTEGER BUF(8)
+      DO 1 I=1,256
+    1 FM(I) = 0
+      NM(1) = 0
+      NM(2) = 0
+      LUN = 41
+      NZ = 8
+      N = 1024
+      DO 5 I=1,8
+    5 BUF(I) = I
+C ---- CREATE + OPEN ----
+      CALL ZFOPEN(NM,LUN,NZ,IST)
+      PRINT 100, 1, IST
+      PRINT 100, 2, FM(4)
+      PRINT 100, 3, FM(8)
+C ---- WRITE 2 ZONES ----
+      CALL ZFWRIT(LUN,BUF,N,IST)
+      PRINT 100, 4, IST
+      PRINT 100, 5, FM(8)
+      CALL ZFWRIT(LUN,BUF,N,IST)
+      PRINT 100, 6, IST
+      PRINT 100, 7, FM(8)
+C ---- READ THEM BACK ----
+      FM(8) = 0
+      CALL ZFREAD(LUN,BUF,N,IST)
+      PRINT 100, 8, IST
+      PRINT 100, 9, FM(248)
+      CALL ZFREAD(LUN,BUF,N,IST)
+      PRINT 100, 10, IST
+      PRINT 100, 11, FM(248)
+C ---- INQUIRE ----
+      OP = 0
+      EX = 0
+      CALL ZFINQ(LUN,OP,EX,IST)
+      PRINT 200, 12, OP, EX, IST
+C ---- READ PAST EOF ----
+      FM(8) = FM(7)
+      CALL ZFREAD(LUN,BUF,N,IST)
+      PRINT 100, 13, IST
+C ---- CLOSE DELETE ----
+      CALL ZFCLOSE(LUN,1,IST)
+      PRINT 100, 14, IST
+      OP = 0
+      EX = 0
+      CALL ZFINQ(LUN,OP,EX,IST)
+      PRINT 200, 15, OP, EX, IST
+      STOP
+  100 FORMAT(1X,'CV',I3,'=',I8)
+  200 FORMAT(1X,'CV',I3,' OP=',I3,' EX=',I3,' IST=',I8)
+      END
+*EXECUTE
+*END FILE
+``````
+ЕКОНЕЦ

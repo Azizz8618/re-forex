@@ -1,0 +1,95 @@
+=== f77_24_monitor_grep.txt ===
+Repo: /home/azizz/Yandex.Disk/monitor80-re (READ-ONLY)
+Date: 2026-11-19
+
+--- grep: *FILE | G04720 | HANDLE | SCRATC in monitor80-re ---
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/clopen.asm:314:          ,AEX,*0355B.=6HSCRATC
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/clopen.asm:409:          *0355B:,ISO,6HSCRATC
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g02407.f:53:     *6H*FILE ,
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g02407.f:194:      call HANDLE(CARD)
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g02407.f:196:C *FILE
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g02407.f:198:      if (M(2).eq.'scratc') goto 244
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g02407.f:200:      call G04720(CARD, k550)
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g02407.f:203:      call HANDLE(CARD, k550)
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g02407.f:205:      if(CARD(2).eq.'scratc')goto 244
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g02407.f:211:      if(CARD(3).eq.'scratc')goto 244
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04720.asm:1:﻿          G04720:,NAME,DTRAN  /01.06.84/
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04720.asm:73:          ,XTA,*0065B.=6HSCRATC
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04720.asm:97:          *0065B:,ISO,6HSCRATC
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/handle.asm:2: HANDLE:,NAME,
+
+--- grep: LUN*MON definitions / SUBP ---
+/home/azizz/Yandex.Disk/monitor80-re/inputcal/inputcal.asm:78: ,CALL,LUN*MON....
+/home/azizz/Yandex.Disk/monitor80-re/inputcal/inputcal.asm:86: ,CALL,LUN*MON....
+/home/azizz/Yandex.Disk/monitor80-re/inputcal/takecrd.asm:61: ,CALL,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/inputcal/takecrd.asm:75: ,CALL,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/blexprin.asm:6: LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/blexprin.asm:14:            , UJ  ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/erriom.asm:2: LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/erriom.asm:43:         M13, VJM ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/erriom.asm:81:         M13, VJM ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/execut.asm:23:  TAPELIST:  , LC  ,25
+/home/azizz/Yandex.Disk/monitor80-re/permanent/execut.asm:35:             , XTA ,TAPELIST+24
+/home/azizz/Yandex.Disk/monitor80-re/permanent/givelexx.asm:3: TAPELIST:LC,BLOCK,(24),FLAGS
+/home/azizz/Yandex.Disk/monitor80-re/permanent/iocont%.asm:66: LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/iocont%.asm:208:            , UJ  ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/iocont%.asm:219:         M13, VJM ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/iocont%.asm:307:         M13, VJM ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxrcb.asm:8: IODCB*  :  , LC  ,0
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxrcb.asm:11: LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxrcb.asm:49: io1xwcb:M11,VTM,IODCB*
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxrcb.asm:92:            , UJ  ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxxer_m.asm:2: LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxxer_m.asm:23: ,UJ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxxpkrt.asm:5: LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxxpkrt.asm:53: 13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxxsowt.asm:2: LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ioxxsowt.asm:10:            , UJ  ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/lun%mon.asm:1: LUN*MON :  , NAME,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/monitor_.asm:32: LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/monread%.asm:11: LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/monread%.asm:104:            , UJ  ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/pt8read.asm:13: LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/pt8read.asm:93:            , UJ  ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/setiodcb.asm:1: SETIODCB:  , NAME,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/setiodcb.asm:2: IODCB*  :  , LC  ,1
+/home/azizz/Yandex.Disk/monitor80-re/permanent/setiodcb.asm:44:           1,     ,IODCB*
+/home/azizz/Yandex.Disk/monitor80-re/permanent/stacomp%.asm:12:  LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/stacomp%.asm:115:            , UJ  ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/stop%.asm:5: IODCB*  :  , LC  ,0
+/home/azizz/Yandex.Disk/monitor80-re/permanent/stop%.asm:8: TAPELIST:  , LC  ,25
+/home/azizz/Yandex.Disk/monitor80-re/permanent/stop%.asm:39: возврат  :  , XTA ,TAPELIST+24
+/home/azizz/Yandex.Disk/monitor80-re/permanent/monitor%.asm:85: SETIODCB:  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/monitor%.asm:86: IODCB*  :  ,LC ,31
+/home/azizz/Yandex.Disk/monitor80-re/permanent/monitor%.asm:87: TAPELIST:  ,LC ,25
+/home/azizz/Yandex.Disk/monitor80-re/permanent/monitor%.asm:157:          1,,TAPELIST+24
+/home/azizz/Yandex.Disk/monitor80-re/permanent/star%.masm:27:  LUN*MON :  , SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/star%.masm:77:         M13, VJM ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/star%.masm:109:         M13, VJM ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ficmem%.asm:7: LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/permanent/ficmem%.asm:28: 13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/chekjob.asm:9: LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/chekjob.asm:65: ,UJ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/chekjob.asm:84: ,UJ,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/dumon.asm:9:          LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g03702.asm:4:          LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g03702.asm:22:          13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g03702.asm:42:          13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g03702.asm:50:          13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04052.asm:3:          LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04052.asm:73:          13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04640.asm:2:          LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04640.asm:44:          13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04640.asm:51:          13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04720.asm:3:          LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g04720.asm:82:          13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g05011.asm:3:          LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/chekjob/g05011.asm:160:          13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/duread/g06770.asm:6: LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/duread/g16512.asm:7: LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/duread/g16512.asm:63: 13,VJM,LUN*MON
+/home/azizz/Yandex.Disk/monitor80-re/duread/printa.asm:4:        LUN*MON:,SUBP,
+/home/azizz/Yandex.Disk/monitor80-re/duread/printa.asm:5:        ,UJ,LUN*MON
+
+--- no matches expected in .sym/.dtr/.masm for *FILE/G04720/HANDLE ---
+(NONE)

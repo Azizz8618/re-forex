@@ -1,0 +1,90 @@
+=== P7c/E TASK5 UPDATE: monitor-only path evidence (no dispak edits) ===
+
+--- Fortran-visible names in permanent library (matching/list.txt) ---
+36:CLOPEN
+91:GIVLIBR*
+107:IOCONT*
+145:LUN*MON
+150:MONREAD*
+194:SETFTN
+
+--- permanent library catalog declarations (star%.masm) ---
+7: LOADANGO:  , SUBP,
+27:  LUN*MON :  , SUBP,
+28: GIVLIBR*:  , SUBP,
+29: GIVSERV*:  , SUBP,
+31: MONREAD*:  , SUBP, .Не исп. в Mониторе-80
+52:            , UJ  ,LOADANGO
+77:         M13, VJM ,LUN*MON
+96: типработы:M13,VJM,GIVLIBR*
+98:         M13, VJM ,GIVSERV*
+109:         M13, VJM ,LUN*MON
+110: CHECKMORE:M13,VJM,MONREAD*
+163:            , UJ  ,LOADANGO
+174:         M13, VJM ,LOADANGO
+238:         M13, VJM ,MONREAD*
+251:         M13, VJM ,LOADANGO
+
+--- ENTRY points in monitor permanent library ---
+monitor80-re/permanent/loadf.asm:41: LOADT:,ENTRY,
+monitor80-re/permanent/loadf.asm:87: GO:,ENTRY,
+monitor80-re/permanent/loadf.asm:100: DELETE:,ENTRY,
+monitor80-re/permanent/iocont%.asm:114: IOAC*   :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:137: FT*002  :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:142: FD*642  :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:144: FD*722  :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:146: FC*722  :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:148: FC*642  :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:150: FC*002  :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:163: IOEND*  :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:165: FT*003  :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:527: IOSVFR  :  ,ENTRY,
+monitor80-re/permanent/iocont%.asm:549: SUBPERR*:  ,ENTRY,
+
+--- *FILE path in chekjob ---
+53:     *6H*FILE ,
+126:      call G04052
+194:      call HANDLE(CARD)
+196:C *FILE
+198:      if (M(2).eq.'scratc') goto 244
+200:      call G04720(CARD, k550)
+203:      call HANDLE(CARD, k550)
+205:      if(CARD(2).eq.'scratc')goto 244
+206:      if(d03611.eq.0b) call G04052
+207:      call G04066(k550)
+211:      if(CARD(3).eq.'scratc')goto 244
+
+--- runtime tables (monitor%.asm:83-99) ---
+ LOADANGO:  , SUBP,
+ LOADCALL:  , SUBP,
+ SETIODCB:  , SUBP,
+ IODCB*  :  ,LC ,31
+ TAPELIST:  ,LC ,25
+ WORINF* :  ,LC ,1
+ DATA*   :  ,LC ,2
+ TRNAME* :  ,LC ,1
+ КCOUNT* :  ,LC ,4
+ *REGIM//:  ,LC ,1
+ ARREAD* :  ,LC ,2
+ MONCARD*:  ,LC ,25
+ STLOAD* :  , SUBP,
+ RFMRTFLG:  ,LC ,1
+ IOLIST* :  ,LC ,5
+ *IOXLCB*:  ,LC ,1
+ RESTOP* :  ,LC ,1
+
+--- toolchain ---
+/usr/local/bin/besmtool
+/usr/local/bin/dispak
+/usr/local/bin/disbesm6
+-rwxr-xr-x 1 azizz azizz  1439 сен 13 17:18 monitor80-re/tools/asm.pl
+-rwxr-xr-x 1 azizz azizz 38824 окт 21 23:29 monitor80-re/tools/cosy2txt
+-rwxr-xr-x 1 azizz azizz  1423 сен 13 17:18 monitor80-re/tools/linker.pl
+-rwxr-xr-x 1 azizz azizz  1185 сен 13 17:18 monitor80-re/tools/overlay.pl
+-rwxr-xr-x 1 azizz azizz 18792 окт 21 23:29 monitor80-re/tools/ovl2bin
+
+--- toolchain proven in our docs/logs ---
+re-forex/docs/05-roundtrip.md:7:`monitor80-re/tools/asm.pl` (через `dispak` на томе 2348) успешно собирает
+re-forex/logs/decoder_disasm_compile.txt:31:$ BESM6_PATH=... WORKVOL=80 perl -CA asm.pl -keep DATAPR%.masm
+re-forex/logs/decoder_disasm_compile.txt:51:$ BESM6_PATH=... WORKVOL=80 perl -CA asm.pl -keep OCTTDEC.masm
+re-forex/docs/plan-f77-full/21-diskpatch-toolchain.md:243:3. **В CI добавить шаг** между `cp эталона` и `besmtool write PERSO`:

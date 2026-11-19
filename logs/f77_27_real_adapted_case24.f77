@@ -1,0 +1,32 @@
+      PROGRAM F24
+C@ F77A FILMAP: FM(1)=ISTAT FM(2)=OPENED FM(3)=EXIST
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      DATA FM /320*0/
+      INTEGER FMN22(2)
+      DATA FMN22 /12HDATA        /
+      INTEGER IB22(12)
+      INTEGER A,B,C,D,K
+C@ F77A OPEN(22,FILE='DATA',STATUS='NEW',IOSTAT=K) -> ZF bridge
+      FM(4)=2
+      FM(5)=0
+      FM(6)=0
+      FM(7)=0
+      CALL ZFOPEN(FMN22,22,8,FM(1))
+      K = FM(1)
+      A=12
+      B=34
+C@ F77A WRITE(22,10) A,B -> ZF bridge
+      ENCODE(72,10,IB22) A,B
+      CALL ZFWRIT(22,IB22,12,FM(1))
+   10 FORMAT(1X,2I6)
+C@ F77A READ(22,10,IOSTAT=K) C,D -> ZF bridge
+      CALL ZFREAD(22,IB22,12,FM(1))
+      K = FM(1)
+      DECODE(72,10,IB22) C,D
+      PRINT 20,C,D,K
+   20 FORMAT(1X,'C ',I4,' D ',I4,' K ',I3)
+C@ F77A CLOSE(22,STATUS='DELETE') -> ZF bridge
+      CALL ZFCLOSE(22,1,FM(1))
+      STOP
+      END

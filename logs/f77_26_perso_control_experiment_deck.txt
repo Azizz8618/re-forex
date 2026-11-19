@@ -1,0 +1,49 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name P7CXC
+*call yesmemory
+*perso:602300
+*perso:602320,cont
+*full list
+*forex
+      PROGRAM P7CXC
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER NM(2), LUN, NZ, IST, I, N
+      INTEGER IB(2), JB(2)
+      DO 1 I=1,320
+    1 FM(I) = 0
+      NM(1) = 0
+      NM(2) = 0
+      LUN = 41
+      NZ = 8
+      N = 2
+      IB(1) = 11111
+      IB(2) = 22222
+      DO 2 I=1,2
+    2 JB(I) = 0
+C ---- WRITE known values ----
+      CALL ZFOPEN(NM,LUN,NZ,IST)
+      PRINT 100, 1, IST
+      CALL ZFWRIT(LUN,IB,N,IST)
+      PRINT 100, 2, IST
+      CALL ZFCLOSE(LUN,0,IST)
+      PRINT 100, 3, IST
+C ---- REOPEN and READ into different array ----
+      CALL ZFOPEN(NM,LUN,NZ,IST)
+      PRINT 100, 4, IST
+      CALL ZFREAD(LUN,JB,N,IST)
+      PRINT 100, 5, IST
+      PRINT 200, IB(1), IB(2), JB(1), JB(2)
+      CALL ZFCLOSE(LUN,1,IST)
+      PRINT 100, 6, IST
+      STOP
+  100 FORMAT(1X,'X',I2,'=',I8)
+  200 FORMAT(1X,'W1=',I6,' W2=',I6,' R1=',I6,' R2=',I6)
+      END
+*execute
+*end file
+``````
+еконец

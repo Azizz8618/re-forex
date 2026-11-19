@@ -1,0 +1,161 @@
+C =====================================================================
+C P7c / ВОЛНА G — PERSO-библиотека файлового I/O поверх АРФЫ
+C FORTRAN-обвязка: COMMON /FILMAP/ + вызовы MADLEN-движков (Э63/Э70)
+C =====================================================================
+
+C ---- ZFOPEN(NM,LUN,NZ,ISTAT): Э63 01 создать + 12 дозаказ -----------
+      SUBROUTINE ZFOPEN(NM,LUN,NZ,ISTAT)
+      INTEGER NM(2), LUN, NZ, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      I = 1
+   10 IF (I .GT. 16) GO TO 20
+      B = 1 + 15*(I-1)
+      IF (FM(B+1) .EQ. 0) GO TO 30
+      I = I + 1
+      GO TO 10
+   20 ISTAT = 1
+      RETURN
+   30 FM(B+0) = NM(1)
+      FM(B+1) = NM(2)
+      FM(B+2) = LUN
+      FM(B+6) = NZ
+      FM(B+9) = 0
+      FM(249) = 0
+      CALL ZE01
+      IF (FM(249) .EQ. 0) GO TO 28
+      IF (FM(249) .NE. 6) GO TO 60
+   28 CONTINUE
+      CALL ZE12
+      IF (FM(249) .NE. 0) GO TO 60
+C --- Э63 12 возвращает U в acc.r; если readback = 0, используем
+C --- заказанный РМР-шкалой LUN 051B (подтверждено трассой дозаказа)
+      IF (FM(248) .NE. 0) GO TO 55
+      FM(B+3) = 41
+      GO TO 57
+   55 FM(B+3) = FM(248)
+   57 CONTINUE
+C --- Э63 30В захват области обязателен перед Э63 31В освобождения
+      FM(249) = 0
+      CALL ZE30
+      IF (FM(249) .NE. 0) GO TO 60
+      FM(B+9) = 0
+      ISTAT = 0
+      RETURN
+   60 FM(B+9) = FM(249)
+      ISTAT = FM(249)
+      RETURN
+      END
+
+C ---- ZFCLOSE(LUN,DEL,ISTAT): Э63 31В (+02 при DEL=1) ----------------
+      SUBROUTINE ZFCLOSE(LUN,DEL,ISTAT)
+      INTEGER LUN, DEL, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      I = 1
+   10 IF (I .GT. 16) GO TO 20
+      B = 1 + 15*(I-1)
+      IF (FM(B+2) .EQ. LUN) GO TO 30
+      I = I + 1
+      GO TO 10
+   20 ISTAT = 1
+      RETURN
+   30 FM(249) = 0
+      CALL ZE31
+      IF (FM(249) .NE. 0) GO TO 60
+      IF (DEL .EQ. 0) GO TO 50
+      CALL ZE02
+      IF (FM(249) .NE. 0) GO TO 60
+   50 FM(B+2) = 0
+      FM(B+3) = 0
+      FM(B+9) = 0
+      ISTAT = 0
+      RETURN
+   60 FM(B+9) = FM(249)
+      ISTAT = FM(249)
+      RETURN
+      END
+
+C ---- ZFINQ(LUN,OPENED,EXIST,ISTAT): FILMAP + Э63 07 -----------------
+      SUBROUTINE ZFINQ(LUN,OPENED,EXIST,ISTAT)
+      INTEGER LUN, OPENED, EXIST, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      OPENED = 0
+      EXIST = 0
+      ISTAT = 0
+      I = 1
+   10 IF (I .GT. 16) GO TO 40
+      B = 1 + 15*(I-1)
+      IF (FM(B+2) .EQ. LUN) GO TO 20
+      I = I + 1
+      GO TO 10
+   20 OPENED = 1
+      FM(249) = 0
+      CALL ZE07
+      IF (FM(249) .EQ. 0) EXIST = 1
+      RETURN
+   40 FM(249) = 0
+      CALL ZE07
+      IF (FM(249) .EQ. 0) EXIST = 1
+      RETURN
+      END
+
+C ---- ZFWRIT(LUN,BUF,N,ISTAT): Э70 WR --------------------------------
+      SUBROUTINE ZFWRIT(LUN,BUF,N,ISTAT)
+      INTEGER LUN, BUF(1), N, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      ISTAT = 1
+      I = 1
+   10 IF (I .GT. 16) RETURN
+      B = 1 + 15*(I-1)
+      IF (FM(B+2) .EQ. LUN) GO TO 20
+      I = I + 1
+      GO TO 10
+   20 IF (FM(B+3) .EQ. 0) RETURN
+      DO 25 I=1,N
+   25 FM(256+I) = BUF(I)
+      FM(249) = 0
+      CALL ZE70W
+      FM(B+9) = FM(249)
+      ISTAT = FM(249)
+      IF (ISTAT .NE. 0) RETURN
+      FM(B+7) = FM(B+7) + 1
+      IF (FM(B+7) .GE. FM(B+6)) FM(B+8) = 1
+      RETURN
+      END
+
+C ---- ZFREAD(LUN,BUF,N,ISTAT): Э70 RD, EOF -> ISTAT=-1 --------------
+      SUBROUTINE ZFREAD(LUN,BUF,N,ISTAT)
+      INTEGER LUN, BUF(1), N, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      ISTAT = 1
+      I = 1
+   10 IF (I .GT. 16) RETURN
+      B = 1 + 15*(I-1)
+      IF (FM(B+2) .EQ. LUN) GO TO 20
+      I = I + 1
+      GO TO 10
+   20 IF (FM(B+3) .EQ. 0) RETURN
+      IF (FM(B+7) .GE. FM(B+6)) GO TO 90
+      FM(249) = 0
+      CALL ZE70R
+      FM(B+9) = FM(249)
+      ISTAT = FM(249)
+      IF (ISTAT .NE. 0) RETURN
+      DO 26 I=1,N
+   26 BUF(I) = FM(256+I)
+      FM(B+7) = FM(B+7) + 1
+      RETURN
+   90 FM(B+8) = 1
+      FM(B+9) = -1
+      ISTAT = -1
+      RETURN
+      END

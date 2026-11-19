@@ -269,3 +269,54 @@ tests/check-text-decoded.sh    rc=0
 * R-G4/R-H7 доказаны executable-прогоном для `n=4` (одно 6-битное слово);
   вариант `W=ceil(n/6)>1` реализован по той же схеме, но отдельного deck'а
   не имеет.
+
+---
+
+## 8. Волна F (v3.4): файловый I/O → PERSO 0o2320 (rules 34–40)
+
+`F77PREP.FTN` остаётся на v3 без изменений. Правила 34–40 классифицируются и
+применяются **только host-частью** `prep_tools.py`; подробный контракт —
+`docs/plan-f77-full/34-arfa-lowering.md`, проба — `logs/f77_26_lower_probe.txt`.
+
+| rule / правило | Конструкция | Lowering (host) | Тест | rc |
+|---:|---|---|---|:--:|
+| **34** | `OPEN(u,FILE=…,STATUS=…,IOSTAT=k,ERR=L)` | `INTEGER FM(20)`+`COMMON /FILMAP/ FM`; `FM(4..7)` = STATUS/ACCESS/FORM/RECL; `INTEGER FMN<u>(2)`+`DATA` с ASCII-именем; `CALL ZFOPEN(FMN<u>,u,FM(1))`; `k=FM(1)`; `IF(k.NE.0) GO TO L` | case23 | 0 |
+| **35** | `CLOSE(u[,STATUS='DELETE'][,IOSTAT=k])` | `CALL ZFCLOSE(u,del,FM(1))` (`del=1` для DELETE); статус из `FM(1)` | case23 | 0 |
+| **36** | `INQUIRE(UNIT=u,OPENED=v[,EXIST=e][,IOSTAT=k])` | `CALL ZFINQ(u,v,e,FM(1))`; `EXIST=.FALSE.` не ошибка | case23 | 0 |
+| **37** | `WRITE(u,fmt) list` | `ENCODE(72,fmt,IB<u>) list` + `CALL ZFWRIT(u,IB<u>,12,FM(1))` (нативная проба ENCODE/DECODE 2.02); `fmt=*` → синтез FORMAT | case24 | 0 |
+| **38** | `READ(u,fmt) list[,END=L,IOSTAT=k]` | `CALL ZFREAD(u,IB<u>,12,FM(1))` → `k=FM(1)` → `IF(FM(1).EQ.-1) GO TO L` → `DECODE(72,fmt,IB<u>) list` | case24 | 0 |
+| **39** | `WRITE(u) list` (без формата) | упаковка `IB<u>(i)=v_i`, один `CALL ZFWRIT(u,IB<u>,n,FM(1))` на запись | case25 | 0 |
+| **40** | `READ(u) list[,END=L,IOSTAT=k]` | `CALL ZFREAD(u,IB<u>,n,FM(1))` → `k=FM(1)` → END-ветвь → `v_i=IB<u>(i)` | case25/26 | 0 |
+
+Общее: все сгенерированные деки несут `*perso:602300` + `*perso:602320,cont`;
+декларации выносятся за заголовок program unit (иначе `ERR 04441` в 2.02);
+метки операторов сохраняются как `lab CONTINUE`; `OPEN/CLOSE/INQUIRE`
+добавлены в `KEYWORDS` (иначе rule 20 ложно ругается на 7-значный INQUIRE).
+Статус возвращается через `COMMON /FILMAP/`, **не** через dummy-аргумент
+(2.02 передаёт скаляры по значению, `31 §2.3`).
+
+Контрольные значения: case23 ` OP  1 EX  1 K  0` / ` K  0`; case24
+` C   12 D   34 K   0`; case25 ` C  111 D  222 K   0`; case26 ` EOF K  -1`.
+
+### 8.1 Результаты проверок v3.4
+
+```
+tests/run-f77-prep.sh          rc=0   (21 кейс: 1/2/8..26, PASS1+PASS2)
+tests/run-f77-full.sh          rc=0   (L0 51/51, L1 51/51, GATE 20/20, 0 PENDING)
+python3 tests/check-source-words.py  rc=0
+tests/check-label-semantics.sh rc=0
+tests/check-constants.sh       rc=0
+tests/check-text-decoded.sh    rc=0
+```
+
+### 8.2 Честные оговорки
+
+* status — профильный (`FM(1)`, `-1` = EOF из PERSO), `ACCESS/RECL/STATUS`
+  кэшируются и АРФОЙ не проверяются; это не X3.9 `IOSTAT`.
+* `NAME` эмитируется как ASCII в `INTEGER(2)`: FOREX `nH` = 8-битный ASCII,
+  а ГОСТ-цифры (`000..011`) — управляющие коды, картами не вводятся.
+  Транскодировка ASCII→ГОСТ-10859 и шифр хозяина — обязанность ZFOPEN (G1),
+  оговорка к doc 32 H6.
+* Реальные Э63/Э70, Level B и нативный EOF — вне этой волны (26, 31, 32 §5).
+  Тестовый ZF-stub в `run-f77-prep.sh` — in-memory unit state, не АРФА;
+  подменяется реальным PERSO через `ZF_IMAGE`.

@@ -1,10 +1,13 @@
 === F77PREP v2 two-pass test ===
-date    : 2026-11-19T19:52:57Z
+date    : 2026-11-19T21:59:32Z
 dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
 ftn     : /home/azizz/Yandex.Disk/re-forex/src/f77prep/F77PREP.FTN
 case1   : /home/azizz/Yandex.Disk/re-forex/tests/f77/prep-case.f77
 case2   : /home/azizz/Yandex.Disk/re-forex/tests/f77/prep-case2.f77
-Written 5 zones (30 kbytes) from file /tmp/.private/azizz/f77-prep.fqDmvz/image.bin to disk 2348
+Written 5 zones (30 kbytes) from file /tmp/.private/azizz/f77-prep.l0W5ji/image.bin to disk 2348
+ZF bridge  : РЕАЛЬНЫЙ PERSO АРФЫ (G1), image=/home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/arfa/FOREX_ARFA_2320.zone sha256=cad6ab348e1764c5652b202055b0484cf43d8fd9b51edc1215c960826cc986fa
+ZF bridge  : РЕАЛЬНЫЙ PERSO АРФЫ (G1), image=/home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/arfa/FOREX_ARFA_2320.zone
+Written 4 zones (24 kbytes) from file /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/arfa/FOREX_ARFA_2320.zone to disk 2348
 [case1] PASS1 OK: lowering совпал с эталоном (11 строк)
 [case1] PASS2 OK: результат совпал с эталоном (1 строк)
 [case2] PASS1 OK: lowering совпал с эталоном (31 строк)
@@ -39,4 +42,12 @@ Written 5 zones (30 kbytes) from file /tmp/.private/azizz/f77-prep.fqDmvz/image.
 [case21] PASS2 OK: результат совпал с эталоном (1 строк)
 [case22] PASS1 OK: lowering совпал с эталоном (7 строк)
 [case22] PASS2 OK: результат совпал с эталоном (1 строк)
-OK: все случаи пройдены (rc=0)
+[case23] PASS1 OK: lowering совпал с эталоном (29 строк)
+[case23] PASS2 OK: результат совпал с эталоном (2 строк)
+[case24] PASS1 OK: lowering совпал с эталоном (31 строк)
+[case24] PASS2 OK: результат совпал с эталоном (1 строк)
+[case25] PASS1 OK: lowering совпал с эталоном (32 строк)
+[case25] PASS2 OK: результат совпал с эталоном (1 строк)
+[case26] PASS1 OK: lowering совпал с эталоном (36 строк)
+[case26] PASS2 OK: результат совпал с эталоном (1 строк)
+OK: все случаи пройдены на РЕАЛЬНОМ PERSO-мосте АРФЫ G1 (rc=0)

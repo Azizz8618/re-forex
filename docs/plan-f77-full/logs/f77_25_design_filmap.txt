@@ -1,0 +1,47 @@
+P7c / ВОЛНА F / ЗАДАЧА 3 — research log: /FILMAP/ placement decision
+Date: 2026-11-19. READ-ONLY sources.
+
+STEP 1 — existing proposals in re-forex docs
+  grep -rn 'FILMAP|J24STT|OPN(16)' docs/plan-f77-full/
+  27-file-docs.md:74-79,105-126: ARFA is a real FS but not *FILE; if building
+    F77 OPEN/CLOSE/INQUIRE, base it on Э30Н/ARFA or LUN%MON, not *FILE card.
+  29-dubna-port.md:274-277: file_paths[] -> COMMON /FILMAP/ with explicit fields
+    NAME(6), LUN, MODE(R/W), SIZE, OPENED, RECPOS, EOF, IOSTAT.
+  29-dubna-port.md:323: new FILMAP entry = NAME,LUN,MODE,SIZE,OPENED,RECPOS,
+    EOF,IOSTAT; 16 -> >=32 units.
+  20-open-close.md:63-76: executable prototype COMMON /J24STT/ OPN(16),
+    3 PERSO procedures FOPEN/FCLOSE/FINQ, shared main<->PERSO (proven §4:186-189).
+  20-open-close.md:92-142: PERSO zone 0o2320 recipe, 3-5 procs fit easily,
+    12-module limit applies only to 0o2310.
+
+STEP 2 — question: FILMAP in PERSO 0o2320 or in ARFA catalog?
+  ARFA catalog slot format (arfa.c:60-65, 307-339): 13 words, name 12 GOST bytes,
+    owner, nzones, zone, rights, dates. NO free fields for Fortran unit,
+    RECPOS, EOF, IOSTAT. Adding them = patch arfa.c + on-disk volume format,
+    breaking real volumes (out of scope, READ-ONLY here).
+  ARFA catalog is persistent across emulator restart (arfa.c:41-43); Fortran unit
+    state is per-job. Storing it there leaks state between jobs.
+  => DECISION: /FILMAP/ lives in PERSO 0o2320 as labeled COMMON. ARFA stays the
+    persistent namespace; FILMAP is the volatile runtime binding
+    Fortran u -> GOST name -> U(030..067) -> zone/position/EOF/IOSTAT.
+  This is an EXTENSION of /J24STT/ OPN(16), not a new mechanism.
+
+STEP 3 — field layout chosen (32-f77-on-arfa.md §3.2)
+  FMNAM(2,NF)  = 12 GOST bytes, exactly arfa.c:115/321 representation (6/words)
+  FMLU         = Fortran unit u (search key; NOT the ARFA LUN)
+  FMARU        = ARFA logical number U from Э63 12 acc.r (arfa.c:1174)
+  FMOWN        = schifr owner for Э63 01/02
+  FMMOD        = 0 closed / 1 R / 2 RW (W12 in op_order)
+  FMACC/FMFRM  = cached profile attrs (ARFA cannot report them)
+  FMREC        = requested RECL, words (profile only)
+  FMZON        = nzones from Э63 07 / set at 01
+  FMPOS/FMEOF  = current zone index; EOF when FMPOS >= FMZON
+  FMIST/FMRAW  = profile IOSTAT + raw M16 octal code
+  FMGRB        = grab flag 0/1/2 (one area per task, arfa.c:1305-1307)
+  NF=16 (->32 trivial). Invariants + procedure set FOPEN/FCLOSE/FINQ/FINQE/
+  FINQX/FREAD/FWRIT documented in §3.3.
+
+STEP 4 — verification status
+  Mechanism (COMMON shared main<->PERSO) proven in doc 20 prototype; the
+  enlarged FILMAP layout and ARFA-aware procedures are NOT built or run in
+  this wave. Status = SPEC-ONLY.

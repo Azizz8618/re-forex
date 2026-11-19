@@ -1,0 +1,50 @@
+./p7c_os.ini-26> attach -n prn1 logs/os_prn1.txt
+%SIM-INFO: PRN1: creating new file: logs/os_prn1.txt
+./p7c_os.ini-27> attach -n vu0 logs/os_vu0.txt
+%SIM-INFO: VU0: creating new file: logs/os_vu0.txt
+./p7c_os.ini-28> attach -n pi0 logs/os_pi0.txt
+%SIM-INFO: PI0: creating new file: logs/os_pi0.txt
+./p7c_os.ini-29> attach -n pl0 logs/os_pl0.txt
+%SIM-INFO: PL0: creating new file: logs/os_pl0.txt
+*** console on T001
+write cache [7] = '                                                '
+write cache [6] = '                                                '
+write cache [5] = '                                                '
+write cache [4] = '                                                '
+write cache [3] = '                                                '
+write cache [2] = '                                                '
+write cache [1] = '                                                '
+write cache [0] = '                                                '
+
+Останов, "СчАС": 00004 (-> зп, зп)
+Resetting all devices...  This may not have been your intention.
+The GO and CONTINUE commands do not reset devices.
+>>> MUX: clear, PRP = 01400
+  2248 - 01
+  2061 - 21
+  2070 - 41
+ 25.10.24   10.21.48
+ 1HMБ-01234567     2HMБ-34567
+  PEC:  1710
+ ECTЬ
+ ДATA:20.11.26 BPEMЯ:00.54.00
+ ЧП(001) 419919810623 00.53 M=000
+
+Simulation stopped, "СчАС": 04440 (-> цикл 4440(15), цикл 4432(1))
+sim> attach vu0 /var/tmp/p7c-simh/decks/p7ct_oneline.b6
+sim> d 6 1
+sim> d 5 10
+sim> set cpu req
+sim> g
+ ЗMB0 419999000000
+
+Simulation stopped, "СчАС": 04440 (-> цикл 4440(15), цикл 4432(1))
+sim> detach vu0
+Unit not attached
+sim> attach vu0 /var/tmp/p7c-simh/decks/p7ct_std.b6
+sim> d 6 1
+sim> d 5 10
+sim> set cpu req
+sim> g
+ B075-1 419999000000  2348
+

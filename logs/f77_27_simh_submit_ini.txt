@@ -1,0 +1,9 @@
+; do-script: submit P7CT deck to a halted DISPAK OS
+detach vu0
+attach vu0 /var/tmp/p7c-simh/decks/p7ct_fix.b6
+echo Submitting P7CT deck
+d 6 1
+d 5 10
+set cpu req
+expect -r "B0.*\n"
+go

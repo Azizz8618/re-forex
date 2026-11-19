@@ -1,0 +1,72 @@
+P7c / ВОЛНА G / F77PREP file-I/O lowering — probe log
+Date: 2026-11-19.  Owner: src/f77prep/prep_tools.py, tests/f77/prep-case23..26,
+tests/run-f77-prep.sh, docs/plan-f77-full/34-arfa-lowering.md.
+Stand: FOREX 2.02 (re-forex 5.00), dispak build, etalon 2348,
+PERSO 0o2300 = build/FOREX_PERSO_2300.bin.  Work area: /var/tmp/p7c-encode-probe.
+
+=== STEP 1 — ENCODE / DECODE support in FOREX 2.02 ===
+QUESTION: does FOREX 2.02 support DEC-style internal files ENCODE/DECODE?
+ANSWER: YES.  Both statements compile, execute, and really exchange data
+through the third (buffer) argument.  Five decks were run (log findings below):
+
+  enc.b6   ENCODE(20,10,IB) X / FORMAT(F10.2) / DECODE(20,10,IB) Y
+           X=123.45, Y initialized to 0.0 -> printed 123.45
+  enc2.b6  same + PRINT raw IB words before DECODE
+           printed "Y=    123.45"  => DECODE overwrites Y (not a no-op)
+  enc3.b6  ENCODE(30,10,IB) II,X / FORMAT(I10,F12.4), DECODE -> JJ,Y
+           II=12345, X=67.89, JJ=0, Y=0.0  -> JJ=12345, Y=67.8900
+  enc4.b6  DECODE from a DIFFERENT buffer IC that ENCODE never touched
+           DEC_FROM_IC=0 ; DEC_FROM_IB=12345
+           => the buffer argument is real, not a hidden scratch area
+  enc5.b6  ENCODE(24,10,IB) 12345, dump IB words with A6 and O12
+           A6 shows "  12345"; O12 shows the packed record words
+
+VERDICT: ENCODE/DECODE are SUPPORTED and usable for formatted file I/O:
+    WRITE(u,fmt) list -> ENCODE(nw,fmt,IBUF) list -> CALL ZFWRIT(u,IBUF,nw,IST)
+    READ(u,fmt) list  -> CALL ZFREAD(u,IBUF,nw,IST) -> DECODE(nw,fmt,IBUF) list
+The lowering uses them (rules 37/38).  No host formatter for I/F/A/E needed.
+
+=== STEP 2 — related FOREX 2.02 facts found while probing ===
+* nH Hollerith packs 8-bit ASCII bytes, 6 per 48-bit word
+  (10-implementation-libr.md §3.1 independently confirmed:
+   DATA W/4HABCD/ -> 0o2024110321020040 = 0x414243442020).
+  Exact GOST-10859 bytes CANNOT be materialized from source: GOST codes
+  000..011 (digits) are control chars that dispak's card reader mangles
+  (probe ctrl.b6: 6H with 0x01/0x0f bytes came back transformed).
+  => host emits ASCII name words; ZFOPEN must transcode ASCII->GOST.
+  This is an honest deviation from doc 32 H6, documented in doc 34 §2.
+* FOREX INTEGER value range is <= 2^35-1: I=2^35-1 works; 2^36 gives
+  "ПЕРЕПОЛ МАНТИССЫ".  A 48-bit GOST word cannot be a decimal literal.
+* Declaration after an executable statement is fatal (ERR 04441):
+  "ДЕКЛАРАЦИИ НЕ ДОЛЖНЫ ВСТРЕЧАТЬСЯ ПОСЛЕ ИСПОЛНЯЕМЫХ ИНСТРУК".
+  => all FILMAP/buffer/name declarations are hoisted to just after the
+  PROGRAM/SUBROUTINE/FUNCTION header.
+* F77PREP.FTN memory ceiling: case26 at 17 source lines overflowed the
+  translation area ("ПЕРЕПОЛНЕНА ПАМЯТЬ"); shortened to 13 lines.  F77PREP.FTN
+  itself is untouched (rules 34-40 are host-only).
+* F77PREP misclassifies FORMAT literals containing '=' as rule 8 string
+  assignments; new test cases avoid '=' inside FORMAT literals.
+* F77PREP rule 20 flags INQUIRE (7 chars) and long literals such as
+  'BADOPEN'; INQUIRE/OPEN/CLOSE/REWIND/BACKSPACE/ENDFILE were added to
+  KEYWORDS and the literal shortened.
+
+=== STEP 3 — PERSO 0o2320 stub for executable pass-2 verification ===
+Five ZF* procedures were written in Fortran (FOREX 2.02 subset), compiled
+with *to perso:602320 into a working copy of 2348, and dumped to a 4-zone
+image.  Compile log: five "ДЛИНА ПОДПРОГРАММЫ ..." lines,
+"ДЛИНА LIBRARY 004 ЗОН", rc=0.  The same stub is now built inside
+tests/run-f77-prep.sh (override with ZF_IMAGE=/path/to/real/zf2320.bin
+when agent G1's implementation is available).  The stub is test-only;
+it does NOT implement ARFA Э63/Э70 — it is in-memory unit state.
+
+=== STEP 4 — end-to-end two-pass results (new cases) ===
+case23 OPEN/INQUIRE/CLOSE + IOSTAT + ERR:
+  CONTROL: " OP  1 EX  1 K  0" / " K  0"
+case24 formatted WRITE + READ (ENCODE/ZFWRIT/ZFREAD/DECODE):
+  CONTROL: " C   12 D   34 K   0"
+case25 unformatted WRITE + READ:
+  CONTROL: " C  111 D  222 K   0"
+case26 EOF via END= on second READ (ISTAT=-1 from FILMAP):
+  CONTROL: " EOF K  -1"
+All four PASS1 lowerings are byte-stable and PASS2 outputs match the
+*-expected.out files.  tests/run-f77-prep.sh rc=0 (21 cases).

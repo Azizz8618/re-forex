@@ -101,6 +101,14 @@ OK J23  J7_end_sentinel.gold new 01-matrix:J7_end_sentinel
 J23|j7_end_sentinel.b6|J7_end_sentinel.gold|new|OK|new:01-matrix:J7_end_sentinel
 OK J24  J8_err_sentinel.gold new 01-matrix:J8_err_sentinel
 J24|j8_err_sentinel.b6|J8_err_sentinel.gold|new|OK|new:01-matrix:J8_err_sentinel
+OK J25  J2_ARFA_WRITE.gold new 01-matrix:J2_ARFA (ZF-bridge contract; real G1 ARFA in run-f77-prep case24)
+J25|j2_arfa_write.b6|J2_ARFA_WRITE.gold|new|OK|new:01-matrix:J2_ARFA (ZF-bridge contract; real G1 ARFA in run-f77-prep case24)
+OK J26  J3_ARFA_READ.gold new 01-matrix:J3_ARFA/J7 (ZF-bridge EOF; real G1 ARFA in run-f77-prep case26)
+J26|j3_arfa_read.b6|J3_ARFA_READ.gold|new|OK|new:01-matrix:J3_ARFA/J7 (ZF-bridge EOF; real G1 ARFA in run-f77-prep case26)
+OK J27  J4_ARFA_READ_UNIT.gold new 01-matrix:J4_ARFA (ZF-bridge READ(u); real G1 ARFA in run-f77-prep case25)
+J27|j4_arfa_read_unit.b6|J4_ARFA_READ_UNIT.gold|new|OK|new:01-matrix:J4_ARFA (ZF-bridge READ(u); real G1 ARFA in run-f77-prep case25)
+OK J28  J24_ARFA_OPEN_INQ.gold new 01-matrix:J24_ARFA (ZF-bridge OPEN/INQUIRE; real G1 ARFA in run-f77-prep case23)
+J28|j24_arfa_open_inq.b6|J24_ARFA_OPEN_INQ.gold|new|OK|new:01-matrix:J24_ARFA (ZF-bridge OPEN/INQUIRE; real G1 ARFA in run-f77-prep case23)
 REUSED OK B01  <- tests/f77/suite/base.gold
 REUSED OK B03  <- tests/f77/suite/dpcomplex.gold
 REUSED OK E03  <- tests/f77/suite/blockif.gold
@@ -109,4 +117,4 @@ REUSED OK G01  <- tests/f77/suite/intrinsics_ext.gold
 REUSED OK H01  <- tests/f77/suite/do2d.gold
 REUSED OK I01  <- tests/f77/suite/charhollerith.gold
 REUSED OK J05  <- tests/f77/suite/listio.gold
-Итог L1: 51 OK / 0 PENDING; suite-пар переиспользовано 8, расхождений 0
+Итог L1: 55 OK / 0 PENDING; suite-пар переиспользовано 8, расхождений 0

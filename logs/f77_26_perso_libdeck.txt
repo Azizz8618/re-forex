@@ -1,0 +1,378 @@
+шифр 419999 зс5^
+лен 60(2348-wr)^
+ееВ1а3
+*name P7CLIB
+*call yesmemory
+*perso:602300
+*no list
+*assembler
+  ZE01:,NAME,
+        ,XTA,=:00000000 00000010
+        ,UZA,*+1
+        ,XTA,=:01510000 00000010
+        ,ATX,ISW1
+        ,XTA,=:14422510 14406004
+        ,ATX,NM11
+        ,XTA,=:00204411 02204777
+        ,ATX,NM21
+        ,XTA,=:52053075 67040060
+        ,*63,ISW1
+        ,ATX,00003422
+        ,ITA,16
+        ,ATX,00003423
+    13  ,UJ,
+  ISW1:,BSS,1
+  NM11:,BSS,1
+  NM21:,BSS,1
+        ,END,
+*assembler
+  ZE12:,NAME,
+        ,XTA,=:00000100 00000000
+        ,UZA,*+1
+        ,XTA,=:12000000 00000010
+        ,ATX,ISW2
+        ,XTA,=:14422510 14406004
+        ,ATX,NM12
+        ,XTA,=:00204411 02204777
+        ,ATX,NM22
+        ,XTA,=:52053075 67040060
+        ,*63,ISW2
+        ,ATX,00003422
+        ,ITA,16
+        ,ATX,00003423
+    13  ,UJ,
+  ISW2:,BSS,1
+  NM12:,BSS,1
+  NM22:,BSS,1
+        ,END,
+*assembler
+  ZE30:,NAME,
+        ,XTA,=:00000000 00000001
+        ,UZA,*+1
+        ,XTA,=:30000000 00000010
+        ,ATX,ISWG
+        ,XTA,=:14422510 14406004
+        ,ATX,NM1G
+        ,XTA,=:00204411 02204777
+        ,ATX,NM2G
+        ,XTA,=:52053075 67040060
+        ,*63,ISWG
+        ,ITA,16
+        ,ATX,00003423
+    13  ,UJ,
+  ISWG:,BSS,1
+  NM1G:,BSS,1
+  NM2G:,BSS,1
+        ,END,
+*assembler
+  ZE02:,NAME,
+        ,XTA,=:00000000 00000001
+        ,UZA,*+1
+        ,XTA,=:02000000 00000010
+        ,ATX,ISW3
+        ,XTA,=:14422510 14406004
+        ,ATX,NM13
+        ,XTA,=:00204411 02204777
+        ,ATX,NM23
+        ,XTA,=:52053075 67040060
+        ,*63,ISW3
+        ,ITA,16
+        ,ATX,00003423
+    13  ,UJ,
+  ISW3:,BSS,1
+  NM13:,BSS,1
+  NM23:,BSS,1
+        ,END,
+*assembler
+  ZE07:,NAME,
+        ,XTA,=:00000000 00000001
+        ,UZA,*+1
+        ,XTA,=:07000000 00000010
+        ,ATX,ISW4
+        ,XTA,=:14422510 14406004
+        ,ATX,NM14
+        ,XTA,=:00204411 02204777
+        ,ATX,NM24
+        ,XTA,=:52053075 67040060
+        ,*63,ISW4
+        ,ITA,16
+        ,ATX,00003423
+    13  ,UJ,
+  ISW4:,BSS,1
+  NM14:,BSS,1
+  NM24:,BSS,1
+        ,END,
+*assembler
+  ZE31:,NAME,
+        ,XTA,=:00000000 00000001
+        ,UZA,*+1
+        ,XTA,=:31000000 00000010
+        ,ATX,ISW5
+        ,XTA,=:14422510 14406004
+        ,ATX,NM15
+        ,XTA,=:00204411 02204777
+        ,ATX,NM25
+        ,XTA,=:52053075 67040060
+        ,*63,ISW5
+        ,ITA,16
+        ,ATX,00003423
+    13  ,UJ,
+  ISW5:,BSS,1
+  NM15:,BSS,1
+  NM25:,BSS,1
+        ,END,
+*assembler
+  ZE70W:,NAME,
+        ,XTA,=:00000100 00000000
+        ,UZA,*+1
+        ,XTA,=:12000000 00000010
+        ,ATX,ISWW
+        ,XTA,=:14422510 14406004
+        ,ATX,NM1W
+        ,XTA,=:00204411 02204777
+        ,ATX,NM2W
+        ,XTA,=:52053075 67040060
+        ,*63,ISWW
+C --- copy 8 words FM(257) -> hardware buffer 0o10000 ---
+        ,XTA,=:00000000 00001747
+        ,ATI,10
+        ,XTA,=:00000000 00010000
+        ,ATI,11
+    10  ,XTA,
+    11  ,ATX,
+    10  ,XTA,1
+    11  ,ATX,1
+    10  ,XTA,2
+    11  ,ATX,2
+    10  ,XTA,3
+    11  ,ATX,3
+    10  ,XTA,4
+    11  ,ATX,4
+    10  ,XTA,5
+    11  ,ATX,5
+    10  ,XTA,6
+    11  ,ATX,6
+    10  ,XTA,7
+    11  ,ATX,7
+        ,XTA,=:00001000 00510000
+        ,ATX,CWW
+        ,*70,CWW
+        ,ITA,16
+        ,ATX,00001737
+    13  ,UJ,
+  CWW:,BSS,1
+  ISWW:,BSS,1
+  NM1W:,BSS,1
+  NM2W:,BSS,1
+        ,END,
+*assembler
+  ZE70R:,NAME,
+        ,XTA,=:00000100 00000000
+        ,UZA,*+1
+        ,XTA,=:12000000 00000010
+        ,ATX,ISWR
+        ,XTA,=:14422510 14406004
+        ,ATX,NM1R
+        ,XTA,=:00204411 02204777
+        ,ATX,NM2R
+        ,XTA,=:52053075 67040060
+        ,*63,ISWR
+        ,XTA,=:00101000 00510000
+        ,ATX,CWR
+        ,*70,CWR
+        ,ITA,16
+        ,ATX,00001737
+C --- copy 8 words hardware buffer 0o10000 -> FM(257) ---
+        ,XTA,=:00000000 00010000
+        ,ATI,10
+        ,XTA,=:00000000 00001747
+        ,ATI,11
+    10  ,XTA,
+    11  ,ATX,
+    10  ,XTA,1
+    11  ,ATX,1
+    10  ,XTA,2
+    11  ,ATX,2
+    10  ,XTA,3
+    11  ,ATX,3
+    10  ,XTA,4
+    11  ,ATX,4
+    10  ,XTA,5
+    11  ,ATX,5
+    10  ,XTA,6
+    11  ,ATX,6
+    10  ,XTA,7
+    11  ,ATX,7
+    13  ,UJ,
+  CWR:,BSS,1
+  ISWR:,BSS,1
+  NM1R:,BSS,1
+  NM2R:,BSS,1
+        ,END,
+        ,END,
+*forex
+C =====================================================================
+C P7c / ВОЛНА G — PERSO-библиотека файлового I/O поверх АРФЫ
+C FORTRAN-обвязка: COMMON /FILMAP/ + вызовы MADLEN-движков (Э63/Э70)
+C =====================================================================
+
+C ---- ZFOPEN(NM,LUN,NZ,ISTAT): Э63 01 создать + 12 дозаказ -----------
+      SUBROUTINE ZFOPEN(NM,LUN,NZ,ISTAT)
+      INTEGER NM(2), LUN, NZ, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      I = 1
+   10 IF (I .GT. 16) GO TO 20
+      B = 1 + 15*(I-1)
+      IF (FM(B+1) .EQ. 0) GO TO 30
+      I = I + 1
+      GO TO 10
+   20 ISTAT = 1
+      RETURN
+   30 FM(B+0) = NM(1)
+      FM(B+1) = NM(2)
+      FM(B+2) = LUN
+      FM(B+6) = NZ
+      FM(B+9) = 0
+      FM(249) = 0
+      CALL ZE01
+      IF (FM(249) .EQ. 0) GO TO 28
+      IF (FM(249) .NE. 6) GO TO 60
+   28 CONTINUE
+      CALL ZE12
+      IF (FM(249) .NE. 0) GO TO 60
+C --- Э63 12 возвращает U в acc.r; если readback = 0, используем
+C --- заказанный РМР-шкалой LUN 051B (подтверждено трассой дозаказа)
+      IF (FM(248) .NE. 0) GO TO 55
+      FM(B+3) = 41
+      GO TO 57
+   55 FM(B+3) = FM(248)
+   57 CONTINUE
+C --- Э63 30В захват области обязателен перед Э63 31В освобождения
+      FM(249) = 0
+      CALL ZE30
+      IF (FM(249) .NE. 0) GO TO 60
+      FM(B+9) = 0
+      ISTAT = 0
+      RETURN
+   60 FM(B+9) = FM(249)
+      ISTAT = FM(249)
+      RETURN
+      END
+
+C ---- ZFCLOSE(LUN,DEL,ISTAT): Э63 31В (+02 при DEL=1) ----------------
+      SUBROUTINE ZFCLOSE(LUN,DEL,ISTAT)
+      INTEGER LUN, DEL, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      I = 1
+   10 IF (I .GT. 16) GO TO 20
+      B = 1 + 15*(I-1)
+      IF (FM(B+2) .EQ. LUN) GO TO 30
+      I = I + 1
+      GO TO 10
+   20 ISTAT = 1
+      RETURN
+   30 FM(249) = 0
+      CALL ZE31
+      IF (FM(249) .NE. 0) GO TO 60
+      IF (DEL .EQ. 0) GO TO 50
+      CALL ZE02
+      IF (FM(249) .NE. 0) GO TO 60
+   50 FM(B+2) = 0
+      FM(B+3) = 0
+      FM(B+9) = 0
+      ISTAT = 0
+      RETURN
+   60 FM(B+9) = FM(249)
+      ISTAT = FM(249)
+      RETURN
+      END
+
+C ---- ZFINQ(LUN,OPENED,EXIST,ISTAT): FILMAP + Э63 07 -----------------
+      SUBROUTINE ZFINQ(LUN,OPENED,EXIST,ISTAT)
+      INTEGER LUN, OPENED, EXIST, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      OPENED = 0
+      EXIST = 0
+      ISTAT = 0
+      I = 1
+   10 IF (I .GT. 16) GO TO 40
+      B = 1 + 15*(I-1)
+      IF (FM(B+2) .EQ. LUN) GO TO 20
+      I = I + 1
+      GO TO 10
+   20 OPENED = 1
+      FM(249) = 0
+      CALL ZE07
+      IF (FM(249) .EQ. 0) EXIST = 1
+      RETURN
+   40 FM(249) = 0
+      CALL ZE07
+      IF (FM(249) .EQ. 0) EXIST = 1
+      RETURN
+      END
+
+C ---- ZFWRIT(LUN,BUF,N,ISTAT): Э70 WR --------------------------------
+      SUBROUTINE ZFWRIT(LUN,BUF,N,ISTAT)
+      INTEGER LUN, BUF(1), N, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      ISTAT = 1
+      I = 1
+   10 IF (I .GT. 16) RETURN
+      B = 1 + 15*(I-1)
+      IF (FM(B+2) .EQ. LUN) GO TO 20
+      I = I + 1
+      GO TO 10
+   20 IF (FM(B+3) .EQ. 0) RETURN
+      DO 25 I=1,N
+   25 FM(256+I) = BUF(I)
+      FM(249) = 0
+      CALL ZE70W
+      FM(B+9) = FM(249)
+      ISTAT = FM(249)
+      IF (ISTAT .NE. 0) RETURN
+      FM(B+7) = FM(B+7) + 1
+      IF (FM(B+7) .GE. FM(B+6)) FM(B+8) = 1
+      RETURN
+      END
+
+C ---- ZFREAD(LUN,BUF,N,ISTAT): Э70 RD, EOF -> ISTAT=-1 --------------
+      SUBROUTINE ZFREAD(LUN,BUF,N,ISTAT)
+      INTEGER LUN, BUF(1), N, ISTAT
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      INTEGER I, B
+      ISTAT = 1
+      I = 1
+   10 IF (I .GT. 16) RETURN
+      B = 1 + 15*(I-1)
+      IF (FM(B+2) .EQ. LUN) GO TO 20
+      I = I + 1
+      GO TO 10
+   20 IF (FM(B+3) .EQ. 0) RETURN
+      IF (FM(B+7) .GE. FM(B+6)) GO TO 90
+      FM(249) = 0
+      CALL ZE70R
+      FM(B+9) = FM(249)
+      ISTAT = FM(249)
+      IF (ISTAT .NE. 0) RETURN
+      DO 26 I=1,N
+   26 BUF(I) = FM(256+I)
+      FM(B+7) = FM(B+7) + 1
+      RETURN
+   90 FM(B+8) = 1
+      FM(B+9) = -1
+      ISTAT = -1
+      RETURN
+      END
+*to perso:602320
+*end file
+``````
+еконец

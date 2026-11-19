@@ -1,0 +1,108 @@
+=== Monitor-80 LUNTYP: type codes ===
+С*   FUNCTION LUNTYP(LUN)
+С*
+С*   OПPEДEЛЯET TИП YCTPOЙCTBA,
+С*   ЗAДAHHOГO CBOИM MATEMATИЧECKИM
+С*   HOMEPOM  LUN = 30B, ..., 67B
+С*       PEЗYЛЬTAT :
+С*   0 - BOOБЩE HE ЗAKAЗAHO
+С*   1 - ЛEHTA
+С*   2 - SCRATCH-ФAЙЛ
+С*   3 - ЛИЧHЫЙ ФAЙЛ HA ДИCKE
+С*   4 - CПEЦ.ФAЙЛ (MOДEЛЬ MЛ)
+С*
+
+=== chekjob/g02407.f: *FILE dispatch ===
+53:     *6H*FILE ,
+79:     *6H*JFILE,
+194:      call HANDLE(CARD)
+196:C *FILE
+198:      if (M(2).eq.'scratc') goto 244
+200:      call G04720(CARD, k550)
+203:      call HANDLE(CARD, k550)
+205:      if(CARD(2).eq.'scratc')goto 244
+207:      call G04066(k550)
+211:      if(CARD(3).eq.'scratc')goto 244
+
+=== Monitor-80 permanent inventory (I/O) ===
+erriom.asm
+erriom.dtr
+iocont%.asm
+ioxxdr.asm
+ioxxer_m.asm
+ioxxer_m.dtr
+ioxxfmr%.asm
+ioxxlpwt.asm
+ioxxpkrt.asm
+ioxxpkrt.dtr
+ioxxpkwt.asm
+ioxxptwt.asm
+ioxxsfw%.asm
+ioxxsfw%.dtr
+ioxxsowt.asm
+ioxxttrt.asm
+ioxxttrt.dtr
+ioxxttwt.asm
+lun%mon.asm
+monread%.asm
+monread%.dtr
+paramt%.dtr
+paramt%.masm
+setiodcb.asm
+star%.masm
+
+=== SETIODCB: LUN 40-57 mapping table (excerpt) ===
+ SETIODCB:  , NAME,
+ IODCB*  :  , LC  ,1
+ *1      :  ,BLOCK,M1,M2,M3,M4,M5,M6,M7,M8,M9
+            , CONT,M10,M11,M12,M13,M14,M15
+c
+            , DATA,
+ tabiodcb  :  , OCT ,5444 0400 7
+            , OCT ,5465 3100 71
+            , OCT ,5547 2500 74
+            , OCT ,5504 3100 72
+            , LOG ,4021 3740 4100 0012
+            , LOG ,3777 0000
+            , LOG ,4041 3740 4200 0012
+            , LOG ,3777 0000
+            , LOG ,4061 3740 4300 0012
+            , LOG ,3777 0000
+            , LOG ,4101 3740 4400 0012
+            , LOG ,3777 0000
+            , LOG ,4121 3740 4500 0012
+            , LOG ,3777 0000
+
+=== Dubna tests: *FILE card syntax ===
+besm6-new/dubna/tests/expect_file_read.txt:28:*FILE:FUBAR,41
+besm6-new/dubna/tests/expect_file_scratch.txt:27:*FILE:SCRATCH,44,W
+besm6-new/dubna/tests/expect_file_write.txt:28:*FILE:FUBAR,41,W
+besm6-new/dubna/tests/expect_lib1.txt:231:                                        *FILE:LTEST,31,R
+besm6-new/dubna/tests/expect_lib1.txt:1015:                                        *FILE:LTEST,31,R
+besm6-new/dubna/tests/expect_lib1.txt:1799:                                        *FILE:LTEST,31,R
+besm6-new/dubna/tests/expect_read_qbfox.txt:28:*FILE:QBFOX,41
+besm6-new/dubna/tests/lib2/f424.f:2:C         *FILE:SCRATCH,F01,W,100
+besm6-new/dubna/tests/lib2/f424.f:3:C         *FILE:SCRATCH,F02,W,100
+besm6-new/dubna/tests/lib2/k100.f:2:C        *FILE:SCRATCH,F1,W,40
+besm6-new/dubna/tests/lib2/k100.f:3:C        *FILE:SCRATCH,F2,W,40
+besm6-new/dubna/tests/lib2/k100.f:4:C        *FILE:SCRATCH,F3,W,40
+besm6-new/dubna/tests/lib2/k100.f:5:C        *FILE:SCRATCH,F8,W,40
+besm6-new/dubna/tests/lib2/t110b.f:2:C        *FILE:SCRATCH,F08,W,10
+besm6-new/dubna/tests/lib2/t110b.f:3:C        *FILE:SCRATCH,F04,W,10
+besm6-new/dubna/tests/lib2/t110c.f:2:C        *FILE:SCRATCH,F08,W,10
+besm6-new/dubna/tests/lib2/t110c.f:3:C        *FILE:SCRATCH,F03,W,10
+
+=== Dubna file subsystem line counts ===
+  275 besm6-new/dubna/e57.cpp
+  310 besm6-new/dubna/disk.cpp
+  338 besm6-new/dubna/cosy.cpp
+ 1107 besm6-new/dubna/machine.cpp
+ 2030 итого
+
+=== file-related function line spans in machine.cpp ===
+415:void Machine::disk_mount(unsigned disk_unit, Word tape_id, bool write_permit)
+492:unsigned Machine::file_search(Word disc_id, Word file_name, bool write_mode)
+567:unsigned Machine::file_mount(unsigned disk_unit, unsigned file_index, bool write_mode, unsigned file_offset)
+613:void Machine::scratch_mount(unsigned disk_unit, unsigned num_zones)
+649:void Machine::disk_release(Word bitmask)
+670:unsigned Machine::disk_find(Word tape_id)

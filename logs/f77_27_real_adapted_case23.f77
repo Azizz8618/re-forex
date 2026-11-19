@@ -1,0 +1,30 @@
+      PROGRAM F23
+C@ F77A FILMAP: FM(1)=ISTAT FM(2)=OPENED FM(3)=EXIST
+      INTEGER FM(320)
+      COMMON /FILMAP/ FM
+      DATA FM /320*0/
+      INTEGER FMN21(2)
+      DATA FMN21 /12HTEST        /
+      INTEGER K,OP,EX
+C@ F77A OPEN(21,FILE='TEST',STATUS='NEW',IOSTAT=K,ERR=90) -> ZF bridge
+      FM(4)=2
+      FM(5)=0
+      FM(6)=0
+      FM(7)=0
+      CALL ZFOPEN(FMN21,21,8,FM(1))
+      K = FM(1)
+      IF (K .NE. 0) GO TO 90
+C@ F77A INQUIRE(UNIT=21,OPENED=OP,EXIST=EX,IOSTAT=K) -> ZF bridge
+      CALL ZFINQ(21,OP,EX,FM(1))
+      K = FM(1)
+      PRINT 10,OP,EX,K
+   10 FORMAT(1X,'OP ',I2,' EX ',I2,' K ',I2)
+C@ F77A CLOSE(21,STATUS='DELETE',IOSTAT=K) -> ZF bridge
+      CALL ZFCLOSE(21,1,FM(1))
+      K = FM(1)
+      PRINT 20,K
+   20 FORMAT(1X,'K ',I2)
+      STOP
+   90 PRINT 21
+   21 FORMAT(1X,'BAD')
+      END

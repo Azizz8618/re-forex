@@ -1,0 +1,48 @@
+P7c wave E task 3: WRITE(41,10) experiments
+dispak=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+BESM6_PATH=/var/tmp/p7c-file-runtime/disks:/usr/local/share/besm6
+disks: 2048 pristine copy; 2348 working copy + FOREX_PERSO_2300.bin @0o2300
+
+========== w41_base ==========
+rc: rc=0
+ВРЕМЯ СЧЕТА: 00.00.00 0
+  НЕТ КАНАЛА  LUN 41
+ КОНЕЦ ЗАДАЧИ
+ 00411: 00 074 0000	*74
+--- stderr ---
+
+========== w41_len ==========
+rc: rc=0
+ВРЕМЯ СЧЕТА: 00.00.00 0
+  НЕТ КАНАЛА  LUN 41
+ КОНЕЦ ЗАДАЧИ
+ 00411: 00 074 0000	*74
+--- stderr ---
+
+========== w41_file ==========
+rc: rc=0
+Unknown passport entry: ﻿*FILЕ:FUВАR,41,W
+ВРЕМЯ СЧЕТА: 00.00.00 0
+  НЕТ КАНАЛА  LUN 41
+ КОНЕЦ ЗАДАЧИ
+ 00411: 00 074 0000	*74
+--- stderr ---
+
+========== w41_file_disc ==========
+rc: rc=0
+Unknown passport entry: ﻿*DISС:1/LОСАL
+Unknown passport entry: *FILЕ:FUВАR,41,W
+ВРЕМЯ СЧЕТА: 00.00.00 0
+  НЕТ КАНАЛА  LUN 41
+ КОНЕЦ ЗАДАЧИ
+ 00411: 00 074 0000	*74
+--- stderr ---
+
+========== w41_file_len ==========
+rc: rc=0
+Unknown passport entry: ﻿*FILЕ:FUВАR,41,W
+ВРЕМЯ СЧЕТА: 00.00.00 0
+  НЕТ КАНАЛА  LUN 41
+ КОНЕЦ ЗАДАЧИ
+ 00411: 00 074 0000	*74
+--- stderr ---

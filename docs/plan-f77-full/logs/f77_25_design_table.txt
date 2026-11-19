@@ -1,0 +1,56 @@
+P7c / ВОЛНА F / ЗАДАЧА 3 — research log: TABLE (F77 -> АРФА)
+Date: 2026-11-19. Repos READ-ONLY. No files written outside docs/plan-f77-full/32-f77-on-arfa.md + logs.
+
+STEP 1 — locate AРФА implementation and F2 bridge doc
+  find /home/azizz/Yandex.Disk -iname '*arfa*bridge*' -o -iname '31-fortran*'
+    -> (no result). 31-fortran-arfa-bridge.md (F2) absent.
+  Per task instruction: read arfa.c directly.
+  Files examined (read-only):
+    dispak/dispak/arfa.c        (main source)
+    dispak/dispak/extra.c       (Э70 ddio, protection gate)
+    dispak/dispak/disk.h:28     (ZONE_SIZE 6144)
+
+STEP 2 — extract Э63 contract (arfa.c:1-45, 67-84, 1339-1391)
+  Э63 "КЛЮЧАР": AISP in reg[016]; op type in bits 48-43 of ИС;
+  params on РМР (accex -> prm as alureg_t); reply in M16:
+    0=OK, 1=NO_NAME, 2=BAD_NAME, 4=NO_VIRT, 5=BAD_SCHIFR, 6=EXISTS,
+    010=BUSY, 012=NO_VOLUME, 013=VIRT_N, 015=TOO_LONG, 022=NO_SPACE,
+    023=NO_RIGHTS, 024=IS_CATALOG, 027=BAD_KIND, 031=NEED_PASS,
+    032=VIRT_BUSY, 0100000=AVOST (-> E_TERM, task dies).
+  M16=0 / code — matches task context exactly.
+  Dispatch: 01/02/03/04/05/06/07/010/011/012/013/014/015/016/017/030/031.
+  NOTE: task context listed 01/02/30В/31В/07/10В; source also has 12 (дозаказ),
+  which is the real "OPEN" analogue. Included in table.
+
+STEP 3 — op-by-op facts used in the table
+  op_create  (771-859): name GOST <=12 (parse_name_new 520-559, parse_name_old 566-605);
+    owner schifr MANDATORY (792-793: !schifr -> ARF_BAD_SCHIFR);
+    length = W16_1(prm) = NUMBER OF ZONES (844); kind W20_18(prm);
+    placement after last area from zone 0030 (801-808); slot 13 words (63,307-339).
+  op_destroy (865-907): name + owner/schifr check (885-886), password W if has_w
+    (887-891), clears slot + unit_area[] links (900-905).
+  op_info    (1047-1063): acc.l=owner; acc.r = has_r/has_w/group/individual + nzones
+    (1061) -> length in ZONES, not records.
+  op_catalog (1069-1109): 2-word entries name(9)+owner, terminator 0xffffff.
+  op_order   (1133-1176): resolve area -> first free LUN 030..067 from scale on РМР;
+    disks[u].diskno=arfa_diskno; mode = W12(is)?RO:RW (1168);
+    offset = area.zone + shift (1170); unit_area[u]=idx+1 (1172);
+    acc.r=u (1174); <=12 virtual devices (1145-1149).
+  op_grab/release (1290-1332): one grabbed area per task (1305-1307);
+    release without grab = fatal avost (1327-1330).
+  resolve_area (650-689): W48_37 logical number OR W4_1=0 ident OR
+    1..7 "old" OR 010 "new" GOST OR 014 MS-80 (UNSUPPORTED, 671-673).
+
+STEP 4 — data path (extra.c, disk.h)
+  ddio (2063+): u = uir.i_opcode&077; zone = uir.i_addr&07777 (2090-2093);
+    direct exchange with protected archive volume -> E_CWERR unless
+    arfa_area_unit(u) != 0 (2083-2089)  => Э63 12 binding is mandatory.
+  ZONE_SIZE = 6144 bytes (disk.h:28). Э70 is ZONE-oriented, no record/RECL.
+  Volume search: BESM6_ARFA -> LUN 030..067 with "АRFA" label -> BESM6_PATH
+    (arfa.c:381-494). Catalog persistent; passwords/grabs/keys in-memory only (41-45).
+
+STEP 5 — conclusion for table
+  Expressible: name, area, length(zones), LUN binding, create/destroy/info/catalog, grab/release.
+  NOT expressible: record of fixed length, record number, RECL, EOF marker in area,
+  formatted READ redirection. Direct+RECL only emulatable as zone arithmetic in PERSO.
+  Report: 32-f77-on-arfa.md §1-2, §5.1/5.4/5.7/5.8/5.9.

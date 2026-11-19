@@ -1,0 +1,59 @@
+LOG: f77_24_docs_1 — документальная семантика *FILE (P7c / ВОЛНА E / ЗАДАЧА 4)
+Дата: 2026-11-19
+Скоуп (строго): monitor80-re, re-dispak, re-siprod.
+ИСКЛЮЧЕНО по исправлению задачи: besm6-new/**, dubna, micro-besm, lcc, simh.
+Режим: READ-ONLY. Не modifying исходники/эталоны/src/tests ре-forex.
+
+=== ПОИСКОВЫЕ ЗАПРОСЫ ===
+grep -E '\*FILE|\*FILE:|FILE:|файл|ФАЙЛ|device control|УВУ|УСТВУ|BCB|DCB|каталог' monitor80-re/docs
+  -> 12 попаданий, НИ ОДНОГО '*FILE'. Каталог/END FILE/LOADF.
+grep -E '\*FILE|\*file|\*ФАЙЛ' monitor80-re (весь репо)
+  -> 2 попадания: chekjob/g02407.f:53 (:53 *6H*FILE ,), :196 (C *FILE)
+grep -E '\*FILE|\*file|\*ФАЙЛ' re-dispak (весь репо)
+  -> 1 попадание: termas.be:1398 (*ФАЙЛН НОП 0) — не системная карта, мусор.
+grep -E '\*FILE|\*file|\*ФАЙЛ' re-siprod (весь репо)
+  -> 5 попаданий: dtran-siprod.sh:19,25; pascal/README/README.md:576;
+     drakon/build.py:99; tests/siprod/loadmap.sh:21
+grep -E 'SETIODCB|OPEN|FOPEN|INQUIRE|READ\*|WRITE\*|файл|ФАЙЛ|каталог|device control|DCB|ЛУН|лен ' re-dispak/docs
+  -> нет SETIODCB/OPEN/FOPEN/INQUIRE. Есть ЭК 0030Н (низкоуровневый обмен),
+     ARFA-каталоги, "ЛЕН NN(...)‾" в паспорте.
+grep -E 'SETIODCB|OPEN|CLOSE|INQUIRE|READ|WRITE|файл' monitor80-re/docs
+  -> нет API; только LOADF/IOCONT*/IOX*/LUN%MON и дескриптор (LUN, формат, адрес).
+
+=== КЛЮЧЕВЫЕ НАХОДКИ ===
+1. monitor80-re/docs/СПРАВОЧНИК_КОМАНДЫ.md:29-101, 364-395 — полный справочник
+   системных карт: *FILE ОТСУТСТВУЕТ. Есть *NAME, *END FILE, *READ, *EDIT, *CALL,
+   *MAIN, *LIBRA-подобные, *CATAL/*EXCLUDE.
+2. monitor80-re/docs/СПРАВОЧНИК_КОМАНДЫ.md:376-377 — *END FILE = конец файла задания,
+   вызов STOP* -> выход. "файл" = поток задания.
+3. monitor80-re/docs/СПРАВОЧНИК_КОМАНДЫ.md:551-555 — обмен через обменный лист,
+   буфер ввода/вывода, дескриптор (LUN, формат, адрес).
+4. monitor80-re/docs/СПРАВОЧНИК_КОМАНДЫ.md:437-465 — поток обработки карты:
+   MONREAD* -> IDENT6 -> SWITCH (star%.masm) -> обработчик.
+5. re-siprod/pascal/README/README.md:576-582 — *CALL/*FILE/*DISC «голыми» в абзаце;
+   редактор СИПРОД выполняет *C/*F/*D в середине карты; '*' в тексте = *H*.
+   Только синтаксическая/редакторская справка.
+6. re-siprod/dtran-siprod.sh:19-25 — *FILE:<name> ищется как <name>.bin в cwd;
+   имена <= 6 символов; пример *file:siprod,67 (поле имени + слот).
+7. re-siprod/tests/siprod/loadmap.sh:21 — *name siprod / *disc:1/local /
+   *file:siprod,67 / *perso:670000.
+8. re-dispak/docs/Dispak-compat-guide.md:169-195 — стандартный паспорт Монитора-80:
+   "ЛЕН 30(2048)‾" (LUN 30, диск 2048 зон).
+9. re-dispak/docs/Dispak-sysprog-guide.md:839-859 — раздел ЛЕНТ/ЛЕН в паспорте,
+   надчеркивание ‾ = конец раздела, сокращение до 3 символов;
+   :883 "ЛЕН 44(200-ЗП)‾", :612 "ЛЕН 45(1С)", :3273 "ЛЕН 43(ВАСЯ.МАЛЬЧИК/4199..)‾".
+10. re-dispak/docs/Dispak-programmer-guide.md:13320-13349 — ЭК 0030Н,
+    информационный массив с КОП=0/1 (запись/чтение), типы ВУ:
+    "МД, заказанные в паспорте - 030-067", "МД файловой системы - 100-1FFН".
+11. re-dispak/docs/Dispak-sysprog-guide.md:2251-2253, 3000-3025 — ARFA: каталог
+    областей и экстракод запроса каталога областей.
+12. monitor80-re/chekjob/g02407.f:53,196-208 (ВНЕ номинального doc/-скоупа) —
+    карта *FILE распознаётся входным контролем; special case 'scratc';
+    dispatch G04720/HANDLE -> G04052/G04066.
+
+=== ВЫВОД ===
+Полей R/W и ёмкости для *FILE в трёх репо НЕ задокументировано.
+API именованных файлов (OPEN/CLOSE/INQUIRE/FOPEN/SETIODCB) НЕ найдено.
+*FILE и "лен NN(...)" — разные механизмыDifferent layer и разные ОС.
+Вердикт: job-control монтирование, не задел ФС для F77 OPEN/CLOSE/INQUIRE.
+ARFA/dispak Э30 — настоящая ФС, но это НЕ *FILE и не Монитор-80.

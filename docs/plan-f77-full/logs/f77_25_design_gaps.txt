@@ -1,0 +1,52 @@
+P7c / ВОЛНА F / ЗАДАЧА 3 — research log: GAPS / honest limitations
+Date: 2026-11-19. READ-ONLY sources. No status inflation.
+
+G1 RECORD MODEL (arfa.c:844, extra.c:2090-2093, disk.h:28)
+  Area length = nzones (number of 6144-byte zones); Э70 addresses a zone.
+  No record, no RECL, no record number, no record table. DIRECT+RECL can only
+  be faked as zone = base + rec*ceil(RECL/6144) inside PERSO/FILMAP.
+  Status: PARTIAL / profile caveat. NOT support of ACCESS='DIRECT'.
+
+G2 SCRATCH (arfa.c:777-793)
+  Э63 01 requires GOST name and owner schifr; no anonymous area exists.
+  Synthetic internal name + 02 on close leaves a catalog trace and has no
+  guarantee of deletion on abnormal termination. Status: OK*/caveat.
+
+G3 NATIVE EOF (19-eof-iostat.md §1.3, §3)
+  Э60 sets reg[016]=0 but monread% -> STOP*; no status cell; runtime IOEND*/
+  IOCONT* have no EOF flag. Sentinel -999999. is emulation by value only.
+  True EOF needs patch of system zone 2348 (P7c/monitor). Status: OK*.
+
+G4 ARFA EOF MARKER (arfa.c:1061)
+  Area has no end marker; only nzones in catalog. "EOF" = FMPOS >= FMZON, a
+  synthesized condition in FILMAP/PERSO, not an ARFA signal.
+
+G5 FORMATTED READ ON ARFA UNIT (15-io.md §4.3; 19-eof-iostat.md:89-91)
+  FOREX READ* goes to card queue; LFSCAN.mad declares IOEND*/IOCONT* external
+  and translator 2.02 rejects READ(...,END=...). Redirecting formatted input
+  to a PERSO buffer requires runtime patching. Only unformatted FREAD/FWRIT
+  is realistically expressible in this wave.
+
+G6 NATIVE IOSTAT (arfa.c:67-84, 1387-1389)
+  M16 codes are octal ARFA codes, not X3.9 IOSTAT; AVOST -> E_TERM terminates
+  the task (not returnable). Profile table 32-f77-on-arfa.md §4.5 applies.
+
+G7 NAME CHARSET / LENGTH (arfa.c:176-181, 671-673)
+  GOST <=12 bytes, MS-80 unsupported; source is DUBNA TEXT. Static transcode
+  required; >12 chars = hard failure. No silent truncation.
+
+G8 CAPACITY (arfa.c:65, 87-88, 1145-1149, 1305-1307)
+  <=60 areas, <=12 virtual devices, LUN 030..067, one grabbed area/task.
+  F77 has no such limits -> profile caps.
+
+G9 DIRECT VOLUME ACCESS (extra.c:2083-2089)
+  Protected archive volume closed to Э70 unless Э63 12 bound the LUN
+  (arfa_area_unit(u)). Э50 0131 alone is insufficient (17-lun-p7c.md §3.2).
+
+G10 LEVEL B / LUN CHANNELS (17-lun-p7c.md §3, 23-luntyp-patch.md)
+  ERRLUN blocks FOREX LUNs (НЕТ КАНАLA LUN 45). Independent of ARFA binding;
+  needs PERSO-internal Э70 or monitor patch. Unresolved.
+
+VERDICT: design-only. The repository docs already state J24=NO / NEEDS-RUNTIME
+(01-f77-standard-matrix.md:228,477-499); this wave does not change that status.
+Any claim "J24 implemented via ARFA" without G1-G10 caveats = status inflation.

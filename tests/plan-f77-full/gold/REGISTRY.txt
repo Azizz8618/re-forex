@@ -49,3 +49,7 @@ J21|J6_list_read|j6_list_read.b6|J6_list_read.gold|new|01-matrix:J6_list_read
 J22|J6_list_read_list|j6_list_read_list.b6|J6_list_read_list.gold|new|01-matrix:J6_list_read_list
 J23|J7_end_sentinel|j7_end_sentinel.b6|J7_end_sentinel.gold|new|01-matrix:J7_end_sentinel
 J24|J8_err_sentinel|j8_err_sentinel.b6|J8_err_sentinel.gold|new|01-matrix:J8_err_sentinel
+J25|J2_ARFA_WRITE|j2_arfa_write.b6|J2_ARFA_WRITE.gold|new|01-matrix:J2_ARFA (ZF-bridge contract; real G1 ARFA in run-f77-prep case24)
+J26|J3_ARFA_READ|j3_arfa_read.b6|J3_ARFA_READ.gold|new|01-matrix:J3_ARFA/J7 (ZF-bridge EOF; real G1 ARFA in run-f77-prep case26)
+J27|J4_ARFA_READ_UNIT|j4_arfa_read_unit.b6|J4_ARFA_READ_UNIT.gold|new|01-matrix:J4_ARFA (ZF-bridge READ(u); real G1 ARFA in run-f77-prep case25)
+J28|J24_ARFA_OPEN_INQ|j24_arfa_open_inq.b6|J24_ARFA_OPEN_INQ.gold|new|01-matrix:J24_ARFA (ZF-bridge OPEN/INQUIRE; real G1 ARFA in run-f77-prep case23)

@@ -1,0 +1,10 @@
+      PROGRAM E9Z
+      T=0
+C@ DO 20 I=1,0 -> IF (1 .GT. 0) GO TO 90000 / 90000 CONTINUE
+      IF (1 .GT. 0) GO TO 90000
+      DO 20 I=1,0
+   20 T=T+I
+90000 CONTINUE
+      PRINT 30,T
+   30 FORMAT(1X,I4)
+      END
