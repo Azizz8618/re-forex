@@ -1,4 +1,4 @@
-F77 full verification — 2026-11-19T21:59:25Z
+F77 full verification — 2026-11-19T23:16:56Z
 dispak=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak etalon=/usr/local/share/besm6/2348 image=/home/azizz/Yandex.Disk/re-forex/build/FOREX_PERSO_2300.bin
 F77LIBR: 13 процедур собраны в PERSO 0o2310 (для *perso:602310,cont)
 

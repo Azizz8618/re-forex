@@ -1,4 +1,4 @@
-# F77 full verification manifest — 2026-11-19T21:59:32Z
+# F77 full verification manifest — 2026-11-19T23:17:03Z
 2a9d5038367105aebc5c7f8bd6e43f049919c9ced179682a9126e76ac402253d  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/cross/cases.txt
 db31e28559fabfa649dca94a069f1c94de2f9c0c47117854d27867861d0223de  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gate/endread_ok.b6
 39ef6055f933b193878ec20085e00dcab0f9e9b6534aa960311df73499d0414b  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gate/endread_ok.gold
@@ -361,4 +361,4 @@ aaa9e11558a055877629e2a4d8b672025d2e9e432f4ec04398165f1ab652bc57  /home/azizz/Ya
 9855b57aba7c22df9746cb969d6287fad5c5e49c1268bbb32b7820df6846835a  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/K06_intrinsics_absent/K06_intrinsics_absent.gold
 db49f1a8744c2825e34b383483efc7a8869c96de467e952df043afa72ba2d275  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/unit/K06_intrinsics_absent/options.txt
 2cc2fbbec28883e45bb62ee72d6c4ed9747ce582ad1e6b39efd87d66c157e2b6  /home/azizz/Yandex.Disk/re-forex/build/FOREX_PERSO_2300.bin
-b6fa9f67c9d9201e4968d1565f5593b066a5e292b809cab4cfbfa9105d5846d6  /usr/local/share/besm6/2348
+cfbab065b06ae3d9a231c621d54098887093b1892104f9510ae4bd76b70f8e27  /usr/local/share/besm6/2348

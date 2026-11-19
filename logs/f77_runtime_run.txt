@@ -1,5 +1,5 @@
 === E2: F77LIBR from PERSO 0o2310 ===
-date    : 2026-11-19T21:59:51Z
+date    : 2026-11-19T23:17:26Z
 dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
 image   : /home/azizz/Yandex.Disk/re-forex/build/FOREX_PERSO_2300.bin
 etalon  : /usr/local/share/besm6/2348
