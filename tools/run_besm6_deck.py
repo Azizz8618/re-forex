@@ -11,7 +11,7 @@
 Примеры:
     python3 tools/run_besm6_deck.py --hello
     python3 tools/run_besm6_deck.py --deck myjob.txt --timeout 120
-    python3 tools/run_besm6_deck.py --source prog.f77 --name HELLO --cipher 123456
+    python3 tools/run_besm6_deck.py --source prog.f77 --name HELLO --cipher 410300
 """
 import argparse
 import os
@@ -31,11 +31,10 @@ EMULATOR = SIMH / "BIN/besm6"
 # docs/ВВОД_АНАЛИЗ.md §6): подвалы КОНЕЦ ЗАДАЧИ/СБО, маркеры * и 555...
 ACPU_ANALYZER = Path("/home/azizz/Yandex.Disk/re-dispak/acpu_analyze.pl")
 
-HELLO = """ШИФР 123456 ЗС5^
+HELLO = """ШИФР 410300 ЗС5^
 ОЗУ 16^АЦП 32^
 ЕЕВ1А3
 *NAME HELLO
-*CALL YESMEMORY
 *FTN
       PROGRAM MAIN
       PRINT 100
@@ -127,7 +126,7 @@ def main():
     src.add_argument("--deck", help="готовый файл колоды")
     src.add_argument("--source", help="Fortran-исходник (простая программа)")
     ap.add_argument("--name", default="HELLO", help="*NAME для --source")
-    ap.add_argument("--cipher", default="123456", help="шифр задачи (не 419999!)")
+    ap.add_argument("--cipher", default="410300", help="шифр задачи, зарегистрированный в ОС (например 410300)")
     ap.add_argument("--acpu", type=int, default=64, help="метры бумаги АЦПУ")
     ap.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT)
     ap.add_argument("--session", default="besm6-deck", help="имя tmux-сессии")
