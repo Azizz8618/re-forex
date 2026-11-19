@@ -1,0 +1,18 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J18_slash
+*call yesmemory
+*no list
+*forex
+c---- J18: slash descriptor (new record).
+      PROGRAM J18
+      PRINT 10,1,2.5
+   10 FORMAT(1X,I4/1X,F8.2)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

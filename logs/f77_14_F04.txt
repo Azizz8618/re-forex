@@ -1,0 +1,30 @@
+# Wave-1 F77 E-H log — F04 — 2026-11-19
+# dispak 2048+2348 (PERSO 0o2300); критерий: нет диагностики + верный вывод.
+# Команда: dispak <deck> с BESM6_PATH=WORK:/usr/local/share/besm6
+
+======================================================================
+ROLE : native 3D
+DECK : tests/plan-f77-full/unit/F04_arrays_3d7d/f04_array3.b6
+VERDICT: OK
+RAW  : /tmp/.private/azizz/opencode/w1/F4.out
+
+                                                      19.11.26 М1
+        RК*      Е 01072        ТТРRINТD Е 03360        АSАVЕ*   Е 04537
+        WSУ*     Е 01342        ТТРRINТ  Е 03360        SАVЕ*НID Е 04544
+        FС*002   Е 01573        ВСDРUN   Е 04075        SАVЕLЕХХ Е 04757
+     9.00
+ КОНЕЦ ЗАДАЧИ
+
+======================================================================
+ROLE : native 7D
+DECK : tests/plan-f77-full/unit/F04_arrays_3d7d/f04_array7.b6
+VERDICT: OK
+RAW  : /tmp/.private/azizz/opencode/w1/F47.out
+
+                                                      19.11.26 М1
+        RК*      Е 01262        ТТРRINТD Е 03550        АSАVЕ*   Е 04727
+        WSУ*     Е 01532        ТТРRINТ  Е 03550        SАVЕ*НID Е 04734
+        FС*002   Е 01763        ВСDРUN   Е 04265        SАVЕLЕХХ Е 05147
+     3.00
+ КОНЕЦ ЗАДАЧИ
+

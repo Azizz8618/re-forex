@@ -1,0 +1,24 @@
+# f77_17_attach — E50 0131 attach disk 2048 -> LUN 45 from MADLEN PERSO (chance 1/3)
+# Date: 2026-11-19
+
+## MADLEN routine LUNAT (build/lunat5.b6):
+    LUNAT:,NAME, / ,XTA,=:45770000 00020110 / ,*50,131B / 13,UJ, / ,END,
+  acc.l = 0o45770000 (u=045 in bits 23-18, 077 mask in 17-12)
+  acc.r = 0o00020110 = BCD 2048 -> NDISK() = 2048
+  MADLEN numbers decimal by default; suffix B = octal (so '131B' = octal 0131).
+
+## EXECUTABLE TRACE (decks/run9 and run10, BESM6_DD_DEBUG=1):
+E50at 01032R type=00131 acc=4577000000020110
+  -> Э50 0131 type=00131 issued, acc as expected
+
+## RESULT despite the attach (decks/run9 with лен 45, run10 without лен 45):
+  НЕТ КАНАЛА  LUN 45
+ КОНЕЦ ЗАДАЧИ
+  НЕТ КАНАЛА  LUN 45
+ КОНЕЦ ЗАДАЧИ
+
+## VERDICT: attaching the channel at dispak level (Э50 0131) does NOT unblock
+## Fortran WRITE(45). 'НЕТ КАНАЛА' is emitted by the FOREX 2.02 runtime's OWN
+## per-LUN table (ERRLUN), independently of dispak's disks[] channel table.
+## => LUN patch must target the FOREX runtime (system zone of disk 2348),
+##    not just dispak's channel allocation.

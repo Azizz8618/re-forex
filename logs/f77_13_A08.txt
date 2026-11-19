@@ -1,0 +1,22 @@
+=== F77 standard matrix A-D, volume 1: A8 (6-bit TEXT encoding / recoding caveat) ===
+date    : 2026-11-19 21:20:46
+repo    : /tmp/.private/azizz/opencode/re-forex (branch main)
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+disks   : 2048 + 2348 (PERSO 0o2300 = build/FOREX_PERSO_2300.bin,
+          F77LIBR 13 proc in PERSO 0o2310 via *perso:602310,cont)
+method  : real dispak runs; success = no diagnostics AND correct output
+          (КОНЕЦ ЗАДАЧИ alone is NOT proof -- it is printed on errors too)
+
+--- native 2.02: a08_text.b6, A4/A6 descriptors, no diagnostics ---
+RESULT (raw dispak bytes, UTF-8):
+ АВСD
+ АВСDЕFНЕLLО
+
+Codepoints observed: A->U+0410, B->U+0412, C->U+0421, E->U+0415, H->U+041D,
+K->U+041A, M->U+041C, O->U+041E, P->U+0420, T->U+0422, X->U+0425, Y->U+0423.
+D,F,G,I,J,L,N,Q,R,S,U,V,W,Z, digits 0-9 pass through unchanged.
+Lowercase folds to the same upper-case glyph (BESM-6 TEXT has no case bit).
+--- host postprocessor: tests/plan-f77-full/unit/A08_text_encoding/recode.py ---
+INPUT (raw)  :  АВСD |  АВСDЕFНЕLLО | OUTPUT (recoded):  ABCD |  ABCDEFHELLO | 
+CONCLUSION: hardware caveat fixed by host postprocessor; no kernel change.
+Status OK (caveat + postprocessor).

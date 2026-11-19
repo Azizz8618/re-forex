@@ -1,0 +1,21 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name H37
+*call yesmemory
+*perso:602300
+*no list
+*forex
+      PROGRAM H37
+      INTEGER D(2,2,2,2,2,2,2)
+      D(1,1,1,1,1,1,1)=5
+      D(2,2,2,2,2,2,2)=6
+      PRINT 10,D(1,1,1,1,1,1,1)+D(2,2,2,2,2,2,2)
+   10 FORMAT(1X,I4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

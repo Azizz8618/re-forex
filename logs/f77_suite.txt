@@ -1,9 +1,9 @@
 === E5: F77 acceptance suite ===
-date    : 2026-11-19T18:09:10Z
+date    : 2026-11-19T19:04:14Z
 dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
 etalon  : /usr/local/share/besm6/2348
-image   : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
-suite   : /tmp/.private/azizz/opencode/re-forex/tests/f77/suite
+image   : /home/azizz/Yandex.Disk/re-forex/build/FOREX_PERSO_2300.bin
+suite   : /home/azizz/Yandex.Disk/re-forex/tests/f77/suite
 OK   base: 1 строк(и) совпали с gold
 OK   blockif: 2 строк(и) совпали с gold
 OK   charhollerith: 1 строк(и) совпали с gold

@@ -321,3 +321,28 @@ bash tests/run-glissade-forex.sh   # регрессия базовой PERSO
 | `logs/f77_libr_v2_runtime.txt` | лог прогона v2 |
 | `logs/f77_libr_v2_glissade.txt` | лог регрессии Глиссады v2 |
 | `logs/f77_libr_full.txt` | полный лог реализаций v3 и всех регрессий |
+
+## 7. K-закрытие (интринзики раздела K, VOLNA-1)
+
+Все 21 оставшаяся `NO`/`PARTIAL`-строка раздела K (`16-k-closure.md`) закрыты
+**inline-lowering-ом rule 19**, без изменения `F77LIB.FTN` и каталога `0o2310`
+(12 модулей — предел). Ключевые факты, уточняющие §5:
+
+* `AINT` корректна на DP (`AINT(8D0)=8`), в отличие от `DINT(8D0)=7`;
+  generic `SIGN` корректен на DP (`SIGN(.5D0,-7.5D0)=-.5`), в отличие от
+  библиотечной `DSIGN` (мусор на отрицательном втором аргументе).
+* `DNINT(X)=AINT(X+SIGN(0.5000001D0,X))` — добавка `1D-7` (guard digit)
+  обязательна: `AINT(7.5D0+SIGN(0.5D0,7.5D0))` даёт `7.0` из-за десятичной
+  мантиссы 2.02. `IDNINT` — тот же путь через `IDINT`.
+* `DASIN/DACOS` выражаются через `DATAN2(X,SQRT(1-X*X))` /
+  `DATAN2(SQRT(1-X*X),X)`; `ACOS` — `ATAN2(SQRT(1-X*X),X)`.
+  `DSQRT` — generic `SQRT` на DP.
+* `ISIGN` численно проверен (`ISIGN(-3,2)=3`, `ISIGN(3,-2)=-3`): имя
+  встроенное, lowering не требуется.
+* `LEN` — compile-time константа объявленной длины; `INDEX` — цикл по
+  INTEGER-массиву ASCII-кодов (`INDEX('ABCDEF','CD')=3`).
+* `LGE/LGT/LLE/LLT` — `ISTRCM/STRCMP` + `.GE./.GT./.LE./.LT.` (уже есть
+  в `0o2310`).
+
+Численные proof-прогоны: `logs/f77_16_probe_*.txt`. Все обязательные проверки
+(§4 + `run-f77-full.sh` gate 20/20) прошли с rc=0.

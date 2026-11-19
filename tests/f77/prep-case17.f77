@@ -1,0 +1,10 @@
+      PROGRAM J13
+      REAL X
+      DOUBLE PRECISION DX
+      X=3.5
+      DX=3.5D0
+      PRINT 10,X
+      PRINT 11,DX
+   10 FORMAT(1X,G12.4)
+   11 FORMAT(1X,G22.15)
+      END

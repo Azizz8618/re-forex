@@ -146,11 +146,27 @@ printf 'job.b6\n' > "$WORK/options.txt"
     || fail "dispak (тест) завершился ненулевым кодом"
 [ -s "$WORK/stderr.txt" ] && { printf 'dispak stderr:\n' >&2; cat "$WORK/stderr.txt" >&2; }
 
-# Блок результата — четыре строки перед "КОНЕЦ ЗАДАЧИ".
-ln=$(grep -an 'КОНЕЦ ЗАДАЧИ' "$WORK/output.raw" | head -1 | cut -d: -f1)
-[ -n "$ln" ] || fail "в выводе нет 'КОНЕЦ ЗАДАЧИ'"
-sed -n "$((ln-4)),$((ln-1))p" "$WORK/output.raw" > "$WORK/result.txt"
-[ "$(wc -l < "$WORK/result.txt")" -eq 4 ] || fail "блок результата не из 4 строк"
+# Блок результата — последний непрерывный непустой блок перед "КОНЕЦ ЗАДАЧИ".
+# Раньше фиксировалось ровно 4 строки; извлечение обобщено, чтобы сценарий
+# работал и с расширенным блоком (K-закрытие: 21 интринзик, rule 19 —
+# доказательства в docs/plan-f77-full/16-k-closure.md и logs/f77_16_*.txt).
+python3 - "$WORK/output.raw" "$WORK/result.txt" <<'PY' || fail "не удалось извлечь блок результата"
+import sys
+lines = open(sys.argv[1], encoding='utf-8', errors='replace').read().splitlines()
+idx = next((i for i, l in enumerate(lines) if 'КОНЕЦ ЗАДАЧИ' in l), None)
+if idx is None:
+    raise SystemExit(1)
+j = idx - 1
+while j >= 0 and not lines[j].strip():
+    j -= 1
+k = j
+while k >= 0 and lines[k].strip():
+    k -= 1
+block = lines[k + 1:j + 1]
+if not block:
+    raise SystemExit(1)
+open(sys.argv[2], 'w', encoding='utf-8').write('\n'.join(block) + '\n')
+PY
 
 # ---------------------------------------------------------------- 5. отчёт
 {

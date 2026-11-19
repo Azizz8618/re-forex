@@ -1,0 +1,40 @@
+=== F77PREP wave 2 (v3.3) — host lowerings, 19.11.2026 ===
+Репозиторий: /home/azizz/Yandex.Disk/re-forex, ветка main, база b6695d4
+Владение: src/f77prep/prep_tools.py, tests/f77/prep-case12..22*,
+          tests/run-f77-prep.sh, docs/plan-f77-full/07-implementation-prep.md,
+          logs/f77_lower2_*.txt. F77PREP.FTN НЕ изменялся.
+
+Правило → реализовано → тест → rc (PASS1 + PASS2)
+------------------------------------------------------------------------
+rule 23  .EQV./.NEQV. -> AND/OR/NOT   да (было)  case11          0
+rule 24  A(*) -> A(1)                 да (было)  case14 (косв.)   0
+R-E9     DO, нуль итераций            да         case12          0
+R-E9     DO, переменный шаг (Lp/Lb)   да         case21          0
+R-F11    SAVE -> COMMON+BLOCK DATA    да         case13          0
+R-G8     CALL *L / RETURN j -> RC     да         case14          0
+R-G4     CHARACTER*n FUNCTION -> SUB  да         case15          0
+R-H7     CHARACTER*n array -> INTEGER да         case16          0
+R13      G -> E/D/2E/L/I по типу      да         case17, case22  0
+R21      1P, E -> 1PE                 да         case18          0
+R11-END END= -> -999999. + GO TO      да         case19, case2   0
+R11-ERR ERR= -> -888888. + GO TO      да         case20          0
+------------------------------------------------------------------------
+Не реализовано: нет (все 8 пунктов задачи закрыты; rule 23/24 были готовы
+до волны). Оговорки: точный автовыбор G (F/E) и настоящий IOSTAT/EOF
+сигнал рантайма — P7c, вне владения; R-G4/R-H7 доказаны для n=4,
+W=ceil(n/6)>1 реализован по той же схеме без отдельного deck'а.
+
+Проверки
+------------------------------------------------------------------------
+tests/run-f77-prep.sh           rc=0  (17/17 кейсов: case1/2/8..22, PASS1+PASS2)
+tests/run-f77-full.sh           rc=0  (L0 51/51, L1 51/51, L2 8/8,
+                                       L3 2/2+2 skip, L4 9/9, GATE 20/20)
+python3 tests/check-source-words.py rc=0 (LO*SYN/LO*GEN 1024/1024)
+tests/check-label-semantics.sh  rc=0  (0 нарушений)
+tests/check-constants.sh        rc=0
+tests/check-text-decoded.sh     rc=0
+prep-trunc.f77 (negative)       lower rc=1, TRUNCATED NAME — как ожидалось
+------------------------------------------------------------------------
+Сырые протоколы: logs/f77_lower2_case{N}_pass1.txt / _pass2.txt (N=12..22),
+сводные: logs/f77_lower2_prep.txt, _full.txt, _sourcewords.txt, _labels.txt,
+_constants.txt, _text.txt.

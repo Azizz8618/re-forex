@@ -1,0 +1,27 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J7_END_low
+*call yesmemory
+*no list
+*forex
+c---- J7 lowered: END= via sentinel -999999. (rule 11).
+      PROGRAM J7L
+      READ 9500,X
+      IF (X .EQ. -999999.) GO TO 99
+      PRINT 20,X
+      GO TO 100
+   99 CONTINUE
+      PRINT 21
+  100 CONTINUE
+   20 FORMAT(1X,F8.2)
+   21 FORMAT(1X,'EOF')
+ 9500 FORMAT(F12.4)
+      STOP
+      END
+*execute
+ -999999.
+*end file
+``````
+еконец

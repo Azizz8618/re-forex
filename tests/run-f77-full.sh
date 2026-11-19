@@ -575,7 +575,7 @@ printf 'Итог GATE: %d/20 OK, FAIL=%d (обязателен rc=0)\n' "$g_ok" 
 # --------------------------------------------------------------------- summary
 printf 'LEVEL|OK|PENDING|SKIP|DETAIL\n' >> "$L_SUM"
 printf 'L0|%d|%d|0|unit-пробы A-K\n' "$l0_ok" "$l0_pending" >> "$L_SUM"
-printf 'L1|%d|%d|0|gold-пары (8 suite / 18 new / 6 e1)\n' "$l1_ok" "$l1_pending" >> "$L_SUM"
+printf 'L1|%d|%d|0|gold-пары (REGISTRY.txt: suite/new/e1)\n' "$l1_ok" "$l1_pending" >> "$L_SUM"
 printf 'L2|%d|%d|%d|кросс *FTN/*FORTRAN\n' "$l2_ok" "$l2_pending" "$l2_skip" >> "$L_SUM"
 printf 'L3|%d|%d|%d|реальные программы\n' "$l3_ok" "$l3_pending" "$l3_skip" >> "$L_SUM"
 printf 'L4|%d|%d|0|negative cases\n' "$l4_ok" "$l4_pending" >> "$L_SUM"
@@ -598,6 +598,6 @@ if [ "$g_fail" -ne 0 ] || [ "$g_ok" -ne 20 ]; then
     printf 'RC=1\n' >> "$L_SUM"
     exit 1
 fi
-emit "OK: gate 20/20; L0/L1 32/32, 0 PENDING (F03/I02/K03 закрыты lowering-ом + F77LIBR)"
+emit "OK: gate 20/20; L0 $l0_ok OK / $l0_pending PENDING, L1 $l1_ok OK / $l1_pending PENDING"
 printf 'RC=0\n' >> "$L_SUM"
 exit 0

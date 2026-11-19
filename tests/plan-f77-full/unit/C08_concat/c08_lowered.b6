@@ -1,0 +1,25 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C08LOW
+*call yesmemory
+*perso:602300
+*perso:602310,cont
+*no list
+*forex
+c---- C8 lowered (rule 13): STRCAT on ASCII-code arrays.
+      PROGRAM C08LOW
+      INTEGER IA(6),IB(6),IC(12)
+      DATA IA/65,66,67,68,0,0/
+      DATA IB/69,70,0,0,0,0/
+C@ U=S//T -> CALL STRCAT(IA,IB,IC,4,2)
+      CALL STRCAT(IA,IB,IC,4,2)
+      PRINT 10,(IC(I),I=1,6)
+   10 FORMAT(1X,6I3)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

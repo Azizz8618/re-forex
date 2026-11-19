@@ -1,0 +1,37 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C6VAR
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C6 lowering variants: EQV/NEQV via boolean formula and via .EQ./.NE.
+      PROGRAM C6VAR
+      LOGICAL A,B,R,S,T,U
+      A=.TRUE.
+      B=.FALSE.
+      R=(A .AND. B) .OR. (.NOT.A .AND. .NOT.B)
+      S=(A .AND. .NOT.B) .OR. (.NOT.A .AND. B)
+      T=A .EQ. B
+      U=A .NE. B
+      IR=0
+      IF (R) IR=1
+      IS=0
+      IF (S) IS=1
+      IT=0
+      IF (T) IT=1
+      IU=0
+      IF (U) IU=1
+      PRINT 10,IR,IS,IT,IU
+   10 FORMAT(1X,4I3)
+c---- also probe L descriptor directly
+      PRINT 11,R,S,T,U
+   11 FORMAT(1X,4L2)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

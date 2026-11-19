@@ -1,0 +1,14 @@
+# f77_17_baseline — WRITE(45) baseline,两者的 лен 45
+# Date: 2026-11-19
+## run2: deck with 'лен 45(2048)' (plain syntax)
+Deck: decks/plain_u45.b6
+Result lines:
+  НЕТ КАНАЛА  LUN 45
+ КОНЕЦ ЗАДАЧИ
+Monitor E50 calls (passport only, no attach for u=45):
+E50at 04003R type=00156 acc=0000000000300000
+E50at 04006R type=00112 acc=0000000000300004
+## run1: deck with 'лен 45(2048-wr)'
+  НЕТ КАНАЛА  LUN 45
+ КОНЕЦ ЗАДАЧИ
+## verdict: 'НЕТ КАНАЛА LUN 45' emitted BEFORE any E70 disk exchange for the WRITE

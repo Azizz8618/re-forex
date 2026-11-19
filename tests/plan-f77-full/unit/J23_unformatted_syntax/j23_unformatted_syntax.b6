@@ -1,0 +1,24 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J23SYN
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- J23: unformatted READ(u)/WRITE(u) — TRANSLATION acceptance only.
+c---- data transfer blocked on all LUNs (see logs/f77_15_units.txt).
+      PROGRAM J23S
+      GOTO 100
+      WRITE(54) X
+      READ(54) Y
+  100 CONTINUE
+      PRINT 10
+   10 FORMAT(1X,'SYNTAX OK')
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

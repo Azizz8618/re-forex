@@ -1,0 +1,26 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C10NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C10 native: COMPLEX + - * / (all four operations).
+      PROGRAM C10NAT
+      COMPLEX Z1,Z2,ZS,ZD,ZP,ZQ
+      Z1=(3.0,4.0)
+      Z2=(1.0,2.0)
+      ZS=Z1+Z2
+      ZD=Z1-Z2
+      ZP=Z1*Z2
+      ZQ=Z1/Z2
+      PRINT 10,ZS,ZD,ZP,ZQ
+   10 FORMAT(1X,8F10.4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

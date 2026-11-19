@@ -1,0 +1,19 @@
+# f77_17_perso_call — Fortran CALL -> MADLEN PERSO 0o2320 (chance 1)
+# Date: 2026-11-19
+
+## Build of MINRTN into PERSO 0o2320 (build/rtn2perso.b6)
+MADLEN source (MINRTN:,NAME, / 13,UJ, / END) compiled with *assembler + *to perso:602320
+Build compiler errors: NONE (only standard ИСПОРЧЕНЫ ПОДПРОГРАММЫ informational list)
+
+## Fortran deck (decks/call_rtn2.b6) loads *perso:602300 + *perso:602320,cont
+## EXECUTABLE PROOF (decks/run4/out.txt):
+ КОНЕЦ ЗАДАЧИ
+
+## Without *perso:602320,cont (decks/run3/out.txt):
+   ОТСУТСТВУЕТ  МINRТN          SWRIТТ     03143        АНID/*   Е 04365
+ КОНЕЦ ЗАДАЧИ
+
+## VERDICT: Fortran->MADLEN PERSO call MECHANISM WORKS. Raw *50/*70 extract codes
+## are issuable from MADLEN (syntax confirmed in re-dispak/testdks/dumpmb_junk.txt,
+## mbe60.txt; MADLEN numbers decimal by default, suffix B = octal).
+Actual proof line: '  САLL ОК'

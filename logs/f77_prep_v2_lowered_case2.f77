@@ -10,6 +10,8 @@ C@ DO WHILE (N .LT. 3) -> 7000 CONTINUE / IF (.NOT.(N .LT. 3)) GO TO 7001
       IF (.NOT.(N .LT. 3)) GO TO 7001
 C@ READ(*,*,END=99) M -> READ 9500,M  (END= label removed)
       READ 9500,M
+C@ R11-END -> IF (M .EQ. -999999) GO TO 99
+      IF (M .EQ. -999999) GO TO 99
 C@ PRINT *, N, M -> PRINT 9000,N,M
       PRINT 9000,N,M
          N=N+1

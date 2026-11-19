@@ -1,0 +1,25 @@
+# Wave-1 F77 E-H log — G08 — 2026-11-19
+# dispak 2048+2348 (PERSO 0o2300); критерий: нет диагностики + верный вывод.
+# Команда: dispak <deck> с BESM6_PATH=WORK:/usr/local/share/besm6
+
+======================================================================
+ROLE : native
+DECK : tests/plan-f77-full/unit/G08_alt_return/g08_altret_native.b6
+VERDICT: FAIL * В ВЫРАЖ / RETURN 1
+RAW  : /tmp/.private/azizz/opencode/w1/G8.out
+
+
+
+======================================================================
+ROLE : lowering int-код+computed GO TO
+DECK : tests/plan-f77-full/unit/G08_alt_return/g08_altret_lowered.b6
+VERDICT: OK → 1
+RAW  : /tmp/.private/azizz/opencode/w1/G8low.out
+
+                                                      19.11.26 М1
+        RК*      Е 01112        ТТРRINТD Е 03400        АSАVЕ*   Е 04557
+        WSУ*     Е 01362        ТТРRINТ  Е 03400        SАVЕ*НID Е 04564
+        FС*002   Е 01613        ВСDРUN   Е 04115        SАVЕLЕХХ Е 04777
+    1
+ КОНЕЦ ЗАДАЧИ
+

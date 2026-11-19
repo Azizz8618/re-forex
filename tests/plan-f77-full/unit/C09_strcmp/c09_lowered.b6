@@ -1,0 +1,31 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C09LOW
+*call yesmemory
+*perso:602300
+*perso:602310,cont
+*no list
+*forex
+c---- C9 lowered (rule 14): packed 6-bit words + ISTRCM.
+      PROGRAM C09LOW
+      INTEGER IA(2),IB(2),IC(2)
+      DATA IA(1)/6HABCD  /
+      DATA IA(2)/6H      /
+      DATA IB(1)/6HABCE  /
+      DATA IB(2)/6H      /
+      DATA IC(1)/6HABCD  /
+      DATA IC(2)/6H      /
+C@ IF (S .EQ. T) -> K = ISTRCM(IS,IT) ; IF (K .EQ. 0) ...
+      K1=ISTRCM(IA,IB)
+      K2=ISTRCM(IA,IC)
+      K3=ISTRCM(IB,IA)
+      PRINT 10,K1,K2,K3
+   10 FORMAT(1X,3I4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

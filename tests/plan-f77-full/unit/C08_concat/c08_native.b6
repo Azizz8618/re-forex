@@ -1,0 +1,23 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C08NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C8 native probe: // concatenation.
+      PROGRAM C08NAT
+      CHARACTER*6 S,T,U
+      S='ABCD'
+      T='EF'
+      U=S//T
+      PRINT 10,U
+   10 FORMAT(1X,A6)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

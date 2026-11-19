@@ -1,0 +1,19 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J11_desc_E
+*call yesmemory
+*no list
+*forex
+c---- J11: E edit descriptor (native FT*).
+      PROGRAM J11
+      X=3.5
+      PRINT 10,X
+   10 FORMAT(1X,E12.4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

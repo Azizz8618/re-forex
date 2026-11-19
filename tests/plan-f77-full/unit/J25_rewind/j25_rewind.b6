@@ -1,0 +1,19 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name POSW_REWIND_1
+*call yesmemory
+*perso:602300
+*no list
+*forex
+      PROGRAM PWRE1
+      REWIND 1
+      WRITE(54,10)
+   10 FORMAT(1X,'POS OK')
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

@@ -64,7 +64,136 @@ ABS_FUNCS = {"ABS", "IABS", "DABS"}
 DIM_FUNCS = {"DIM", "IDIM"}
 R19_FAMILY = {1: "MAX", 2: "MIN", 3: "ABS", 4: "DIM"}
 
-# Fortran keywords and intrinsics: never treated as a truncatable identifier
+# v3.2 rule 23: LOGICAL .EQV./.NEQV. -> C5 primitives (A5 matrix element C6).
+# .EQV./.NEQV. are rejected by FOREX 2.02; AND/OR/NOT are native.  The
+# expansion below is the byte-exact form proven in
+# tests/plan-f77-full/unit/C06_eqv_neqv/c06_lowered.b6 (gold "   0  1").
+EQV_OPS = ((".NEQV.", "NE"), (".EQV.", "EQ"))
+EQV_OPERAND = r"((?:\.NOT\.\s*)?[A-Za-z]\w*(?:\s*\([^()]*\))?)"
+
+
+def lower_astar(line):
+    """R-ASTAR: assumed-size dummy array A(*) -> A(1); A(lb:*) -> A(lb).
+
+    FOREX 2.02 traps on '*' in a dummy-array bound; a concrete lower bound
+    of 1 preserves addressing for the common 1-based case (E-H agent proof:
+    tests/plan-f77-full/unit/F19_dummy_array/…astar_lowered.b6 -> 15).
+    """
+    out = re.sub(r"\(\s*([A-Za-z]\w*\s*:\s*)?\*\s*\)",
+                 lambda m: "(" + ((m.group(1) or "").replace(":", "").strip() or "1") + ")",
+                 line, flags=re.I)
+    return out
+
+
+def lower_eqv(line):
+    """Expand .EQV./.NEQV. using .AND./.OR./.NOT. (rule 23, C6).
+
+    Operands may be names or single-level parenthesised expressions, optionally
+    prefixed by .NOT..  A function call with side effects would be emitted
+    twice -- document this when using the lowering on such expressions.
+    """
+    out = line
+    for op, kind in EQV_OPS:
+        while op in out.upper():
+            pos = out.upper().find(op)
+            left, right = out[:pos], out[pos + len(op):]
+            lm = re.search(EQV_OPERAND + r"\s*$", left)
+            rm = re.match(r"\s*" + EQV_OPERAND, right)
+            if not lm or not rm:
+                break  # unsupported shape; leave for host diagnostics
+            a, b = lm.group(1), rm.group(1)
+            if kind == "EQ":
+                repl = "(%s .AND. %s) .OR. (.NOT.%s .AND. .NOT.%s)" % (a, b, a, b)
+            else:
+                repl = "(%s .AND. .NOT.%s) .OR. (.NOT.%s .AND. %s)" % (a, b, a, b)
+            out = left[:lm.start(1)] + repl + right[rm.end(1):]
+    return out
+
+# v3.3 wave-2 host-only rules (F77PREP.FTN is frozen at v3: FOREX 2.02 has a
+# hard translation-memory ceiling).  The numbers are local to the host; the
+# numeric records printed by F77PREP stay unchanged.
+R_E9 = 25        # DO with zero iterations -> guard before / Ls after
+R_F11 = 26       # SAVE -> COMMON /<U>SV/ + BLOCK DATA
+R_G8 = 27        # CALL S(*L,..) / RETURN j -> INTEGER RC
+R_G4 = 28        # CHARACTER*n FUNCTION -> SUBROUTINE + Hollerith DATA
+R_H7 = 29        # CHARACTER*n array -> INTEGER array
+R13 = 30         # G edit descriptor -> typed E/F/D/L/I
+R21 = 31         # 1P, E12.4 -> 1PE12.4
+R11 = 32         # END=/ERR= sentinel branch (rule 4 and rule 10)
+
+# Rules that must replace a non-zero classification produced by F77PREP.FTN
+# (CHARACTER*n is currently reported as rule 7/12, SAVE as rule 2).
+FORCE_HOST = {R_F11, R_G4, R_H7}
+
+
+def _split_top(s):
+    """Split on top-level commas, respecting parentheses."""
+    parts, depth, cur = [], 0, ""
+    for ch in s:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+        if ch == "," and depth == 0:
+            parts.append(cur.strip())
+            cur = ""
+        else:
+            cur += ch
+    parts.append(cur.strip())
+    return parts
+
+
+def _implicit_type(name):
+    """F77 implicit typing: I-N -> INTEGER, otherwise REAL."""
+    return "INTEGER" if name[:1].upper() in INT_FIRST else "REAL"
+
+
+def _unit_of(lines, idx):
+    """Name of the program unit containing logical line idx (1-based)."""
+    for j in range(idx - 1, 0, -1):
+        m = re.search(r"\b(PROGRAM|SUBROUTINE|FUNCTION|BLOCK\s+DATA)\s+([A-Za-z]\w*)",
+                      lines[j - 1], re.I)
+        if m:
+            return m.group(2).upper()
+    return "MAIN"
+
+
+def _f11_applies(lines, idx):
+    """True when SAVE needs the R-F11 COMMON/BLOCK DATA lowering.
+
+    The legacy v1 case (SAVE of a plain main-program variable with no DATA
+    initializer) keeps rule 2's byte-identical "(removed)" lowering.  A
+    subprogram SAVE, or any SAVE whose variable has a DATA initializer in the
+    same unit, gets the standards-correct COMMON + BLOCK DATA form.
+    """
+    hdr = None
+    for j in range(idx - 1, 0, -1):
+        if re.match(r"\s*(PROGRAM|SUBROUTINE|FUNCTION|BLOCK\s+DATA)\b",
+                    lines[j - 1], re.I):
+            hdr = lines[j - 1].strip().upper()
+            break
+    if hdr and not hdr.startswith("PROGRAM"):
+        return True
+    m = re.search(r"\bSAVE\s+(.+)$", lines[idx - 1], re.I)
+    saved = [t.strip().upper() for t in _split_top(m.group(1))] if m else []
+    ustart = idx
+    for j in range(idx - 1, 0, -1):
+        if re.match(r"\s*(PROGRAM|SUBROUTINE|FUNCTION|BLOCK\s+DATA)\b",
+                    lines[j - 1], re.I):
+            ustart = j
+            break
+    for j in range(ustart, len(lines)):
+        ln = lines[j]
+        if j != ustart and re.match(
+                r"\s*(PROGRAM|SUBROUTINE|FUNCTION|BLOCK\s+DATA|END)\b", ln, re.I):
+            break
+        for nm in saved:
+            if re.search(r"\bDATA\s+%s\s*/" % re.escape(nm), ln, re.I):
+                return True
+    return False
+
+
+# Fortran keywords and intrinsics: never treated as truncatable identifier
 # by the rule-20 collision check.
 KEYWORDS = {
     "PROGRAM", "SUBROUTINE", "FUNCTION", "INTEGER", "REAL", "LOGICAL",
@@ -269,6 +398,18 @@ def build_lowered(src_path, json_path):
     # holds the full logical-line text and the DO WHILE/END DO structure, so
     # classifying these four constructs here is both cheaper and exact.
     # ------------------------------------------------------------------
+    # Wave-2 pre-scan: CHARACTER*n FUNCTION names are needed before the
+    # classification loop so their result assignment and call sites can be
+    # recognized too (F77PREP misreports all three as rules 7/8/0).
+    char_funcs = {}
+    for _idx, _line in enumerate(lines, 1):
+        if is_comment(_line):
+            continue
+        _cf = re.search(r"CHARACTER\s*\*\s*(\d+)\s+FUNCTION\s+([A-Za-z]\w*)",
+                        _line, re.I)
+        if _cf:
+            char_funcs[_cf.group(2).upper()] = int(_cf.group(1))
+
     host_rules = {}
     dwh_stack = []
     for _idx, _line in enumerate(lines, 1):
@@ -282,10 +423,35 @@ def build_lowered(src_path, json_path):
             if dwh_stack:
                 dwh_stack.pop()
             continue
-        if re.match(r"^(EXTERNAL|INTRINSIC)\s", _s):
+        if re.match(r"^(\d+\s+)?FORMAT\s*\(", _s) and re.search(r"G\d+\.\d+", _s):
+            host_rules[_idx] = R13   # J13: G descriptor -> typed E/F/D/L/I
+        elif re.match(r"^(\d+\s+)?FORMAT\s*\(", _s) and re.search(r"\d+P\s*,", _s):
+            host_rules[_idx] = R21   # J21: scale factor P with comma is illegal
+        elif re.match(r"^DO\s+\d+\s+\w+\s*=", _s):
+            host_rules[_idx] = R_E9  # E9: post-test DO, zero iterations
+        elif char_funcs and (
+                re.match(r"^CHARACTER\s*\*\s*\d+\s+FUNCTION\b", _s) or
+                any(re.match(r"^\s*%s\s*=\s*'" % re.escape(fn), _line, re.I)
+                    for fn in char_funcs) or
+                any(re.search(r"=\s*%s\s*\(" % re.escape(fn), _s)
+                    for fn in char_funcs)):
+            host_rules[_idx] = R_G4  # G4: character FUNCTION -> SUBROUTINE
+        elif re.match(r"^CHARACTER\s*\*\s*\d+\s+[A-Za-z]\w*\s*\(", _s):
+            host_rules[_idx] = R_H7  # H7: CHARACTER array -> INTEGER array
+        elif re.match(r"^CALL\s+\w+\s*\([^)]*\*\d+", _s) or \
+                re.match(r"^RETURN\s+\d+\s*$", _s):
+            host_rules[_idx] = R_G8  # G8: alternate returns
+        elif re.match(r"^SAVE\s+\w", _s) and _f11_applies(lines, _idx):
+            host_rules[_idx] = R_F11  # F11: SAVE -> COMMON + BLOCK DATA
+        elif re.match(r"^(EXTERNAL|INTRINSIC)\s", _s):
             host_rules[_idx] = 21
         elif re.search(r"\bCABS\s*\(", _s):
             host_rules[_idx] = 22
+        elif re.search(r"\.EQV\.|\.NEQV\.", _s):
+            host_rules[_idx] = 23  # C6: LOGICAL equivalence -> C5 primitives
+        elif re.match(r"^(INTEGER|REAL|LOGICAL|COMPLEX|DOUBLE|DIMENSION)\b", _s) \
+                and re.search(r"\([^()]*\*[^()]*\)", _s):
+            host_rules[_idx] = 24  # F19/H6: assumed-size A(*) -> A(1)
         else:
             for _fn in MAX_FUNCS | MIN_FUNCS | ABS_FUNCS | DIM_FUNCS:
                 if re.search(r"\b%s\s*\(" % re.escape(_fn), _s):
@@ -294,7 +460,8 @@ def build_lowered(src_path, json_path):
     for _idx in dwh_stack:
         host_rules[_idx] = 17
     for _idx, _rule in host_rules.items():
-        if rules.get(_idx, {}).get("rule", 0) == 0:
+        _prev = rules.get(_idx, {}).get("rule", 0)
+        if _prev == 0 or _rule in FORCE_HOST:
             rules.setdefault(_idx, {"seq": seqs[_idx - 1] if _idx <= len(seqs) else _idx,
                                     "line": _idx, "itype": 0})
             itype = 0
@@ -362,11 +529,90 @@ def build_lowered(src_path, json_path):
     equiv_map = {}          # v3 rule 16: name -> (base, offset)
     eq_decl_kill = set()
     loop_stack = []         # (top, bottom) of open DO WHILE loops
+    # wave-2 host state
+    var_types = {}          # R13: declared type of each PRINT variable
+    print_vars_by_label = {}  # R13: FORMAT label -> PRINT variable list
+    e9_terms = {}           # R-E9: DO line -> index of its terminal line
+    e9_after = {}           # terminal line -> [Ls label, ...]
+    e9_done = set()
+    f11_info = {}           # R-F11: SAVE line -> (block, names, DATA line idxs)
+    f11_data_idx = {}       # DATA line -> owning COMMON block
+    g8_units = {}           # R-G8: unit -> number of alternate return labels
+    g8_calls = {}           # CALL line -> (unit, labels)
+    g8_ret_units = {}       # RETURN j line -> unit
+    g8_declared = set()
+    g4_declared = set()
     out = []
 
     # ---------------- Pass A: declarations, implicit maps, rename maps -----
     for idx, line in enumerate(lines, 1):
         rule = rules.get(idx, {}).get("rule", 0)
+
+        # ---- wave-2 pre-collection (needs the full source, not the rewrite) ----
+        for dm in re.finditer(r"\b(INTEGER|REAL|LOGICAL|COMPLEX|DOUBLE\s+PRECISION)\b"
+                              r"([^\n]*)", line, re.I):
+            typ = "DP" if dm.group(1).upper().startswith("DOUBLE") else dm.group(1).upper()
+            for nm in re.findall(r"[A-Za-z]\w*", dm.group(2)):
+                if nm.upper() not in KEYWORDS:
+                    var_types[nm.upper()] = typ
+        cm = re.search(r"\bCHARACTER\s*\*\s*\d+\s+([A-Za-z]\w*)", line, re.I)
+        if cm:
+            var_types[cm.group(1).upper()] = "CHAR"
+        pm = re.match(r"\s*PRINT\s+(\d+)\s*,\s*(.*)$", line, re.I)
+        if pm:
+            print_vars_by_label[int(pm.group(1))] = [
+                v.strip() for v in _split_top(pm.group(2)) if v.strip()]
+
+        if rule == R_E9:
+            dm = re.match(r"\s*DO\s+(\d+)\s+\w+\s*=", line, re.I)
+            if dm:
+                dlabel = int(dm.group(1))
+                for j in range(idx + 1, len(lines) + 1):
+                    tm = re.match(r"\s*(\d+)\s+\S", lines[j - 1])
+                    if tm and int(tm.group(1)) == dlabel:
+                        e9_terms[idx] = j
+                        break
+
+        if rule == R_F11:
+            sm = re.search(r"\bSAVE\s+(.+)$", line, re.I)
+            names = [t.strip() for t in _split_top(sm.group(1)) if t.strip()] if sm else []
+            unit = _unit_of(lines, idx)
+            block = (unit[:3] + "SV")[:6].upper()
+            suffix = 0
+            while block in {v[0] for v in f11_info.values()}:
+                suffix += 1
+                block = ((unit[:2] + str(suffix)) + "SV")[:6].upper()
+            ustart = idx
+            for j in range(idx - 1, 0, -1):
+                if re.match(r"\s*(PROGRAM|SUBROUTINE|FUNCTION|BLOCK\s+DATA)\b",
+                            lines[j - 1], re.I):
+                    ustart = j
+                    break
+            dlines = []
+            for j in range(ustart, len(lines)):
+                if j != ustart and re.match(
+                        r"\s*(PROGRAM|SUBROUTINE|FUNCTION|BLOCK\s+DATA|END)\b",
+                        lines[j], re.I):
+                    break
+                for nm in names:
+                    if re.search(r"\bDATA\s+%s\s*/" % re.escape(nm), lines[j], re.I):
+                        dlines.append(j + 1)
+                        break
+            f11_info[idx] = (block, names, dlines)
+            for j in dlines:
+                f11_data_idx[j] = block
+
+        if rule == R_G8:
+            if re.match(r"\s*CALL\s", line, re.I):
+                labels = [int(x) for x in re.findall(r"\*\s*(\d+)", line)]
+                unit = _unit_of(lines, idx)
+                g8_calls[idx] = (unit, labels)
+                g8_units.setdefault(unit, len(labels))
+            elif re.match(r"\s*RETURN\s+\d+", line, re.I):
+                unit = _unit_of(lines, idx)
+                g8_ret_units[idx] = unit
+                g8_units.setdefault(unit, 1)
+
         if rule == 7:
             m = re.search(r"CHARACTER\s*\*\s*(\d+)\s+([A-Za-z]\w*)", line, re.I)
             if m:
@@ -421,12 +667,39 @@ def build_lowered(src_path, json_path):
             equiv_map[other.upper()] = (base, bi - oi)
             eq_decl_kill.add(other.upper())
 
+    def emit_e9_after(idx):
+        """Place R-E9's Ls CONTINUE right after the DO terminal statement."""
+        if idx in e9_after and idx not in e9_done:
+            e9_done.add(idx)
+            for lab in e9_after[idx]:
+                out.append(_label_field(lab) + " CONTINUE")
+
     # ---------------- Pass B: lower each classified line -------------------
     for idx, line in enumerate(lines, 1):
         r = rules.get(idx, {"rule": 0, "itype": 0})
         rule, itype = r["rule"], r["itype"]
         orig = line.strip()
         seq = seqs[idx - 1] if idx <= len(seqs) else idx
+
+        # R-F11: a DATA initializer of a SAVEd variable belongs to BLOCK DATA.
+        if idx in f11_data_idx:
+            out.append("C@ %s -> (moved to BLOCK DATA %s)" %
+                       (orig, f11_data_idx[idx]))
+            continue
+
+        # R-G8: add RC as the first dummy of every unit with RETURN j / *label.
+        hm = re.match(r"\s*(SUBROUTINE|FUNCTION)\s+([A-Za-z]\w*)\s*\((.*)\)\s*$",
+                      line, re.I)
+        if hm and hm.group(2).upper() in g8_units:
+            args = [a.strip() for a in _split_top(hm.group(3)) if a.strip()]
+            if not any(a.upper() == "RC" for a in args):
+                args = ["RC"] + args
+            newline = "      %s %s(%s)" % (hm.group(1).upper(), hm.group(2),
+                                           ",".join(args))
+            out.append("C@ %s -> %s / INTEGER RC" % (orig, newline.strip()))
+            out.append(newline)
+            out.append("      INTEGER RC")
+            continue
 
         if rule == 0:
             if equiv_map:
@@ -449,6 +722,7 @@ def build_lowered(src_path, json_path):
                 out.append(newline)
             else:
                 out.append(line)
+            emit_e9_after(idx)
 
         elif rule in (1, 2):
             out.append("C@ %s -> (removed)" % orig)
@@ -472,15 +746,26 @@ def build_lowered(src_path, json_path):
             formats.append((lab, "1X," + ",".join(specs)))
 
         elif rule == 4:
+            # R11-END (v2 rule 4): the old lowering dropped the END= branch.
+            # Keep the legacy anchor text for byte-compatibility with case2,
+            # but always materialize the sentinel check after READ.
             m = re.search(r"END\s*=\s*\d+\s*\)\s*([A-Za-z]\w*)", line, re.I)
             var = m.group(1) if m else "X"
+            lm = re.search(r"END\s*=\s*(\d+)", line, re.I)
+            target = int(lm.group(1)) if lm else None
             lab = alloc(read_counter[0])
             read_counter[0] = lab + 1
-            spec = "I10" if var[0].upper() in INT_FIRST else "F12.4"
+            vtyp = var_types.get(var.upper(), _implicit_type(var))
+            spec = "I10" if vtyp == "INTEGER" else "F12.4"
             new = "READ %d,%s" % (lab, var)
             out.append("C@ %s -> %s  (END= label removed)" % (orig, new))
             out.append("      " + new)
             formats.append((lab, spec))
+            if target is not None:
+                sentinel = "-999999" if vtyp == "INTEGER" else "-999999."
+                chk = "IF (%s .EQ. %s) GO TO %d" % (var, sentinel, target)
+                out.append("C@ R11-END -> %s" % chk)
+                out.append("      " + chk)
 
         elif rule in (5, 17):
             # rule 17: F77PREP flagged a DO WHILE with no matching END DO.
@@ -679,9 +964,9 @@ def build_lowered(src_path, json_path):
                         # of ASCII codes, not on packed nH words, so it is not
                         # applicable to the rule-12 word representation.
                         sub = lit[lo - 1:hi].ljust(6)
-                        data = "DATA %s/6H%s/" % (tname, sub)
-                        out.append("C@ %s -> %s ; %s" % (orig, data, newline.strip()))
-                        out.append("      " + data)
+                        dcard = "DATA %s/6H%s/" % (tname, sub)
+                        out.append("C@ %s -> %s ; %s" % (orig, dcard, newline.strip()))
+                        out.append("      " + dcard)
                     else:
                         call = "CALL SUBSTR(%s,%s,%s,%s)" % (
                             char_info[src][0], lo, hi, tname)
@@ -787,6 +1072,218 @@ def build_lowered(src_path, json_path):
             out.append("      " + new)
             continue
 
+        elif rule == 23:
+            # C6: .EQV./.NEQV. -> .AND./.OR./.NOT. (native C5 primitives).
+            new = lower_eqv(orig)
+            if new == orig:
+                out.append(line)
+                continue
+            out.append("C@ %s -> %s" % (orig, new))
+            out.append("      " + new)
+            continue
+
+        elif rule == 24:
+            # F19/H6: assumed-size dummy array A(*) -> A(1) (no machine trap).
+            new = lower_astar(orig)
+            if new == orig:
+                out.append(line)
+                continue
+            out.append("C@ %s -> %s" % (orig, new))
+            out.append("      " + new)
+            continue
+
+        elif rule == R_E9:
+            # E9: FOREX DO is post-test, so an empty range runs the body once.
+            dm = re.match(r"\s*DO\s+(\d+)\s+([A-Za-z]\w*)\s*=\s*(.+)$", line, re.I)
+            if not dm:
+                out.append(line)
+                continue
+            bounds = _split_top(dm.group(3))
+            e1 = bounds[0] if bounds else "0"
+            e2 = bounds[1] if len(bounds) > 1 else "0"
+            e3 = bounds[2] if len(bounds) > 2 else None
+            Ls = dyn_alloc(seq, R_E9, 0)
+            if idx in e9_terms:
+                e9_after.setdefault(e9_terms[idx], []).append(Ls)
+            if e3 is None or re.match(r"^\+?\d+$", e3):
+                guards = ["IF (%s .GT. %s) GO TO %d" % (e1, e2, Ls)]
+            elif re.match(r"^-\d+$", e3):
+                guards = ["IF (%s .LT. %s) GO TO %d" % (e1, e2, Ls)]
+            elif re.match(r"^[A-Za-z]\w*$", e3):
+                Lp = dyn_alloc(seq, R_E9, 1)
+                Lb = dyn_alloc(seq, R_E9, 2)
+                guards = ["IF (%s .GE. 0) GO TO %d" % (e3, Lp),
+                          "IF (%s .LT. %s) GO TO %d" % (e1, e2, Ls),
+                          "GO TO %d" % Lb,
+                          "%d CONTINUE" % Lp,
+                          "IF (%s .GT. %s) GO TO %d" % (e1, e2, Ls),
+                          "%d CONTINUE" % Lb]
+            else:
+                guards = ["IF (%s .GT. %s) GO TO %d" % (e1, e2, Ls)]
+            new = "DO %s %s=%s,%s%s" % (dm.group(1), dm.group(2), e1, e2,
+                                        ("," + e3) if e3 else "")
+            # Keep the anchor short: FOREX 2.02 reads only columns 1-72 of a
+            # comment card, the rest would be parsed as a stray card.
+            gdesc = guards[0] if len(guards) == 1 else "IF-GUARD(%s)" % e3
+            out.append("C@ %s -> %s / %d CONTINUE" % (orig, gdesc, Ls))
+            for g in guards:
+                out.append(g if re.match(r"^\d+ CONTINUE", g) else "      " + g)
+            out.append("      " + new)
+            continue
+
+        elif rule == R_F11:
+            block, names, _dlines = f11_info[idx]
+            new = "COMMON /%s/%s" % (block, ",".join(names))
+            out.append("C@ %s -> %s (BLOCK DATA init)" % (orig, new))
+            out.append("      " + new)
+            continue
+
+        elif rule == R_G8:
+            if idx in g8_calls:
+                unit, labels = g8_calls[idx]
+                cm = re.match(r"\s*CALL\s+(\w+)\s*\((.*)\)\s*$", line, re.I)
+                if not cm:
+                    out.append(line)
+                    continue
+                args = [a.strip() for a in _split_top(cm.group(2)) if a.strip()]
+                other = [a for a in args if not a.startswith("*")]
+                Lb = dyn_alloc(seq, R_G8, 0)
+                new = "CALL %s(%s)" % (cm.group(1), ",".join(["RC"] + other))
+                out.append("C@ %s -> INTEGER RC / %s" % (orig, new))
+                out.append("C@ R-G8 -> GO TO (%s),RC / %d CONTINUE"
+                           % (",".join(map(str, labels + [Lb])), Lb))
+                if unit not in g8_declared:
+                    out.append("      INTEGER RC")
+                    g8_declared.add(unit)
+                out.append("      " + new)
+                out.append("      GO TO (%s),RC" % ",".join(map(str, labels + [Lb])))
+                out.append(_label_field(Lb) + " CONTINUE")
+                continue
+            rm = re.match(r"\s*RETURN\s+(\d+)\s*$", line, re.I)
+            if rm:
+                out.append("C@ %s -> RC=%s / RETURN" % (orig, rm.group(1)))
+                out.append("      RC=%s" % rm.group(1))
+                out.append("      RETURN")
+                continue
+            out.append(line)
+            continue
+
+        elif rule == R_G4:
+            hm = re.search(r"CHARACTER\s*\*\s*(\d+)\s+FUNCTION\s+([A-Za-z]\w*)"
+                           r"\s*\(([^)]*)\)", line, re.I)
+            if hm:
+                n = int(hm.group(1))
+                fname = hm.group(2)
+                args = [a.strip() for a in _split_top(hm.group(3)) if a.strip()]
+                w = (n + 5) // 6
+                newargs = ",".join(["RV"] + args)
+                out.append("C@ %s -> SUBROUTINE %s(%s) / INTEGER RV" %
+                           (orig, fname, newargs))
+                out.append("      SUBROUTINE %s(%s)" % (fname, newargs))
+                out.append("      INTEGER RV,IH" if w == 1 else
+                           "      INTEGER RV(%d),IH(%d)" % (w, w))
+                char_funcs[fname.upper()] = n
+                continue
+            am = re.match(r"\s*([A-Za-z]\w*)\s*=\s*'([^']*)'\s*$", line)
+            if am and am.group(1).upper() in char_funcs:
+                lit = am.group(2)
+                w = (char_funcs[am.group(1).upper()] + 5) // 6
+                words = [lit[6 * k:6 * k + 6].ljust(6) for k in range(w)]
+                out.append("C@ %s -> DATA IH/...Hollerith.../ / RV=IH" % orig)
+                if w == 1:
+                    out.append("      DATA IH/%dH%s/" % (len(words[0].rstrip()),
+                                                        words[0].rstrip()))
+                else:
+                    for k, word in enumerate(words):
+                        out.append("      DATA IH(%d)/6H%s/" % (k + 1, word))
+                out.append("      RV=IH")
+                continue
+            cm = re.match(r"\s*([A-Za-z]\w*)\s*=\s*([A-Za-z]\w*)\s*\((.*)\)\s*$",
+                          line, re.I)
+            if cm and cm.group(2).upper() in char_funcs:
+                dst, fname = cm.group(1), cm.group(2).upper()
+                args = [a.strip() for a in _split_top(cm.group(3)) if a.strip()]
+                unit = _unit_of(lines, idx)
+                if re.match(r"^[A-Za-z]\w*$", dst):
+                    rv = dst
+                    if rv.upper() not in var_types and (unit, rv.upper()) not in g4_declared:
+                        out.append("      INTEGER %s" % rv)
+                        g4_declared.add((unit, rv.upper()))
+                else:
+                    rv = ("I" + fname)[:6]
+                    if (unit, rv) not in g4_declared:
+                        out.append("      INTEGER %s" % rv)
+                        g4_declared.add((unit, rv))
+                call = "CALL %s(%s%s)" % (fname, rv,
+                                          ("," + ",".join(args)) if args else "")
+                out.append("C@ %s -> %s" % (orig, call))
+                out.append("      " + call)
+                continue
+            out.append(line)
+            continue
+
+        elif rule == R_H7:
+            hm = re.match(r"\s*CHARACTER\s*\*\s*(\d+)\s+([A-Za-z]\w*)\s*\((.*)\)\s*$",
+                          line, re.I)
+            if not hm:
+                out.append(line)
+                continue
+            w = (int(hm.group(1)) + 5) // 6
+            dims = _split_top(hm.group(3))
+            newdims = ",".join(str(int(d) * w) if re.match(r"^\d+$", d) else d
+                               for d in dims)
+            new = "INTEGER %s(%s)" % (hm.group(2), newdims)
+            out.append("C@ %s -> %s" % (orig, new))
+            out.append("      " + new)
+            continue
+
+        elif rule == R13:
+            fm = re.match(r"\s*(\d+)\s+FORMAT\s*\((.*)\)\s*$", line, re.I)
+            if not fm:
+                out.append(line)
+                continue
+            label, spec = int(fm.group(1)), fm.group(2)
+            pvars = print_vars_by_label.get(label, [])
+            state = [0]
+
+            def gsub(mm):
+                cnt, w, d = mm.group(1), mm.group(2), mm.group(3)
+                rep = int(cnt) if cnt else 1
+                name = pvars[state[0]] if state[0] < len(pvars) else "X"
+                state[0] += rep
+                base = name.upper().split("(")[0]
+                typ = var_types.get(base, _implicit_type(base))
+                if typ == "DP":
+                    body = "D%s.%s" % (w, d or "0")
+                elif typ == "COMPLEX":
+                    body = "%dE%s.%s" % (2 * rep, w, d or "0")
+                    return body
+                elif typ == "INTEGER":
+                    body = "I%s" % w
+                elif typ == "LOGICAL":
+                    body = "L1"
+                else:
+                    body = "E%s.%s" % (w, d or "0")
+                return (cnt or "") + body
+
+            newspec = re.sub(r"(\d+)?G\s*(\d+)(?:\.(\d+))?", gsub, spec, flags=re.I)
+            if newspec == spec:
+                out.append(line)
+                continue
+            new = "%d FORMAT(%s)" % (label, newspec)
+            out.append("C@ %s -> %s" % (orig, new))
+            out.append(_label_field(label) + " FORMAT(%s)" % newspec)
+            continue
+
+        elif rule == R21:
+            new = re.sub(r"(\d+P)\s*,\s*(?=[EFGDIAL])", r"\1", line, flags=re.I)
+            if new == line:
+                out.append(line)
+                continue
+            out.append("C@ %s -> %s" % (orig, new.strip()))
+            out.append(new)
+            continue
+
         else:
             raise SystemExit("unknown rule %d on line %d" % (rule, idx))
 
@@ -806,6 +1303,7 @@ def build_lowered(src_path, json_path):
                     cond = ".EQ." if op == ".EQ." else ".NE."
                     out.append("      IF (KCMP %s 0) %s" % (cond, action.upper()))
                 continue
+        emit_e9_after(idx)
 
     # rule 22 support: F77 gives an implicitly-REAL variable when the source
     # assigns a complex literal to an undeclared name, so REAL()/AIMAG() would
@@ -862,21 +1360,34 @@ def build_lowered(src_path, json_path):
         else:
             out[end_at:end_at] = insert
 
+    # R-F11: one BLOCK DATA per SAVEd unit, appended after the last END.
+    # FORMAT/loop-closure insertions above stay before the final END.
+    if f11_info:
+        out.append("C@ (R-F11) -> BLOCK DATA for SAVEd variables")
+        for block, names, dlines in f11_info.values():
+            out.append("      BLOCK DATA")
+            for nm in names:
+                typ = var_types.get(nm.upper(), _implicit_type(nm))
+                out.append("      %s %s" % (typ, nm))
+            out.append("      COMMON /%s/%s" % (block, ",".join(names)))
+            for j in dlines:
+                out.append("      " + lines[j - 1].strip())
+            out.append("      END")
+
     # Rule 20: any identifier longer than six characters is a hard error
     # (A5: silent 6-char truncation).  Keywords and the name of the program
     # unit itself are not identifiers subject to the F77 length limit.
     names_by_line = {}
-    for (idx, kind), vals in aux4.items():
-        if kind != 20:
+    # 777004 kind=20 carries one char per record (pos = 1..M).  A line may
+    # contain several long identifiers, so consume the records in emission
+    # order; the pos-keyed aux4 map would overwrite their overlapping chars.
+    for a in data.get("aux", []):
+        if a["kind"] != 20:
             continue
-        cur = ""
-        for pos in sorted(vals):
-            if pos == 1 and cur:
-                names_by_line.setdefault(idx, []).append(cur)
-                cur = ""
-            cur += chr(vals[pos])
-        if cur:
-            names_by_line.setdefault(idx, []).append(cur)
+        idx = seq_to_line.get(a["seq"], a["seq"])
+        if a["pos"] == 1 or idx not in names_by_line or not names_by_line[idx][-1]:
+            names_by_line.setdefault(idx, []).append("")
+        names_by_line[idx][-1] += chr(a["value"])
     subprograms = set()
     for ln in lines:
         m = re.search(r"\b(?:PROGRAM|SUBROUTINE|FUNCTION|ENTRY)\s+([A-Za-z]\w*)",

@@ -1,0 +1,30 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C06LOW
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C6 lowered: EQV/NEQV via AND/OR/NOT (C5 primitives).
+      PROGRAM C06LOW
+      LOGICAL A,B,R,S
+      A=.TRUE.
+      B=.FALSE.
+C@ A .EQV. B -> (A .AND. B) .OR. (.NOT.A .AND. .NOT.B)
+      R=(A .AND. B) .OR. (.NOT.A .AND. .NOT.B)
+C@ A .NEQV. B -> (A .AND. .NOT.B) .OR. (.NOT.A .AND. B)
+      S=(A .AND. .NOT.B) .OR. (.NOT.A .AND. B)
+      IR=0
+      IF (R) IR=1
+      IS=0
+      IF (S) IS=1
+      PRINT 10,IR,IS
+   10 FORMAT(1X,2I3)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

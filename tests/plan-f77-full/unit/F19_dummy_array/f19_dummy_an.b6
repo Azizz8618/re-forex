@@ -1,0 +1,28 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name F19
+*call yesmemory
+*perso:602300
+*no list
+*forex
+      PROGRAM F19
+      INTEGER V(5)
+      DATA V/1,2,3,4,5/
+      CALL SUM(V,5,S)
+      PRINT 10,S
+   10 FORMAT(1X,I4)
+      STOP
+      END
+      SUBROUTINE SUM(A,N,S)
+      INTEGER A(N),S
+      S=0
+      DO 20 I=1,N
+   20 S=S+A(I)
+      RETURN
+      END
+*execute
+*end file
+``````
+еконец

@@ -1,0 +1,7 @@
+      PROGRAM J13C
+      COMPLEX Z
+      Z=(3.5,4.5)
+      PRINT 10,Z
+C@ 10 FORMAT(1X,G12.4) -> 10 FORMAT(1X,2E12.4)
+   10 FORMAT(1X,2E12.4)
+      END

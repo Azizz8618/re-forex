@@ -1,0 +1,21 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J6_list_low
+*call yesmemory
+*no list
+*forex
+c---- J6 lowered: READ *,X -> READ 9500,X (rule 10).
+      PROGRAM J6L
+      READ 9500,X
+      PRINT 10,X
+   10 FORMAT(1X,F8.2)
+      STOP
+ 9500 FORMAT(F12.4)
+      END
+*execute
+        3.5
+*end file
+``````
+еконец

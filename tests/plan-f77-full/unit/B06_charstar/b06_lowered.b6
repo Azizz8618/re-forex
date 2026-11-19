@@ -1,0 +1,43 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name B06LOW
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- B6 lowered (rule 12): CHARACTER*n -> INTEGER array, n ASCII codes.
+      PROGRAM B06LOW
+      INTEGER IS(30),IW10(2),IW30(5),IW1,IW4
+C@ CHARACTER*30 S -> INTEGER IS(30)
+      DATA IS/65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,
+     +        81,82,83,84,85,86,87,88,89,90,48,49,50,51/
+C@ n=30: 5 packed 6-bit words; A6 x 5
+      DATA IW30(1)/6HABCDEF/
+      DATA IW30(2)/6HGHIJKL/
+      DATA IW30(3)/6HMNOPQR/
+      DATA IW30(4)/6HSTUVWX/
+      DATA IW30(5)/2HYZ/
+C@ n=10: 2 words (last padded); A6 + A4
+      DATA IW10(1)/6HABCDEF/
+      DATA IW10(2)/4HGHIJ  /
+C@ n=1 and n=4
+      DATA IW1/6HA     /
+      DATA IW4/4HABCD/
+      PRINT 10,(IS(I),I=1,30)
+   10 FORMAT(1X,30I3)
+      PRINT 11,IW30(1),IW30(2),IW30(3),IW30(4),IW30(5)
+   11 FORMAT(1X,5A6)
+      PRINT 12,IW10(1),IW10(2)
+   12 FORMAT(1X,A6,A4)
+      PRINT 13,IW1
+   13 FORMAT(1X,A1)
+      PRINT 14,IW4
+   14 FORMAT(1X,A4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

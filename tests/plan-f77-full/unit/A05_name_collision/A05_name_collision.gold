@@ -1,0 +1,16 @@
+EXPECTED PROOF ARTIFACTS (A5 -- rule 20 long-identifier diagnostic)
+
+1) native 2.02 probe (a05_merge.b6): two 7-character names AAAAAAX / AAAAAAY
+   produce a duplicate-definition diagnostic, not a silent successful merge:
+       ЕRR 01202 ПК 3  ТИП ПЕРЕМЕН ОПРЕДЕЛЕН ПОВТОРНО
+       АТТ: АААААА  УКОРОЧЕН
+
+2) F77PREP pass 1 on a05_trunc.f77 prints 777004 <seq> 20 <pos> <ASCII>:
+       seq=1: 65 65 65 65 65 65 88   (AAAAAAX)
+       seq=2: 65 65 65 65 65 65 89   (AAAAAAY)
+
+3) prep_tools.py lower then fails with rc=1:
+       C@ INTEGER AAAAAAX, AAAAAAY -> TRUNCATED NAME: AAAAAAX / AAAAAAY (all -> AAAAAA)
+       stderr: TRUNCATED NAME: AAAAAAX / AAAAAAY (all -> AAAAAA)
+
+Full evidence: logs/f77_13_A05.txt

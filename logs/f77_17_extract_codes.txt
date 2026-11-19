@@ -1,0 +1,20 @@
+# f77_17_extract_codes — chance 2: *57/*63/*64 availability from PERSO Fortran
+# Date: 2026-11-19
+
+## Э57 (ИР 057 A): ВЫДЕЛЕНИЕ ЦЕЛОЙ ЧАСТИ (ENTIER) / системная операция.
+##    Used in re-forex: FOREX_.mad:58,83; FT_REGIM.mad:172 (*57,-CN1).
+##    No disk I/O. Mathematical/system service only.
+## Э63 (ИР 063 A): ЭКСТРАКОДЫ ВРЕМЕНИ РЕШЕНИЯ ЗАДАЧИ + ARCHIVE (АРФА).
+##    Subfunctions 01..31 create/destroy areas, catalogs, passwords, time.
+##    LUNTYP.mad uses Э63 0502/0504/057/0760/0020/0576 to QUERY device type.
+##    dispak e63() implements only cases 0-4 + physaddr() (extra.c:1926-1995).
+##    No direct disk read/write; query/area-management only.
+## Э64 (ИР 064 A): УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ.
+##    Listing/print mode control only. No disk I/O.
+## Э70: the only extract code that does disk exchange (ddio, extra.c:2063+).
+##    Needs control words (UIL/UIR) and an attached channel. Fortran source
+##    cannot issue raw extract codes; only MADLEN/PERSO can (chance 1 proved).
+
+## VERDICT: *57/*63/*64 are NOT a channel for new disk I/O. Э70 is, but it
+## requires (a) MADLEN PERSO wrapper and (b) an attached channel AND (c)
+## bypass of the FOREX runtime ERRLUN check (see f77_17_attach.txt).

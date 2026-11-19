@@ -1,0 +1,6 @@
+      PROGRAM H7L
+      CHARACTER*4 S(2)
+      DATA S(1)/4HABCD/,S(2)/4HEFGH/
+      PRINT 10,S(1),S(2)
+   10 FORMAT(1X,2A4)
+      END

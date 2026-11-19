@@ -1,0 +1,18 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J22_nested
+*call yesmemory
+*no list
+*forex
+c---- J22: group / nested parentheses in FORMAT.
+      PROGRAM J22
+      PRINT 10,1,2.5,3,4.5
+   10 FORMAT(1X,2(I4,F8.2))
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

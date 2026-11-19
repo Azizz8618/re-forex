@@ -18,6 +18,9 @@
 # MAX/MIN/ABS/DIM) классифицируются host-частью prep_tools.py:<F77PREP.FTN>
 # компилируется ФОРЭКСОМ с жёстким лимитом памяти, поэтому новые правила
 # не добавляются в его собственный исходник.
+# Случаи 12-22 (v3.3) — wave-2: rule 25 DO-zero, 26 SAVE, 27 alt return,
+# 28 CHARACTER FUNCTION, 29 CHARACTER array, 30 G, 21 P, 4/10 END=/ERR=.
+# case19/case20 подают на READ карту-сентинал (-999999. / -888888.).
 #
 # Каталог PERSO зоны 0o2300 НЕ изменяется: в рабочую копию диска 2348
 # записывается уже собранный build/FOREX_PERSO_2300.bin (как в run-glissade).
@@ -52,6 +55,46 @@ EXP9_OUT="$ROOT/tests/f77/prep-case9-expected.out"
 CASE10="$ROOT/tests/f77/prep-case10.f77"
 EXP10_LOW="$ROOT/tests/f77/prep-case10-expected.f77"
 EXP10_OUT="$ROOT/tests/f77/prep-case10-expected.out"
+# v3.2 case: C6 LOGICAL .EQV./.NEQV. -> AND/OR/NOT (rule 23).
+CASE11="$ROOT/tests/f77/prep-case11.f77"
+EXP11_LOW="$ROOT/tests/f77/prep-case11-expected.f77"
+EXP11_OUT="$ROOT/tests/f77/prep-case11-expected.out"
+# v3.3 wave-2 host-only lowerings (rules 25-32).
+CASE12="$ROOT/tests/f77/prep-case12.f77"
+EXP12_LOW="$ROOT/tests/f77/prep-case12-expected.f77"
+EXP12_OUT="$ROOT/tests/f77/prep-case12-expected.out"
+CASE13="$ROOT/tests/f77/prep-case13.f77"
+EXP13_LOW="$ROOT/tests/f77/prep-case13-expected.f77"
+EXP13_OUT="$ROOT/tests/f77/prep-case13-expected.out"
+CASE14="$ROOT/tests/f77/prep-case14.f77"
+EXP14_LOW="$ROOT/tests/f77/prep-case14-expected.f77"
+EXP14_OUT="$ROOT/tests/f77/prep-case14-expected.out"
+CASE15="$ROOT/tests/f77/prep-case15.f77"
+EXP15_LOW="$ROOT/tests/f77/prep-case15-expected.f77"
+EXP15_OUT="$ROOT/tests/f77/prep-case15-expected.out"
+CASE16="$ROOT/tests/f77/prep-case16.f77"
+EXP16_LOW="$ROOT/tests/f77/prep-case16-expected.f77"
+EXP16_OUT="$ROOT/tests/f77/prep-case16-expected.out"
+CASE17="$ROOT/tests/f77/prep-case17.f77"
+EXP17_LOW="$ROOT/tests/f77/prep-case17-expected.f77"
+EXP17_OUT="$ROOT/tests/f77/prep-case17-expected.out"
+CASE18="$ROOT/tests/f77/prep-case18.f77"
+EXP18_LOW="$ROOT/tests/f77/prep-case18-expected.f77"
+EXP18_OUT="$ROOT/tests/f77/prep-case18-expected.out"
+CASE19="$ROOT/tests/f77/prep-case19.f77"
+EXP19_LOW="$ROOT/tests/f77/prep-case19-expected.f77"
+EXP19_OUT="$ROOT/tests/f77/prep-case19-expected.out"
+DATA19="$ROOT/tests/f77/prep-case19.data"
+CASE20="$ROOT/tests/f77/prep-case20.f77"
+EXP20_LOW="$ROOT/tests/f77/prep-case20-expected.f77"
+EXP20_OUT="$ROOT/tests/f77/prep-case20-expected.out"
+DATA20="$ROOT/tests/f77/prep-case20.data"
+CASE21="$ROOT/tests/f77/prep-case21.f77"
+EXP21_LOW="$ROOT/tests/f77/prep-case21-expected.f77"
+EXP21_OUT="$ROOT/tests/f77/prep-case21-expected.out"
+CASE22="$ROOT/tests/f77/prep-case22.f77"
+EXP22_LOW="$ROOT/tests/f77/prep-case22-expected.f77"
+EXP22_OUT="$ROOT/tests/f77/prep-case22-expected.out"
 LOG_DIR="$ROOT/logs"
 LOG="$LOG_DIR/f77_prep_v2_test.txt"
 ZONE_DEC=1216                       # 0o2300
@@ -62,7 +105,19 @@ info() { printf '%s\n' "$*" | tee -a "$LOG"; }
 for f in "$DISPAK_BIN" "$ETALON" "$IMAGE" "$FTN" "$TOOLS" "$CASE1" \
          "$EXP1_LOW" "$EXP1_OUT" "$CASE2" "$EXP2_LOW" "$EXP2_OUT" "$DATA2" \
          "$CASE8" "$EXP8_LOW" "$EXP8_OUT" "$CASE9" "$EXP9_LOW" "$EXP9_OUT" \
-         "$CASE10" "$EXP10_LOW" "$EXP10_OUT"; do
+         "$CASE10" "$EXP10_LOW" "$EXP10_OUT" \
+         "$CASE11" "$EXP11_LOW" "$EXP11_OUT" \
+         "$CASE12" "$EXP12_LOW" "$EXP12_OUT" \
+         "$CASE13" "$EXP13_LOW" "$EXP13_OUT" \
+         "$CASE14" "$EXP14_LOW" "$EXP14_OUT" \
+         "$CASE15" "$EXP15_LOW" "$EXP15_OUT" \
+         "$CASE16" "$EXP16_LOW" "$EXP16_OUT" \
+         "$CASE17" "$EXP17_LOW" "$EXP17_OUT" \
+         "$CASE18" "$EXP18_LOW" "$EXP18_OUT" \
+         "$CASE19" "$EXP19_LOW" "$EXP19_OUT" "$DATA19" \
+         "$CASE20" "$EXP20_LOW" "$EXP20_OUT" "$DATA20" \
+         "$CASE21" "$EXP21_LOW" "$EXP21_OUT" \
+         "$CASE22" "$EXP22_LOW" "$EXP22_OUT"; do
     [ -f "$f" ] || fail "нет файла: $f"
 done
 [ -x "$DISPAK_BIN" ] || fail "dispak не исполняем: $DISPAK_BIN"
@@ -177,6 +232,18 @@ run_case case2 "$CASE2" "$EXP2_LOW" "$EXP2_OUT" "$DATA2"
 run_case case8 "$CASE8" "$EXP8_LOW" "$EXP8_OUT" ""
 run_case case9 "$CASE9" "$EXP9_LOW" "$EXP9_OUT" ""
 run_case case10 "$CASE10" "$EXP10_LOW" "$EXP10_OUT" ""
+run_case case11 "$CASE11" "$EXP11_LOW" "$EXP11_OUT" ""
+run_case case12 "$CASE12" "$EXP12_LOW" "$EXP12_OUT" ""
+run_case case13 "$CASE13" "$EXP13_LOW" "$EXP13_OUT" ""
+run_case case14 "$CASE14" "$EXP14_LOW" "$EXP14_OUT" ""
+run_case case15 "$CASE15" "$EXP15_LOW" "$EXP15_OUT" ""
+run_case case16 "$CASE16" "$EXP16_LOW" "$EXP16_OUT" ""
+run_case case17 "$CASE17" "$EXP17_LOW" "$EXP17_OUT" ""
+run_case case18 "$CASE18" "$EXP18_LOW" "$EXP18_OUT" ""
+run_case case19 "$CASE19" "$EXP19_LOW" "$EXP19_OUT" "$DATA19"
+run_case case20 "$CASE20" "$EXP20_LOW" "$EXP20_OUT" "$DATA20"
+run_case case21 "$CASE21" "$EXP21_LOW" "$EXP21_OUT" ""
+run_case case22 "$CASE22" "$EXP22_LOW" "$EXP22_OUT" ""
 
 info "OK: все случаи пройдены (rc=0)"
 exit 0

@@ -1,0 +1,99 @@
+=== F77 standard matrix A-D, volume 1: C9 (string comparison) ===
+date    : 2026-11-19 21:20:46
+repo    : /tmp/.private/azizz/opencode/re-forex (branch main)
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+disks   : 2048 + 2348 (PERSO 0o2300 = build/FOREX_PERSO_2300.bin,
+          F77LIBR 13 proc in PERSO 0o2310 via *perso:602310,cont)
+method  : real dispak runs; success = no diagnostics AND correct output
+          (КОНЕЦ ЗАДАЧИ alone is NOT proof -- it is printed on errors too)
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/C09_strcmp/c09_native.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C09NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C9 native probe: character comparison.
+      PROGRAM C09NAT
+      CHARACTER*6 S,T
+      S='ABCD'
+      T='ABCE'
+      IF (S .EQ. T) GO TO 10
+      PRINT 11
+   10 PRINT 12
+   11 FORMAT(1X,'NE')
+   12 FORMAT(1X,'EQ')
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+ЕRR 03106 ПК    4                ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+ЕRR 04001 ПК    4                ↑
+НЕДОПУСТИМ СИМВОЛ = В ИНСТРУК ПРИСВАИВ
+ЕRR 03106 ПК    5                ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+           *NО LISТ
+           *FОRЕХ
+ВРЕМЯ СЧЕТА: ##.##.## 0
+                 4       S=’АВСD’                                                                      4
+ЕRR 03106 ПК    4                ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+ЕRR 04001 ПК    4                ↑
+НЕДОПУСТИМ СИМВОЛ = В ИНСТРУК ПРИСВАИВ
+                 5       Т=’АВСЕ’                                                                      5
+ЕRR 03106 ПК    5                ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+С09NАТ
+           *ЕХЕСUТЕ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/C09_strcmp/c09_lowered.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C09LOW
+*call yesmemory
+*perso:602300
+*perso:602310,cont
+*no list
+*forex
+c---- C9 lowered (rule 14): packed 6-bit words + ISTRCM.
+      PROGRAM C09LOW
+      INTEGER IA(2),IB(2),IC(2)
+      DATA IA(1)/6HABCD  /
+      DATA IA(2)/6H      /
+      DATA IB(1)/6HABCE  /
+      DATA IB(2)/6H      /
+      DATA IC(1)/6HABCD  /
+      DATA IC(2)/6H      /
+C@ IF (S .EQ. T) -> K = ISTRCM(IS,IT) ; IF (K .EQ. 0) ...
+      K1=ISTRCM(IA,IB)
+      K2=ISTRCM(IA,IC)
+      K3=ISTRCM(IB,IA)
+      PRINT 10,K1,K2,K3
+   10 FORMAT(1X,3I4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+(none)
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+   -1   0   1
+
+METHOD: lowering rule 14 + F77LIBR ISTRCM
+CONCLUSION: native form rejected; lowered form compiles with NO diagnostics
+and produces the expected output above. Status OK.

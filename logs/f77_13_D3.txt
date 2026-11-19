@@ -1,0 +1,88 @@
+=== F77 standard matrix A-D, volume 1: D3 (char assignment / substring) ===
+date    : 2026-11-19 21:20:46
+repo    : /tmp/.private/azizz/opencode/re-forex (branch main)
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+disks   : 2048 + 2348 (PERSO 0o2300 = build/FOREX_PERSO_2300.bin,
+          F77LIBR 13 proc in PERSO 0o2310 via *perso:602310,cont)
+method  : real dispak runs; success = no diagnostics AND correct output
+          (КОНЕЦ ЗАДАЧИ alone is NOT proof -- it is printed on errors too)
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/D03_char_assign_substr/d03_native.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name D03NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- D3 native probe: char assignment + substring.
+      PROGRAM D03NAT
+      CHARACTER*6 S
+      S='ABCDEF'
+      PRINT 10,S(2:4)
+   10 FORMAT(1X,A4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+ЕRR 03106 ПК    4                  ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+ЕRR 04001 ПК    4                  ↑
+НЕДОПУСТИМ СИМВОЛ = В ИНСТРУК ПРИСВАИВ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+           *NО LISТ
+           *FОRЕХ
+ВРЕМЯ СЧЕТА: ##.##.## 0
+                 4       S=’АВСDЕF’                                                                    4
+ЕRR 03106 ПК    4                  ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+ЕRR 04001 ПК    4                  ↑
+НЕДОПУСТИМ СИМВОЛ = В ИНСТРУК ПРИСВАИВ
+D03NАТ
+           *ЕХЕСUТЕ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/D03_char_assign_substr/d03_lowered.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name D03LOW
+*call yesmemory
+*perso:602300
+*perso:602310,cont
+*no list
+*forex
+c---- D3 lowered (rules 8/12/14): DATA + SUBSTR (ASCII codes).
+      PROGRAM D03LOW
+      INTEGER IS(6),IW(8),IWD(8)
+      DATA IS/65,66,67,68,69,70/
+C@ static-fold variant (DATA precedes all executables): IWD/6HBCD   /
+      DATA IWD(1)/6HBCD   /
+C@ S(2:4) -> CALL SUBSTR(IS,2,4,IW)
+      CALL SUBSTR(IS,2,4,IW)
+      PRINT 10,(IW(I),I=1,3)
+   10 FORMAT(1X,3I3)
+      PRINT 11,IWD
+   11 FORMAT(1X,A4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+(none)
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+  66 67 68
+ ВСD
+
+METHOD: lowering rule 12/14 + F77LIBR SUBSTR
+CONCLUSION: native form rejected; lowered form compiles with NO diagnostics
+and produces the expected output above. Status OK.

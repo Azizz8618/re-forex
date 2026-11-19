@@ -1,0 +1,52 @@
+=== F77 standard matrix A-D, volume 1: A5 (identifiers <=6 chars (rule 20)) ===
+date    : 2026-11-19 21:20:46
+repo    : /tmp/.private/azizz/opencode/re-forex (branch main)
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+disks   : 2048 + 2348 (PERSO 0o2300 = build/FOREX_PERSO_2300.bin,
+          F77LIBR 13 proc in PERSO 0o2310 via *perso:602310,cont)
+method  : real dispak runs; success = no diagnostics AND correct output
+          (КОНЕЦ ЗАДАЧИ alone is NOT proof -- it is printed on errors too)
+
+--- native 2.02: a05_merge.b6 (two 7-char names) ---
+DIAGNOSTICS (native does NOT silently merge here):
+ЕRR 01202 ПК    3                               ↑
+ТИП ПЕРЕМЕН ОПРЕДЕЛЕН ПОВТОРНО
+АТТ: АААААА  УКОРОЧЕН
+
+--- F77PREP pass 1 on a05_trunc.f77: rule-20 records 777004 <seq> 20 <pos> <ASCII> ---
+   777004       1      20       1      80
+   777004       1      20       2      82
+   777004       1      20       3      79
+   777004       1      20       4      71
+   777004       1      20       5      82
+   777004       1      20       6      65
+   777004       1      20       7      77
+   777004       2      20       1      73
+   777004       2      20       2      78
+   777004       2      20       3      84
+   777004       2      20       4      69
+   777004       2      20       5      71
+   777004       2      20       6      69
+   777004       2      20       7      82
+   777004       2      20       1      65
+   777004       2      20       2      65
+   777004       2      20       3      65
+   777004       2      20       4      65
+   777004       2      20       5      65
+   777004       2      20       6      65
+   777004       2      20       7      88
+   777004       2      20       1      65
+   777004       2      20       2      65
+   777004       2      20       3      65
+   777004       2      20       4      65
+   777004       2      20       5      65
+   777004       2      20       6      65
+   777004       2      20       7      89
+   777004       3      2
+
+ASCII codes: AAAAAAX = 65 65 65 65 65 65 88 ; AAAAAAY = 65 65 65 65 65 65 89
+--- pass 2 of pipeline: prep_tools.py lower -> rc=1 (diagnostic) ---
+stdout: C@ INTEGER AAAAAAX, AAAAAAY -> TRUNCATED NAME: AAAAAAX / AAAAAAY (all -> AAAAAA)
+stderr: TRUNCATED NAME: AAAAAAX / AAAAAAY (all -> AAAAAA)
+CONCLUSION: rule 20 emits an explicit diagnostic; there is no silent merge
+in the F77PREP path. Status OK (lowering/diagnostic).

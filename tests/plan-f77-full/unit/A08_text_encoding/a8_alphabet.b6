@@ -1,0 +1,30 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name A8ALP
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- A8: full alphabet recoding table probe.
+      PROGRAM A8ALP
+      INTEGER W1,W2,W3,W4,W5,W6,W7,W8
+      DATA W1/6HABCDEF/
+      DATA W2/6HGHIJKL/
+      DATA W3/6HMNOPQR/
+      DATA W4/6HSTUVWX/
+      DATA W5/2HYZ/
+      DATA W6/6Habcdef/
+      DATA W7/6Hghijkl/
+      DATA W8/6H012345/
+      PRINT 10,W1,W2,W3,W4,W5
+   10 FORMAT(1X,5A6)
+      PRINT 11,W6,W7,W8
+   11 FORMAT(1X,3A6)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

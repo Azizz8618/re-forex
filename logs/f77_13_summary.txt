@@ -1,0 +1,18 @@
+=== F77 standard matrix A-D, volume 1 -- summary ===
+date: 2026-11-19 21:20:46
+10 elements probed with real dispak runs (2048 + 2348, PERSO 602300/602310).
+method: native probe first; on failure -- lowering with rules 12-14 / F77LIBR.
+success criterion: no diagnostics AND correct output (КОНЕЦ ЗАДАЧИ is not proof).
+
+A5  OK  logs/f77_13_A05.txt   rule 20 -> TRUNCATED NAME diagnostic
+A8  OK  logs/f77_13_A08.txt   hardware TEXT caveat + host recode.py
+B6  OK  logs/f77_13_B6.txt    lowering rule 12
+B12 OK  logs/f77_13_B12.txt   lowering rule 8/12
+B13 OK  logs/f77_13_B13.txt   lowering rule 8
+C6  OK  logs/f77_13_C6.txt    lowering boolean EQV/NEQV formula
+C8  OK  logs/f77_13_C8.txt    lowering rule 13 + F77LIBR STRCAT
+C9  OK  logs/f77_13_C9.txt    lowering rule 14 + F77LIBR ISTRCM
+C10 OK  logs/f77_13_C10.txt   NATIVE (no lowering, no library)
+D3  OK  logs/f77_13_D3.txt    lowering rule 12/14 + F77LIBR SUBSTR
+
+OK count: 10 / 10

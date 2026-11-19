@@ -1,0 +1,27 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J8_ERR_low
+*call yesmemory
+*no list
+*forex
+c---- J8 lowered: ERR= via sentinel -888888. (rule 11).
+      PROGRAM J8L
+      READ 9500,X
+      IF (X .EQ. -888888.) GO TO 99
+      PRINT 20,X
+      GO TO 100
+   99 CONTINUE
+      PRINT 21
+  100 CONTINUE
+   20 FORMAT(1X,F8.2)
+   21 FORMAT(1X,'ERR')
+ 9500 FORMAT(F12.4)
+      STOP
+      END
+*execute
+ -888888.
+*end file
+``````
+еконец

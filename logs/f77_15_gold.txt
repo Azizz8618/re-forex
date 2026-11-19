@@ -1,0 +1,27 @@
+# f77_15_gold.txt — верификация deck/gold волн 1 (J-элементы).
+# Команда: dispak job.b6, диски 2048+2348, *perso:602300, BESM6_PATH=<WORK>:/usr/local/share/besm6.
+# Критерий: rc=0, пустой Extended-FATAL, result == gold (байтово).
+# DATE 19.11.2026
+
+ID|DECK|GOLD|RC|FATAL|RESULT|VERDICT
+J2_write_unit54|j2_write_unit54.b6|J2_write_unit54.gold|0||'    54\n'|OK
+J5_list_print|j5_list_print.b6|J5_list_print.gold|0||'         42\n'|OK
+J5_list_print_multi|j5_list_print_multi.b6|J5_list_print_multi.gold|0||'         42      3.5000Т\n'|OK
+J6_list_read|j6_list_read.b6|J6_list_read.gold|0||'     3.50\n'|OK
+J6_list_read_list|j6_list_read_list.b6|J6_list_read_list.gold|0||'     3.50    42\n'|OK
+J7_end_sentinel|j7_end_sentinel.b6|J7_end_sentinel.gold|0||' ЕОF\n'|OK
+J8_err_sentinel|j8_err_sentinel.b6|J8_err_sentinel.gold|0||' ЕRR\n'|OK
+J11_desc_E|j11_desc_e.b6|J11_desc_E.gold|0||'    3.5000+00\n'|OK
+J13_desc_G_lowered|j13_desc_g_lowered.b6|J13_desc_G_lowered.gold|0||'    3.5000+00\n       3.5000\n  3.500000000000000+000\n    3.50'|OK
+J15_desc_L|j15_desc_l.b6|J15_desc_L.gold|0||' Т\n'|OK
+J18_desc_slash|j18_desc_slash.b6|J18_desc_slash.gold|0||'    1\n     2.50\n'|OK
+J21_pscale|j21_pscale.b6|J21_pscale.gold|0||'   35.0000-01\n'|OK
+J22_nested_format|j22_nested_format.b6|J22_nested_format.gold|0||'    1    2.50   3    4.50\n'|OK
+J22_nested_format2|j22_nested_format2.b6|J22_nested_format2.gold|0||'   1  2  3.50  4  5  6.50\n'|OK
+J23_unformatted_syntax|j23_unformatted_syntax.b6|J23_unformatted_syntax.gold|0||' SУNТАХ ОК\n'|OK
+J25_rewind|j25_rewind.b6|J25_rewind.gold|0||'        IОХNSWАР   01000        GIVЕМАSК Е 01116\n        НID'|OK
+J26_backspace|j26_backspace.b6|J26_backspace.gold|0||'        IОХNSWАР   01000        GIVЕМАSК Е 01116\n        НID'|OK
+J27_endfile|j27_endfile.b6|J27_endfile.gold|0||' РОS ОК\n'|OK
+J28_assigned_format|j28_assigned_format.b6|J28_assigned_format.gold|0||' 12345\n'|OK
+
+ИТОГО: 19 OK / 0 FAIL

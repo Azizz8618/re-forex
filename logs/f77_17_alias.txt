@@ -1,0 +1,12 @@
+# f77_17_alias — chance 4: WRITE(u,fmt) lowered to WRITE(54,fmt)
+# Date: 2026-11-19
+
+## Deck decks/alias_demo.b6: two Fortran units 11 and 12 both lowered to WRITE(54,10)
+## EXECUTABLE RESULT (decks/runalias/out.txt):
+ UNIТ DАТА= 11
+ UNIТ DАТА= 12
+ КОНЕЦ ЗАДАЧИ
+
+## VERDICT: Both units' records land in the SAME stdout stream; no separate files,
+## no reopening, no READ-back, no INQUIRE. This is output multiplexing, not
+## Fortran I/O unit semantics. Honest naming: 'single-device profile' NOT 'support'.

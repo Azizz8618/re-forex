@@ -1,0 +1,25 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C09NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C9 native probe: character comparison.
+      PROGRAM C09NAT
+      CHARACTER*6 S,T
+      S='ABCD'
+      T='ABCE'
+      IF (S .EQ. T) GO TO 10
+      PRINT 11
+   10 PRINT 12
+   11 FORMAT(1X,'NE')
+   12 FORMAT(1X,'EQ')
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

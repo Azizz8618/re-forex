@@ -1,0 +1,45 @@
+=== F77 standard matrix A-D, volume 1: C10 (COMPLEX arithmetic + - * /) ===
+date    : 2026-11-19 21:20:46
+repo    : /tmp/.private/azizz/opencode/re-forex (branch main)
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+disks   : 2048 + 2348 (PERSO 0o2300 = build/FOREX_PERSO_2300.bin,
+          F77LIBR 13 proc in PERSO 0o2310 via *perso:602310,cont)
+method  : real dispak runs; success = no diagnostics AND correct output
+          (КОНЕЦ ЗАДАЧИ alone is NOT proof -- it is printed on errors too)
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/C10_complex_arith/c10_native.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C10NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C10 native: COMPLEX + - * / (all four operations).
+      PROGRAM C10NAT
+      COMPLEX Z1,Z2,ZS,ZD,ZP,ZQ
+      Z1=(3.0,4.0)
+      Z2=(1.0,2.0)
+      ZS=Z1+Z2
+      ZD=Z1-Z2
+      ZP=Z1*Z2
+      ZQ=Z1/Z2
+      PRINT 10,ZS,ZD,ZP,ZQ
+   10 FORMAT(1X,8F10.4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+(none)
+--- program output ---
+     4.0000    6.0000    2.0000    2.0000   -5.0000   10.0000    2.2000   -0.4000
+
+Numerical check: (3+4i)+(1+2i)=(4,6); -(2,2); (3+4i)*(1+2i)=(-5,10);
+(3+4i)/(1+2i)=(2.2,-0.4). All four match the printed 8 values.
+METHOD: native (no lowering, no library).
+CONCLUSION: native 2.02 supports COMPLEX + - * /. Status OK.

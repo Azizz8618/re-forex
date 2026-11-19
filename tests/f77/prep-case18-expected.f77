@@ -1,0 +1,6 @@
+      PROGRAM J21
+      X=3.5
+      PRINT 10,X
+C@ 10 FORMAT(1X,1P,E12.4) -> 10 FORMAT(1X,1PE12.4)
+   10 FORMAT(1X,1PE12.4)
+      END

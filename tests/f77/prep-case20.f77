@@ -1,0 +1,9 @@
+      PROGRAM J8
+      READ(*,*,ERR=99) X
+      PRINT 20,X
+      GO TO 100
+   99 PRINT 21
+  100 CONTINUE
+   20 FORMAT(1X,F8.2)
+   21 FORMAT(1X,'ERR')
+      END

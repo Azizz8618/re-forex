@@ -1,0 +1,46 @@
+# Wave-1 F77 E-H log — F19 — 2026-11-19
+# dispak 2048+2348 (PERSO 0o2300); критерий: нет диагностики + верный вывод.
+# Команда: dispak <deck> с BESM6_PATH=WORK:/usr/local/share/besm6
+
+======================================================================
+ROLE : native A(N)
+DECK : tests/plan-f77-full/unit/F19_dummy_array/f19_dummy_an.b6
+VERDICT: OK → 15
+RAW  : /tmp/.private/azizz/opencode/w1/F19.out
+
+                                                      19.11.26 М1
+        RК*      Е 01124        ТТРRINТD Е 03412        АSАVЕ*   Е 04571
+        WSУ*     Е 01374        ТТРRINТ  Е 03412        SАVЕ*НID Е 04576
+        FС*002   Е 01625        ВСDРUN   Е 04127        SАVЕLЕХХ Е 05011
+   15
+ КОНЕЦ ЗАДАЧИ
+
+======================================================================
+ROLE : native A(*)
+DECK : tests/plan-f77-full/unit/F19_dummy_array/f19_dummy_astar_native.b6
+VERDICT: FAIL trap
+RAW  : /tmp/.private/azizz/opencode/w1/F19s.out
+
+                                                      19.11.26 М1
+ 00000  00 000 0000	atx
+  acc = 0000000000027266 Y = 0000000000000000 R = 000111
+       02535 06433 34227 00000 06365 03103 27377 00024
+       24024 30011 06366 16641 00000 57056 57057
+ КОНЕЦ ЗАДАЧИ
+  acc = 0000000000027266 Y = 0000000000000000 R = 000111
+       02535 06433 34227 00000 06365 03103 27377 00024
+       24024 30011 06366 16641 00000 00000 57057
+
+======================================================================
+ROLE : lowering A(*)→A(1)
+DECK : tests/plan-f77-full/unit/F19_dummy_array/f19_dummy_astar_lowered.b6
+VERDICT: OK → 15
+RAW  : /tmp/.private/azizz/opencode/w1/F19slow.out
+
+                                                      19.11.26 М1
+        RК*      Е 01122        ТТРRINТD Е 03410        АSАVЕ*   Е 04567
+        WSУ*     Е 01372        ТТРRINТ  Е 03410        SАVЕ*НID Е 04574
+        FС*002   Е 01623        ВСDРUN   Е 04125        SАVЕLЕХХ Е 05007
+   15
+ КОНЕЦ ЗАДАЧИ
+

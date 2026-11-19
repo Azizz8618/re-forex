@@ -1,0 +1,20 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J15_desc_L
+*call yesmemory
+*no list
+*forex
+c---- J15: L edit descriptor.
+      PROGRAM J15
+      LOGICAL L
+      L=.TRUE.
+      PRINT 10,L
+   10 FORMAT(1X,L1)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

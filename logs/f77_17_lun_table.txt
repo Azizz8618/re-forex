@@ -1,0 +1,52 @@
+# f77_17_lun_table — LUN/channel table address & format (source analysis)
+# Date: 2026-11-19. SOURCES READ-ONLY, no changes made.
+
+=== 1. dispak (host emulator) channel table ===
+  /home/azizz/Yandex.Disk/dispak/dispak/defs.h:77-82:
+    typedef struct { void *diskh; ushort offset; ushort diskno; ushort mode; } ddisk_t;
+  defs.h:351:  EXTERN ddisk_t disks[NDISKS];   /* disks & drums */
+  defs.h:319:  #define NDISKS (64 + OSD_NUM)
+  -> 64 logical channels u = 030..067 (octal), each 4 x 16-bit fields.
+     This is the ONLY disk-channel table dispak consults at E70 time.
+
+=== 2. How the channel table is populated from the monitor ===
+  extra.c:1614-1636  E50 subfunction 0131 'attach volume to handle':
+    u = acc.l>>18 (bits 23-18); requires ((acc.l>>12)&077)==077;
+    disks[u].diskno = NDISK(acc.r);  mode from acc.r bit 16;
+    u must be 030..067. (experimentally verified: E50at type=00131)
+  extra.c:1310-1361  E50 0157 'request volume for exclusive use':
+    scans u=030..070 for a free disks[u], binds diskno.
+  extra.c:1544-1553  E50 0105 'get volume number by handle':
+    u=(acc.r>>12)&077; returns disks[u].diskno or 0 if unattached.
+  extra.c:2082-2095  E70 ddio(): u = uir.i_opcode & 077;
+    zone = uir.i_addr & 07777 for 030<=u<070, else drum track.
+
+=== 3. FOREX 2.02 runtime LUN table (the real blocker) ===
+  src/lib21/LUNTYP.mad:39-105  FUNCTION LUNTYP(LUN):
+    queries device type via E63 subfunctions 0502 (AGUS), 0504 (AT1MT),
+    057 (T1MT), 0760 (AIPD), 0020 (LFATA), 0576 (FATA).
+    returns 0=not requested, 1=tape, 2=SCRATCH, 3=personal disk file, 4=special.
+  Symbol dump (decks/run1/out.txt etc.): ERRLUN at 04305/04317/04321,
+    LUN*MON at 03147/03150, LUNMUN at 03146. ERRLUN prints 'НЕТ КАНАULA LUN 45'.
+  -> This table is loaded from the FOREX system zone on disk 2348 (libra21x).
+     It is SEPARATE from dispak's disks[] and is NOT updated by E50 0131.
+
+=== 4. Monitor sources (READ-ONLY) ===
+  monitor80-re/permanent/star%.masm:27   LUN*MON : SUBP (monitor LUN service)
+  star%.masm:31 MONREAD*: SUBP 'Не исп. в Mониторе-80'
+  star%.masm:150-161 SYSTLODL/LHEAP/PARAMT - passport parameter path
+  monitor80-re/permanent/paramt%.masm - parses text card parameters for
+    monitor/compiler control; does NOT define the disk-channel table.
+  monitor80-re/permanent/lun%mon.asm - LUN*MON print service (TTPRINT/PRINT80).
+  monitor80-re/permanent/ioxxfmr%.asm:277-288 - E50 0151/0152/0156/0157 dispatcher.
+  Passport 'ЛЕН <u>(<tom>)' cards (Dispak-compat-guide.md:176,207,279) are
+    translated by the monitor into E50 0131 calls -> populate dispak disks[].
+
+=== 5. Conclusion on 'address of the LUN table' ===
+  - Emulator-level channel table: dispak host variable disks[] (NOT in BESM core).
+    Cannot be patched by writing bytes into a disk image.
+  - FOREX-level LUN validity table: in the FOREX system area loaded from 2348,
+    accessed by LUNTYP via E63 and by ERRLUN; its exact core address was not
+    pinned down by a core dump in this wave, but its SYMBOL is ERRLUN (043xx),
+    and the diagnostic 'НЕТ КАНАLA LUN 45' is emitted there BEFORE E70.
+  - Patching the passport ('лен' cards) or dispak C does NOT bypass ERRLUN.

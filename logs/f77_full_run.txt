@@ -1,5 +1,5 @@
-F77 full verification — 2026-11-19T18:09:07Z
-dispak=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak etalon=/usr/local/share/besm6/2348 image=/tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
+F77 full verification — 2026-11-19T19:03:54Z
+dispak=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak etalon=/usr/local/share/besm6/2348 image=/home/azizz/Yandex.Disk/re-forex/build/FOREX_PERSO_2300.bin
 F77LIBR: 13 процедур собраны в PERSO 0o2310 (для *perso:602310,cont)
 
 === L0/L1: unit-пробы и gold-пары стандарт-матрицы A-K ===
@@ -67,8 +67,46 @@ OK K03  K03_cabs                     e1/precision/complex/out.txt
 OK K03  K03_cabs.gold e1 e1/precision/complex/out.txt
 OK K04  K04_dsqrt                    e1/precision/double/out.txt
 OK K04  K04_dsqrt.gold e1 e1/precision/double/out.txt
-Итог L0: 32 OK / 0 PENDING (E4/MADLEN)
-Итог L1: 32 OK / 0 PENDING; suite-пар переиспользовано 8, расхождений 0
+OK J06  J11_desc_E                   01-matrix:J11_desc_E
+OK J06  J11_desc_E.gold new 01-matrix:J11_desc_E
+OK J07  J13_desc_G_lowered           01-matrix:J13_desc_G_lowered
+OK J07  J13_desc_G_lowered.gold new 01-matrix:J13_desc_G_lowered
+OK J08  J15_desc_L                   01-matrix:J15_desc_L
+OK J08  J15_desc_L.gold new 01-matrix:J15_desc_L
+OK J09  J18_desc_slash               01-matrix:J18_desc_slash
+OK J09  J18_desc_slash.gold new 01-matrix:J18_desc_slash
+OK J10  J21_pscale                   01-matrix:J21_pscale
+OK J10  J21_pscale.gold new 01-matrix:J21_pscale
+OK J11  J22_nested_format            01-matrix:J22_nested_format
+OK J11  J22_nested_format.gold new 01-matrix:J22_nested_format
+OK J12  J22_nested_format2           01-matrix:J22_nested_format2
+OK J12  J22_nested_format2.gold new 01-matrix:J22_nested_format2
+OK J13  J23_unformatted_syntax       01-matrix:J23_unformatted_syntax
+OK J13  J23_unformatted_syntax.gold new 01-matrix:J23_unformatted_syntax
+OK J14  J25_rewind                   01-matrix:J25_rewind
+OK J14  J25_rewind.gold new 01-matrix:J25_rewind
+OK J15  J26_backspace                01-matrix:J26_backspace
+OK J15  J26_backspace.gold new 01-matrix:J26_backspace
+OK J16  J27_endfile                  01-matrix:J27_endfile
+OK J16  J27_endfile.gold new 01-matrix:J27_endfile
+OK J17  J28_assigned_format          01-matrix:J28_assigned_format
+OK J17  J28_assigned_format.gold new 01-matrix:J28_assigned_format
+OK J18  J2_write_unit54              01-matrix:J2_write_unit54
+OK J18  J2_write_unit54.gold new 01-matrix:J2_write_unit54
+OK J19  J5_list_print                01-matrix:J5_list_print
+OK J19  J5_list_print.gold new 01-matrix:J5_list_print
+OK J20  J5_list_print_multi          01-matrix:J5_list_print_multi
+OK J20  J5_list_print_multi.gold new 01-matrix:J5_list_print_multi
+OK J21  J6_list_read                 01-matrix:J6_list_read
+OK J21  J6_list_read.gold new 01-matrix:J6_list_read
+OK J22  J6_list_read_list            01-matrix:J6_list_read_list
+OK J22  J6_list_read_list.gold new 01-matrix:J6_list_read_list
+OK J23  J7_end_sentinel              01-matrix:J7_end_sentinel
+OK J23  J7_end_sentinel.gold new 01-matrix:J7_end_sentinel
+OK J24  J8_err_sentinel              01-matrix:J8_err_sentinel
+OK J24  J8_err_sentinel.gold new 01-matrix:J8_err_sentinel
+Итог L0: 51 OK / 0 PENDING (E4/MADLEN)
+Итог L1: 51 OK / 0 PENDING; suite-пар переиспользовано 8, расхождений 0
 
 === L2: кросс-компиляция *FTN / *FORTRAN (диск 2048) ===
 CROSS OK X01  FTN      1 чисел совпали (допуск max(1e-06, 1e-05*max))
@@ -122,11 +160,11 @@ OK   20 save_ok        ожидалось=gold факт=gold совпал
 ------------------------------------------------------------------------
 Итоговая таблица F77 full
 LEVEL    OK     PENDING    SKIP     DETAIL
-L0       32     0          0        unit A-K
-L1       32     0          0        gold pairs
+L0       51     0          0        unit A-K
+L1       51     0          0        gold pairs
 L2       8      0          0        cross FTN/FORTRAN
 L3       2      0          2        real programs
 L4       9      0          0        negative
 GATE     20     0(FAIL)    0        20/20 mandatory
 Логи: logs/f77_full_*.txt; манифест: logs/f77_full.sha256
-OK: gate 20/20; L0/L1 32/32, 0 PENDING (F03/I02/K03 закрыты lowering-ом + F77LIBR)
+OK: gate 20/20; L0 51 OK / 0 PENDING, L1 51 OK / 0 PENDING

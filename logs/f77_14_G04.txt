@@ -1,0 +1,31 @@
+# Wave-1 F77 E-H log — G04 — 2026-11-19
+# dispak 2048+2348 (PERSO 0o2300); критерий: нет диагностики + верный вывод.
+# Команда: dispak <deck> с BESM6_PATH=WORK:/usr/local/share/besm6
+
+======================================================================
+ROLE : native
+DECK : tests/plan-f77-full/unit/G04_char_function/g04_char_func_native.b6
+VERDICT: FAIL ТИП/СИМВОЛ
+RAW  : /tmp/.private/azizz/opencode/w1/G4.out
+
+                                                      19.11.26 М1
+                 3       S=СFUN()                                                                      3
+НЕДОПУСТИМ СИМВОЛ ) В ВЫРАЖ
+                 1       СНАRАСТЕR*4 FUNСТIОN СFUN()                                                   1
+НЕДОПУСТИМ СИМВОЛ ) В ВЫРАЖ
+ЗНАЧЕН. АВСD    НЕ ОПРЕДЕЛЕНО
+ КОНЕЦ ЗАДАЧИ
+
+======================================================================
+ROLE : lowering FUNCTION→SUBROUTINE+Hollerith
+DECK : tests/plan-f77-full/unit/G04_char_function/g04_char_func_lowered.b6
+VERDICT: OK → АВСD
+RAW  : /tmp/.private/azizz/opencode/w1/G4low5.out
+
+                                                      19.11.26 М1
+        RК*      Е 01071        ТТРRINТD Е 03357        АSАVЕ*   Е 04536
+        WSУ*     Е 01341        ТТРRINТ  Е 03357        SАVЕ*НID Е 04543
+        FС*002   Е 01572        ВСDРUN   Е 04074        SАVЕLЕХХ Е 04756
+ АВСD
+ КОНЕЦ ЗАДАЧИ
+

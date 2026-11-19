@@ -2,12 +2,11 @@
 
 Дата: 19.11.2026. Версия изделия: **FOREX 5.00 / 19.11.2026 (re-forex)**.
 Статус: реализовано и проверено; исходники — `src/f77prep/F77PREP.FTN` (337
-строк, без изменений в v3.1) и `src/f77prep/prep_tools.py`. Обратная
+строк, без изменений с v3) и `src/f77prep/prep_tools.py`. Обратная
 совместимость с v1/v2 полная: `tests/run-f77-prep.sh` rc=0 для
-`prep-case.f77` и `prep-case2.f77`, `lowered.f77` побайтово совпадает с
-эталонами. В v3.1 добавлены правила 17/18/19/21/22 (host-классификация) и
-закрыты последние три PENDING-кейса F03/I02/K03: `run-f77-full.sh` —
-L0 32/32, L1 32/32, 0 PENDING, GATE 20/20, rc=0.
+`prep-case.f77` и `prep-case2.f77`. В v3.1 добавлены правила 17/18/19/21/22
+(host-классификация), в v3.2 — 23/24, в v3.3 (волна 2) — правила 25–32
+(см. §7). `run-f77-full.sh`: L0 51/51, L1 51/51, 0 PENDING, GATE 20/20, rc=0.
 
 Объект работ — только `src/f77prep/`, `tests/f77/prep-*`,
 `docs/plan-f77/09-preprocessor.md` и настоящий документ. `src/f77libr`,
@@ -209,3 +208,64 @@ tests/run-glissade-forex.sh    rc=0   (14/14 строк)
   `END=`/`ERR=` не дают полной F77-семантики.
 * Сентинал END=/ERR= — **эмуляция по значению**, число задаётся host и не
   должно встречаться в данных; документировано в `03-fortran-path.md` §2.4.
+
+---
+
+## 7. Волна 2 (v3.3): host-lowerings 23–32
+
+`F77PREP.FTN` остаётся на v3 без изменений (ФОРЭКС 2.02: жёсткий лимит
+памяти трансляции). Все новые правила классифицируются и применяются в
+`src/f77prep/prep_tools.py`; каждое имеет `C@`-якорь и двухпроходной тест
+`tests/f77/prep-caseNN.f77` → `prep-caseNN-expected.f77` +
+`prep-caseNN-expected.out` (прогон `tests/run-f77-prep.sh`, rc=0).
+
+| rule / правило | Конструкция | Lowering (host) | Тест | rc |
+|---:|---|---|---|:--:|
+| **23** | `A .EQV. B`, `A .NEQV. B` | `(A .AND. B) .OR. (.NOT.A .AND. .NOT.B)` / `…AND.NOT.B…` (нативные C5) | case11 | 0 |
+| **24** | `A(*)`, `A(lb:*)` | `A(1)` / `A(lb)` (F19/H6) | smoke + case14 (косв.) | 0 |
+| **25 / R-E9** | `DO m I=e1,e2[,e3]`, нуль итераций | перед DO guard `IF (e1 .GT. e2) GO TO Ls` (шаг ≥0) или `IF (e1 .LT. e2) GO TO Ls` (шаг <0); после terminal `Ls CONTINUE`. Переменный шаг: `IF (V .GE. 0) GO TO Lp / IF (e1 .LT. e2) GO TO Ls / GO TO Lb / Lp CONTINUE / IF (e1 .GT. e2) GO TO Ls / Lb CONTINUE`. Метки Ls/Lp/Lb — `dyn_alloc` из зоны 90000–99999 | case12 (литерал), case21 (переменный шаг, обе ветви) | 0 |
+| **26 / R-F11** | `SAVE v1,…,vk` | `COMMON /<U>SV/v1,…,vk` + `BLOCK DATA` с `INTEGER v` / `COMMON` / перенесёнными `DATA v/c/`; блок ≤6 знаков. Легаси-случай (главная программа без `DATA`) сохраняет rule 2 побайтово (case1) | case13 (`11 12`) | 0 |
+| **27 / R-G8** | `CALL S(*L1,…,*Lk)`, `RETURN j` | `INTEGER RC; CALL S(RC); GO TO (L1,…,Lk,Lb),RC; Lb CONTINUE`; `SUBROUTINE S(RC)` получает `INTEGER RC`; `RETURN j` → `RC=j; RETURN`. Lb — `dyn_alloc` | case14 (`1`) | 0 |
+| **28 / R-G4** | `CHARACTER*n FUNCTION F(args)` | `SUBROUTINE F(RV,args)` + `INTEGER RV,IH` (`RV(W),IH(W)` при n>6); `F='lit'` → `DATA IH/nH…/` + `RV=IH`; вызов `S=F(args)` → `INTEGER S; CALL F(S,args)` (не `INTEGER FUNCTION` — на 2.02 он вернул 0) | case15 (` АВСD`) | 0 |
+| **29 / R-H7** | `CHARACTER*n S(d1,…)` | `INTEGER S(d1*W,…)`, `W=ceil(n/6)`; Hollerith-`DATA` не меняется | case16 (` АВСDЕFGН`) | 0 |
+| **30 / R13** | `G w.d` в FORMAT | по типу PRINT-переменной: REAL→`E w.d`, DP→`D w.d`, COMPLEX→`2E w.d`, LOGICAL→`L1`, INTEGER→`Iw`; тип берётся из объявлений/неявного typing, FORMAT переписывается по метке | case17 (REAL+DP), case22 (COMPLEX) | 0 |
+| **31 / R21** | `1P, E12.4` | `1PE12.4` (запятая после P ломает формат 2.02) | case18 (`   35.0000-01`) | 0 |
+| **4 + 11 / R11-END** | `READ(*,*,END=LL) v` | `READ <fmt>,v` + `IF (v .EQ. -999999[.]) GO TO LL`; раньше метка `END=` просто терялась. Для INTEGER сентинал без точки | case19 (` ЕОF`, карта `-999999.`); case2 — регрессия | 0 |
+| **10 + 11 / R11-ERR** | `READ(*,*,ERR=LL) v` | `READ <fmt>,v` + `IF (v .EQ. -888888.) GO TO LL` (метка из `777004 kind=11 pos=2`) | case20 (` ЕRR`, карта `-888888.`) | 0 |
+
+Побочные исправления host-части, сделанные в этой волне:
+
+* разбор `777004 kind=20` теперь идёт **в порядке эмиссии** (раньше
+  `pos`-ключевая карта перезаписывала символы второго длинного имени на той
+  же строке — из-за этого `CHARACTER*n FUNCTION` абортировался как
+  `TRUNCATED NAME: FUNCTIONR`);
+* локальная переменная `data` в rule 14 переименована в `dcard` (она
+  затеняла JSON-структуру с `777004` и ломала rule 20 в case9);
+* якоря `C@` новых правил короче 72 колонок (иначе ФОРЭКС читает хвост
+  комментария как отдельную карту).
+
+### 7.1 Результаты проверок v3.3
+
+```
+tests/run-f77-prep.sh          rc=0   (17 кейсов: case1/2/8..22, PASS1/PASS2)
+tests/run-f77-full.sh          rc=0   (L0 51/51, L1 51/51, L2 8/8, L3 2+2 skip,
+                                       L4 9/9, GATE 20/20, 0 PENDING)
+python3 tests/check-source-words.py  rc=0  (LO*SYN, LO*GEN: 1024/1024)
+tests/check-label-semantics.sh rc=0   (0 нарушений)
+tests/check-constants.sh       rc=0
+tests/check-text-decoded.sh    rc=0
+```
+
+Логи волны: `logs/f77_lower2_*.txt` (сырые протоколы dispak по каждому
+правилу и сводные прогоны).
+
+### 7.2 Честные оговорки
+
+* R-E9/R-F11/R-G8/R-G4/R-H7/R13/R21/R11 — это **lowerings под профиль
+  FOREX 5.00 / 2.02**, а не полная семантика X3.9. В частности, `END=`/`ERR=`
+  остаются эмуляцией EOF по значению (сентинная карта подаётся host-ом), а
+  точный автовыбор G-дескриптора (F vs E) не реализован — профиль фиксирует
+  конкретный тип-зависимый выбор.
+* R-G4/R-H7 доказаны executable-прогоном для `n=4` (одно 6-битное слово);
+  вариант `W=ceil(n/6)>1` реализован по той же схеме, но отдельного deck'а
+  не имеет.

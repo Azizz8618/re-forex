@@ -1,0 +1,21 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name D03NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- D3 native probe: char assignment + substring.
+      PROGRAM D03NAT
+      CHARACTER*6 S
+      S='ABCDEF'
+      PRINT 10,S(2:4)
+   10 FORMAT(1X,A4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

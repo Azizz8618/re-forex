@@ -1,0 +1,25 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name A08TXT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- A8 native: 6-bit TEXT decoded by dispak with hardware table.
+      PROGRAM A08TXT
+      INTEGER IA,IB,IC
+      DATA IA/4HABCD/
+      DATA IB/6HABCDEF/
+      DATA IC/6HHELLO /
+      PRINT 10,IA
+   10 FORMAT(1X,A4)
+      PRINT 11,IB,IC
+   11 FORMAT(1X,2A6)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

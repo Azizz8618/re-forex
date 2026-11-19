@@ -1,0 +1,9 @@
+      PROGRAM G4L
+      IS=CFUN()
+      PRINT 10,IS
+   10 FORMAT(1X,A4)
+      END
+      CHARACTER*4 FUNCTION CFUN()
+      CFUN='ABCD'
+      RETURN
+      END

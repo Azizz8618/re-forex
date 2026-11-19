@@ -1,0 +1,19 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J21_pscale
+*call yesmemory
+*no list
+*forex
+c---- J21: scale factor P (1PE12.4), comma form must be avoided.
+      PROGRAM J21
+      X=3.5
+      PRINT 10,X
+   10 FORMAT(1X,1PE12.4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

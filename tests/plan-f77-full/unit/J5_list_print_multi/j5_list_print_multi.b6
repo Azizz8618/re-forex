@@ -1,0 +1,24 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name J5_list_multi
+*call yesmemory
+*no list
+*forex
+c---- J5 lowered: PRINT *,N,X,L (rule 3, mixed types).
+      PROGRAM J5M
+      INTEGER N
+      REAL X
+      LOGICAL L
+      N=42
+      X=3.5
+      L=.TRUE.
+      PRINT 9000,N,X,L
+      STOP
+ 9000 FORMAT(1X,I10,F12.4,L1)
+      END
+*execute
+*end file
+``````
+еконец

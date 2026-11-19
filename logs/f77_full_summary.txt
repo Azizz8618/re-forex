@@ -1,6 +1,6 @@
 LEVEL|OK|PENDING|SKIP|DETAIL
-L0|32|0|0|unit-пробы A-K
-L1|32|0|0|gold-пары (8 suite / 18 new / 6 e1)
+L0|51|0|0|unit-пробы A-K
+L1|51|0|0|gold-пары (REGISTRY.txt: suite/new/e1)
 L2|8|0|0|кросс *FTN/*FORTRAN
 L3|2|0|2|реальные программы
 L4|9|0|0|negative cases

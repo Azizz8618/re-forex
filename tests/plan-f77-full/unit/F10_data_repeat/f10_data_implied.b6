@@ -1,0 +1,20 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name F10d
+*call yesmemory
+*perso:602300
+*no list
+*forex
+      PROGRAM F10D
+      INTEGER W(5)
+      DATA (W(I),I=1,5)/5,4,3,2,1/
+      PRINT 10,W(1),W(5)
+   10 FORMAT(1X,2I4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

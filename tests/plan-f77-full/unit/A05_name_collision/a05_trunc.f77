@@ -1,0 +1,6 @@
+      PROGRAM A05TRC
+      INTEGER AAAAAAX, AAAAAAY
+      AAAAAAX=1
+      AAAAAAY=2
+      STOP
+      END

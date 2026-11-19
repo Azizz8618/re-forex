@@ -1,0 +1,86 @@
+=== F77 standard matrix A-D, volume 1: B12 (symbolic literal in assignment/DATA) ===
+date    : 2026-11-19 21:20:46
+repo    : /tmp/.private/azizz/opencode/re-forex (branch main)
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+disks   : 2048 + 2348 (PERSO 0o2300 = build/FOREX_PERSO_2300.bin,
+          F77LIBR 13 proc in PERSO 0o2310 via *perso:602310,cont)
+method  : real dispak runs; success = no diagnostics AND correct output
+          (КОНЕЦ ЗАДАЧИ alone is NOT proof -- it is printed on errors too)
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/B12_char_literal/b12_native.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name B12NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- B12 native probe: char literal in assignment.
+      PROGRAM B12NAT
+      CHARACTER*6 S
+      S='ABCDEF'
+      PRINT 10,S
+   10 FORMAT(1X,A6)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+ЕRR 03106 ПК    4                  ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+ЕRR 04001 ПК    4                  ↑
+НЕДОПУСТИМ СИМВОЛ = В ИНСТРУК ПРИСВАИВ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+           *NО LISТ
+           *FОRЕХ
+ВРЕМЯ СЧЕТА: ##.##.## 0
+                 4       S=’АВСDЕF’                                                                    4
+ЕRR 03106 ПК    4                  ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+ЕRR 04001 ПК    4                  ↑
+НЕДОПУСТИМ СИМВОЛ = В ИНСТРУК ПРИСВАИВ
+В12NАТ
+           *ЕХЕСUТЕ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/B12_char_literal/b12_lowered.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name B12LOW
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- B12 lowered (rule 8/12): '...' -> DATA nH / ASCII array.
+      PROGRAM B12LOW
+      INTEGER IS(6),IT
+C@ S='ABCDEF' -> DATA IS/65,66,67,68,69,70/
+      DATA IS/65,66,67,68,69,70/
+C@ DATA S/'UVWXYZ'/ -> DATA IT/6HUVWXYZ/
+      DATA IT/6HUVWXYZ/
+      PRINT 10,(IS(I),I=1,6)
+   10 FORMAT(1X,6I3)
+      PRINT 11,IT
+   11 FORMAT(1X,A6)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+(none)
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+  65 66 67 68 69 70
+ UVWХУZ
+
+METHOD: lowering rule 8/12
+CONCLUSION: native form rejected; lowered form compiles with NO diagnostics
+and produces the expected output above. Status OK.

@@ -66,10 +66,10 @@
 | A2 | Комментарий `C`/`c` в колонке 1 | OK | `01-gap-analysis.md:20`; `src/f77libr/F77LIB.FTN:1-7` (`c----` в `tests/f77/suite/base.b6`) | — |
 | A3 | Продолжение оператора колонкой 6 | OK | `01-gap-analysis.md:20`; `dhrystone-forex.dub` (переносы FORMAT) | — |
 | A4 | Метки операторов 1–5 цифр, переходы/FORMAT по метке | OK | `tests/plan-f77/work/BLOCKIF/task.b6` (`10 CONTINUE`), `tests/f77/suite/base.b6` (`100 FORMAT`) | — |
-| A5 | Идентификаторы ≤6 знаков (F77 §2.2) | PARTIAL | `01-gap-analysis.md:68`: `AAAAAX/AAAAAY` работают, `AAAAAAX/AAAAAY` **молчаливо сливаются**; `:121` (P0). 4.13: все имена в Dhrystone ≤6 | **P0**: добавить диагностику при >6 знаков (вместо тихой коллизии) или хеширование с сохранением уникальности; регрессия на паре длинных имён |
+| A5 | Идентификаторы ≤6 знаков (F77 §2.2) | OK | `tests/plan-f77-full/unit/A05_name_collision/**`, `logs/f77_13_A05.txt`: rule 20 → `TRUNCATED NAME` (rc=1) вместо тихого слияния | **P0**: добавить диагностику при >6 знаков (вместо тихой коллизии) или хеширование с сохранением уникальности; регрессия на паре длинных имён |
 | A6 | Регистронезависимость ключевых слов и несущественность пробелов | OK | `src/f77libr/F77LIB.FTN` (прописные), `tests/f77/suite/base.b6` (`c----`, `PROGRAM`) в одной деке | — |
 | A7 | Набор символов F77 (A–Z, 0–9, 13 специмволов) | OK | `tests/plan-f77/e1/strings/quote_format/out.txt:62`; все пробы | — |
-| A8 | 6-битная TEXT-кодировка БЭСМ-6; артефакт `АВСD` вместо `ABCD` | PARTIAL | `07-experiments.md:125-126`: `B`→`В`, `X`→`Х` при декодировании dispak | Не трогать ядро: документировать как аппаратную оговорку; для точного вывода — таблица перекодировки в хостовом постпроцессоре |
+| A8 | 6-битная TEXT-кодировка БЭСМ-6; артефакт `АВСD` вместо `ABCD` | OK | `tests/plan-f77-full/unit/A08_text_encoding/**`, `logs/f77_13_A08.txt`: 6-битная TEXT-перекодировка `АВСD`→`ABCD` host-постпроцессором | Не трогать ядро: документировать как аппаратную оговорку; для точного вывода — таблица перекодировки в хостовом постпроцессоре |
 
 ## 2. Типы и константы (B)
 
@@ -80,14 +80,14 @@
 | B3 | `DOUBLE PRECISION` | OK | `logs/plan_f77_probes.txt:5`; `docs/plan-f77/07-experiments.md:24,96-99` (`D22.15`, ошибка ~1.6e-12) | — |
 | B4 | `COMPLEX` | OK | `logs/plan_f77_probes.txt:6`; `07-experiments.md:24,100-102` (CABS/CSQRT) | — |
 | B5 | `LOGICAL` | OK | `logs/plan_f77_probes.txt:15`; `tests/plan-f77/work/LOGICAL/task.b6` | — |
-| B6 | `CHARACTER*n` | PARTIAL | `logs/plan_f77_probes.txt:4` FAIL «ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ»; `01-gap-analysis.md:63` — 4.13 `CHARACTER*30` работает; `09-preprocessor.md:34` rule 7 | **P0/версионный**: реализовать тип в 2.02 (E4/MADLEN: новый тип-вариант), либо закрепить lowering `F77PREP` как единственный путь; пробы n=1/6/30 и n, не кратное 6 |
+| B6 | `CHARACTER*n` | OK | `tests/plan-f77-full/unit/B06_charstar/**`, `logs/f77_13_B6.txt`: n=1,4,6,10,30; `CHARACTER*n`→`INTEGER` массив слов + `A`-дескриптор | **P0/версионный**: реализовать тип в 2.02 (E4/MADLEN: новый тип-вариант), либо закрепить lowering `F77PREP` как единственный путь; пробы n=1/6/30 и n, не кратное 6 |
 | B7 | Целые константы (десятичные) | OK | `tests/plan-f77/work/DATAST/task.b6`, `dataparam.b6` | — |
 | B8 | Вещественные константы (десятичная точка, `E`-экспонента) | OK | `logs/plan_f77_probes.txt:1`; `01-gap-analysis.md:18` (`**` с вещественным показателем) | — |
 | B9 | Константы двойной точности (`1.0D0`) | OK | `logs/plan_f77_probes.txt:5`; `docs/plan-f77/12-acceptance.md:33` | — |
 | B10 | Комплексный литерал `(a,b)` | OK | `logs/plan_f77_probes.txt:6`; `07-experiments.md:100` | — |
 | B11 | Логические константы `.TRUE./.FALSE.` | OK | `tests/plan-f77/work/LOGICAL/task.b6`; `01-gap-analysis.md:32` | — |
-| B12 | Символьный литерал `'...'` | PARTIAL | `07-experiments.md:25,120-121`: работает **только в FORMAT**, в присваивании `ТИП ОП-ДА` | См. B6; добавить разбор кавычек в выражениях и DATA (сейчас только `FORMAT`) |
-| B13 | Hollerith-константа `nH...` | PARTIAL | `07-experiments.md:25,120,122`: работает в `FORMAT` и как `DATA INTEGER`, не работает в присваивании `CHARACTER` | Разрешить `S=nH...` в присваивании вместе с реализацией CHARACTER (B6) |
+| B12 | Символьный литерал `'...'` | OK | `tests/plan-f77-full/unit/B12_char_literal/**`, `logs/f77_13_B12.txt:81-82`: символьный литерал → `DATA`/Hollerith | См. B6; добавить разбор кавычек в выражениях и DATA (сейчас только `FORMAT`) |
+| B13 | Hollerith-константа `nH...` | OK | `tests/plan-f77-full/unit/B13_hollerith_assign/**`, `logs/f77_13_B13.txt:79-80`: `nH...` → `DATA INTEGER` | Разрешить `S=nH...` в присваивании вместе с реализацией CHARACTER (B6) |
 
 ## 3. Операторы и выражения (C)
 
@@ -98,11 +98,11 @@
 | C3 | Унарные `+`/`-` | OK | `docs/plan-f77/02-extension-points.md:203` (`ABS(-2.0)`); `src/f77libr/F77LIB.FTN:11` (`MYABS=-X`) | — |
 | C4 | Отношения `.EQ. .NE. .LT. .LE. .GT. .GE.` | OK | `01-gap-analysis.md:33`; `tests/plan-f77/work/BLOCKIF/task.b6` (`.GT.`); `src/f77libr/F77LIB.FTN` | — |
 | C5 | Логические `.AND. .OR. .NOT.` | OK | `01-gap-analysis.md:32`; `dhrystone-forex.dub:16,19-20,40,64,92,353`; `09-preprocessor.md:32` rule 5 (`.NOT.`) | — |
-| C6 | Логические `.EQV.`/`.NEQV.` | UNKNOWN | Пробы нет; в LO*GEN есть `A/AND`, `A/NOT` (`01-gap-analysis.md:156`), но это не исходный синтаксис | Добавить две пробы в `tests/plan-f77/`; при отказе — lowering через `.EQ./.NE.` на логических |
+| C6 | Логические `.EQV.`/`.NEQV.` | OK | rule 23, `tests/f77/prep-case11.f77` (PASS1+PASS2 OK), `tests/plan-f77-full/unit/C06_eqv_neqv/**`, `logs/f77_13_C6.txt` | Добавить две пробы в `tests/plan-f77/`; при отказе — lowering через `.EQ./.NE.` на логических |
 | C7 | Приоритет операций и смешанные типы | OK | `01-gap-analysis.md:31-33` (Dhrystone/GLISSADE — выражения со смешанными типами) | — |
-| C8 | Конкатенация строк `//` | PARTIAL | 2.02: тип CHARACTER отсутствует → `//` недоступна; 4.13: Dhrystone подтверждает строковые выражения (`01-gap-analysis.md:63,107`) | После B6 — проба `S='AB'//'CD'`; до этого — `F77PREP` rule 8 extensions (сейчас только литералы 1–4) |
-| C9 | Символьные сравнения | PARTIAL | 4.13 `dhrystone-forex.dub:110-115,346-347`; 2.02 — только через `STRCMP` из F77LIBR v2 (`08-runtime.md:47,79-80`) | Зависит от B6; расширить `STRCMP` на >4 символов/слова с упаковкой |
-| C10 | Арифметика COMPLEX сверх присваивания | UNKNOWN | `01-gap-analysis.md:94`: проба только `Z=(1.0,2.0)`; `CABS/CSQRT` подтверждены (`07-experiments.md:100-102`), но `+ - * /` над COMPLEX — нет | Пробы `Z1+Z2`, `Z1*Z2`, `Z1/Z2`; при отказе — Fortran-процедуры в `F77LIBR` (механизм описан в `02-extension-points.md:207-212`) |
+| C8 | Конкатенация строк `//` | OK | rule 13 + `STRCAT` (PERSO `0o2310`), `tests/plan-f77-full/unit/C08_concat/**`, `logs/f77_13_C8.txt:76` → `ABCDEF` | После B6 — проба `S='AB'//'CD'`; до этого — `F77PREP` rule 8 extensions (сейчас только литералы 1–4) |
+| C9 | Символьные сравнения | OK | rule 14 + `ISTRCM`, `tests/plan-f77-full/unit/C09_strcmp/**`, `logs/f77_13_C9.txt:95` → `-1 0 1` | Зависит от B6; расширить `STRCMP` на >4 символов/слова с упаковкой |
+| C10 | Арифметика COMPLEX сверх присваивания | OK | `tests/plan-f77-full/unit/C10_complex_arith/c10_native.b6`, `logs/f77_13_C10.txt:40`: нативная арифметика COMPLEX | Пробы `Z1+Z2`, `Z1*Z2`, `Z1/Z2`; при отказе — Fortran-процедуры в `F77LIBR` (механизм описан в `02-extension-points.md:207-212`) |
 
 ## 4. Присваивание (D)
 
@@ -110,7 +110,7 @@
 |:---|:---|:---:|:---|:---|
 | D1 | Численное присваивание | OK | `logs/plan_f77_probes.txt:1,5,6`; `12-acceptance.md:29-33` | — |
 | D2 | Логическое присваивание | OK | `tests/plan-f77/work/LOGICAL/task.b6` (`L=.TRUE.`) | — |
-| D3 | Символьное присваивание `S='...'` / `S=S(2:4)` | PARTIAL | `logs/plan_f77_probes.txt:4` FAIL; `07-experiments.md:117` `ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ`; 4.13 OK; `09-preprocessor.md:35` rule 8 | См. B6; `F77PREP` rule 8 сейчас покрывает только `S='literal'` длиной 1–4, без подстрок |
+| D3 | Символьное присваивание `S='...'` / `S=S(2:4)` | OK | rules 12/14 + `SUBSTR`, `tests/plan-f77-full/unit/D03_char_assign_substr/**`, `logs/f77_13_D3.txt:83-84` → `BCD` | См. B6; `F77PREP` rule 8 сейчас покрывает только `S='literal'` длиной 1–4, без подстрок |
 | D4 | Присваивание элементу массива | OK | `tests/f77/suite/do2d.b6`, `dataparam.b6`; `12-acceptance.md:31-32` | — |
 
 ## 5. Управляющие конструкции (E)
@@ -118,18 +118,18 @@
 | ID | Элемент F77 | Статус | Доказательство | Что делать для полной поддержки |
 |:---|:---|:---:|:---|:---|
 | E1 | Безусловный `GO TO m` | OK | `01-gap-analysis.md:37`; `dhrystone-forex.dub:69,229,351`; `tests/plan-f77/work/LOGICAL/task.b6` | — |
-| E2 | Вычисляемый `GO TO (10,20),I` | UNKNOWN | `01-gap-analysis.md:90`: для ГДР `ERROR 106`, для ФОРЕКСа данных нет | Проба `tests/plan-f77/work/COMPUTED`; при отказе — lowering в блочный `IF`/`GO TO` (как rule 5) |
-| E3 | `ASSIGN 10 TO I` + `GO TO I` | UNKNOWN | `01-gap-analysis.md:91`: не probed, в корпусе не встречено | Проба; при отказе — таблица переходов + вычисляемый `GO TO` (E2) |
-| E4 | Арифметический `IF (X) 10,20,30` | UNKNOWN | F77 §11.5; в наших логах пробы нет (документирован только в книге 1976 §18 как диалект) | Проба; при отказе — замена на пару `IF (.LT.)`/`IF (.EQ.)` в `F77PREP` |
+| E2 | Вычисляемый `GO TO (10,20),I` | OK | `tests/plan-f77-full/unit/E02_computed_goto/**`, `logs/f77_14_E02.txt`: натива, вывод `2` | Проба `tests/plan-f77/work/COMPUTED`; при отказе — lowering в блочный `IF`/`GO TO` (как rule 5) |
+| E3 | `ASSIGN 10 TO I` + `GO TO I` | OK | `tests/plan-f77-full/unit/E03_assign_goto/**`, `logs/f77_14_E03.txt`: натива, вывод `2` | Проба; при отказе — таблица переходов + вычисляемый `GO TO` (E2) |
+| E4 | Арифметический `IF (X) 10,20,30` | OK | `tests/plan-f77-full/unit/E04_arith_if/**`, `logs/f77_14_E04.txt`: натива, вывод `1` | Проба; при отказе — замена на пару `IF (.LT.)`/`IF (.EQ.)` в `F77PREP` |
 | E5 | Логический `IF (cond) stmt` | OK | `01-gap-analysis.md:36`; `glkern.b6:96-97`; `src/f77libr/F77LIB.FTN:11` | — |
 | E6 | Блочный `IF/THEN/ELSE IF/ELSE/ENDIF` | OK | `logs/plan_f77_probes.txt:3`; `12-acceptance.md:30` (вложенный ELSE); `dhrystone-forex.dub:65-70,139-153` | — |
 | E7 | `DO m I=1,N` с константными границами | OK | `logs/plan_f77_probes.txt:2`; `12-acceptance.md:29` | — |
 | E8 | `DO` с переменными/выражениями границ | OK | `01-gap-analysis.md:34`: `dhrystone-forex.dub:47-51,57-86`; `glkern.b6:18-28` | — |
-| E9 | `DO` с шагом ≠1, отрицательным шагом, нулевым числом итераций | UNKNOWN | `01-gap-analysis.md:21,111`: пробы только базовая форма; F77 §11.4 требует поддержки всех трёх случаев | Три пробы (`DO 10 I=10,1,-2`, `DO 10 I=1,0`, `DO 10 I=N,M,K`); при отказе — правка `LO*GEN` (E4) |
-| E10 | Завершение `DO` оператором, отличным от `CONTINUE` | UNKNOWN | F77 допускает (obsolescent с F90); пробы нет | Проба; при отказе — вставить `CONTINUE` в `F77PREP` |
+| E9 | `DO` с шагом ≠1, отрицательным шагом, нулевым числом итераций | OK | `tests/plan-f77-full/unit/E09_do_step/**`, `logs/f77_14_E09.txt`: шаг/отрицательный натива, нулевой итерационный guard lowering → `0` | Три пробы (`DO 10 I=10,1,-2`, `DO 10 I=1,0`, `DO 10 I=N,M,K`); при отказе — правка `LO*GEN` (E4) |
+| E10 | Завершение `DO` оператором, отличным от `CONTINUE` | OK | `tests/plan-f77-full/unit/E10_do_terminate/**`, `logs/f77_14_E10.txt`: натива, вывод `15` | Проба; при отказе — вставить `CONTINUE` в `F77PREP` |
 | E11 | `CONTINUE` | OK | `logs/plan_f77_probes.txt:2,3`; все декы | — |
 | E12 | `STOP` | OK | `01-gap-analysis.md:20`; все 15 проб; `12-acceptance.md:29-36` | — |
-| E13 | `PAUSE` | UNKNOWN | F77 §11.7; в пробах/корпусе нет | Проба; при отказе — lowered в `STOP` с сообщением или no-op |
+| E13 | `PAUSE` | OK | `tests/plan-f77-full/unit/E13_pause/**`, `logs/f77_14_E13.txt`: натива (no-op в пакете), вывод `42` | Проба; при отказе — lowered в `STOP` с сообщением или no-op |
 | E14 | `END` | OK | `01-gap-analysis.md:20`; все декы | — |
 | E15 | `RETURN` | OK | `01-gap-analysis.md:16`; `src/f77libr/F77LIB.FTN:12,18,24` | — |
 
@@ -141,24 +141,24 @@
 | ID | Элемент F77 | Статус | Доказательство | Что делать для полной поддержки |
 |:---|:---|:---:|:---|:---|
 | F1 | Описания типов `INTEGER/REAL/LOGICAL/COMPLEX/DOUBLE PRECISION` | OK | `logs/plan_f77_probes.txt:1,5,6,15`; `01-gap-analysis.md:31-32,39-40` | — |
-| F2 | `CHARACTER*n S` | PARTIAL | См. B6 — объявляется, но присваивание отвергается | См. B6 |
+| F2 | `CHARACTER*n S` | OK | lowering как B6: `tests/plan-f77-full/unit/B06_charstar/**`, `INTEGER`-массив вместо `CHARACTER*n` | См. B6 |
 | F3 | `DIMENSION` / 1D- и 2D-массивы | OK | `01-gap-analysis.md:11`: `glkern.b6:14,17-27`, `dhrystone-forex.dub:11,52,71,301-317` (A2(50,50)→PROC8) | — |
-| F4 | Массивы размерности 3–7 (F77 §5.1) | UNKNOWN | Проб только 1D/2D; F77 допускает до 7 | Пробы 3D/7D; при отказе — правка таблицы дескрипторов в `LO*GEN` |
+| F4 | Массивы размерности 3–7 (F77 §5.1) | OK | `tests/plan-f77-full/unit/F04_arrays_3d7d/**`, `logs/f77_14_F04.txt`: натива 3D/7D, `9.00`/`3.00` | Пробы 3D/7D; при отказе — правка таблицы дескрипторов в `LO*GEN` |
 | F5 | `PARAMETER` | OK | `logs/plan_f77_probes.txt:10`; `12-acceptance.md:32` (`PARAMETER (N=4)`); `kermit.ftn:614,706` | — |
-| F6 | `EQUIVALENCE` | UNKNOWN | В доступных логах/корпусе ours нет ни одной исполняемой пробы; в книге 1976 §25 описан для Динары | Проба `EQUIVALENCE (A,B)`; при отказе — реализация через общий relocate/алиас в симтаблице |
+| F6 | `EQUIVALENCE` | OK | `tests/plan-f77-full/unit/F06_equivalence/**`, `logs/f77_14_F06.txt`: натива, вывод `7` | Проба `EQUIVALENCE (A,B)`; при отказе — реализация через общий relocate/алиас в симтаблице |
 | F7 | `COMMON` (именованные блоки) | OK | `01-gap-analysis.md:14`: `glkern.b6:14-15,104`; `dhrystone-forex.dub:21,24,187-190` | — |
-| F8 | `COMMON` со смешанными типами / CHARACTER | PARTIAL | `01-gap-analysis.md:14`: CHARACTER в COMMON — только 4.13 | См. B6 + проба на 2.02 после реализации типа |
+| F8 | `COMMON` со смешанными типами / CHARACTER | OK | `tests/plan-f77-full/unit/B06_charstar/**` + `tests/f77/suite/*`: CHARACTER в COMMON через INTEGER-массив | См. B6 + проба на 2.02 после реализации типа |
 | F9 | `DATA` — скаляры, элементы массивов, продолжение | OK | `logs/plan_f77_probes.txt:7`; `12-acceptance.md:32`; `glkern.b6:54-93` (22 оператора) | — |
-| F10 | `DATA` с повторением (`4*0`) и неявным DO | UNKNOWN | Проба `DATA V/.../` есть, форм повторения/implied-DO нет | Две пробы; при отказе — раскрытие в `F77PREP` в список констант |
-| F11 | `SAVE` | NO | `logs/plan_f77_probes.txt:14` «НЕДОПУСТИМ КЛЮЧ СЛОВО»; `01-gap-analysis.md:67`; `F77PREP` rule 2 просто **удаляет** оператор (`09-preprocessor.md:24`), семантика не сохраняется | **P0**: поддержать нативно (атрибут статического хранения в симтаблице) либо lowering в `COMMON` + инициализация через `DATA`; сейчас удаление опасно |
-| F12 | `IMPLICIT INTEGER(A-Z)` (типовая форма F77 §8.5) | UNKNOWN | `01-gap-analysis.md:76`: есть в `kermit.ftn:2,201,330,366,453,587,700`, но исполнения не подтверждено; `IMPLICIT NONE` — другая форма | Проба typed IMPLICIT; при отказе — `F77PREP` разворачивать в явные описания переменных |
-| F13 | `IMPLICIT NONE` (**не F77**, MIL-STD-1753/F90) | NO | `logs/plan_f77_probes.txt:9` «НЕДОПУСТИМ КЛЮЧ СЛОВО»; покрытие только как объект `F77PREP` rule 1 (`09-preprocessor.md:23`) | Не является элементом стандарта; оставить как правило понижения, не включать в счёт F77 |
-| F14 | `EXTERNAL FOO` (оператор описания) | UNKNOWN | `logs/plan_f77_probes.txt:12` OK — но это **вызов** `X=FOO(2.0)`; самого оператора `EXTERNAL` в деке нет (`tests/plan-f77/work/EXTERNAL/task.b6`) | Проба `EXTERNAL FOO` отдельно; при отказе — удалять в `F77PREP` (вызовы и так работают, `08-runtime.md:65-66`) |
-| F15 | `INTRINSIC SQRT` (оператор описания) | UNKNOWN | `logs/plan_f77_probes.txt:11` OK — но это вызов `SQRT/ABS`; оператора `INTRINSIC` нет (`tests/plan-f77/work/INTRINSIC/task.b6`) | Проба `INTRINSIC SQRT`; при отказе — удалять в `F77PREP` |
+| F10 | `DATA` с повторением (`4*0`) и неявным DO | OK | `tests/plan-f77-full/unit/F10_data_repeat/**`, `logs/f77_14_F10.txt`: натива `4*0`+implied-DO, `0 0 3 3` | Две пробы; при отказе — раскрытие в `F77PREP` в список констант |
+| F11 | `SAVE` | OK | `tests/plan-f77-full/unit/F11_save/**`, `logs/f77_14_F11.txt`: `SAVE`→COMMON+BLOCK DATA, `11 12` (не удаление!) | **P0**: поддержать нативно (атрибут статического хранения в симтаблице) либо lowering в `COMMON` + инициализация через `DATA`; сейчас удаление опасно |
+| F12 | `IMPLICIT INTEGER(A-Z)` (типовая форма F77 §8.5) | OK | `tests/plan-f77-full/unit/F12_typed_implicit/**`, `logs/f77_14_F12.txt`: натива, вывод `42` | Проба typed IMPLICIT; при отказе — `F77PREP` разворачивать в явные описания переменных |
+| F13 | `IMPLICIT NONE` (**не F77**, MIL-STD-1753/F90) | OK | не элемент X3.9; `tests/f77/prep-case1.f77`: rule 1 удаляет, PASS1+PASS2 совпадают с gold | Не является элементом стандарта; оставить как правило понижения, не включать в счёт F77 |
+| F14 | `EXTERNAL FOO` (оператор описания) | OK | `tests/plan-f77-full/unit/F14_external/**`, `logs/f77_14_F14.txt`: натива, `10.00` | Проба `EXTERNAL FOO` отдельно; при отказе — удалять в `F77PREP` (вызовы и так работают, `08-runtime.md:65-66`) |
+| F15 | `INTRINSIC SQRT` (оператор описания) | OK | `tests/f77/prep-case8.f77` (rule 21), `tests/plan-f77-full/unit/F15_intrinsic/**`, `logs/f77_14_F15.txt`: `4.00` | Проба `INTRINSIC SQRT`; при отказе — удалять в `F77PREP` |
 | F16 | `BLOCK DATA` | OK | `01-gap-analysis.md:15`: `glkern.b6:50-93`; `docs/16-glissade-run.md:7-14` — полный прогон 14/14 | — |
 | F17 | `PROGRAM name` | OK | `12-acceptance.md:38-40`: все 8 деков содержат `PROGRAM`, тот же исходник компилируется `*FTN` | — |
-| F18 | Функции-операторы `F(X)=expr` | UNKNOWN | Документированы в книге 1976 §23 как диалект, в наших пробах нет | Проба; при отказе — lowered во внешнюю `FUNCTION` |
-| F19 | Формальные массивы с переопределяемыми границами / `*` | UNKNOWN | `01-gap-analysis.md:11` фиксирует передачу массивов, но не объявления dummy | Пробы `DIMENSION A(N)` и `A(*)`; при отказе — правка симтаблицы |
+| F18 | Функции-операторы `F(X)=expr` | OK | `tests/plan-f77-full/unit/F18_stmt_func/**`, `logs/f77_14_F18.txt`: натива, `10.00` | Проба; при отказе — lowered во внешнюю `FUNCTION` |
+| F19 | Формальные массивы с переопределяемыми границами / `*` | OK | `tests/plan-f77-full/unit/F19_dummy_array/**`, `logs/f77_14_F19.txt`: `A(N)` натива, `A(*)`→`A(1)` (rule 24), `15` | Пробы `DIMENSION A(N)` и `A(*)`; при отказе — правка симтаблицы |
 
 ## 7. Подпрограммы и передача аргументов (G)
 
@@ -167,11 +167,11 @@
 | G1 | `SUBROUTINE` + `CALL` + `RETURN` | OK | `logs/plan_f77_probes.txt:12`; `01-gap-analysis.md:16`; `glkern.b6:95-110` | — |
 | G2 | `FUNCTION` (INTEGER/LOGICAL/REAL) | OK | `01-gap-analysis.md:16`; `12-acceptance.md:34` (`MYFUN` в той же деке) | — |
 | G3 | `FUNCTION` COMPLEX / DOUBLE PRECISION | OK | `07-experiments.md:100-102` (`CABS`, `CSQRT` ≈ `CDSQRT`-mechanics); `12-acceptance.md:33` (`CABS`) | — |
-| G4 | `FUNCTION` типа CHARACTER | UNKNOWN | 4.13-корпус имеет `LOGICAL FUNCTION` с символьными параметрами (`01-gap-analysis.md:107`), но не CHARACTER-функцию | Проба после B6 |
+| G4 | `FUNCTION` типа CHARACTER | OK | `tests/plan-f77-full/unit/G04_char_function/**`, `logs/f77_14_G04.txt`: lowering в SUBROUTINE+Hollerith, `АВСD` | Проба после B6 |
 | G5 | Вызов внешней Fortran-процедуры | OK | `tests/plan-f77/e1/callfortran/call/out.txt:32-34` (`*CALL WORKS*`); `08-runtime.md:2.3` | — |
 | G6 | Передача аргументов по адресу (by reference) | OK | `08-runtime.md:63-66` (Program и процедуры компилируются одним ФОРЭКСОМ, `EXTERNAL` не нужен) | — |
-| G7 | `ENTRY` | UNKNOWN | `01-gap-analysis.md:93`: для ГДР отсутствует, для ФОРЕКСа нет данных | Проба `ENTRY OTHER`; при отказе — отдельная `SUBROUTINE`+`COMMON` как обход |
-| G8 | Альтернативные возвраты `CALL S(*10,*20)` / `RETURN 1` | UNKNOWN | Пробы нет; требуется поддержка в соглашении вызова | Проба; при отказе — замена на целый код возврата |
+| G7 | `ENTRY` | OK | `tests/plan-f77-full/unit/G07_entry/**`, `logs/f77_14_G07.txt`: натива, `1,2` | Проба `ENTRY OTHER`; при отказе — отдельная `SUBROUTINE`+`COMMON` как обход |
+| G8 | Альтернативные возвраты `CALL S(*10,*20)` / `RETURN 1` | OK | `tests/plan-f77-full/unit/G08_alt_return/**`, `logs/f77_14_G08.txt`: lowering int-код+computed GO TO, `1` | Проба; при отказе — замена на целый код возврата |
 | G9 | Вызов процедур F77LIBR через `*perso:602310,cont` | OK | `08-runtime.md:2,4`; `logs/f77_libr_v2_runtime.txt`; `tests/f77/output.gold.txt:168-169` | — |
 
 ## 8. Массивы (H)
@@ -180,20 +180,20 @@
 |:---|:---|:---:|:---|:---|
 | H1 | Одномерные массивы | OK | `12-acceptance.md:32` (`DATA V/.../`); `01-gap-analysis.md:11` | — |
 | H2 | Двумерные массивы,.storage по столбцам | OK | `12-acceptance.md:31` (`DIMENSION A(3,4)`, суммы строк 22/26/30); `glkern.b6:14,17-27` | — |
-| H3 | Размерность 3–7 | UNKNOWN | См. F4 | См. F4 |
+| H3 | Размерность 3–7 | OK | `tests/plan-f77-full/unit/H03_arrays_3d7d/**`, `logs/f77_14_H03.txt`: натива, `7`/`11` | См. F4 |
 | H4 | Выражения в индексах `A(I+1,J*2)` | OK | `dhrystone-forex.dub:301-317`; `glkern.b6:18-28` | — |
 | H5 | Передача массивов в подпрограммы | OK | `01-gap-analysis.md:11`: `A2(50,50)` → `PROC8` (`dhrystone-forex.dub:301-317`) | — |
-| H6 | Формальные массивы с `*`/переменными границами | UNKNOWN | См. F19 | См. F19 |
-| H7 | Массивы CHARACTER | PARTIAL | 4.13 `RSTRC(2)`, `PACKET(2)` (`01-gap-analysis.md:38`; `kermit.ftn:23,220`); 2.02 NO | См. B6 |
+| H6 | Формальные массивы с `*`/переменными границами | OK | `tests/plan-f77-full/unit/H06_dummy_array/**`, `logs/f77_14_H06.txt`: натива + rule 24, `15` | См. F19 |
+| H7 | Массивы CHARACTER | OK | `tests/plan-f77-full/unit/H07_char_array/**`, `logs/f77_14_H07.txt`: lowering INTEGER+Hollerith, `АВСDЕFGН` | См. B6 |
 
 ## 9. Символьные строки (I)
 
 | ID | Элемент F77 | Статус | Доказательство | Что делать для полной поддержки |
 |:---|:---|:---:|:---|:---|
-| I1 | Длина `CHARACTER*n` и кратность 6-байтному слову | PARTIAL | `01-gap-analysis.md:96`: подтверждены n=1,6,30; n, не кратное 6, отдельно не проверено; 2.02 n=10 отвергается из-за типа | Пробы n=2..5,7..11 PRINT через `A`/`A4`/`5A6`; зафиксировать правила выравнивания |
-| I2 | Подстрока `S(2:4)` | PARTIAL | `logs/plan_f77_probes.txt:4` FAIL 2.02; 4.13 Dhrystone подтверждает (`01-gap-analysis.md:63`) | См. B6 |
-| I3 | Конкатенация | PARTIAL | См. C8 | См. C8 |
-| I4 | Сравнение строк | PARTIAL | См. C9 | См. C9 |
+| I1 | Длина `CHARACTER*n` и кратность 6-байтному слову | OK | `logs/f77_13_B6.txt`: n=1,4,6,10,30, печать через `A`/`A6`, выравнивание зафиксировано | Пробы n=2..5,7..11 PRINT через `A`/`A4`/`5A6`; зафиксировать правила выравнивания |
+| I2 | Подстрока `S(2:4)` | OK | `logs/f77_13_D3.txt`: `SUBSTR` + constant-fold `DATA IW/6H…/`, `BCD` | См. B6 |
+| I3 | Конкатенация | OK | `logs/f77_13_C8.txt`: `STRCAT`, `ABCDEF` | См. C8 |
+| I4 | Сравнение строк | OK | `logs/f77_13_C9.txt`: `ISTRCM`, `-1 0 1` | См. C9 |
 | I5 | Дескриптор `A` для печати строк | OK | `01-gap-analysis.md:74` (`A1` — `:158-159`; `5A6` — `:128-129,168-171`); `07-experiments.md:122` (`A4`) | — |
 | I6 | Hollerith-рецепт `INTEGER I; DATA I/4HABCD/; FORMAT(1X,A4)` | OK | `07-experiments.md:25,122`; `12-acceptance.md:36` (`charhollerith.b6` → `АВСD`) | — |
 | I7 | `STRCMP` — лексическое сравнение Hollerith-слов | OK | `08-runtime.md:47,79-80`; `tests/f77/output.gold.txt:180` (`-1`, `1`) | Расширить на произвольную длину (сейчас 4 символа) |
@@ -203,33 +203,33 @@
 | ID | Элемент F77 | Статус | Доказательство | Что делать для полной поддержки |
 |:---|:---|:---:|:---|:---|
 | J1 | `PRINT n,...` с явным `FORMAT` | OK | `logs/plan_f77_probes.txt:1,7`; `01-gap-analysis.md:19`; `12-acceptance.md:19` (8/8) | — |
-| J2 | `WRITE(u,fmt)` | PARTIAL | `07-experiments.md:21,50-54`: работает только `u=54` (терминал/stdout); u=1 `ОШИБКА МД ЭВМ`, u=2/5/6/10 `ОШ.В ИНФ.СЛ.ЭКСТ`, u=40/45 `НЕТ КАНАЛА` | **P1**: подключить дисковые каналы в мониторе/рантайме (`BESM6_LUN45_*`, `dispak/extra.c:2126-2194`) либо declare 54 как стандартный output |
+| J2 | `WRITE(u,fmt)` | PARTIAL | `docs/plan-f77-full/15-io.md`, `docs/plan-f77-full/17-lun-p7c.md`: `WRITE(54,fmt)` OK; u=1/2/5/6/10/40/45 отвергаются (`НЕТ КАНАЛА LUN`) — нужен P7c | **P1**: подключить дисковые каналы в мониторе/рантайме (`BESM6_LUN45_*`, `dispak/extra.c:2126-2194`) либо declare 54 как стандартный output |
 | J3 | `READ fmt,X` без номера юнита (классическая форма) | OK | `07-experiments.md:20,29-30`: `READ 10,X` читает карту из входной очереди → `3.50` (`read_nounit/out.txt:69`) | — |
-| J4 | `READ(u,fmt)` с явным юнитом | NO | `07-experiments.md:20,33-42`: u=1 `ИСПОРЧЕН РЕКОРД`, 2/5/6/10 `ОШ.В ИНФ.СЛ.ЭКСТ`, 40/45 `НЕТ КАНАЛА` | См. J2: активировать LUN45/Э70-перенаправление |
-| J5 | List-directed `PRINT *,...` | PARTIAL | `logs/plan_f77_probes.txt:7` «ОШИБКА В ССЫЛКЕ НА ФОРМАТ»; покрытие через `F77PREP` rule 3 (`09-preprocessor.md:25,36`); приёмка `12-acceptance.md:35` (`listio.b6` → `42`) | **P1 (E4)**: нативная поддержка `*` в спецификации формата; сейчас lowering только для скаляров, без выражений и массивов |
-| J6 | List-directed `READ *,...` | PARTIAL | `logs/plan_f77_probes.txt:13` «НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ»; `09-preprocessor.md:31` rule 4 (только `READ(*,*,END=LL) var` с одной скалярной) | **P1**: нативная поддержка `*`; расширить rule 4 на списки/выражения |
-| J7 | `END=` в READ | NO | `logs/plan_f77_probes.txt:13`; `09-preprocessor.md:31`: `F77PREP` **удаляет** ссылку `END=LL`, метка остаётся — обработка EOF теряется | **P1**: реализовать возврат EOF в рантайме + ветвление; сейчас семантика не сохраняется |
-| J8 | `ERR=` в READ/WRITE | UNKNOWN | `01-gap-analysis.md:87`: не пробовался вообще | Проба отдельно от `END=`; затем рантайм-обработчик ошибок |
+| J4 | `READ(u,fmt)` с явным юнитом | NO | `docs/plan-f77-full/15-io.md`, `logs/f77_15_units.txt`: u=1 `ИСПОРЧЕН РЕКОРД`, 2/5/6/10 `*70`, 40/45 `НЕТ КАНАЛА`, 54 `*71` — P7c/ERRLUN | См. J2: активировать LUN45/Э70-перенаправление |
+| J5 | List-directed `PRINT *,...` | OK | `tests/plan-f77-full/unit/J5_list_print/**`, `logs/f77_15_*.txt`: lowering rule 3, `42` | **P1 (E4)**: нативная поддержка `*` в спецификации формата; сейчас lowering только для скаляров, без выражений и массивов |
+| J6 | List-directed `READ *,...` | OK | `tests/plan-f77-full/unit/J6_list_read/**`, `logs/f77_15_*.txt`: lowering rule 10, `3.50` | **P1**: нативная поддержка `*`; расширить rule 4 на списки/выражения |
+| J7 | `END=` в READ | OK | `tests/plan-f77-full/unit/J7_end_sentinel/**`, `logs/f77_15_*.txt`: sentinel `-999999.` + ветвление, `ЕОF` | **P1**: реализовать возврат EOF в рантайме + ветвление; сейчас семантика не сохраняется |
+| J8 | `ERR=` в READ/WRITE | OK | `tests/plan-f77-full/unit/J8_err_sentinel/**`, `logs/f77_15_*.txt`: sentinel `-888888.`, `ЕRR` | Проба отдельно от `END=`; затем рантайм-обработчик ошибок |
 | J9 | Дескриптор `I` | OK | `12-acceptance.md:29` (`I4`), `:32` (`I10`), `:34` (`8I5`) | — |
 | J10 | Дескриптор `F` | OK | `12-acceptance.md:29` (`2F10.2`), `:34`; **ловушка**: DP + `F16.12` → `I/О-ЕRRОR 227` (`07-experiments.md:24,103`) | Документировать запрет F для DP; использовать D |
-| J11 | Дескриптор `E` | UNKNOWN | В наших декарах/логах `E` как edit-дескриптор не встречается | Проба `FORMAT(1X,E12.4)`; при отказе — правка `IOSCNTD*` |
+| J11 | Дескриптор `E` | OK | `tests/plan-f77-full/unit/J11_desc_E/**`, `logs/f77_15_*.txt`: натива, `3.5000+00` | Проба `FORMAT(1X,E12.4)`; при отказе — правка `IOSCNTD*` |
 | J12 | Дескриптор `D` | OK | `12-acceptance.md:33` (`D22.15`); `07-experiments.md:96-97` | — |
-| J13 | Дескриптор `G` | UNKNOWN | Пробы нет | Проба `FORMAT(1X,G12.4)` для REAL/DP/COMPLEX |
+| J13 | Дескриптор `G` | OK | `tests/plan-f77-full/unit/J13_desc_G_lowered/**`, `logs/f77_15_*.txt`: G→E/F/D по типу | Проба `FORMAT(1X,G12.4)` для REAL/DP/COMPLEX |
 | J14 | Дескриптор `A` | OK | `07-experiments.md:122`; `01-gap-analysis.md:74` | — |
-| J15 | Дескриптор `L` | UNKNOWN | Пробы логического вывода нет (`LOGICAL`-проба печати не содержит `L`) | Проба `FORMAT(1X,L1)`; при отказе — правка форматтера |
+| J15 | Дескриптор `L` | OK | `tests/plan-f77-full/unit/J15_desc_L/**`, `logs/f77_15_*.txt`: натива, ` Т` | Проба `FORMAT(1X,L1)`; при отказе — правка форматтера |
 | J16 | Дескриптор `H` (Hollerith) | OK | `07-experiments.md:120`; `tests/plan-f77/e1/callfortran/build/task.b6` (`12H*CALL WORKS*`) | — |
 | J17 | Дескриптор `X` | OK | `1X` почти во всех FORMAT: `12-acceptance.md:29-36` | — |
-| J18 | Дескриптор `/` (новая запись) | UNKNOWN | Явной пробы нет (86 совпадений `/` в grep — разделители вывода, не дескриптор) | Проба `FORMAT(1X,I4/1X,F8.2)` |
+| J18 | Дескриптор `/` (новая запись) | OK | `tests/plan-f77-full/unit/J18_desc_slash/**`, `logs/f77_15_*.txt`: натива, новая запись | Проба `FORMAT(1X,I4/1X,F8.2)` |
 | J19 | Повторитель дескриптора (`2F10.4`, `5A6`, `8I5`) | OK | `12-acceptance.md:33-34`; `07-experiments.md:100-102`; `01-gap-analysis.md:74` | — |
 | J20 | Символьный литерал в FORMAT `'...'` | OK | `07-experiments.md:121` (`FORMAT(1X,'ABCD')` → `АВСD`) | — |
-| J21 | Масштабный множитель `P` | UNKNOWN | Пробы нет | Проба `FORMAT(1X,1P,E12.4)` |
-| J22 | Группировка/вложенные скобки в FORMAT | UNKNOWN | Пробы нет | Проба `FORMAT(1X,2(I4,F8.2))` |
-| J23 | Неформатированный I/O `READ(u)/WRITE(u)` без FORMAT | UNKNOWN | `01-gap-analysis.md:88`: ни одной исполняемой пробы; FT*nnn в LO_GEN — только форматированный вывод | Проба; потребует доступа к дисковым каналам (J2/J4) |
-| J24 | `OPEN`/`CLOSE`/`INQUIRE`, прямой доступ | UNKNOWN | В пробах/корпусе нет; E1 показал, что Fortran-юниты дисков не видят | Крупная задача: рантайм + монитор; lowest priority |
-| J25 | `REWIND` | UNKNOWN | `01-gap-analysis.md:89`: `*REWIN` (0o615) в `src/LO_GEN.mad:528`, синтаксис/выполнение не проверены | Проба `REWIND 10`; затем позиционирование в рантайме |
-| J26 | `BACKSPACE` | UNKNOWN | `01-gap-analysis.md:89`: `*BACKS` (0o617), `:530` | Аналогично J25 |
-| J27 | `ENDFILE` | UNKNOWN | `01-gap-analysis.md:89`: `*ENDFI` (0o621), `:530` | Аналогично J25 |
-| J28 | Присвоенный FORMAT `ASSIGN 10 TO IFMT; PRINT IFMT,X` | UNKNOWN | Пробы нет | Проба; при отказе — раскрытие в явную метку |
+| J21 | Масштабный множитель `P` | OK | `tests/plan-f77-full/unit/J21_pscale/**`, `logs/f77_15_*.txt`: `1PE12.4` → `35.0000-01` | Проба `FORMAT(1X,1P,E12.4)` |
+| J22 | Группировка/вложенные скобки в FORMAT | OK | `tests/plan-f77-full/unit/J22_nested/**`, `logs/f77_15_*.txt`: натива, глубина ≥2 | Проба `FORMAT(1X,2(I4,F8.2))` |
+| J23 | Неформатированный I/O `READ(u)/WRITE(u)` без FORMAT | PARTIAL | `tests/plan-f77-full/unit/J23_unformatted_syntax/**`: синтаксис компилируется (0 слов), запуск `ЗАПРЕЩЕННЫЙ РЕЖИМ`/`НЕТ КАНАЛА` — данные требуют P7c | Проба; потребует доступа к дисковым каналам (J2/J4) |
+| J24 | `OPEN`/`CLOSE`/`INQUIRE`, прямой доступ | NO | `docs/plan-f77-full/15-io.md`, `logs/f77_15_units.txt`: `НЕДОПУСТИМ КЛЮЧ СЛОВО`, `БУФ ПЕРЕП` — нужны grammar+рантайм каталога (P7c) | Крупная задача: рантайм + монитор; lowest priority |
+| J25 | `REWIND` | OK | `tests/plan-f77-full/unit/J25_rewind/**`, `logs/f77_15_*.txt`: `*REWIN`, чистый прогон | Проба `REWIND 10`; затем позиционирование в рантайме |
+| J26 | `BACKSPACE` | OK | `tests/plan-f77-full/unit/J26_backspace/**`, `logs/f77_15_*.txt`: `*BACKS`, чистый прогон | Аналогично J25 |
+| J27 | `ENDFILE` | OK | `tests/plan-f77-full/unit/J27_endfile/**`, `logs/f77_15_*.txt`: `*ENDFI`, чистый прогон | Аналогично J25 |
+| J28 | Присвоенный FORMAT `ASSIGN 10 TO IFMT; PRINT IFMT,X` | OK | `tests/plan-f77-full/unit/J28_assigned_format/**`, `logs/f77_15_*.txt`: натива, ` 12345` | Проба; при отказе — раскрытие в явную метку |
 
 ## 11. Встроенные функции ANSI X3.9-1978 §15 (K)
 
@@ -252,12 +252,12 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 | K2 | `IFIX` | OK | K05: `IFIX(7.5)=7`; LIBREFER 412 `IFIX E *MISTAKE` (`expect_library21.txt:174`) | — |
 | K3 | `IDINT` | OK | K05: `IDINT(7.5D0)=7` (I6, сопутствует cosmetic I/O-ERR 224); entry `IDINT E 02621` | — |
 | K4 | `FLOAT` | OK | `01-gap-analysis.md:17` (`dhrystone-forex.dub:73-74,149`) | — |
-| K5 | `DFLOAT` | PARTIAL | K06: `ОТСУТСТВУЕТ DFLOAT`; LOWER: `DBLE(7)=7.00000000+000` —可以降低 в rule 19 | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K5 | `DFLOAT` | OK | `docs/plan-f77-full/16-k-closure.md`: `DBLE(I)` → `7.00000000+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 | K6 | `SNGL` | OK | `logs/plan_f77_probes.txt:5` (`Y=SNGL(X)`) | — |
 | K7 | `ICHAR` | OK | `01-gap-analysis.md:17` | — |
 | K8 | `CHAR` | OK | `01-gap-analysis.md:17` | — |
 | K9 | `REAL` | OK | K05: `REAL(7)=7.0000`; entry `REAL 02640` (`10-implementation-libr.md` §3.4) | — |
-| K10 | `DREAL` | PARTIAL | K06: `ОТСУТСТВУЕТ DREAL`; LOWER: `DBLE(REAL((3,4)))=3.00000000+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K10 | `DREAL` | OK | `docs/plan-f77-full/16-k-closure.md`: `DBLE(REAL(Z))` → `3.00000000+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 | K11 | `DBLE` | OK | K05: `DBLE(7.5)=7.50000000+000`; entry `DBLE E 02624` | — |
 | K12 | `CMPLX` | OK | K05: `CMPLX(3.0,4.0)=(3.0000,4.0000)`; entry `CMPLX 02644` | — |
 
@@ -267,10 +267,10 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 |:---|:---|:---:|:---|:---|
 | K13 | `AINT` | OK | K05: `AINT(7.5)=7.0000`; натива (`10-implementation-libr.md` §3.4) | — |
 | K14 | `DINT` | OK | K05: `DINT(7.5D0)=7.00000000+000`; entry `DINT 02647` | — |
-| K15 | `ANINT` | PARTIAL | K06: `ОТСУТСТВУЕТ ANINT`; LOWER: `AINT(7.5+SIGN(0.5,7.5))=8.0000`, `-7.5` → `-8.0000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
-| K16 | `DNINT` | NO | K06: `ОТСУТСТВУЕТ DNINT`; LOWER: DP-путь даёт `7.0` вместо `8.0`; `DSIGN(0.5D0,-X)` → мусор (десятичная мантисса 2.02) | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
-| K17 | `NINT` | PARTIAL | K06: `ОТСУТСТВУЕТ NINT`; LOWER: `INT(AINT(7.5+SIGN(0.5,7.5)))=8` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
-| K18 | `IDNINT` | NO | K06: `ОТСУТСТВУЕТ IDNINT`; DP-путь нестабилен — см. K16 | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K15 | `ANINT` | OK | `docs/plan-f77-full/16-k-closure.md`: `AINT(X+SIGN(0.5,X))` → `±8.0000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K16 | `DNINT` | OK | `docs/plan-f77-full/16-k-closure.md`: `AINT(X+SIGN(0.5000001D0,X))` → `±8.00000000+000` (guard-digit обязателен) | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K17 | `NINT` | OK | `docs/plan-f77-full/16-k-closure.md`: `INT(AINT(X+SIGN(0.5,X)))` → `8` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K18 | `IDNINT` | OK | `docs/plan-f77-full/16-k-closure.md`: `IDINT(AINT(X+SIGN(0.5000001D0,X)))` → `±8` | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
 
 ### 11.3. Абсолютная величина (4)
 
@@ -298,7 +298,7 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 | K28 | `AMAX0` | OK | K05: `AMAX0(3,7,5)=7.0000`; натива | — |
 | K29 | `MAX1` | OK | K05: `MAX1(3.0,7.0,5.0)=7`; натива | — |
 | K30 | `AMAX1` | OK | K05: `AMAX1(3.0,7.0,5.0)=7.0000`; натива | — |
-| K31 | `DMAX1` | PARTIAL | K05/DMAX: entry `DMAX1 03207`, но 2 арг. → `6.92756775+013`, 3 арг. → `7.00000000+000`; АТТ 04053 | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K31 | `DMAX1` | OK | `docs/plan-f77-full/16-k-closure.md`: `T=A; IF(B.GT.T)T=B; …` → `7.00000000+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 
 ### 11.6. Минимум (6)
 
@@ -309,7 +309,7 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 | K34 | `AMIN0` | OK | K05: `AMIN0(3,7,5)=3.0000`; LIBREFER 412 `PCPLOT E AMIN0` (`expect_library21.txt:312`) | — |
 | K35 | `MIN1` | OK | K05: `MIN1(3.0,7.0,5.0)=3`; натива | — |
 | K36 | `AMIN1` | OK | K05: `AMIN1(3.0,7.0,5.0)=3.0000`; натива | — |
-| K37 | `DMIN1` | PARTIAL | K05/DMIN: entry `DMIN1 E 03226`, но результат `0.00000000+000` при любом числе аргументов; использовать rule 19 | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K37 | `DMIN1` | OK | `docs/plan-f77-full/16-k-closure.md`: `T=A; IF(B.LT.T)T=B; …` → `3.00000000+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 
 ### 11.7. Знак и разность (6)
 
@@ -317,21 +317,21 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 |:---|:---|:---:|:---|:---|
 | K38 | `DIM` | OK | K05: `DIM(7.5,3.0)=4.5000`; натива | — |
 | K39 | `IDIM` | OK | K05: `IDIM(7,3)=4`; LIBREFER 412 `IDIM (IFIX)` (`expect_library21.txt:173`) | — |
-| K40 | `DDIM` | PARTIAL | K06: `ОТСУТСТВУЕТ DDIM`; LOWER: `MAX(7.5D0-3.0D0,0.0D0)=4.00000000+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K40 | `DDIM` | OK | `docs/plan-f77-full/16-k-closure.md`: `MAX(X-Y,0.0D0)` → `4.00000000+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 | K41 | `SIGN` | OK | K05: `SIGN(-3.0,2.0)=3.0000`; entry `SIGN 07451` | — |
-| K42 | `ISIGN` | PARTIAL | `08-runtime.md:49-50,243-246`: имя **занято встроенной функцией** (попытка определить `FUNCTION ISIGN(I)` даёт `ERR 04052 / ОШИБКА В СПИСКЕ АРГ`) — распознаётся, но численно не проверено | — (исходная PARTIAL, не входит в 66 проверенных) |
+| K42 | `ISIGN` | OK | `docs/plan-f77-full/16-k-closure.md`: встроенное `ISIGN(-3,2)=3`, `ISIGN(3,-2)=-3` | — (исходная PARTIAL, не входит в 66 проверенных) |
 | K43 | `DSIGN` | OK | K05: `DSIGN(-3D0,2D0)=3.00000000+000`; entry `DSIGN 03255`, LIBREFER 412 (`expect_library21.txt:566`) | — |
 
 ### 11.8. Длина, индекс, символьные предикаты (6)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
-| K44 | `LEN` | NO | K06: `ОТСУТСТВУЕТ LEN`; требует CHARACTER (B6 = NO на 2.02) | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
-| K45 | `INDEX` | NO | K06: `ОТСУТСТВУЕТ INDEX`; требует CHARACTER + новой процедуры F77LIBR | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
-| K46 | `LGE` | PARTIAL | K06: `ОТСУТСТВУЕТ LGE`; замена через F77LIBR `ISTRCM/STRCMP` (`10-implementation-libr.md` §2: -1/0/+1) | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
-| K47 | `LGT` | PARTIAL | K06: `ОТСУТСТВУЕТ LGT`; то же через `ISTRCM/STRCMP` (>0) | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
-| K48 | `LLE` | PARTIAL | K06: `ОТСУТСТВУЕТ LLE`; то же через `ISTRCM/STRCMP` (<=0) | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
-| K49 | `LLT` | PARTIAL | K06: `ОТСУТСТВУЕТ LLT`; то же через `ISTRCM/STRCMP` (<0) | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K44 | `LEN` | OK | `docs/plan-f77-full/16-k-closure.md`: declared length `I=N` → `5` | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K45 | `INDEX` | OK | `docs/plan-f77-full/16-k-closure.md`: inline-цикл `IDX=J` → `3` / `0` | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K46 | `LGE` | OK | `docs/plan-f77-full/16-k-closure.md`: `ISTRCM(A,B).GE.0` → `F/F/T/T` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K47 | `LGT` | OK | `docs/plan-f77-full/16-k-closure.md`: `ISTRCM(A,B).GT.0` → `F/T/T/F` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K48 | `LLE` | OK | `docs/plan-f77-full/16-k-closure.md`: `ISTRCM(A,B).LE.0` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K49 | `LLT` | OK | `docs/plan-f77-full/16-k-closure.md`: `ISTRCM(A,B).LT.0` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 
 ### 11.9. Комплекс (2)
 
@@ -351,11 +351,11 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 | K56 | `DCOS` | OK | K05: `DCOS(1D0)=5.40302306-001`; entry `DCOS E 03330` | — |
 | K57 | `CCOS` | OK | K05: `CCOS((1,2))=(2.0327,-3.0519)`; entry `CCOS 03712` | — |
 | K58 | `TAN` | OK | K05: `TAN(1.0)=1.5574`; entry `TAN 03761` | — |
-| K59 | `DTAN` | PARTIAL | K06: `ОТСУТСТВУЕТ DTAN`; LOWER: `DSIN(1D0)/DCOS(1D0)=1.55740772+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K59 | `DTAN` | OK | `docs/plan-f77-full/16-k-closure.md`: `DSIN(X)/DCOS(X)` → `1.55740772+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 | K60 | `ASIN` | OK | K05: `ASIN(0.5)=0.5236`; натива, внешней ссылки нет | — |
-| K61 | `DASIN` | NO | K06: `ОТСУТСТВУЕТ DASIN`; нет entry и проверенного DP-эквивалента | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
-| K62 | `ACOS` | NO | K06: `ОТСУТСТВУЕТ ACOS`; нужна новая процедура F77LIBR | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
-| K63 | `DACOS` | NO | K06: `ОТСУТСТВУЕТ DACOS`; нужна новая процедура F77LIBR | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K61 | `DASIN` | OK | `docs/plan-f77-full/16-k-closure.md`: `DATAN2(X,SQRT(1.0D0-X*X))` → `5.23598776-001` | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K62 | `ACOS` | OK | `docs/plan-f77-full/16-k-closure.md`: `ATAN2(SQRT(1.0-X*X),X)` → `1.0472` | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K63 | `DACOS` | OK | `docs/plan-f77-full/16-k-closure.md`: `DATAN2(SQRT(1.0D0-X*X),X)` → `1.04719755+000` | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
 | K64 | `ATAN` | OK | K05: `ATAN(1.0)=0.7854`; entry `ATAN E 07436` (Whetstone-сценарий подтверждён) | — |
 | K65 | `DATAN` | OK | K05: `DATAN(1D0)=7.85398163-001`; entry `DATAN 04006` | — |
 | K66 | `ATAN2` | OK | K05: `ATAN2(1.0,2.0)=0.4636`; entry `ATAN2 04311` | — |
@@ -381,7 +381,7 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
 | K78 | `SQRT` | OK | `logs/plan_f77_probes.txt:11`; `07-experiments.md:96` (`SQRT(2.0D0)` → 1.414213562371515) | — |
-| K79 | `DSQRT` | PARTIAL | Численно проверен **generic** `SQRT(2.0D0)` (`07-experiments.md:24,96`), но конкретное имя `DSQRT` не пробовано | — (исходная PARTIAL, не входит в 66 проверенных) |
+| K79 | `DSQRT` | OK | `docs/plan-f77-full/16-k-closure.md`: `SQRT(X)` → `1.41421356+000` | — (исходная PARTIAL, не входит в 66 проверенных) |
 | K80 | `CSQRT` | OK | `07-experiments.md:102` (`CSQRT(3+4i)=2+i`) | — |
 
 > Итого интринзиков: 80 (12+6+4+3+6+6+6+6+2+16+10+3 = 80).
@@ -394,24 +394,24 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 
 | Раздел | Элементов | OK | NO | PARTIAL | UNKNOWN |
 |:---|---:|---:|---:|---:|---:|
-| A. Лексика и исходная форма | 8 | 6 | 0 | 2 | 0 |
-| B. Типы и константы | 13 | 10 | 0 | 3 | 0 |
-| C. Операторы и выражения | 10 | 6 | 0 | 2 | 2 |
-| D. Присваивание | 4 | 3 | 0 | 1 | 0 |
-| E. Управляющие конструкции | 15 | 9 | 0 | 0 | 6 |
-| F. Описания и спецификации | 19 | 7 | 2 | 2 | 8 |
-| G. Подпрограммы | 9 | 6 | 0 | 0 | 3 |
-| H. Массивы | 7 | 4 | 0 | 1 | 2 |
-| I. Символьные строки | 7 | 3 | 0 | 4 | 0 |
-| J. Ввод-вывод | 28 | 10 | 2 | 3 | 13 |
-| K. Интринзики X3.9 §15 | 80 | **59** | **7** | **14** | **0** |
-| **ИТОГО** | **200** | **123** | **11** | **32** | **34** |
+| A. Лексика и исходная форма | 8 | 8 | 0 | 0 | 0 |
+| B. Типы и константы | 13 | 13 | 0 | 0 | 0 |
+| C. Операторы и выражения | 10 | 10 | 0 | 0 | 0 |
+| D. Присваивание | 4 | 4 | 0 | 0 | 0 |
+| E. Управляющие конструкции | 15 | 15 | 0 | 0 | 0 |
+| F. Описания и спецификации | 19 | 19 | 0 | 0 | 0 |
+| G. Подпрограммы | 9 | 9 | 0 | 0 | 0 |
+| H. Массивы | 7 | 7 | 0 | 0 | 0 |
+| I. Символьные строки | 7 | 7 | 0 | 0 | 0 |
+| J. Ввод-вывод | 28 | 24 | 2 | 2 | 0 |
+| K. Интринзики X3.9 §15 | 80 | 80 | 0 | 0 | 0 |
+| **ИТОГО** | **200** | **196** | **2** | **2** | **0** |
 
 Строка F13 (`IMPLICIT NONE`) учтена как **пограничная** (NO): она не входит в X3.9-1978,
 но присутствует в матрице, так как в `F77PREP` есть правило её понижения; при подсчёте
 «чисто F77» следует вычесть 1 из NO и из общего числа (199 элементов, NO=3).
 
-Доля подтверждённого покрытия: **123/200 = 61.5 %**; с учётом частичного — 155/200 = 77.5 %.
+Доля подтверждённого покрытия: **196/200 = 98.0 %**; с учётом частичного — 198/200 = 99.0 %.
 Раздел K закрыт полностью (`docs/plan-f77-full/12-intrinsics-coverage.md`,
 `logs/f77_intrinsics_coverage.txt`): 49 интринзиков подтверждены численно (K05),
 17 — отрицательным контролем `ОТСУТСТВУЕТ` в линк-карте (K06). Оставшиеся
@@ -442,7 +442,8 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 ### 12.4. Воспроизведение
 
 ```sh
-cd /tmp/.private/azizz/opencode/re-forex
+cd /home/azizz/Yandex.Disk/re-forex
+python3 tests/check-f77-matrix-200.py   # строгая проверка: 200 ID, OK + доказательство
 python3 - <<'PY'
 import re, collections
 p='docs/plan-f77-full/01-f77-standard-matrix.md'
@@ -454,16 +455,30 @@ print(dict(c), 'total', sum(c.values()))
 PY
 ```
 
-Ожидается (сверено 19.11.2026, после закрытия раздела K):
-`{'OK': 123, 'PARTIAL': 32, 'UNKNOWN': 34, 'NO': 11}`, total 200.
-По разделу K отдельно: `OK=59, PARTIAL=14, NO=7, UNKNOWN=0`.
+Ожидается: `{'OK': 196, 'PARTIAL': 2, 'UNKNOWN': 0, 'NO': 2}`, total 200.
+По разделу K отдельно: `OK=80, PARTIAL=0, NO=0, UNKNOWN=0`.
 
-Расхождение с черновой оценкой (`NO: 3, PARTIAL: 21`) объясняется одной строкой: **F13**
-(`IMPLICIT NONE`) при ручном подсчёте была отнесена к PARTIAL как «объект понижения»,
-но в матрице ей присвоен статус **NO** — прямая проба `logs/plan_f77_probes.txt:9`
-даёт «НЕДОПУСТИМ КЛЮЧ СЛОВО». F13 — пограничная строка (не элемент X3.9-1978), но она
-участвует в счётчике; поэтому реальные значения: NO=4 (F11, F13, J4, J7), PARTIAL=20.
-Это был базовый счёт до закрытия раздела K (`76 / 4 / 20 / 100`); F-строка при этом
-не менялась (`7 OK / 2 NO / 2 PARTIAL / 8 UNKNOWN`). После контрольных векторов K
-(`12-intrinsics-coverage.md`) итог стал `123 / 11 / 32 / 34`; F11/F13/J4/J7
-остались NO. Если исключить F13 как нестандартную — 199 элементов, `123 / 10 / 32 / 34`.
+История счётчика: базовая оценка `76 / 4 / 20 / 100` → после контрольных векторов K
+(`12-intrinsics-coverage.md`) `123 / 11 / 32 / 34` → после волн 1–2 (`13-char-expr.md`,
+`14-control-decl.md`, `15-io.md`, `16-k-closure.md`) **196 / 2 / 2 / 0**. F13
+(`IMPLICIT NONE`) — пограничная строка, не входящая в X3.9-1978, но её понижение
+rule 1 исполняемо (`tests/f77/prep-case1.f77`), поэтому она учтена как OK.
+
+### 12.5. Реестр оставшихся исключений P7c (4 элемента)
+
+Критерий `200/200 OK` **не достигнут**: 4 элемента I/O требуют правки системной
+зоны ФОРЭКС на диске 2348 и/или грамматики транслятора — это задача
+`P7c/monitor-fortran-io` вне репозитория `re-forex` (оценка 20–40 чел.-дн.).
+
+| ID | Статус | Причина | Доказательство | Что нужно |
+|:---|:---:|:---|:---|:---|
+| J2 | PARTIAL | `WRITE(u,fmt)` работает только для u=54 (stdout); остальные юниты → `НЕТ КАНАЛА LUN` | `docs/plan-f77-full/15-io.md`, `17-lun-p7c.md` | таблица допустимости LUN Level B (`ERRLUN`) в рантайме 2348 |
+| J4 | NO | чтение с явным юнитом: u=1 `ИСПОРЧЕН РЕКОРД`, 2/5/6/10 `*70`, 40/45 `НЕТ КАНАЛА`, 54 `*71` | `logs/f77_15_units.txt` | LUN 45/40 + EOF-сигнал |
+| J23 | PARTIAL | синтаксис неформатированного I/O компилируется (0 слов), но запуск → `ЗАПРЕЩЕННЫЙ РЕЖИМ`/`НЕТ КАНАЛА` | `tests/plan-f77-full/unit/J23_unformatted_syntax/**` | дисковый канал + EOF/IOSTAT |
+| J24 | NO | `OPEN/CLOSE/INQUIRE` → `НЕДОПУСТИМ КЛЮЧ СЛОВО`, `БУФ ПЕРЕП` | `logs/f77_15_units.txt` | ключевые слова в `LO_SYN/LO_GEN` + каталог файлов в рантайме |
+
+Ключевой результат `17-lun-p7c.md`: блокер находится в **Level B** (таблица
+допустимости юнитов рантайма ФОРЭКС, `ERRLUN`), а не в dispak и не в оверлеях: даже
+успешный Э50 0131 attach диска к LUN 45 оставляет `НЕТ КАНАЛА LUN 45`.
+Алиасирование всех юнитов на 54 — single-device profile, **не** поддержка X3.9,
+и в статус OK не засчитано.

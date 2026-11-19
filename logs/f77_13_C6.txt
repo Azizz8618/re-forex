@@ -1,0 +1,93 @@
+=== F77 standard matrix A-D, volume 1: C6 (.EQV./.NEQV.) ===
+date    : 2026-11-19 21:20:46
+repo    : /tmp/.private/azizz/opencode/re-forex (branch main)
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+disks   : 2048 + 2348 (PERSO 0o2300 = build/FOREX_PERSO_2300.bin,
+          F77LIBR 13 proc in PERSO 0o2310 via *perso:602310,cont)
+method  : real dispak runs; success = no diagnostics AND correct output
+          (КОНЕЦ ЗАДАЧИ alone is NOT proof -- it is printed on errors too)
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/C06_eqv_neqv/c06_native.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C06NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C6 native probe: .EQV. / .NEQV.
+      PROGRAM C06NAT
+      LOGICAL A,B,R,S
+      A=.TRUE.
+      B=.FALSE.
+      R=A .EQV. B
+      S=A .NEQV. B
+      PRINT 10,R,S
+   10 FORMAT(1X,L2,1X,L2)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+ЕRR 04001 ПК    6                  ↑
+НЕДОПУСТИМ СИМВОЛ КОП В ИНСТРУК ПРИСВАИВ
+ЕRR 04001 ПК    7                   ↑
+НЕДОПУСТИМ СИМВОЛ КОП В ИНСТРУК ПРИСВАИВ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+           *NО LISТ
+           *FОRЕХ
+ВРЕМЯ СЧЕТА: ##.##.## 0
+                 6       R=А .ЕQV. В                                                                   6
+ЕRR 04001 ПК    6                  ↑
+НЕДОПУСТИМ СИМВОЛ КОП В ИНСТРУК ПРИСВАИВ
+                 7       S=А .NЕQV. В                                                                  7
+ЕRR 04001 ПК    7                   ↑
+НЕДОПУСТИМ СИМВОЛ КОП В ИНСТРУК ПРИСВАИВ
+С06NАТ
+           *ЕХЕСUТЕ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/C06_eqv_neqv/c06_lowered.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C06LOW
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C6 lowered: EQV/NEQV via AND/OR/NOT (C5 primitives).
+      PROGRAM C06LOW
+      LOGICAL A,B,R,S
+      A=.TRUE.
+      B=.FALSE.
+C@ A .EQV. B -> (A .AND. B) .OR. (.NOT.A .AND. .NOT.B)
+      R=(A .AND. B) .OR. (.NOT.A .AND. .NOT.B)
+C@ A .NEQV. B -> (A .AND. .NOT.B) .OR. (.NOT.A .AND. B)
+      S=(A .AND. .NOT.B) .OR. (.NOT.A .AND. B)
+      IR=0
+      IF (R) IR=1
+      IS=0
+      IF (S) IS=1
+      PRINT 10,IR,IS
+   10 FORMAT(1X,2I3)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+(none)
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+   0  1
+
+METHOD: lowering boolean formula
+CONCLUSION: native form rejected; lowered form compiles with NO diagnostics
+and produces the expected output above. Status OK.

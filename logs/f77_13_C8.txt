@@ -1,0 +1,80 @@
+=== F77 standard matrix A-D, volume 1: C8 (concatenation //) ===
+date    : 2026-11-19 21:20:46
+repo    : /tmp/.private/azizz/opencode/re-forex (branch main)
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+disks   : 2048 + 2348 (PERSO 0o2300 = build/FOREX_PERSO_2300.bin,
+          F77LIBR 13 proc in PERSO 0o2310 via *perso:602310,cont)
+method  : real dispak runs; success = no diagnostics AND correct output
+          (КОНЕЦ ЗАДАЧИ alone is NOT proof -- it is printed on errors too)
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/C08_concat/c08_native.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C08NAT
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- C8 native probe: // concatenation.
+      PROGRAM C08NAT
+      CHARACTER*6 S,T,U
+      S='ABCD'
+      T='EF'
+      U=S//T
+      PRINT 10,U
+   10 FORMAT(1X,A6)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+ЕRR 03106 ПК    4                ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+ЕRR 04001 ПК    4                ↑
+НЕДОПУСТИМ СИМВОЛ = В ИНСТРУК ПРИСВАИВ
+ЕRR 03106 ПК    5              ↑
+ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+С08NАТ
+           *ЕХЕСUТЕ
+ БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ
+
+--- deck: /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/C08_concat/c08_lowered.b6 ---
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name C08LOW
+*call yesmemory
+*perso:602300
+*perso:602310,cont
+*no list
+*forex
+c---- C8 lowered (rule 13): STRCAT on ASCII-code arrays.
+      PROGRAM C08LOW
+      INTEGER IA(6),IB(6),IC(12)
+      DATA IA/65,66,67,68,0,0/
+      DATA IB/69,70,0,0,0,0/
+C@ U=S//T -> CALL STRCAT(IA,IB,IC,4,2)
+      CALL STRCAT(IA,IB,IC,4,2)
+      PRINT 10,(IC(I),I=1,6)
+   10 FORMAT(1X,6I3)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+--- dispak diagnostics ---
+(none)
+--- program output (lines before КОНЕЦ ЗАДАЧИ) ---
+  65 66 67 68 69 70
+
+METHOD: lowering rule 13 + F77LIBR STRCAT
+CONCLUSION: native form rejected; lowered form compiles with NO diagnostics
+and produces the expected output above. Status OK.
