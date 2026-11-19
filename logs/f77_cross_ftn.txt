@@ -1,0 +1,3 @@
+CROSS OK   base: CROSS OK: 3 чисел совпали (допуск 1e-5); FOREX:    21      1.00      3.00|
+CROSS OK   do2d: CROSS OK: 6 чисел совпали (допуск 1e-5); FOREX:   1     22.00|  2     26.00|  3     30.00|
+CROSS OK   intrinsics_ext: CROSS OK: 4 чисел совпали (допуск 1e-5); FOREX:      4.0000    3.5000    1.0000   10.0000|

@@ -1,0 +1,35 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348-wr)^
+eeв1а3
+*name DPC77
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- DOUBLE PRECISION/COMPLEX: numeric control values D22.15 and 2F10.4.
+      PROGRAM DPC77
+      DOUBLE PRECISION X,Y,Z
+      COMPLEX ZC,WC
+      X=2.0D0
+      Y=SQRT(X)
+      Z=1.0D0/3.0D0
+      PRINT 10,Y
+   10 FORMAT(1X,D22.15)
+      PRINT 11,Z
+   11 FORMAT(1X,D22.15)
+      ZC=(1.0,2.0)
+      WC=(3.0,4.0)
+      ZC=ZC*WC
+      PRINT 12,ZC
+   12 FORMAT(1X,2F10.4)
+      WC=(3.0,4.0)
+      R=CABS(WC)
+      PRINT 13,R
+   13 FORMAT(1X,F10.4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

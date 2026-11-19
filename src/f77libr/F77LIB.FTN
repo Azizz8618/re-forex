@@ -1,6 +1,6 @@
 C==============================================================
 C     F77LIBR - МИНИМАЛЬНЫЙ FORTRAN-РАНТАЙМ ДЛЯ ЭТАПА E2.
-C     ТРИ ВНЕШНИЕ ПРОЦЕДУРЫ, ИМЯ КАЖДОЙ <= 6 СИМВОЛОВ.
+C     СЕМЬ ВНЕШНИХ ПРОЦЕДУР, ИМЯ КАЖДОЙ <= 6 СИМВОЛОВ.
 C     ИСТОЧНИК НА ПОДДЕРЖИВАЕМОМ ФОРЭКСОМ 2.02 ПОДМНОЖЕСТВЕ:
 C     БЕЗ НОВЫХ КЛЮЧЕВЫХ СЛОВ, СПИСКОВОЙ ПЕЧАТИ И СИМВОЛЬНОГО ТИПА.
 C     КОМПИЛЯЦИЯ: *PERSO:602300 + *FOREX, ОБЪЕКТ -> *TO PERSO:602310.
@@ -22,5 +22,33 @@ C---- ПЕЧАТЬ СТРОКИ С ЯВНЫМ FORMAT (HOLLERITH 11H... + F8.3).
 C---- ВЫЗЫВАЕТСЯ КАК CALL FMTLNK(ЗНАЧЕНИЕ).
       PRINT 1000, X
  1000 FORMAT(1X,11HF77LIBR X=,F8.3)
+      RETURN
+      END
+      INTEGER FUNCTION IMAX0(I,J)
+C---- МАКСИМУМ ДВУХ ЦЕЛЫХ АРГУМЕНТОВ.
+      IMAX0=I
+      IF (J .GT. I) IMAX0=J
+      RETURN
+      END
+      INTEGER FUNCTION ISGN0(I)
+C---- ЗНАК ЦЕЛОГО: -1, 0 ИЛИ +1.
+      ISGN0=0
+      IF (I .LT. 0) ISGN0=-1
+      IF (I .GT. 0) ISGN0=1
+      RETURN
+      END
+      INTEGER FUNCTION IDIV(I,J)
+C---- ЦЕЛОЧИСЛЕННОЕ ДЕЛЕНИЕ С ПРОВЕРКОЙ ДЕЛИТЕЛЯ.
+C---- ПРИ J=0 ВОЗВРАЩАЕТ 0 (ДЕЛЕНИЕ НЕ ВЫПОЛНЯЕТСЯ).
+      IDIV=0
+      IF (J .NE. 0) IDIV=I/J
+      RETURN
+      END
+      INTEGER FUNCTION STRCMP(A,B)
+C---- СРАВНЕНИЕ ДВУХ 4-СИМВОЛЬНЫХ HOLLERITH-СЛОВ, УПАКОВАННЫХ
+C---- В ЦЕЛЫЕ (INTEGER W; DATA W/4HABCD/). ВОЗВРАЩАЕТ -1/0/+1.
+      STRCMP=0
+      IF (A .LT. B) STRCMP=-1
+      IF (A .GT. B) STRCMP=1
       RETURN
       END

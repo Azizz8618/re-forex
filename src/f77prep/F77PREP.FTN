@@ -1,12 +1,12 @@
-      PROGRAM F77PREP
+       PROGRAM F77PREP
 C=======================================================================
-C F77PREP -- E3 minimal F77 -> FOREX 2.02 preprocessor.
+C F77PREP v2 -- F77 -> FOREX 2.02 preprocessor (rule engine).
 C
 C Input : NL lines of 72 ASCII character codes held in C(72,20).  The
 C         host script injects DATA NL /.../ and DATA C /.../ at the
 C         injection marker below (a comment line).  This substitutes for
-C         reading cards: no Fortran READ unit consuming the input card
-C         stream has been found for FOREX 2.02 (E1 pending).
+C         reading cards: E1 showed the only working form is the unitless
+C         `READ 10,X`, but the preprocessing stage has no data cards.
 C
 C Output: numeric records (markers 777001/777002/777003), because the
 C         A-format and CHARACTER output are not usable on FOREX 2.02.
@@ -14,79 +14,150 @@ C           777001 <line> <rule> <itype>   rule per source line
 C           777002 <pos> <char-code>      chars of a rewritten variable
 C           777003 <nlines> <nrewrites>   summary
 C
-C Rules: 1 IMPLICIT NONE -> drop; 2 SAVE ... -> drop;
-C        3 PRINT *,var -> PRINT 9000,var (FORMAT 9000 added by host).
-C        itype: 1 = integer (I..N implicit), 2 = real.
-C Subset: INTEGER, DIMENSION, DATA, DO, GOTO, PRINT n,I  (no IMPLICIT,
-C         SAVE, CHARACTER, list-directed I/O, READ).
+C Rules (v2):
+C   0 other line                       keep as is
+C   1 IMPLICIT NONE                    drop
+C   2 SAVE ...                         drop
+C   3 PRINT *,vars                     PRINT <fmt>,vars (varmap carries
+C                                      the comma separated variable list;
+C                                      host picks I10/F12.4/A4 per item)
+C   4 READ(*,*,END=LL) var             READ <fmt>,var (END= label dropped)
+C   5 DO WHILE (cond)                  LOOP top + IF (.NOT.(cond)) GO TO
+C   6 END DO                           loop bottom (GO TO top + CONTINUE)
+C   7 CHARACTER*n var                  INTEGER Ivar (host renames var)
+C   8 var='literal'                    DATA Ivar/nHliteral/
+C
+C itype: 1 = integer (first letter I..N), 2 = real.  Used by rule 3 only.
+C Subset: INTEGER, DIMENSION, DATA, DO, GOTO, IF, PRINT n,I  (no IMPLICIT,
+C         SAVE, CHARACTER, list-directed I/O, READ in this program).
 C=======================================================================
-      INTEGER C(72,20)
-      INTEGER NL
-      INTEGER PATIMP(13), PATSAV(5), PATPRN(7)
-      DATA PATIMP /73,77,80,76,73,67,73,84,32,78,79,78,69/
-      DATA PATSAV /83,65,86,69,32/
-      DATA PATPRN /80,82,73,78,84,32,42/
+       INTEGER C(72,20)
+       INTEGER NL
+       INTEGER PATIMP(13), PATSAV(5), PATPRN(7)
+       INTEGER PATRD(13), PATDWH(10), PATDDR(6), PATCHR(10)
+       DATA PATIMP /73,77,80,76,73,67,73,84,32,78,79,78,69/
+       DATA PATSAV /83,65,86,69,32/
+       DATA PATPRN /80,82,73,78,84,32,42/
+       DATA PATRD /82,69,65,68,40,42,44,42,44,69,78,68,61/
+       DATA PATDWH /68,79,32,87,72,73,76,69,32,40/
+       DATA PATDDR /69,78,68,32,68,79/
+       DATA PATCHR /67,72,65,82,65,67,84,69,82,42/
 C@@DATA@@
-      INTEGER IV(20)
-      INTEGER I, J, K, IFIRST, LV, MATCH, IRULE, ITYPE, NR
-      NR = 0
-      DO 100 I = 1, NL
-         IRULE = 0
-         ITYPE = 0
-         LV = 0
-         IFIRST = 1
-   10    IF (IFIRST .GT. 72) GOTO 20
-         IF (C(IFIRST,I) .EQ. 32) GOTO 15
-         GOTO 20
-   15    IFIRST = IFIRST + 1
-         GOTO 10
-   20    MATCH = 1
-         DO 30 J = 1, 13
-            IF (C(IFIRST+J-1,I) .NE. PATIMP(J)) MATCH = 0
-   30    CONTINUE
-         IF (MATCH .EQ. 1) IRULE = 1
-         IF (IRULE .NE. 0) GOTO 80
-         MATCH = 1
-         DO 40 J = 1, 5
-            IF (C(IFIRST+J-1,I) .NE. PATSAV(J)) MATCH = 0
-   40    CONTINUE
-         IF (MATCH .EQ. 1) IRULE = 2
-         IF (IRULE .NE. 0) GOTO 80
-         MATCH = 1
-         DO 50 J = 1, 7
-            IF (C(IFIRST+J-1,I) .NE. PATPRN(J)) MATCH = 0
-   50    CONTINUE
-         IF (MATCH .NE. 1) GOTO 80
-         IRULE = 3
-         ITYPE = 2
-         K = IFIRST + 7
-   60    IF (K .GT. 72) GOTO 80
-         IF (C(K,I) .EQ. 32) GOTO 65
-         IF (C(K,I) .EQ. 44) GOTO 65
-         GOTO 70
-   65    K = K + 1
-         GOTO 60
-   70    LV = 1
-         IV(1) = C(K,I)
-         IF (IV(1) .GE. 73 .AND. IV(1) .LE. 78) ITYPE = 1
-         K = K + 1
-   75    IF (K .GT. 72) GOTO 85
-         IF (C(K,I) .EQ. 32) GOTO 85
-         LV = LV + 1
-         IV(LV) = C(K,I)
-         K = K + 1
-         GOTO 75
-   85    NR = NR + 1
-   80    PRINT 9001, 777001, I, IRULE, ITYPE
-         IF (IRULE .NE. 3) GOTO 95
-         DO 90 K = 1, LV
-            PRINT 9002, 777002, I, K, IV(K)
-   90    CONTINUE
-   95    CONTINUE
+       INTEGER IV(72)
+       INTEGER I, J, K, L, IFIRST, LV, MATCH, IRULE, ITYPE, NR
+       NR = 0
+       DO 100 I = 1, NL
+          IRULE = 0
+          ITYPE = 0
+          LV = 0
+          IFIRST = 1
+   10 IF (IFIRST .GT. 72) GOTO 20
+          IF (C(IFIRST,I) .EQ. 32) GOTO 15
+          GOTO 20
+   15 IFIRST = IFIRST + 1
+          GOTO 10
+C-- rule 1: IMPLICIT NONE
+   20 MATCH = 1
+          DO 21 J = 1, 13
+             IF (C(IFIRST+J-1,I) .NE. PATIMP(J)) MATCH = 0
+   21 CONTINUE
+          IF (MATCH .EQ. 0) GOTO 30
+          IRULE = 1
+          GOTO 80
+C-- rule 2: SAVE
+   30 MATCH = 1
+          DO 31 J = 1, 5
+             IF (C(IFIRST+J-1,I) .NE. PATSAV(J)) MATCH = 0
+   31 CONTINUE
+          IF (MATCH .EQ. 0) GOTO 40
+          IRULE = 2
+          GOTO 80
+C-- rule 3: PRINT *, ... -- pack the whole variable list into IV
+   40 MATCH = 1
+          DO 41 J = 1, 7
+             IF (C(IFIRST+J-1,I) .NE. PATPRN(J)) MATCH = 0
+   41 CONTINUE
+          IF (MATCH .EQ. 0) GOTO 50
+          IRULE = 3
+          K = IFIRST + 7
+   42 IF (K .GT. 72) GOTO 44
+          IF (C(K,I) .EQ. 32) GOTO 43
+          IF (C(K,I) .EQ. 44) GOTO 43
+          GOTO 44
+   43 K = K + 1
+          GOTO 42
+   44 IF (K .GT. 72) GOTO 49
+          ITYPE = 2
+          IF (C(K,I) .GE. 73 .AND. C(K,I) .LE. 78) ITYPE = 1
+   45 IF (K .GT. 72) GOTO 49
+          IF (C(K,I) .EQ. 32) GOTO 46
+          LV = LV + 1
+          IV(LV) = C(K,I)
+   46 K = K + 1
+          GOTO 45
+   49 IF (LV .LE. 0) IRULE = 0
+          GOTO 80
+C-- rule 4: READ(*,*,END=LL) var
+   50 MATCH = 1
+          DO 51 J = 1, 13
+             IF (C(IFIRST+J-1,I) .NE. PATRD(J)) MATCH = 0
+   51 CONTINUE
+          IF (MATCH .EQ. 0) GOTO 60
+          IRULE = 4
+          GOTO 80
+C-- rule 5: DO WHILE (cond)
+   60 MATCH = 1
+          DO 61 J = 1, 10
+             IF (C(IFIRST+J-1,I) .NE. PATDWH(J)) MATCH = 0
+   61 CONTINUE
+          IF (MATCH .EQ. 0) GOTO 62
+          IRULE = 5
+          GOTO 80
+C-- rule 6: END DO
+   62 MATCH = 1
+          DO 63 J = 1, 6
+             IF (C(IFIRST+J-1,I) .NE. PATDDR(J)) MATCH = 0
+   63 CONTINUE
+          IF (MATCH .EQ. 0) GOTO 64
+          IRULE = 6
+          GOTO 80
+C-- rule 7: CHARACTER*n var
+   64 MATCH = 1
+          DO 65 J = 1, 10
+             IF (C(IFIRST+J-1,I) .NE. PATCHR(J)) MATCH = 0
+   65 CONTINUE
+          IF (MATCH .EQ. 0) GOTO 66
+          IRULE = 7
+          GOTO 80
+C-- rule 8: simple string assignment  var='literal'
+   66 K = IFIRST
+   67 IF (K .GT. 72) GOTO 70
+          IF (C(K,I) .NE. 61) GOTO 68
+          IF (K .EQ. IFIRST) GOTO 70
+          L = K + 1
+  671 IF (L .GT. 72) GOTO 70
+          IF (C(L,I) .EQ. 32) GOTO 672
+          GOTO 673
+  672 L = L + 1
+          GOTO 671
+  673 IF (C(L,I) .NE. 39) GOTO 70
+          IRULE = 8
+          GOTO 80
+   68 K = K + 1
+          GOTO 67
+   70 CONTINUE
+C-- emit records for this line
+   80 IF (IRULE .NE. 0) NR = NR + 1
+          PRINT 9001, 777001, I, IRULE, ITYPE
+          IF (IRULE .NE. 3) GOTO 95
+          DO 90 K = 1, LV
+             PRINT 9002, 777002, I, K, IV(K)
+   90 CONTINUE
+   95 CONTINUE
   100 CONTINUE
-      PRINT 9003, 777003, NL, NR
+       PRINT 9003, 777003, NL, NR
  9001 FORMAT(1X,4I8)
  9002 FORMAT(1X,4I8)
  9003 FORMAT(1X,3I8)
-      STOP
-      END
+       STOP
+       END

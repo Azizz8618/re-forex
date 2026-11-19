@@ -6,6 +6,11 @@
 # an isolated working copy under work/ (or $TMPDIR).  besmtool zone arguments
 # are DECIMAL, monitor cards are OCTAL; 0o2300 == 1216 decimal.
 #
+# NOTE: the etalon ALREADY carries an identical image at 0o2300, so comparing
+# etalon-vs-work zones after the write is a tautology.  The scenario zeroes the
+# 5 target zones in the WORKING COPY first, then verifies the written zones are
+# byte-identical to build/FOREX_PERSO_2300.bin while the etalon stays untouched.
+#
 # Usage:
 #   tests/install-forex-perso.sh [--keep] [--disk=/path/to/2348]
 #
@@ -71,7 +76,28 @@ SHA_WORK_BEFORE=$(sha256sum "$WORK" | awk '{print $1}')
 info "etalon sha256   : $SHA_ETALON_BEFORE"
 info "work copy       : $WORK"
 
-# 3. Write the image at zone 0o2300 (decimal 1216).
+# 3. Prepare the target zones in the ISOLATED WORKING COPY, then write.
+#    The etalon disk 2348 already carries an identical PERSO image at 0o2300,
+#    so comparing etalon-vs-work zones after the write is a tautology: both
+#    already contain the image and "did not change" is reported even though
+#    the write succeeded.  Zero the 5 target zones in the WORK copy first
+#    (never the etalon), prove they are zero, then write the image and verify
+#    in step 5 that the zones are byte-identical to build/FOREX_PERSO_2300.bin.
+BESM6_PATH="$WORKDIR_WORK:/usr/local/share/besm6" \
+    "$BESMTOOL" zero 2348 --start="$START_DEC" --length="$NZONES" \
+    || fail "besmtool zero of working-copy zones failed"
+ZERO_DUMP="$WORKDIR_WORK/zeroed_2300.bin"
+BESM6_PATH="$WORKDIR_WORK:/usr/local/share/besm6" \
+    "$BESMTOOL" dump 2348 --start="$START_DEC" --length="$NZONES" --to-file="$ZERO_DUMP" \
+    || fail "besmtool dump of zeroed zones failed"
+python3 - "$ZERO_DUMP" <<'PY' || fail "target zones were not zeroed in working copy"
+import sys
+from pathlib import Path
+data = Path(sys.argv[1]).read_bytes()
+if not data or any(b != 0 for b in data):
+    sys.exit(1)
+print("target zones zeroed in working copy: OK")
+PY
 BESM6_PATH="$WORKDIR_WORK:/usr/local/share/besm6" \
     "$BESMTOOL" write 2348 --from-file="$IMAGE" --start="$START_DEC" \
     || fail "besmtool write failed"
@@ -193,9 +219,22 @@ else
     info "dispak not found - Monitor-80 catalog check skipped"
 fi
 
-# 5. Verify only zones 0o2300..0o2303 changed (logical-zone dumps).
+# 5. Verify the end state (strong check, no etalon-vs-work tautology):
+#    5a. the 5 written zones of the WORKING COPY must be byte-identical to
+#        build/FOREX_PERSO_2300.bin (this is the actual image we installed);
+#    5b. zones just outside the library remain identical to the etalon;
+#    5c. the etalon itself is still byte-identical to its pre-run hash.
 ETALON_DIR=$(dirname "$ETALON")
-for z in $((START_DEC-1)) $START_DEC $((START_DEC+NZONES-1)) $((START_DEC+NZONES)); do
+
+WRITTEN="$WORKDIR_WORK/written_2300.bin"
+BESM6_PATH="$WORKDIR_WORK" "$BESMTOOL" dump 2348 \
+    --start="$START_DEC" --length="$NZONES" --to-file="$WRITTEN" >/dev/null 2>&1 \
+    || fail "cannot dump written zones from working copy"
+cmp -s "$WRITTEN" "$IMAGE" \
+    || fail "zone 0o2300 of working copy does not match $IMAGE"
+info "zones 0o2300..0o$(printf '%o' $((START_DEC+NZONES-1))): byte-identical to image"
+
+for z in $((START_DEC-1)) $((START_DEC+NZONES)); do
     BESM6_PATH="$ETALON_DIR" "$BESMTOOL" dump 2348 --start=$z --length=1 \
         --to-file="$WORKDIR_WORK/e_$z.bin" >/dev/null 2>&1 \
         || fail "cannot dump etalon zone $z"
@@ -203,16 +242,14 @@ for z in $((START_DEC-1)) $START_DEC $((START_DEC+NZONES-1)) $((START_DEC+NZONES
         --to-file="$WORKDIR_WORK/w_$z.bin" >/dev/null 2>&1 \
         || fail "cannot dump work zone $z"
     oct=$(printf '%o' "$z")
-    if [ "$z" -ge "$START_DEC" ] && [ "$z" -lt "$((START_DEC+NZONES))" ]; then
-        cmp -s "$WORKDIR_WORK/e_$z.bin" "$WORKDIR_WORK/w_$z.bin" \
-            && fail "written zone 0o$oct did not change"
-        info "zone 0o$oct: changed (expected)"
-    else
-        cmp -s "$WORKDIR_WORK/e_$z.bin" "$WORKDIR_WORK/w_$z.bin" \
-            || fail "zone 0o$oct outside library changed"
-        info "zone 0o$oct: unchanged (expected)"
-    fi
+    cmp -s "$WORKDIR_WORK/e_$z.bin" "$WORKDIR_WORK/w_$z.bin" \
+        || fail "zone 0o$oct outside library changed"
+    info "zone 0o$oct: unchanged (expected)"
 done
+
+SHA_ETALON_FINAL=$(sha256sum "$ETALON" | awk '{print $1}')
+[ "$SHA_ETALON_BEFORE" = "$SHA_ETALON_FINAL" ] || fail "etalon changed at final check"
+info "etalon final sha256: $SHA_ETALON_FINAL (unchanged)"
 
 info "OK: FOREX PERSO library installed at zone 0o2300 and verified"
 [ "$KEEP" -eq 1 ] && info "working copy kept at: $WORK"

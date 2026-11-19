@@ -9,11 +9,22 @@ eeв1а3
 *forex
 c---- ПРОВЕРКА ВНЕШНИХ ПРОЦЕДУР ИЗ F77LIBR (ЗОНА 0o2310).
       program t77run
+      integer m, m2, s, s2, q, q2, c, c2, w1, w2
+      data w1 /4HABCD/
+      data w2 /4HABCF/
       x = myabs(-3.5)
       y = mymax(2.0, 7.0)
-      print 1000, x, y
+      m = imax0(-4, 9)
+      m2 = imax0(6, 2)
+      s = isgn0(-7)
+      s2 = isgn0(0)
+      q = idiv(17, 5)
+      q2 = idiv(5, 0)
+      c = strcmp(w1, w2)
+      c2 = strcmp(w2, w1)
+      print 1000, x, y, m, m2, s, s2, q, q2, c, c2
       call fmtlnk(9.0)
- 1000 format(1x,2f10.4)
+ 1000 format(1x,2f10.4,8i5)
       stop
       end
 *execute

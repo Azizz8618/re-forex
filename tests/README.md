@@ -17,6 +17,7 @@ tests/check-word-coverage.sh
 tests/check-labels.sh
 tests/check-constants.sh
 tests/check-runtime-disasm.sh
+tests/run-f77-suite.sh
 python3 tests/check-source-words.py
 ```
 
@@ -46,6 +47,7 @@ printf '%-20s rc=%s\n' check-source-words "$?"
 | `check-labels.sh` | в `src/*.mad` нет автосгенерированных меток `W1777:`/`WT0533:`/`D00001:`; для каждого модуля есть таблица соответствий в `include/*.labels.md` | `OK …: авто-меток 0, в … N строк соответствий` |
 | `check-constants.sh` | числовые литералы вынесены в `,EQU,`: для каждого файла печатает число EQU, голых литералов и уникальных | `OK …: EQU > 0, уник ≤ 20` |
 | `check-runtime-disasm.sh` | новые рантайм-дизассемблы: наличие/непустота `src/FOREX_{RUNTIME,DECODER}_DISASM.mad`, `disasm/RUNTIME_*.{madlen,bemsh.lst}`; в `.mad` — >20 `,EQU,`, нет авто-меток `Wnnn:`/`Dnnnnn:`/`*000NN`, >100 строк комментариев; `build/RUNTIME_*.words` кратны 6 байтам; вызывает `check-source-words.py` и `check-constants.sh` с пробросом rc. Отсутствующие файлы → «ОЖИДАЕТСЯ», rc=0 | `ОЖИДАЕТСЯ …` до появления файлов, затем `OK: все проверки новых рантайм-модулей пройдены` |
+| `run-f77-suite.sh` | Прогон 8 деков `tests/f77/suite/*.b6` на системном ФОРЭКСЕ с `*perso:602300`, нормализация дат, сравнение блока результата с `*.gold`; кросс-сверка 3 случаев с `*FTN` (Fortran-ГДР) по числовым значениям. При отсутствии dispak/образов — «ОЖИДАЕТСЯ», rc=0 | `OK: F77 suite пройден полностью` (8/8 gold, 3/3 cross); логи `logs/f77_suite.txt`, `logs/f77_cross_ftn.txt` |
 
 ## Переменные окружения
 

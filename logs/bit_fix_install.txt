@@ -1,0 +1,110 @@
+ИСПРАВЛЕНИЕ ФОРМУЛИРОВКИ РАЗРЯДА, ЗАМЕНА МНЕМОНИК И ИНСТАЛЛ-ТЕСТ
+Дата: 2026-11-19
+Репозиторий: /tmp/.private/azizz/opencode/re-forex (ветка main)
+
+== 1. ДОКАЗАТЕЛЬСТВО: ЗАМЕНА МНЕМОНИК НЕ МЕНЯЕТ МАШИННОЕ СЛОВО ==
+Источник: /home/azizz/Yandex.Disk/besm6-new/besm6-legacy/disbesm6/disbesm6.c
+Маска opcode: 0x0bf000; opcode = (код & 0x0bf000) >> 12 (4 бита 16..19 = 20-й разряд=0).
+
+| БЕМШ | МАДЛЕН | opcode (восьм.) | код disbesm6 | (код & 0x0bf000)>>12 | восьм. | бит19 (0-based) |
+|---|---|---|---|---|---|---|
+| сбр | APX | 020 | 0x010000 | 0x10 | 0o20 | 0 |
+| рзб | AUX | 021 | 0x011000 | 0x11 | 0o21 | 0 |
+| увв | EXT | 033 | 0x01b000 | 0x1b | 0o33 | 0 |
+| сда | ASN | 036 | 0x01e000 | 0x1e | 0o36 | 0 |
+| Э46 (закомм.) | *46 | 046 | 0x026000 | 0x26 | 0o46 | 0 |
+| Э47 (закомм.) | *47 | 047 | 0x027000 | 0x27 | 0o47 | 0 |
+
+Все opcode APX/AUX/EXT/ASN совпадают с *20/*21/*33/*36: 020/021/033/036.
+20-й разряд (1-based) = бит 19 (0-based) = 0 ⇒ 1-я структура ТО IX (Format 1, SHORT).
+ besm6tape.py:84 `(h >> 19) & 1` проверяет тот же разряд — корректен; прежняя
+ формулировка «off-by-one баг, бит 20» — ошибка 1-based/0-based нумерации.
+Проверка `python3 tests/check-source-words.py`: 1024/1024 + 1024/1024 слов совпадают.
+
+== 2. СЧЁТЧИКИ ЗАМЕН МНЕМОНИК (src/*.mad) ==
+| Было | Стало | Число замен |
+|---|---|---|
+| *20 | APX | 119 |
+| *21 | AUX | 5 |
+| *33 | EXT | 1 |
+| *36 | ASN | 172 |
+| *46/*47 | *46/*47 (без имени в МАДЛЕН) | 0 |
+| **ИТОГО** | | **297** |
+
+(В счётчик не включены уже существовавшие до правки мнёмоники в `src/lib21/*.mad`,
+`src/FOREX_DECODER_DISASM.mad`, `src/FOREX_RUNTIME*.mad` — они не заменялись.)
+
+== 3. ПРИМЕР ЗАМЕНЫ С АРГУМЕНТОМ ==
+Было:  12,ASN,GATAD  . опк 36 (SHORT, бит20=0) = сда/ASN, сдвиг на N-64 [disbesm6.c:75]
+Стало: ASN,GATAD     . опк 36 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) =
+       ASN (сда): сдвиг по адресу; аргумент — N в форме 64+n; сдвиг n = N−64
+       [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26] (immediate, НЕ адрес),
+       группа Л [CmdSheet.md:52; disbesm6.c:75]; GATAD = N в форме 64+n;
+       сдвиг n = N−64 (не адрес)
+То есть: было *36 GATAD → стало ASN GATAD, аргумент GATAD = N в форме 64+n;
+сдвиг n = N−64 (не адрес). Модификатор и операнд сохранены.
+APX/AUX: аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490].
+EXT: аргумент — код устройства (привилегированная операция).
+
+== 4. src/lib21/*.mad: ПРОВЕРКА И ПРАВКИ ==
+grep по `*20|*21|*33|*36|*46|*47` во ВСЕХ src/lib21/*.mad:
+ найдено только `src/lib21/OVERLOAD.mad:176` — `(POLN: SAV*47)` в имени POLN,
+ НЕ opcode (замена мнемоники не требуется). Реальных *NN-кодов в lib21 НЕТ:
+ все файлы уже используют APX/AUX/EXT/ASN. Замен мнёмоник = 0.
+Добавлены интерпретации аргументов в комментарии (где отсутствовали):
+| Файл lib21 | замен мнёмоник | доп. комментариев аргумента |
+|---|---|---|
+| src/lib21/BEMSH_.mad | 0 | 1 |
+| src/lib21/CRELIB.mad | 0 | 2 |
+| src/lib21/DECODER.mad | 0 | 2 |
+| src/lib21/EXECUTE.mad | 0 | 30 |
+| src/lib21/F#PT6.mad | 0 | 2 |
+| src/lib21/FOR.mad | 0 | 1 |
+| src/lib21/FOREX_.mad | 0 | 2 |
+| src/lib21/FORMAT.mad | 0 | 2 |
+| src/lib21/FORTLIBR.mad | 0 | 1 |
+| src/lib21/FTNPRT.mad | 0 | 6 |
+| src/lib21/FTNPRT_.mad | 0 | 9 |
+| src/lib21/FT_REGIM.mad | 0 | 8 |
+| src/lib21/GIV#PG.mad | 0 | 2 |
+| src/lib21/LINK#IPM.mad | 0 | 7 |
+| src/lib21/LOADLIBR.mad | 0 | 36 |
+| src/lib21/MAKELIBT.mad | 0 | 2 |
+| src/lib21/PRINT80.mad | 0 | 1 |
+| src/lib21/PT6.mad | 0 | 9 |
+| src/lib21/READ1.mad | 0 | 1 |
+| src/lib21/READ2.mad | 0 | 1 |
+| src/lib21/TCATALOG.mad | 0 | 12 |
+| src/lib21/TEMFILE.mad | 0 | 3 |
+| src/lib21/WRITE1.mad | 0 | 1 |
+| src/lib21/XREF.mad | 0 | 4 |
+| src/lib21/ZONE.mad | 0 | 4 |
+| **ИТОГО** | **0** | **149** |
+
+include/lib21/*.xref.md: упоминаний APX/AUX/EXT/ASN и SHORT, бит20=0 НЕТ — правки не нужны.
+
+== 5. ПРИЧИНА ПАДЕНИЯ install-forex-perso.sh И ИСПРАВЛЕНИЕ ==
+Симптом: FAIL: written zone 0o2300 did not change.
+Причина: эталон /usr/local/share/besm6/2348 УЖЕ содержит образ
+build/FOREX_PERSO_2300.bin в зоне 0o2300 (дамп зон 1216..1220 эталона
+побайтово равен образу, sha256 aab191de...). Сравнение «эталон vs рабочая
+копия» после записи было тавтологией: обе зоны уже содержали образ.
+Исправление (только сценарий): в изолированной рабочей копии 5 целевых зон
+сначала обнуляются (`besmtool zero 2348 --start=1216 --length=5`), проверяется
+что дамп — нули, затем пишется образ; проверка: зоны 0o2300..0o2304 рабочей
+копии побайтово равны build/FOREX_PERSO_2300.bin, зоны 0o2277/0o2305
+не изменены относительно эталона, sha256 эталона неизменен до и после.
+Проверка не ослаблена: нулевые зоны перед записью доказаны, образ сверен побайтово.
+
+== 6. РЕЗУЛЬТАТЫ ПРОВЕРОК (rc=0) ==
+| Сценарий | rc |
+|---|---|
+| tests/install-forex-perso.sh | 0 |
+| tests/check-extract-codes.sh | 0 |
+| tests/check-source-words.py | 0 |
+| tests/run-glissade-forex.sh | 0 |
+| tests/check-label-semantics.sh | 0 |
+| tests/check-label-length.sh | 0 |
+| tests/check-constants.sh | 0 |
+
+Итог: все проверки rc=0.

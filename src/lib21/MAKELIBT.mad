@@ -806,9 +806,9 @@ WSR082: BSS . зарезервированная область  ; (POLN: WSR*) 
 XTS,ARE114 . считывание с модификатором  ; S2:5926
 ARX,ETX020  ; S2:5927
 STX,ARE114  ; S2:5928
-3,ASN,EDC032-EDC061  ; S2:5929
+3,ASN,EDC032-EDC061  ; S2:5929; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 XTS,ETX048 . считывание с модификатором  ; S2:5930
-3,ASN,EDC032-EDC061  ; S2:5931
+3,ASN,EDC032-EDC061  ; S2:5931; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 AEX,ETX032  ; S2:5932
 4,UTC,CCЫЛKИ . сравнение/переход  ; S2:5933
 AAX,EDC031  ; S2:5934

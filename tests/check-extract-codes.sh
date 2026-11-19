@@ -2,28 +2,32 @@
 # Проверка комментариев в аннотированных МАДЛЕН-текстах (src/*.mad, src/lib21/*.mad).
 #
 # КРИТИЧЕСКОЕ ПРАВИЛО: в ДИСПАКе экстракоды — только коды 050..077.
-# Коды 020..047 (*20, *21, *33, *36, *46, *47 и др.) — обычные КОМАНДЫ БЭСМ-5/6
-# по таблицам besm6tape.py / disbesm6.c; они НЕ требуют расшифровки из
-# rukava.be или книги Тюрина.
+# Коды 020..047 (*20, *21, *33, *36, *46, *47 и др.) — обычные КОМАНДЫ БЭСМ-6;
+# они НЕ требуют расшифровки из rukava.be или книги Тюрина.
 #
-# ВАЖНО: конкретное имя мнемоники НЕ требуется.  Мнемоники «э20», «э21»,
-# «счп», «соп», «э47» — внутренние имена дизассемблера (в disbesm6.c они
-# ЗАКОММЕНТИРОВАНЫ), а не подтверждённые ДИСПАК названия; допустима и
-# обязательна нейтральная формулировка «мнемоника дизассемблера … не
-# подтверждена ДИСПАК».  Для 033/046/047 дополнительно указывается, что
-# точное имя команды из ДИСПАК не установлено.  Имя «втбрз» (036)
-# подтверждено besm6tape.py:49 и --bemsh.
+# АВТОРИТЕТНОЕ УТОЧНЕНИЕ (2026-11-19): формат определяется 20-м разрядом
+# полуслова (в 0-based это бит 19).  Наши слова имеют 20-й разряд=0 →
+# «1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)».
+# besm6tape.py:84 проверяет тот же разряд ((h >> 19) & 1), корректно.
+# Прежняя формулировка «off-by-one, бит 20» была ошибкой нумерации.
+#
+# МНЕМОНИКИ В ИСХОДНИКАХ: *20→APX (сбр), *21→AUX (рзб), *33→EXT (увв),
+# *36→ASN (сда); *46/*47 остаются (в МАДЛЕН имени нет, неиспользованные коды).
+# opcode APX/AUX/EXT/ASN = 0x010000/0x011000/0x01b000/0x01e000 — те же биты,
+# что у *20/*21/*33/*36 (disbesm6.c), машинное слово НЕ меняется.
+# Имена «э20/э21/счп/соп/э47/втбрз» — внутренние заглушки дизассемблеров;
+# «втбрз» — имя подпрограммы gens1.be, НЕ мнемоника opcode.
+# Формулировки LONG, «Additional system call», «flush BRZ», «в LONG-формате
+# stop/стоп» в активных комментариях НЕДОПУСТИМЫ.
 #
 # Ожидаемый вид комментария:
 #   ". Э50 0131 = ... [rukava.be:2999]"           — экстракод по rukava.be
 #   ". Э57 1263 = ..., стр.264 [tyurin1985]"      — экстракод по Тюрину
 #   ". Э65 502 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985
 #      (...; информационное слово — адрес/данные)" — экстракод без расшифровки
-#   ". опк 20 (мнемоника дизассемблера *20/э20, не подтверждена ДИСПАК) 7017
-#      = КОМАНДА БЭСМ-5/6 группы LONG, НЕ экстракод
-#      [besm6tape.py:44; disbesm6.c:109]"          — команда, НЕ экстракод
-#   ". опк 36 (втбрз) 7417 = КОМАНДА БЭСМ-6 «втбрз», не экстракод
-#      [besm6tape.py:45,49; --bemsh]"              — подтверждённое имя
+#   ". опк 36 (1-я структура ТО IX, 20-й разряд=0 (в 0-based это бит 19)) =
+#      ASN (сда): сдвиг по адресу; аргумент — величина сдвига N−64 ...;
+#      GATAD = константа сдвига N−64 (не адрес)"    — команда
 #
 # Старая формулировка "НЕ НАЙДЕНО в rukava.be" считается FAIL.
 # Отчёт: logs/extract_codes_check.txt
@@ -65,10 +69,12 @@ def line_of(path, number):
 out = []
 w = out.append
 w('ПРОВЕРКА КОММЕНТАРИЕВ: ЭКСТРАКОДЫ (050..077) И КОМАНДЫ (020..047)')
-w('КРИТИЧЕСКОЕ ПРАВИЛО: коды 020..047 (*20,*21,*33,*36,*46,*47 и др.) — КОМАНДЫ БЭСМ-5/6, НЕ экстракоды')
+w('КРИТИЧЕСКОЕ ПРАВИЛО: коды 020..047 — КОМАНДЫ БЭСМ-6, НЕ экстракоды')
+w('ФОРМАТ: ec.FORMAT_LABEL = ' + ec.FORMAT_LABEL + '; besm6tape.py:84 проверяет тот же разряд')
 w('Источники расшифровок: rukava.be разд.1.4; Тюрин-1985; приоритет rukava.be > tyurin1985')
-w('Команды: ". опк NN (мнемоника дизассемблера ... не подтверждена ДИСПАК) <слово> = КОМАНДА ..., НЕ экстракод [таблица]"')
-w('Конкретное имя мнемоники НЕ требуется; для 033/046/047 требуется пометка "точное имя команды из ДИСПАК не установлено"')
+w('Команды: ". опк NN (' + ec.FORMAT_LABEL + ') = <мнёмоника> (...); аргумент ... [CmdSheet/disbesm6]"')
+w('МНЕМОНИКИ: 020=APX (маска X); 021=AUX (маска X); 033=EXT (код операции ВВ); 036=ASN (сдвиг N−64); 046/047=*46/*47 (аргумент не интерпретируется)')
+w('Запрещены: *20/*21/*33/*36 в коде, LONG, "Additional system call", "flush BRZ", "в LONG-формате stop/стоп", "втбрз"')
 w('Экстракоды без расшифровки: "НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (...)"')
 w('')
 
@@ -77,13 +83,34 @@ STALE_CMD_RE = re.compile(
     r'\. ?Э(?:20|21|33|36|46|47)(?![0-7])|\.Э(?:20|21|33|36|46|47)'
     r'|экстракод \*(?:20|21|33|36|46|47)'
 )
+# Устаревшие интерпретации кодов (прежняя формулировка «off-by-one, бит 20»).
+STALE_SHORT_RE = re.compile(
+    r'опк (?:20|21|33|36|46|47) \((?:втбрз|мнемоника)'
+    r'|группы LONG|LONG-формате stop|«втбрз»'
+    r'|Additional system call|flush BRZ'
+    r'|SHORT, бит20=0|\(SHORT, бит ?20'
+)
+# В коде более НЕ должно быть *20/*21/*33/*36 — только APX/AUX/EXT/ASN.
+STALE_MNEM_RE = re.compile(r'\*(20|21|33|36)(?=,)')
+EXPECTED_MNEMONIC = dict(ec.OPCODE_MNEMONICS)
+EXPECTED_MNEMONIC['46'] = '*46'
+EXPECTED_MNEMONIC['47'] = '*47'
 stale = []
+stale_short = []
+stale_mnem = []
 sources = (sorted((root / 'src').glob('*.mad'))
            + sorted((root / 'src' / 'lib21').glob('*.mad')))
 for path in sources:
     for no, line in enumerate(path.read_text(encoding='utf-8', errors='replace').splitlines(), 1):
         if STALE_CMD_RE.search(line):
             stale.append((str(path.relative_to(root)), no, line.strip()[:110]))
+        if STALE_SHORT_RE.search(line):
+            stale_short.append((str(path.relative_to(root)), no, line.strip()[:110]))
+        # только кодовая часть строки (до комментария)
+        cut = re.search(r'\s+[.;]', line)
+        code_part = line[:cut.start()] if cut else line
+        if STALE_MNEM_RE.search(code_part):
+            stale_mnem.append((str(path.relative_to(root)), no, line.strip()[:110]))
 if stale:
     w('FAIL: команды 020..047 всё ещё помечены как экстракоды:')
     for f, n, t in stale:
@@ -91,6 +118,22 @@ if stale:
     w('')
 else:
     w('OK: в исходниках нет команд 020..047, помеченных как экстракоды')
+    w('')
+if stale_short:
+    w('FAIL: в исходниках остались LONG/заглушечные формулировки (бит 19, besm6tape.py:84):')
+    for f, n, t in stale_short:
+        w(f'  {f}:{n}: {t}')
+    w('')
+else:
+    w('OK: комментарии 020/021/033/036/046/047 используют корректную формулировку формата')
+    w('')
+if stale_mnem:
+    w('FAIL: в коде остались старые мнёмоники *20/*21/*33/*36 (нужны APX/AUX/EXT/ASN):')
+    for f, n, t in stale_mnem:
+        w(f'  {f}:{n}: {t}')
+    w('')
+else:
+    w('OK: в коде нет *20/*21/*33/*36 — используются APX/AUX/EXT/ASN')
     w('')
 
 seen = set()
@@ -119,28 +162,31 @@ for r in rows:
         n_commands += 1
         norm = format(int(r['code'].lstrip('Э*'), 8), '02o')
         ref = r['command_ref']
-        # Имя мнемоники НЕ требуется: проверяем только opcode, нейтральную
-        # оговорку, утверждение «НЕ экстракод» и ссылку на таблицу.
-        marker = f'. опк {norm} ('
-        ok = marker in line
-        if norm in ('20', '21'):
-            neutral = ('мнемоника дизассемблера' in line
-                       and 'не подтверждена ДИСПАК' in line)
-        elif norm in ('33', '46', '47'):
-            neutral = ('точное имя команды из ДИСПАК не установлено' in line
-                       and 'НЕ экстракод' in line)
-        else:
-            neutral = True  # 036: «втбрз» подтверждено besm6tape.py:49 и --bemsh
+        # Канонический комментарий целиком (формат, мнёмоника, аргумент, источник).
+        canonical = ec.make_command_comment(r['code'])
+        marker = f'. опк {norm} ({ec.FORMAT_LABEL}) = '
+        ok = marker in line and canonical in line
         if ok:
-            checks = (('НЕ экстракод' in line or 'не экстракод' in line)
-                      and f'[{ref}]' in line and neutral)
-            if not checks:
+            meaning = ec.COMMAND_STATEMENTS.get(norm, '')
+            if meaning not in line:
                 ok = False
                 cmd_bad.append((frel, r['line'], r['code'], r['info'],
-                                'нет нейтральной пометки «КОМАНДА …, НЕ экстракод [таблица]»'))
+                                f'нет значения «{meaning}»'))
+            expect = EXPECTED_MNEMONIC.get(norm)
+            found = r.get('opcode_mnemonic')
+            if found != expect:
+                ok = False
+                cmd_bad.append((frel, r['line'], r['code'], r['info'],
+                                f'мнёмоника {found!r}, ожидалась {expect!r}'))
+            op = r.get('token')
+            if op and ec.ARGUMENT_NOTES.get(norm) and \
+                    f'; {op} = {ec.ARGUMENT_NOTES[norm]}' not in line:
+                ok = False
+                cmd_bad.append((frel, r['line'], r['code'], r['info'],
+                                f'нет интерпретации аргумента {op}'))
         if not ok:
             missing.append((frel, r['line'], r['code'], r['info']))
-        label = f'КОМАНДА опк {norm} [{ref}]'
+        label = f'{expect} опк {norm} [{ref}]'
         status = 'OK' if ok else 'FAIL'
         w(f"{status:4} {frel}:{r['line']}: опк {norm} {r['info']} -> {label}")
         continue
@@ -182,7 +228,7 @@ w(f'Уникальных пар экстракодов: {len(pairs_seen)}')
 w(f'Расшифровано по rukava.be: {by_source["rukava.be"]}')
 w(f'Расшифровано по Тюрину-1985: {by_source["tyurin1985"]}')
 w(f'Экстракодов без расшифровки (помечено явно): {by_source[None]}')
-w(f'Команд, помеченных как КОМАНДА БЭСМ-6: {n_commands - len(cmd_bad)}')
+w(f'Команд с корректной мнёмоникой и комментарием: {n_commands - len(cmd_bad)}')
 for code, count in sorted(by_code.items()):
     w(f'  {code}: {count}')
 
@@ -205,11 +251,11 @@ if cmd_bad:
     for f, n, c, i, s in cmd_bad:
         w(f'  {f}:{n}: {c} {i} — {s}')
 
-fail = bool(missing or wrong_source or cmd_bad or stale)
+fail = bool(missing or wrong_source or cmd_bad or stale or stale_short or stale_mnem)
 if not fail:
-    w('OK: команды 020..047 помечены как команды; экстракоды 050..077 имеют корректную расшифровку')
+    w('OK: мнёмоники APX/AUX/EXT/ASN и комментарии «' + ec.FORMAT_LABEL + '» корректны; экстракоды 050..077 расшифрованы')
 else:
-    w('FAIL: часть комментариев отсутствует или неверна')
+    w('FAIL: часть мнёмоник/комментариев отсутствует или неверна')
 report.write_text('\n'.join(out) + '\n', encoding='utf-8')
 print(f'Отчёт: {report}')
 print(out[-1])

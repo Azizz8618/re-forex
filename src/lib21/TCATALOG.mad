@@ -812,7 +812,7 @@ ATI,S . запись в индексный регистр  ; S3:2078
 ASN,EDC055+EDC081  ; S3:2079
 ATI,NS . запись в индексный регистр  ; S3:2080
 NS,XTA,TAB290 . считывание в аккумулятор  ; S3:2081
-S,ASN,EDC055-EDC073  ; S3:2082
+S,ASN,EDC055-EDC073  ; S3:2082; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 AAX,ETX081  ; S3:2083
 AOX,WC376  ; S3:2084
 14,VLM,LBL069 . цикл: переход при <0  ; S3:2085
@@ -1068,8 +1068,8 @@ ASN,EDC055+EDC089  ; S3:2351
 AAX,ETX079 . 0-KOPOTKAЯ CTP.  ; S3:2352
 ATI,EDC050 . запись в индексный регистр  ; S3:2353
 XTA,WOR381 . считывание в аккумулятор  ; S3:2354
-14,APX,MP1319  ; S3:2355
-14,AUX,MU2318  ; S3:2356
+14,APX,MP1319  ; S3:2355; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+14,AUX,MU2318  ; S3:2356; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
 ATX,LOC365 . KOMAHДA  ; S3:2357
 XTA,FLM384 . ИЩEM  ; S3:2358
 UZA,CHM122 . ЭKCTPAKOДOB  ; S3:2359
@@ -1102,7 +1102,7 @@ XTA,LOC365 . считывание в аккумулятор  ; S3:2385
 ASN,EDC055+EDC065  ; S3:2386
 ATI,EDC044 . запись в индексный регистр  ; S3:2387
 12,XTA,MEM327 . считывание в аккумулятор  ; S3:2388
-13,ASN,EDC055  ; S3:2389
+13,ASN,EDC055  ; S3:2389; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 AAX,ETX079  ; S3:2390
 UZA,ECH117 . переход при =0  ; S3:2391
 С      AДPECYETCЯ ПAMЯTЬ.
@@ -1185,7 +1185,7 @@ ASN,EDC055+EDC065  ; S3:2468
 AAX,ETX092  ; S3:2469
 ATI,EDC044 . N CЛOBA  ; S3:2470
 XTA,ETX079 . считывание в аккумулятор  ; S3:2471
-13,ASN,EDC055  ; S3:2472
+13,ASN,EDC055  ; S3:2472; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 10,UTC, . сравнение/переход  ; S3:2473
 12,AOX,  ; S3:2474
 10,UTC, . сравнение/переход  ; S3:2475
@@ -1200,7 +1200,7 @@ ATI,EDC044 . запись в индексный регистр  ; S3:2483
 CCT121: BSS . зарезервированная область  ; (POLN: CCИЗTO1) ; S3:2484
 10,UTC, . сравнение/переход  ; S3:2485
 12,XTA, . считывание в аккумулятор  ; S3:2486
-13,ASN,EDC055-EDC077  ; S3:2487
+13,ASN,EDC055-EDC077  ; S3:2487; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 AAX,BIT089  ; S3:2488
 11,UJ, . переход/возврат  ; S3:2489
 С       CБOP ИCПOЛЬЗYEMЫX ЭKCTPAKOДOB
@@ -1436,7 +1436,7 @@ AEX,WOR381  ; S3:2713
 WRE146: 10,WTC,  ; (POLN: WRECAT) ; S3:2720
 12,VTM, . установка индексного регистра  ; S3:2721
 AOX,FLU391  ; S3:2722
-12,ASN,EDC055  ; S3:2723
+12,ASN,EDC055  ; S3:2723; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 11,XTS, . считывание с модификатором  ; S3:2724
 15,ATX, . запись с модификатором  ; S3:2725
 ARX,ETX079  ; S3:2726
@@ -1676,7 +1676,7 @@ ATI,EDC050 . запись в индексный регистр  ; S3:2956
 UJ,*-1 . переход/возврат  ; S3:2961
 TKW168: 9,UTC, . сравнение/переход  ; (POLN: TKW) ; S3:2962
 10,XTA, . считывание в аккумулятор  ; S3:2963
-12,ASN,EDC055  ; S3:2964
+12,ASN,EDC055  ; S3:2964; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 15,ATX, . запись с модификатором  ; S3:2965
 AAX,BIT089  ; S3:2966
 ASN,EDC055-EDC066  ; S3:2967
@@ -1903,13 +1903,13 @@ ATI,EDC050 . запись в индексный регистр  ; S3:3190
 UTC,SRCAT . сравнение/переход  ; S3:3191
 14,XTA, . считывание в аккумулятор  ; S3:3192
 UZA,CHN201 . переход при =0  ; S3:3193
-C,ASN,EDC055+EDC044  ; S3:3194
+C,ASN,EDC055+EDC044  ; S3:3194; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 AAX,M4S314  ; S3:3195
 UZA,CHN201 . HET CCЫЛOK  ; S3:3196
 ATI,GR . KOЛ-BO  ; S3:3197
 UTC,SRCAT . сравнение/переход  ; S3:3198
 14,XTA, . считывание в аккумулятор  ; S3:3199
-C,ASN,EDC055  ; S3:3200
+C,ASN,EDC055  ; S3:3200; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 AAX,M4S314  ; S3:3201
 ATI,S . AДPEC  ; S3:3202
 LTR199: ITA,S . взятие из стека в индексный регистр  ; (POLN: LTREF2) ; S3:3203
@@ -2285,8 +2285,8 @@ ASN,EDC055+EDC079  ; S3:3575
 AAX,ETX079  ; S3:3576
 ATI,EDC050 . запись в индексный регистр  ; S3:3577
 A,XTA, . считывание в аккумулятор  ; S3:3578
-14,APX,MU2318  ; S3:3579
-14,AUX,MU1316  ; S3:3580
+14,APX,MU2318  ; S3:3579; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
+14,AUX,MU1316  ; S3:3580; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
 14,AOX,MO317  ; S3:3581
 ATX,BUF158+EDC047 . запись с модификатором  ; S3:3582
 A,UTC, . сравнение/переход  ; S3:3583

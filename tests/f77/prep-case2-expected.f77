@@ -1,0 +1,29 @@
+      PROGRAM PREPCASE2
+      INTEGER N, M
+C@ CHARACTER*4 S -> INTEGER IS
+      INTEGER IS
+C@ S='ABCD' -> DATA IS/4HABCD/
+      DATA IS/4HABCD/
+      N=1
+C@ DO WHILE (N .LT. 3) -> 7000 CONTINUE / IF (.NOT.(N .LT. 3)) GO TO 7001
+ 7000 CONTINUE
+      IF (.NOT.(N .LT. 3)) GO TO 7001
+C@ READ(*,*,END=99) M -> READ 9500,M  (END= label removed)
+      READ 9500,M
+C@ PRINT *, N, M -> PRINT 9000,N,M
+      PRINT 9000,N,M
+         N=N+1
+C@ END DO -> GO TO 7000 / 7001 CONTINUE
+      GO TO 7000
+ 7001 CONTINUE
+C@ PRINT *, S -> PRINT 9001,IS
+      PRINT 9001,IS
+   99 CONTINUE
+      STOP
+C@ (end of program) -> 9500 FORMAT(I10)
+ 9500 FORMAT(I10)
+C@ (end of program) -> 9000 FORMAT(1X,I10,I10)
+ 9000 FORMAT(1X,I10,I10)
+C@ (end of program) -> 9001 FORMAT(1X,A4)
+ 9001 FORMAT(1X,A4)
+      END

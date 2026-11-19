@@ -1,0 +1,3 @@
+PERSO 0o2310 catalog: STRCMP IDIV ISGN0 IMAX0 FMTLNK MYMAX MYABS FOREX* LO*SYN
+OK: rc=0, вывод совпадает с tests/f77/output.gold.txt
+log: /tmp/.private/azizz/opencode/re-forex/logs/f77_runtime_run.txt

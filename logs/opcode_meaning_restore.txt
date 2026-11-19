@@ -1,0 +1,78 @@
+ВОССТАНОВЛЕНИЕ УТЕРЯННЫХ ОТЧЁТОВ ПО ЗНАЧЕНИЯМ OPCODE
+Дата: 2026-11-19
+Репозиторий: /tmp/.private/azizz/opencode/re-forex (ветка main)
+
+ПРОБЛЕМА
+Агенты писали docs/plan-f77/10-opcode-meanings-local.md и
+docs/plan-f77/11-opcode-meanings-web.md, но файлы отсутствовали в репозитории.
+
+СОЗДАННЫЕ ФАЙЛЫ
+  docs/plan-f77/10-opcode-meanings-local.md   (локальные источники + confidence)
+  docs/plan-f77/11-opcode-meanings-web.md     (веб-источники, short/long, вывод про код)
+  logs/opcode_meaning_restore.txt             (этот лог)
+
+ИСТОЧНИКИ, ИСПОЛЬЗОВАННЫЕ ПРИ ВОССТАНОВЛЕНИИ
+Локальные:
+  /home/azizz/Yandex.Disk/re-dispak/rukava.be:51-111
+      таблица «СИСТЕМА КОМАНД БЭСМ-6 В МНЕНМОНИКЕ МАДЛЕН И БЕМШ»:
+      020 APX сбр «Сборка битов»; 021 AUX рзб «Разборка битов»;
+      033 EXT увв «Управление ВВ (привил.)»; 036 ASN сда «Сдвиг по адресу»;
+      046/047 «(не используется)»; длинные: 20 э20 «Экстракоды»,
+      33 стоп «Останов процессора»; длинный 036 в таблице ОТСУТСТВУЕТ.
+  /home/azizz/Yandex.Disk/re-dispak/docs/tyurin1985/tyurin1985-full.txt
+      книга по ОС ДИСПАК (1985): УВВ = устройство сопряжения внешних устройств,
+      экстракоды 050-077; систематической расшифровки machine opcode НЕТ.
+  /home/azizz/besm6.github.io/wiki/CmdSheet.md
+      локальная копия wiki (совпадает с besm6.org/wiki/CmdSheet.html).
+  /home/azizz/Yandex.Disk/besm6-new/besm6.net/tools/besm6tape.py:21-50
+      SHORT/SHORT_BEMSH/LONG/LONG_BEMSH; LONG[0]=*20/э20, LONG[1]=*21/э21,
+      LONG[11]=stop/стоп, LONG[14]=*36/втбрз; SHORT[26]=ext, SHORT[27]=*33/счп.
+  /home/azizz/Yandex.Disk/besm6-new/besm6-legacy/disbesm6/disbesm6.c:60-124
+      сбр/рзб/сда/увв BASIC/PRIV; строки э20/э21/Э46/Э47 ЗАКОММЕНТИРОВАНЫ.
+Веб:
+  W1 https://www.besm6.org/wiki/CmdSheet.html
+  W2 https://www.mailcom.com/besm6/instset.shtml
+  W3 https://github.com/sergev/vcc/blob/main/backend/besm6/Besm6_Instruction_Set.md
+  W4 https://github.com/sergev/vcc/blob/main/backend/besm6/Bemsh.md
+  W5 https://github.com/sergev/vcc/blob/main/backend/besm6/Besm6_Unix_Assembler.md
+
+КЛЮЧЕВЫЕ НАХОДКИ (СОХРАНЕНЫ В ОТЧЁТАХ)
+  1. Один opcode = разные команды в коротком (бит 20 = 0, 000-077) и длинном
+     (бит 20 = 1, 20-37) форматах. W1/W3.
+  2. Короткий: 020=СБР/APX (упаковка по маске), 021=РЗБ/AUX (разборка),
+     033=Э033/УВВ/EXT (привилегированная), 036=СДА/ASN (сдвиг),
+     046/047 = незаконные/не используемые.
+  3. Длинный: 020/021 = э20/э21 «Additional system call» (экстракоды, W3),
+     033 = СТОП, 036 = э36 недокументированный («flush BRZ» в оригинальном
+     manual, W3; «тоже что и э34» в W1), 046/047 не существуют.
+  4. «втбрз» буквально НЕ найдено ни в rukava.be, ни у Тюрина, ни в wiki —
+     только в besm6tape.py (LONG_BEMSH[14]). besm6tape.py даёт
+     placeholder-имена (э20/э21/счп/соп/втбрз); ДИСПАК их не подтверждает.
+  5. Расхождение дизассемблера: besm6tape.py SHORT[032]=ext, SHORT[033]=*33/счп,
+     тогда как W1/W3/rukava.be: EXT/увв = 033. W2 (mailcom) — аутлайер
+     (032=EXT, 033 пустой).
+
+ПРОВЕРКА ФОРМАТА В НАШЕМ КОДЕ (besm6tape.py::decode_half)
+  LO_GEN.mad:631   0o2205325724254114 L  is_long=1 → LONG 020
+  LO_GEN.mad:661   0o2205052052122662 R  is_long=1 → LONG 021
+  FOREX_CORE.mad:333/347/377/380  0o4240741703607417 R is_long=1 → LONG 036
+  FOREX_CORE.mad:577  0o5760626462000000 L is_long=1 → LONG 036
+  FOREX_CORE.mad:578  0o5760626462000000 R is_long=1 → LONG 020
+  LO_GEN.mad:667   0o5375011424334114 R  is_long=0 → SHORT 033
+  ВЫВОД: *20/*21/*36 в нашем коде — LONG (как и требовалось подтвердить:
+  *20/*21/*36 лежат в группе LONG besm6tape.py); *33 — SHORT.
+
+ВЕРДИКТ ПО КОММЕНТАРИЯМ В .mad (исправления НЕ вносились)
+  ✓ «группы LONG» для *20/*21/*36; «НЕ экстракод» для *36; «SHORT» и
+    «НЕ экстракод» для *33; «не подтверждена ДИСПАК» — оставить.
+  ✗ «НЕ экстракод» для *20/*21 — неверно: LONG 020/021 это экстракоды.
+  ✗ имя «втбрз» для *36 — заглушка; корректно «недокументированный LONG-код,
+    аналог VZM/пио (flush BRZ в оригинальном manual)».
+  ~ «точное имя *33 не установлено» (LO_GEN.mad:667) — устарело: W1/W3/rukava.be
+    дают EXT/увв; «счп» из SHORT_BEMSH[27] — заглушка.
+
+ОГРАНИЧЕНИЯ
+  По заданию НЕ трогались: src/, include/, reference/, tests/.
+  Комментарии в .mad НЕ правились — только зафиксирован вердикт в отчёте.
+
+СТАТУС: 3 файла созданы, восстановление завершено.

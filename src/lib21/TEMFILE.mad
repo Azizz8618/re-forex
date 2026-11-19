@@ -195,7 +195,7 @@ POS072: BSS . зарезервированная область  ; (POLN: TEM_PO
 RR011: BSS . зарезервированная область  ; (POLN: R/R) ; S3:4394
 WTC,CAR061  ; S3:4395
 8,XTA, . считывание в аккумулятор  ; S3:4396
-9,ASN,EDC018+EDC016  ; S3:4397
+9,ASN,EDC018+EDC016  ; S3:4397; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 AAX,ETX018  ; S3:4398
 9,UTM,EDC019 . переход при >0  ; S3:4399
 9,VIM,JUM012 . переход  ; S3:4400
@@ -215,7 +215,7 @@ UJ,DO037 . переход/возврат  ; S3:4413
 RC014: BSS . зарезервированная область  ; (POLN: R/C) ; S3:4414
 WTC,CAR061  ; S3:4415
 8,XTA, . считывание в аккумулятор  ; S3:4416
-9,ASN,EDC018-EDC019  ; S3:4417
+9,ASN,EDC018-EDC019  ; S3:4417; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 AAX,ETX018  ; S3:4418
 ATI,EDC008 . запись в индексный регистр  ; S3:4419
 XTA,ESC058 . считывание в аккумулятор  ; S3:4420
@@ -317,7 +317,7 @@ ACX,ETX050  ; S3:4515
 AAX,ETX050  ; S3:4516
 ASN,EDC018-EDC050  ; S3:4517
 AOX,WRKWRD  ; S3:4518
-11,ASN,EDC018+EDC019  ; S3:4519
+11,ASN,EDC018+EDC019  ; S3:4519; аргумент — N в форме 64+n; сдвиг n = N−64 [Besm6_Instruction_Set.md §6; monitor80-re/tewr/setref.asm:26]
 10,AOX,BIN056+EDC011  ; S3:4520
 10,ATX,BIN056+EDC011 . запись с модификатором  ; S3:4521
 11,UTM,EDC019 . переход при >0  ; S3:4522

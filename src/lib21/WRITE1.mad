@@ -108,7 +108,7 @@ U1A,CYC008  ; S3:5280
 STX  ; S3:5281
 13,UJ, . переход/возврат  ; S3:5282
 FIL012: ASN,EDC008-EDC012  ; (POLN: FILE) ; S3:5283
-12,AUX,MAS018-C  ; S3:5284
+12,AUX,MAS018-C  ; S3:5284; аргумент — адрес слова-маски [monitor80-re/permanent/paramt%.masm:365; star%.masm:258,490]
 12,XTS,BUF013-C . считывание с модификатором  ; S3:5285
 ASN,EDC008-EDC013  ; S3:5286
 12,AEX,UN4019-C  ; S3:5287
