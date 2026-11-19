@@ -146,7 +146,7 @@ if cmp -s "$WORK/gold.res" "$WORK/out.res"; then
     exit 0
 fi
 
-printf '--- различия в блоке результата: gold / fact ---\n' >> "$LOG"
+printf '%s\n' '--- различия в блоке результата: gold / fact ---' >> "$LOG"
 diff -u "$WORK/gold.res" "$WORK/out.res" >> "$LOG" 2>&1 || true
 cat "$LOG" >&2
 fail "результат отличается от output.gold.txt (см. $LOG)"

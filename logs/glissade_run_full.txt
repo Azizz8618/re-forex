@@ -1,5 +1,5 @@
 === glissade / reconstructed FOREX from PERSO 0o2300 ===
-date      : 2026-11-19T08:53:41Z
+date      : 2026-11-19T08:54:04Z
 dispak    : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
 image     : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
 etalon    : /usr/local/share/besm6/2348
@@ -24,8 +24,8 @@ raw bytes : 29423 (gold 31920)
         FD*642   Е 02072        LUN*МОN    03606
 
 --- full normalized diff (gold / fact) ---
---- /tmp/.private/azizz/glissade-forex.1k5ypH/gold.norm	2026-11-19 11:53:41.093021031 +0300
-+++ /tmp/.private/azizz/glissade-forex.1k5ypH/output.norm	2026-11-19 11:53:41.091021008 +0300
+--- /tmp/.private/azizz/glissade-forex.SWoNBr/gold.norm	2026-11-19 11:54:04.345291949 +0300
++++ /tmp/.private/azizz/glissade-forex.SWoNBr/output.norm	2026-11-19 11:54:04.343291926 +0300
 @@ -8,13 +8,13 @@
  
  
@@ -144,3 +144,35 @@ raw bytes : 29423 (gold 31920)
 -        GLКЕRN     01000        FТ2*     Е 03473        НID/*      05075
 -        РRОGRАМ  Е 01000        КОNV1*   Е 03506        АНID/*   Е 05100
 -        *SВSЕЕD* С 01164        SWRIТТ     03602        IОSКIР*  С 05105
+--- различия в блоке результата: gold / fact ---
+--- /tmp/.private/azizz/glissade-forex.SWoNBr/gold.res	2026-11-19 11:54:04.349291996 +0300
++++ /tmp/.private/azizz/glissade-forex.SWoNBr/out.res	2026-11-19 11:54:04.353292043 +0300
+@@ -1,14 +1,14 @@
+-  1  0.00      1.9000      0.6250      7.5290
+-  2  0.30      2.7502      3.5760     35.0000
+-  3  0.50      1.0621      1.7243     53.2897
+-  4  1.00      1.0199      1.4679     18.5361
+-  5  1.50      2.0285      2.3918     35.0978
+-      0.0  288.1500    1.225000
+-   5000.0  255.6500    0.736114
+-  10000.0  223.1500    0.412704
+-  15000.0  216.6500    0.193663
+-  1    0.55071441
+-  2   -0.38747490
+-  3   -0.50065876
+-  4   -1.30818495
+-  5   -1.50960208
++        ВСDWRIТ*   01336        IОЕND*   Е 02077        RWТВ/*     03730
++        FТ*621   Е 01336        FТ*003   Е 02077        РRINТ8     04013
++        ВСDЕNС*  Е 01342        IОSVFR   Е 02406        РRINТ80  Е 04013
++        FТ*611   Е 01342        SUВРЕRR* Е 02420        IОХХТТWТ   04051
++        FТ*571   Е 01344        SВАТМ      03022        ТТРRINТD Е 04055
++        FТ*561   Е 01347        SВRND      03075        ТТРRINТ  Е 04055
++        NЕХТLЕТ* Е 01354        SТОР*      03143        ТТРRIКS  Е 04067
++        RК*      Е 01371        ВСDВЕG*    03164        /IР*     Е 04135
++        WSУ*     Е 01641        FТ2*     Е 03473          СВОБОД   04151
++        IОСОNТ*    02024        КОNV1*   Е 03506
++        IОАС*    Е 02056        SWRIТТ     03602
++        FТ*002   Е 02071        LUNМUN   С 03605
++        FD*642   Е 02072        LUN*МОN    03606
++
