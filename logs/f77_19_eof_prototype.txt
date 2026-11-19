@@ -1,0 +1,81 @@
+P7c / ВОЛНА A — ПРОТОТИП EOF/IOSTAT (decks + вывод + rc)
+Дата: 19.11.2026. Прототип: /tmp/.private/azizz/opencode/p7c-proto/eof/**
+Диск 2348 — копия эталона + PERSO 0o2300 (FOREX_PERSO_2300.bin @1216),
+md5 копии bb2cad7f0454a15df0bd1ba20c419a3d. Эталон НЕ тронут.
+dispak: /home/azizz/Yandex.Disk/dispak/build/dispak/dispak (исходник Read-only).
+
+=== ДЕК 1: decks/eof_sentinel.b6 — N=3 карт + EOF-ловушка -> метка 99 -> ' ЕОF' ===
+      PROGRAM EFS
+      REAL X
+   10 READ 9500,X
+ 9500 FORMAT(F12.4)
+      IF (X .EQ. -999999.) GO TO 99
+      PRINT 20,X
+   20 FORMAT(1X,F8.2)
+      GO TO 10
+   99 CONTINUE
+      PRINT 21
+   21 FORMAT(1X,'ЕОF')
+      STOP
+      END
+*execute
+    1.50
+    2.50
+    3.50
+ -999999.          <- сентинал-карта, добавленная HOST (не настоящий EOF!)
+
+РЕЗУЛЬТАТ (rc=0):
+*NАМЕ ЕОFSЕN
+     1.50
+     2.50
+     3.50
+ ЕОF
+ КОНЕЦ ЗАДАЧИ
+ 00411: 00 074 0000 *74
+
+=== ДЕК 2: decks/eof_iostat_scheme.b6 — END= и IOSTAT= через 2 сентинала ===
+      PROGRAM EFI
+      REAL X
+      INTEGER KSTAT
+      KSTAT = 0
+   10 READ 9500,X
+ 9500 FORMAT(F12.4)
+      IF (X .EQ. -999999.) GO TO 900
+      IF (X .EQ. -888888.) GO TO 910
+      PRINT 20,X
+   20 FORMAT(1X,F8.2)
+      GO TO 10
+  900 KSTAT = -1
+      PRINT 21,KSTAT
+   21 FORMAT(1X,'ЕОF IOSTAT=',I3)
+      GO TO 999
+  910 KSTAT = -2
+      PRINT 22,KSTAT
+   22 FORMAT(1X,'ERR IOSTAT=',I3)
+  999 STOP
+      END
+*execute
+    1.50
+    2.50
+ -999999.          <- EOF-сентинал
+
+РЕЗУЛЬТАТ (rc=0):
+*NАМЕ ЕОFIОSТ
+     1.50
+     2.50
+ ЕОF IОSТАТ= -1
+ КОНЕЦ ЗАДАЧИ
+ 00411: 00 074 0000 *74
+
+=== ДЕК 3 (контроль): decks/read3_then_eof.b6 — НАТИВНЫЙ EOF (без сентинала) ===
+  3 карты, 4-й READ → НЕТ 'AFTER-EOF', задача завершается:
+  1 1.50 / 2 2.50 / 3 3.50 / *END FILE / КОНЕЦ ЗАДАЧИ, rc=0.
+=== ДЕК 4 (контроль): decks/read1_nodata.b6 — 0 карт ===
+  READ → НЕТ 'GOT X', сразу *END FILE / КОНЕЦ ЗАДАЧИ, rc=0.
+
+ВЫВОД: прототип с сентиналами ИСПОЛНЯЕМ (rc=0, печать ' ЕОF' / ' ЕОF IOSTAT=-1'),
+но EOF — эмуляция по значению (карта-ловушка), не аппаратный сигнал.
+Нативный EOF всегда завершает задачу и не даёт ветвления.
+
+Критерий из 15-io.md §0 соблюдён: нет FATAL-диагностики; *74 — штатный STOP
+(00411) в конце задачи, присутствует во всех чистых прогонах (в т.ч. J7/J04).

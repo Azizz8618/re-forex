@@ -1,0 +1,40 @@
+# f77_22_instrument — P7c/A3: причина урезанного дампа и instrumented сборка
+# Дата: 19.11.2026. READ-ONLY: исходный dispak, эталонные диски, src/tests/REFERENCE.
+
+== Задача 1: почему core-pc.bin был 196608 байт ==
+defs.h:51-53   CLICKSZ=1024, NCLICKS=32, CORESZ=32768
+defs.h:204     EXTERN word_t core[CORESZ * 2];   => 65536 слов = ВСЯ память
+cu.c:293       for (q = 0; q < 65536; ++q)        => 65536 * 6 = 393216 байт
+
+git blame dispak/cu.c:293:
+  4bbc0516 (2026-11-13) for (q = 0; q < 65536; ++q)  /* полное ядро, супервизор */
+  d970f255 (2026-11-12) был for (q < 32768)
+
+Вывод: дамп 196608 байт в волне 18 снят УСТАРЕВШИМ бинарником
+/home/azizz/Yandex.Disk/dispak/build/dispak/dispak (собран до 4bbc051).
+Исходник уже содержит цикл 65536; limiter — не core[], а старая сборка.
+
+== Задача 2: instrumented копия ==
+Копия исходника: /var/tmp/p7c-core/dispak-src/  (cp -a dispak/dispak)
+Сборка:         /var/tmp/p7c-core/build/dispak
+  gcc -O2 -g -DHAVE_STRING_H=1 -DHAVE_GETOPT_LONG=1 -I<src> -I<build> \
+      dispak.c cu.c optab.c arith.c input.c extra.c disk.c errtxt.c \
+      vsinput.c dpout.c arfa.c encoding.c getopt.c debug.c -lm -o dispak
+  (-O0 не собирается: mult64to128 в arith.c объявлен inline без external def)
+
+Добавлено в cu.c:
+  BESM6_P7C_TRACE=1  -> "P7C %06o%c %-8s op=%03o a=%05o r=%o sup=%o u=%o/%o"
+                        physical PC (pc|supmode), BESM6_P7C_LO/HI = окно (oct)
+  BESM6_P7C_POKE=addr:value -> poke ячейки при abpc==002004 (тестовый хук)
+Добавлено в encoding.c (gost_write):
+  P7C-OUT #N маркер: GOST-байты + Unicode-коды каждой печатной строки.
+
+Проверка полного дампа:
+  BESM6_DD_DEBUG=1 BESM6_CORE_ON_PC=65007 -> core-pc.bin
+  размер 393216 байт = 65536 слов  (было 196608)
+  OUTPUT: "НЕТ КАНАЛА  LUN 45", rc=0
+
+Артефакты:
+  /var/tmp/p7c-core/dumps/core_full.bin   393216 B (дамп на 65007)
+  /var/tmp/p7c-core/dumps/core_err.bin    393216 B (дамп на 004305 = ERRLUN)
+  /var/tmp/p7c-core/dumps/core_check.bin  393216 B (дамп на 002004)

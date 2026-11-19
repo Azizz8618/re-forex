@@ -1,0 +1,94 @@
+=== P7c: CLI patch_system_disk.py ===
+date: 2026-11-19T19:23:44Z
+usage: patch_system_disk.py [-h] {snapshot,apply,verify} ...
+
+Безопасный патч системного диска 2348 (БЭСМ-6 / ДИСПАК) и побайтовая регрессия.
+
+Поддерживаемый физический формат диска (simh/dispak "new format", dispak/disk.h):
+
+    зона = 8 служебных слов (uint64) + 1024 информационных слова (uint64)
+         = 1032 * 8 = 8256 байт
+    слово = uint64 native-endian (на x86 little-endian):
+              рр. 0..47  — 48-битное машинное слово БЭСМ-6
+              р.  48     — признак свёртки (convolution)
+              рр. 49..63 — служебные/зарезервированные
+    логическая зона L отображается в физическую L + ZONE_OFFSET (=4),
+    т.е. смещение файла = (L + 4) * 8256 байт.
+
+Патч задаётся списком записей:
+
+    {"zone": "0o7000", "word": "0o1777", "old": "0", "new": "0o1234567"}
+
+  zone  — логический номер зоны (как в besmtool / 0o2300); см. --zone-mode=physical
+  word  — номер информационного слова 0..1023
+  old   — ОБЯЗАТЕЛЬНО ожидаемое 48-битное значение слова (проверка перед записью)
+  new   — новое 48-битное значение слова
+
+Числа: int = десятичное; строка "0o.."/"0x.."/"0b.." = восьмеричное/шестнадцатерич-
+ное/двоичное; строка из цифр = десятичное. Для зон репозиторий использует
+восьмеричную нотацию (0o2300), поэтому в патчах рекомендуется писать "0o...".
+
+При записи сохраняются старшие биты физического слова (свёртка и т.д.) — меняются
+только младшие 48 бит. Служебные слова зоны (контрольная сумма) по умолчанию НЕ
+пересчитываются; для этого есть флаг --fix-checksum.
+
+Команды:
+    snapshot <disk> <out.json>                        — зафиксировать эталон (sha256)
+    apply <disk> <patch.json> <out-disk> [opts]       — применить патч на копию, атомарно
+    verify <disk> <snapshot.json> [reference-disk]    — побайтовая сверка,.show changed
+
+Ключевые правила безопасности:
+  * apply НИКОГДА не пишет в исходный <disk> — только в новый <out-disk>;
+  * запись идёт через временный файл + fsync + os.replace (атомарно);
+  * несовпадение любого `old` прерывает операцию без создания выходного файла;
+  * после apply хэш исходного диска проверяется повторно (он не должен измениться).
+
+positional arguments:
+  {snapshot,apply,verify}
+    snapshot            снять контрольные суммы всех зон (sha256)
+    apply               применить патч на копию диска (атомарно, только out-
+                        disk)
+    verify              побайтовая сверка с snapshot, показать изменённые
+                        зоны/слова
+
+options:
+  -h, --help            show this help message and exit
+--- subcommand: snapshot ---
+usage: patch_system_disk.py snapshot [-h] disk out_json
+
+positional arguments:
+  disk
+  out_json
+
+options:
+  -h, --help  show this help message and exit
+--- subcommand: apply ---
+usage: patch_system_disk.py apply [-h] [--zone-mode {logical,physical}]
+                                  [--fix-checksum]
+                                  disk patch_json out_disk
+
+positional arguments:
+  disk
+  patch_json
+  out_disk
+
+options:
+  -h, --help            show this help message and exit
+  --zone-mode {logical,physical}
+                        как понимать zone в патче: логическая (по умолчанию)
+                        или физическая
+  --fix-checksum        пересчитать cwords[3]/cwords[7] затронутых зон
+--- subcommand: verify ---
+usage: patch_system_disk.py verify [-h] [--json-out JSON_OUT] [--strict]
+                                   disk snapshot [reference]
+
+positional arguments:
+  disk
+  snapshot
+  reference            эталонный диск для показа слов (по умолчанию — путь из
+                       snapshot)
+
+options:
+  -h, --help           show this help message and exit
+  --json-out JSON_OUT  записать машиночитаемый отчёт
+  --strict             rc=2 при наличии изменений

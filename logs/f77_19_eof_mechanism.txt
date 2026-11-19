@@ -1,0 +1,64 @@
+P7c / ВОЛНА A — МЕХАНИЗМ EOF В DISPAK (ИССЛЕДОВАНИЕ)
+Дата: 19.11.2026. READ-ONLY: re-forex/src, tests, REFERENCE, эталонные диски,
+re-dispak, dispak (original). Инструментальная копия dispak — ТОЛЬКО в /tmp.
+
+=== 1. Э60 (input.c:110 e60()) — ЕДИНСТВЕННЫЙ EOF-ФЛАГ В ХОСТЕ ===
+dispak/dispak/input.c:
+  116  if (reg[016] == 0) return E_SUCCESS;              /* уже EOF */
+  119  if ((pos = ftell(ibuf)) == enda3) { reg[016]=0; return E_SUCCESS; }
+  124  if (pos == psp.arr_end) { fread W_IADDR ... }
+  132  fread 24×ibword в core[reg[016]+i]
+  145  if (pos == enda3) { fseek(ibuf,psp.arr_end,SEEK_SET); reg[016]=0; }
+  150  return E_SUCCESS;
+=> Признак конца карт = reg[016] == 0 (тот же регистр, что адрес буфера).
+   Э70/ddio (extra.c:2063-2328) EOF-флага НЕ имеет: это простой обмен зоной диска/барабана.
+
+=== 2. ИНСТРУМЕНТИРОВАННЫЙ ТРЕЙС (копия dispak в /tmp, fprintf в e60) ===
+Пролог вставлен в 2 места e60(); сборка cmake/make в /tmp — OK.
+Прогон decks/read3_then_eof.b6 с 3 картами + 4-й READ past-EOF:
+  TRACE e60: EOF-lastcard pos=5080 enda3=5080 buf=2052 -> reg16=0
+Контекст (BESM6_DD_DEBUG=1):
+  E70at 00725L r016=00001 uil=70/45 uir=102/0
+  DD pc=00726L r016=00045 u=20 z=0004 RD ...        <- monread% читает карту (Э70 LUN45)
+  TRACE e60: EOF-lastcard ... reg16=0                <- очередь исчерпана
+  (дальше запись в LUN 1/46 и STOP —任务 завершается)
+Прогон decks/read1_nodata.b6 (0 карт):
+  TRACE e60: EOF-lastcard pos=3352 enda3=3352 buf=2052 -> reg16=0
+Прогон decks/eof_sentinel.b6 (3 карты + сентинал):
+  TRACE e60: EOF-lastcard pos=5272 enda3=5272 buf=2052 -> reg16=0
+Вывод: EOF-флаг reg[016]=0 выставляется АППАРАТНО при чтении последней карты.
+
+=== 3. ГДЕ СИГНАЛ ТЕРЯЕТСЯ (монитор/рантайм) ===
+monitor80-re/permanent/monread%.asm (стандартная программа МС ДУБНА):
+  34/54  M15,*70,1            — чтение карты Э70 в MONCARD* (LUN 45)
+  55-73  разбор карты: M8,XTA MONCARD*-1 / AEX 57B / AAX 60B / U1A NO*END
+  99-104 вMOНИTOP: ITS M6 / M13,VTM,STOP* / UJ,LUN*MON
+  119    TNO*END: ISO,12НNO *END FILE
+  => при EOF/не-текстовой карте monread% НЕ возвращает статус, а переходит
+     в монитор на STOP* — задача завершается (*END FILE / КОНЕЦ ЗАДАЧИ).
+monitor80-re/permanent/iocont%.asm:
+  1-5    IOCONT* — «пользовательская процедура для продолжения ввода-вывода»
+  56     STOP*   : , SUBP,     (импорт)
+  163    IOEND*  : , ENTRY,    — вход по окончании записи/формата
+  167-180 нет ячейки статуса, нет ветвления по EOF
+re-forex/src/lib21/LFSCAN.mad:89-94: IOCONT*/IOEND* объявлены SUBP (внешние).
+=> Транслятор ФОРЭКС 2.02 НЕ генерирует END=/ERR=/IOSTAT=: нативная форма
+   READ(5,10,END=99) даёт «ОТСУТСТВ ЗАКРЫВ СКОБКА» (15-io.md §4.1).
+
+ИТОГО: FIFO карт → Э60 (reg[016]=0) → monread% → STOP* (конец задачи).
+Между reg[016]=0 и Fortran-программой НЕТ ни ячейки статуса, ни ветки.
+Сигнал «теряется» на границе monread%→рантайм: он превращается в аварийное
+( но rc=0 ) завершение задачи, а не в возврат из READ.
+
+=== 4. ЭМПИРИКА (без инструмента) ===
+decks/read3_then_eof.b6: 3 карты, 4-й READ → НЕТ печати AFTER-EOF,
+  вывод: 1.50 / 2.50 / 3.50 / *END FILE / КОНЕЦ ЗАДАЧИ / 00411:*74, rc=0.
+decks/read1_nodata.b6: 1 READ, 0 карт → НЕТ печати GOT X, сразу
+  *END FILE / КОНЕЦ ЗАДАЧИ, rc=0.
+=> «честный» нативный EOF = завершение задачи, ветвление невозможно.
+
+Источники (READ-ONLY):
+  dispak/dispak/input.c:110-151, extra.c:2063-2328, cu.c:799-834
+  monitor80-re/permanent/{monread%.asm,iocont%.asm}
+  re-forex/src/lib21/LFSCAN.mad:89-94
+  re-forex/docs/plan-f77-full/{15-io.md §4, 03-fortran-path.md:421, 11-p7-alternatives.md:84-85}

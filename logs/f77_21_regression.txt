@@ -1,0 +1,77 @@
+=== P7c regression: run-f77-full.sh от пропатченной working copy ===
+start: 2026-11-19T19:22:58Z
+patched disk sha256: cb3738e91f968b73e047bb6409e01ba38cd586a9a57819dd5c5bf6707fe7666f
+F77 full verification — 2026-11-19T19:22:59Z
+dispak=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak etalon=/var/tmp/p7c-diskpatch/2348.patched image=/var/tmp/p7c-regression/build/FOREX_PERSO_2300.bin
+F77LIBR: 13 процедур собраны в PERSO 0o2310 (для *perso:602310,cont)
+=== L0/L1: unit-пробы и gold-пары стандарт-матрицы A-K ===
+=== L2: кросс-компиляция *FTN / *FORTRAN (диск 2048) ===
+=== L3: реальные программы ===
+=== L4: negative cases ===
+=== GATE: регрессия 20/20 (16 базовых + 4 новых F77-теста) ===
+
+------------------------------------------------------------------------
+Итоговая таблица F77 full
+LEVEL    OK     PENDING    SKIP     DETAIL
+L0       51     0          0        unit A-K
+L1       51     0          0        gold pairs
+L2       8      0          0        cross FTN/FORTRAN
+L3       2      0          2        real programs
+L4       9      0          0        negative
+GATE     20     0(FAIL)    0        20/20 mandatory
+Логи: logs/f77_full_*.txt; манифест: logs/f77_full.sha256
+OK: gate 20/20; L0 51 OK / 0 PENDING, L1 51 OK / 0 PENDING
+RC=0
+finish: 2026-11-19T19:23:09Z
+=== GATE detail (из изолированного mirror) ===
+# STATUS|N|SCENARIO|EXPECTED|FACT
+OK    1 BASE           ожидалось=OK (baseline)                                           факт=OK   BASE           compiled+ran
+OK|1|BASE|OK (baseline)|OK   BASE           compiled+ran
+OK    2 DOLOOP         ожидалось=OK (baseline)                                           факт=OK   DOLOOP         compiled+ran
+OK|2|DOLOOP|OK (baseline)|OK   DOLOOP         compiled+ran
+OK    3 BLOCKIF        ожидалось=OK (baseline)                                           факт=OK   BLOCKIF        compiled+ran
+OK|3|BLOCKIF|OK (baseline)|OK   BLOCKIF        compiled+ran
+OK    4 CHARSTAR       ожидалось=FAIL ТИП ОП-ДА (baseline) -> OK допустимо после P1-P7 факт=FAIL CHARSTAR       ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK|4|CHARSTAR|FAIL ТИП ОП-ДА (baseline) -> OK допустимо после P1-P7|FAIL CHARSTAR       ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK    5 DOUBLPR        ожидалось=OK (baseline)                                           факт=OK   DOUBLPR        compiled+ran
+OK|5|DOUBLPR|OK (baseline)|OK   DOUBLPR        compiled+ran
+OK    6 COMPLEX        ожидалось=OK (baseline)                                           факт=OK   COMPLEX        compiled+ran
+OK|6|COMPLEX|OK (baseline)|OK   COMPLEX        compiled+ran
+OK    7 LISTDIR        ожидалось=FAIL ОШИБКА В ССЫЛКЕ НА ФОРМАТ (baseline) -> OK допустимо после P1-P7 факт=FAIL LISTDIR        ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+OK|7|LISTDIR|FAIL ОШИБКА В ССЫЛКЕ НА ФОРМАТ (baseline) -> OK допустимо после P1-P7|FAIL LISTDIR        ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+OK    8 DATAST         ожидалось=OK (baseline)                                           факт=OK   DATAST         compiled+ran
+OK|8|DATAST|OK (baseline)|OK   DATAST         compiled+ran
+OK    9 IMPLICIT       ожидалось=FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7 факт=FAIL IMPLICIT       НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK|9|IMPLICIT|FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7|FAIL IMPLICIT       НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK   10 PARAMETER      ожидалось=OK (baseline)                                           факт=OK   PARAMETER      compiled+ran
+OK|10|PARAMETER|OK (baseline)|OK   PARAMETER      compiled+ran
+OK   11 INTRINSIC      ожидалось=OK (baseline)                                           факт=OK   INTRINSIC      compiled+ran
+OK|11|INTRINSIC|OK (baseline)|OK   INTRINSIC      compiled+ran
+OK   12 EXTERNAL       ожидалось=OK (baseline)                                           факт=OK   EXTERNAL       compiled+ran
+OK|12|EXTERNAL|OK (baseline)|OK   EXTERNAL       compiled+ran
+OK   13 ENDREAD        ожидалось=FAIL НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ (baseline) -> OK допустимо после P1-P7 факт=FAIL ENDREAD        НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+OK|13|ENDREAD|FAIL НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ (baseline) -> OK допустимо после P1-P7|FAIL ENDREAD        НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+OK   14 SAVE           ожидалось=FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7 факт=FAIL SAVE           НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK|14|SAVE|FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7|FAIL SAVE           НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK   15 LOGICAL        ожидалось=OK (baseline)                                           факт=OK   LOGICAL        compiled+ran
+OK|15|LOGICAL|OK (baseline)|OK   LOGICAL        compiled+ran
+OK   16 GLISSADE       ожидалось=14/14 факт=14/14
+OK|16|GLISSADE|14/14|14/14
+OK   17 listdir_ok     ожидалось=gold факт=gold совпал
+OK|17|listdir_ok|gold|gold совпал
+OK   18 implicit_ok    ожидалось=gold факт=gold совпал
+OK|18|implicit_ok|gold|gold совпал
+OK   19 endread_ok     ожидалось=gold факт=gold совпал
+OK|19|endread_ok|gold|gold совпал
+OK   20 save_ok        ожидалось=gold факт=gold совпал
+OK|20|save_ok|gold|gold совпал
+Итог GATE: 20/20 OK, FAIL=0 (обязателен rc=0)
+=== summary ===
+LEVEL|OK|PENDING|SKIP|DETAIL
+L0|51|0|0|unit-пробы A-K
+L1|51|0|0|gold-пары (REGISTRY.txt: suite/new/e1)
+L2|8|0|0|кросс *FTN/*FORTRAN
+L3|2|0|2|реальные программы
+L4|9|0|0|negative cases
+GATE|20|0|0|20/20 обязателен
+RC=0

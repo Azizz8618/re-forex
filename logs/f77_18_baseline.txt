@@ -1,0 +1,18 @@
+# f77_18_baseline — P7c/A: воспроизведение «НЕТ КАНАЛА LUN 45»
+# Дата: 19.11.2026. READ-ONLY эталоны; прогон на копиях 2048/2348.
+
+Прототип: /tmp/.private/azizz/opencode/p7c-proto/
+Эмулятор: /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+Диски: p7c-proto/disks/{2048,2348} (копии из lun-proto/disks, НЕ эталоны)
+Дек: p7c-proto/decks/base_u45.b6 (= lun-proto/decks/base_u45.b6)
+
+Команда:
+  cd runs/baseline
+  BESM6_PATH=<p7c-proto>/disks:/usr/local/share/besm6 \
+    timeout 300 <dispak> job.b6 > out.txt 2> err.txt
+
+rc = 0
+out.txt: НЕТ КАНАЛА  LUN 45 ; КОНЕЦ ЗАДАЧИ
+Символьная строка из out.txt: "ERRLUN Е 04305" (адрес плавает: 04305/04317/04321).
+
+ВЫВОД: блокер Level B воспроизведён, rc=0 НЕ означает успех (как и в волне 17).

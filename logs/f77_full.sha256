@@ -1,4 +1,4 @@
-# F77 full verification manifest — 2026-11-19T19:04:00Z
+# F77 full verification manifest — 2026-11-19T19:52:57Z
 2a9d5038367105aebc5c7f8bd6e43f049919c9ced179682a9126e76ac402253d  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/cross/cases.txt
 db31e28559fabfa649dca94a069f1c94de2f9c0c47117854d27867861d0223de  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gate/endread_ok.b6
 39ef6055f933b193878ec20085e00dcab0f9e9b6534aa960311df73499d0414b  /home/azizz/Yandex.Disk/re-forex/tests/plan-f77-full/gate/endread_ok.gold

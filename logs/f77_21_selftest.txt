@@ -1,0 +1,41 @@
+=== P7c self-test 2026-11-19T19:22:06Z ===
+ETALON sha256 before: 30fd6355b25d9ed3f06f57d84a3eac6ecfde2d6d5b7d34b1c27a7b44a6513152
+--- 1. snapshot etalon ---
+snapshot: /usr/local/share/besm6/2348
+  size_bytes    : 33024000
+  zones physical: 4000  (logical 0..3995)
+  file sha256   : 30fd6355b25d9ed3f06f57d84a3eac6ecfde2d6d5b7d34b1c27a7b44a6513152
+  записано      : /tmp/.private/azizz/opencode/p7c-diskpatch-selftest/etalon.snapshot.json (311463 bytes)
+--- 2. make patch (zone 0o7000, word 0o1777, 0 -> 0o1234567) ---
+[{"zone":"0o7000","word":"0o1777","old":"0","new":"0o1234567"}]
+--- 3. apply on working copy ---
+apply: /tmp/.private/azizz/opencode/p7c-diskpatch-selftest/2348.work -> /tmp/.private/azizz/opencode/p7c-diskpatch-selftest/2348.patched
+  исходный диск sha256 (до/после): 30fd6355b25d9ed3f06f57d84a3eac6ecfde2d6d5b7d34b1c27a7b44a6513152 / 30fd6355b25d9ed3f06f57d84a3eac6ecfde2d6d5b7d34b1c27a7b44a6513152
+  применено патчей: 1; затронуто зон: 1
+  зона 0o7000 (phys 0o7004), слово 1023 (0o1777): 0o0 -> 0o1234567
+--- 4. verify patched against snapshot ---
+verify: /tmp/.private/azizz/opencode/p7c-diskpatch-selftest/2348.patched
+  snapshot disk     : /usr/local/share/besm6/2348
+  file sha256       : cb3738e91f968b73e047bb6409e01ba38cd586a9a57819dd5c5bf6707fe7666f
+  эталон доступен   : да (/usr/local/share/besm6/2348)
+  STATUS            : CHANGED
+  изменённых зон    : 1
+  изменённых слов   : 1
+  ЗОНА  0o7000 (phys 0o7004)
+  СЛОВО зона 0o7000 (phys 0o7004) word 1023 (0o1777) [data]: 0o0 -> 0o1234567 (u64 0x2000000000000 -> 0x2000000053977)
+  json-отчёт        : /tmp/.private/azizz/opencode/p7c-diskpatch-selftest/verify.json
+--- 5. verify pristine working copy (should be IDENTICAL) ---
+verify: /tmp/.private/azizz/opencode/p7c-diskpatch-selftest/2348.work
+  snapshot disk     : /usr/local/share/besm6/2348
+  file sha256       : 30fd6355b25d9ed3f06f57d84a3eac6ecfde2d6d5b7d34b1c27a7b44a6513152
+  эталон доступен   : да (/usr/local/share/besm6/2348)
+  STATUS            : IDENTICAL
+  изменённых зон    : 0
+  изменённых слов   : 0
+--- 6. etalon sha256 after ---
+30fd6355b25d9ed3f06f57d84a3eac6ecfde2d6d5b7d34b1c27a7b44a6513152  /usr/local/share/besm6/2348
+--- 7. negative test: wrong old must fail, no output file ---
+ОШИБКА: патч #1: old НЕ СОВПАЛ для зоны 0o7000 (phys 0o7004) слова 1023: ожидалось 0o777 (0x1ff), на диске 0o0 (0x0)
+rc=1
+ls: невозможно получить доступ к '/tmp/.private/azizz/opencode/p7c-diskpatch-selftest/should_not_exist.bin': Нет такого файла или каталога
+OK: выходной файл не создан

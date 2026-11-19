@@ -1,5 +1,5 @@
 === F77PREP v2 case case18 ===
-date    : 2026-11-19T19:04:10Z
+date    : 2026-11-19T19:53:08Z
 source  : /home/azizz/Yandex.Disk/re-forex/tests/f77/prep-case18.f77
 data    : (none)
 OK: case case18: обе проверки пройдены

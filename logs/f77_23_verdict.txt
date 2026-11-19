@@ -1,0 +1,72 @@
+# f77_23 — P7c: опровержение гипотезы LUNTYP и прототип WRITE(45)
+Дата: 19.11.2026.
+
+## ГИПОТЕЗА (от родителя)
+LUNTYP(45)=0 (НЕ ЗАКАЗАНО) → FOREX runtime вызывает ERRLUN → 'НЕТ КАНАЛА LUN 45'.
+Если заставить LUNTYP возвращать для 45 тип как для 54 + Э50 0131 attach → WRITE/READ(45) заработают.
+
+## РЕЗУЛЬТАТ: ГИПОТЕЗА ОПРОВЕРГНУТА (доказательство из полного MTR-трейса)
+
+Полный MTR-трейс WRITE(45) из волны A2: /var/tmp/p7c-mtr/err.txt, 2 012 550 строк
+(BESM6_DD_DEBUG=1, BESM6_MTR_LO=0, BESM6_MTR_HI=077777, BESM6_MTR_N=5000000).
+
+1. `awk '/\*63/{...}'` → ВСЕГО 2 выполнения экстракода *63 за весь трейс:
+     строка 122:    MTR 04001R *63 3(0)   (стартап)
+     строка 1047015: MTR 26030R *63 1(0)  (фаза execute, не LUNTYP)
+   LUNTYP executing требует 6 *63 (502,504,57,760,20,576). Нет ни одной Sequence.
+   ⇒ LUNTYP НЕ выполняется при WRITE(45).
+2. Нет ни одного jump-目标 в адрес LUNTYP (каталог 0o045054) или в диапазон 0450xx:
+     grep -cE '(vjm|uj|mtj) +45054' = 0;  jump-цели 045xx = 0.
+   (Jumps идут на 4-значные 4505/4513/4545/4561 — это монитор, не LUNTYP.)
+3. Таблица символов провалившейся задачи НЕ содержит LUNTYP. Присутствуют:
+     LUNMUN 03163, LUN*MON 03164, ERRIOM 04241, ERRLUN 04321/04361 (оверлей).
+4. Путь ошибки (doc18 §8.2, подтверждено): 02506R *67 20(14) → печать 'НЕТ КАНАЛА'
+   → 02522R uj 0(15) → 00411 *74 STOP. Это ERRLUN (erriom.asm:84-93), НЕ LUNTYP.
+5. LUNTYP — пользовательская FUNCTION (lib21/MONSYS disk 2048), которую dtran-листинг
+   показывает вызываемой только из PECYPC/PT6/IPUTS/PCPLOT. WRITE1.mad вызывает DRUMTAP*,
+   который (drumtap%.asm) LUNTYP не вызывает; проверка LUN идёт через LUN*MON/LUNMUN монитора.
+
+ВЫВОД: проверка Level B НЕ проходит через LUNTYP. Патч LUNTYP не может снять блокер.
+
+## ПРОТОТИП (исполняемо)
+Рабочая копия 2348: /var/tmp/p7c-luntyp/run/disks/2348
+  - 0o2300: FOREX_PERSO_2300.bin (эталонный компилятор)
+  - 0o2320: ПРОПАТЧЕННЫЙ LUNTYP (тип 3 вместо 0) + LUNAT (Э50 0131 attach LUN45→2048)
+  Ассемблировано dispak *assembler, rc=0, 0 ошибок.
+Дек: /var/tmp/p7c-luntyp/run/w45_patched.b6
+  PROGRAM W45P7C / CALL LUNAT / WRITE(45,10) 45 / FORMAT(1X,I5) / STOP
+Команда: BESM6_PATH=/var/tmp/p7c-luntyp/run/disks:/usr/local/share/besm6 dispak run/w45_patched.b6
+
+РЕЗУЛЬТАТ:
+  rc (dispak) = 0
+  stdout/stderr содержит:  НЕТ КАНАЛА  LUN 45
+                            КОНЕЦ ЗАДАЧИ
+                            00411: 00 074 0000 *74   (STOP)
+  ОЖИДАЕМОГО вывода '45' — НЕТ. Патч LUNTYP + attach НЕ изменили поведение.
+Лог: /home/azizz/Yandex.Disk/re-forex/logs/f77_23_proto_write45.txt
+
+Доп. проба прямого вызова LUNTYP(45)/LUNTYP(54) из Fortran (run/luntyp_probe.b6):
+  name resolution с дублирующимся LUNTYP в PERSO+lib21 не сработала ('Пока рано',
+  STOP 00020 *74) — не пригодно как доказательство; в логах f77_23_luntyp_probe.txt.
+
+## VERDICT: NEEDS-RUNTIME-REBUILD (патч LUNTYP — неверная цель)
+Блокер Level B живёт в monitor80: ERRIOM.asm ERRLUN (ENTRY) + iocont%.asm
+LUN*MON/LUNMUN, в ПЕРЕЗАГРУЖАЕМОМ оверлее (doc18 §8.3: 043xx — оверлей).
+Статической зоны.слова «разрешён для 54 / запрещён для 45» в образе 2348 нет (doc18 §8.4).
+
+## ЧТО ОСТАЛОСЬ (минимальный объём работы, НЕ оверлей F77PREP)
+1. Для WRITE(45): дизассемблировать ERRLUN/LUN*MON по core-pc.bin в точке 02506R,
+   найти таблицу допустимости каналов монитора в оверлее, добавить LUN 45 (и 40),
+   пересобрать monitor80 + системный диск 2348 (правка исходников monitor80-re/permanent).
+2. Для READ(45): дополнительно EOF/IOSTAT-сигнал в рантайме ввода (monread%, IOEND*;
+   doc 19-eof-iostat.md), т.к. даже после снятия Level B ввод без EOF-сигнала не завершится.
+3. Регрессия GATE 20/20 + золотые бинарники после пересборки.
+Оценка (doc17 §7): 20–40 чел.-дн. Одним patch_system_disk.py или патчем LUNTYP НЕ решается.
+
+## ИСТОЧНИКИ
+- /home/azizz/Yandex.Disk/re-forex/src/lib21/LUNTYP.mad (READ-ONLY, прочитан целиком)
+- /home/azizz/besm6.github.io/sources/dubna/besml21/libra212.l21:4801-4868 (оригинал)
+- /home/azizz/Yandex.Disk/re-forex/docs/plan-f77-full/{08,17,18,20,21}-*.md (READ-ONLY)
+- /home/azizz/Yandex.Disk/monitor80-re/permanent/{erriom,drumtap%,iocont%,lun%mon}.asm (READ-ONLY)
+- logs/f77_23_patch_source.txt, logs/f77_23_proto_write45.txt, logs/f77_23_luntyp_probe.txt
+- прототип /var/tmp/p7c-luntyp/**
