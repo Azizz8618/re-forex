@@ -13,8 +13,14 @@
   * «голые» числовые литералы, ещё не вынесенные в ``,EQU,`` константы.
 
 Дополнительно читает ``docs/06-address-map.md`` (подтверждённые соответствия),
-``docs/03-symbols.md``, ``include/catalog.md`` и ``include/*.xref.md`` для
-построения графа вызовов и раздела подтверждённых адресов.
+``docs/03-symbols.md``, ``include/catalog.md``, ``include/*.xref.md`` и
+``include/RUNTIME_*.xref.md`` для построения графа вызовов и раздела
+подтверждённых адресов.
+
+Отдельно проверяется **6-символьное правило МАДЛЕН**: метки и `EQU`-константы
+различаются только первыми шестью знаками, поэтому все имена должны быть
+≤ 6 символов, а первые 6 знаков разных имён — уникальными. Нарушения и
+коллизии выводятся в разделе «НАРУШЕНИЯ 6-СИМВОЛЬНОГО ПРАВИЛА» и в лог.
 
 Результат — детерминированный markdown (удобно diff-ить) и подробный лог.
 
@@ -71,6 +77,9 @@ DATA_DECL_OPS = {"OCT", "INT", "REAL", "TEXT", "8TEXT", "GOST", "ISO", "EQU"}
 
 COMMENT_CHARS = "CcСс"
 
+# МАДЛЕН (БЭСМ-6) различает в метках и EQU только первые 6 знаков.
+MAX_NAME_LEN = 6
+
 SYMBOL_RE = re.compile(r"\*[0-9]{3,6}|\*?[A-Za-zА-Яа-я][\w/*]*")
 # Числовой литерал: не начинается с буквы/звезды (иначе `FT*571`, `*00026`
 # были бы приняты за литералы), и не является частью `B`-суффикса.
@@ -93,6 +102,8 @@ MODULE_OF = {
     "FOREX_CORE.mad": "FOREX* (корень, recreated)",
     "FOREX_ROOT.mad": "FOREX* (корень, S1 4.13)",
     "FOREX_RUNTIME.mad": "рантайм (FORMAT / FORTLIBR / DATAPR* / OCTTDEC)",
+    "FOREX_RUNTIME_DISASM.mad": "рантайм (дизассембл, FORMAT / FORTLIBR / DATAPR* / OCTTDEC)",
+    "FOREX_DECODER_DISASM.mad": "рантайм (дизассембл DECODER / OCT_DEC)",
     "LO_SYN.mad": "LO*SYN (оверлей, синтаксический анализатор)",
     "LO_GEN.mad": "LO*GEN (оверлей, генератор кода)",
 }
@@ -156,6 +167,7 @@ class Scan:
     literals: list[Literal] = field(default_factory=list)
     files: list[str] = field(default_factory=list)
     label_files: list[str] = field(default_factory=list)
+    xref_files: list[str] = field(default_factory=list)
 
     def all_defs(self, symbol: str) -> list[Definition]:
         return self.defs.get(symbol, [])
@@ -413,6 +425,67 @@ def scan_labels_md(path: Path, scan: Scan) -> None:
 
 
 # ---------------------------------------------------------------------------
+# include/*.xref.md — подтверждённые символы/адреса из подробных xref-сводов
+# ---------------------------------------------------------------------------
+
+
+MD_TICK_RE = re.compile(r"`([^`]+)`")
+MD_ADDR_RE = re.compile(r"0o([0-7]{3,7})\b")
+MD_HEX_ADDR_RE = re.compile(r"\b([0-7]{5,6})B\b")
+MD_NAME_RE = re.compile(r"\*[0-9]{3,6}|\*?[A-Za-zА-Яа-я][\w/*]*")
+
+
+def md_symbols(text: str) -> list[str]:
+    """Имена в backticks, похожие на символы МАДЛЕН (не пути и не мнемоники)."""
+    out: list[str] = []
+    for raw in MD_TICK_RE.findall(text):
+        s = raw.strip(" *`'")
+        if not MD_NAME_RE.fullmatch(s):
+            continue
+        if "/" in s and not s.startswith("*"):
+            continue  # пути вроде src/LO_GEN.mad
+        if s.endswith((".md", ".mad", ".lst", ".txt")):
+            continue
+        if s.lower() in {
+            "call", "uj", "vjm", "uza", "atx", "xta", "subp", "entry",
+            "equ", "name", "bss", "end", "vtm", "uta", "lj", "iec",
+        }:
+            continue
+        out.append(s)
+    return out
+
+
+def scan_xref_md(path: Path, scan: Scan) -> None:
+    """Подхватить подтверждённые пары «символ — адрес» из xref-документов.
+
+    Читаются ``include/RUNTIME_*.xref.md`` (новые своды по дизассемблированному
+    рантайму). Строгий разбор таблиц не требуется: любая строка-таблица или
+    заголовок, где рядом с именем в backticks стоит адрес ``0oNNNNNN``, даёт
+    определение вида ``XREF(md)`` с адресом. Это обогащает глобальную таблицу
+    символов, но не подменяет определения из MAD-источников.
+    """
+    rel = path.relative_to(REPO).as_posix()
+    scan.xref_files.append(rel)
+    text = path.read_text(encoding="utf-8", errors="replace")
+    for no, line in enumerate(text.splitlines(), 1):
+        stripped = line.strip()
+        if not stripped or stripped[0] not in "|#":
+            continue
+        syms = md_symbols(line)
+        if not syms:
+            continue
+        addrs = [int(x, 8) for x in MD_ADDR_RE.findall(line)]
+        if not addrs:
+            addrs = [int(x, 8) for x in MD_HEX_ADDR_RE.findall(line)]
+        value = norm_addr(addrs[0]) if addrs else ""
+        loc = Loc(rel, no)
+        for sym in syms:
+            scan.defs[sym].append(
+                Definition(sym, "XREF(md)", value, loc, stripped[:120])
+            )
+
+
+# ---------------------------------------------------------------------------
 # Подтверждённые соответствия из docs/06-address-map.md
 # ---------------------------------------------------------------------------
 
@@ -529,7 +602,7 @@ def fmt_locs(locs: Iterable[Loc], limit: int = 6) -> str:
 
 
 def section_intro(scan: Scan) -> list[str]:
-    inputs = sorted(scan.files + scan.label_files)
+    inputs = sorted(scan.files + scan.label_files + scan.xref_files)
     n_lines = 0
     for rel in scan.files:
         n_lines += len((REPO / rel).read_text(encoding="utf-8", errors="replace").splitlines())
@@ -553,11 +626,14 @@ def section_intro(scan: Scan) -> list[str]:
         f"- Внешних абсолютных адресов (переходы ≥ `0o020000`): "
         f"**{len({a.address for a in scan.addrs})}**.",
         f"- Именованных констант `EQU`: **{len([d for ds in scan.defs.values() for d in ds if d.kind == 'EQU'])}**.",
+        f"- Файлов `include/*.xref.md` (новые рантайм-своды): **{len(scan.xref_files)}**"
+        + (": " + ", ".join(f"`{x}`" for x in sorted(scan.xref_files)) if scan.xref_files else " (пока не созданы)"),
         "",
         "Входные файлы:",
         "",
     ] + [f"- `{x}`" for x in inputs] + [
         "- `include/*.xref.md`, `include/catalog.md`, `docs/03-symbols.md`, `docs/06-address-map.md` (для раздела 5)",
+        "- `include/RUNTIME_*.xref.md` — подробные xref-своды по дизассемблированному рантайму",
         "",
     ]
 
@@ -756,7 +832,7 @@ def graph_section(scan: Scan) -> list[str]:
     out += [
         "",
         "**Оговорка.** LINK-ячейки `0o74010..0o74013` в корне и в FORMAT имеют",
-        "одинаковую нумерацию, но relate к разным символам (выделяются пер-модульно) —",
+        "одинаковую нумерацию, но относятся к разным символам (выделяются пер-модульно) —",
         "см. `docs/06-address-map.md` §3.1.",
         "",
     ]
@@ -866,7 +942,7 @@ def missing_subps_section(scan: Scan) -> list[str]:
 
 def reproducibility() -> list[str]:
     return [
-        "## 7. Воспроизводимость",
+        "## 8. Воспроизводимость",
         "",
         "```bash",
         "cd /tmp/.private/azizz/opencode/re-forex",
@@ -877,15 +953,106 @@ def reproducibility() -> list[str]:
         "Инструмент детерминирован: сортирует все таблицы, не использует текущее",
         "время — повторный запуск даёт байт-в-байт тот же вывод (идемпотентность).",
         "",
-        "## 8. Связанные документы",
+        "## 9. Связанные документы",
         "",
         "- `include/FOREX_CORE.xref.md`, `include/FOREX_RUNTIME.xref.md`,",
         "  `include/LO_SYN.xref.md`, `include/LO_GEN.xref.md` — подробные xref по модулям;",
+        "- `include/RUNTIME_DISASM.xref.md`, `include/RUNTIME_DECODER.xref.md` —",
+        "  xref по дизассемблированному рантайму;",
+        "- `docs/13-runtime-crossrefs.md` — подробный свод по рантайму;",
+        "- `docs/10-naming-conventions.md` §6 — 6-символьное правило МАДЛЕН;",
         "- `docs/03-symbols.md` — символьный чек-лист (37/37);",
         "- `docs/06-address-map.md` — карта внешних адресов;",
         "- `logs/address_targets.txt` — сырые частоты адресов из листингов.",
         "",
     ]
+
+
+# ---------------------------------------------------------------------------
+# 6-символьное правило МАДЛЕН
+# ---------------------------------------------------------------------------
+
+# Виды определений, к которым применяется ограничение (реальные имена МАДЛЕН).
+MADLEN_NAME_KINDS = {
+    "LABEL", "LABEL(md)", "EQU", "NAME", "ENTRY", "SUBP",
+    "COMMON", "TEXT", "DATA", "END",
+}
+
+
+def six_char_report(scan: Scan) -> tuple[list[tuple[str, str, str, list[Loc]]], dict[str, list[str]]]:
+    """Вернуть ( нарушения длины, коллизии первых MAX_NAME_LEN знаков )."""
+    violations: list[tuple[str, str, str, list[Loc]]] = []
+    groups: dict[str, set[str]] = defaultdict(set)
+    for sym, defs in scan.defs.items():
+        if not sym or sym.startswith(("<", "?")):
+            continue
+        kinds = {d.kind for d in defs}
+        if not (kinds & MADLEN_NAME_KINDS):
+            continue
+        locs = sorted((d.loc for d in defs), key=lambda x: (x.file, x.line))
+        kind = "/".join(sorted(kinds))
+        groups[sym[:MAX_NAME_LEN]].add(sym)
+        if len(sym) > MAX_NAME_LEN:
+            violations.append((sym, kind, sym[:MAX_NAME_LEN], locs))
+    collisions = {p: sorted(s) for p, s in groups.items() if len(s) > 1}
+    return sorted(violations, key=lambda x: (-len(x[0]), x[0])), dict(sorted(collisions.items()))
+
+
+def six_char_section(scan: Scan) -> list[str]:
+    violations, collisions = six_char_report(scan)
+    out = [
+        "",
+        "## 7. НАРУШЕНИЯ 6-СИМВОЛЬНОГО ПРАВИЛА",
+        "",
+        "МАДЛЕН (БЭСМ-6) хранит имя метки или `,EQU,`-константы в одном",
+        "шестисимвольном слове: различаются **только первые 6 знаков**.",
+        f"Поэтому имя обязано быть ≤ {MAX_NAME_LEN} символов, а первые",
+        f"{MAX_NAME_LEN} знаков разных имён — уникальными. Ниже собрано",
+        "всё, что нарушает правило (источник — MAD-файлы и `*.labels.md`).",
+        "",
+        f"- имён длиннее {MAX_NAME_LEN} знаков: **{len(violations)}**;",
+        f"- коллизий первых {MAX_NAME_LEN} знаков: **{len(collisions)}**.",
+        "",
+        f"### 7.1 Имена длиннее {MAX_NAME_LEN} знаков",
+        "",
+        "| Имя | Длина | Первые 6 | Тип | Где объявлено |",
+        "|---|---:|---|---|---|",
+    ]
+    for sym, kind, prefix, locs in violations[:60]:
+        out.append(
+            f"| `{md_escape(sym)}` | {len(sym)} | `{md_escape(prefix)}` | {kind} | {fmt_locs(locs, 3)} |"
+        )
+    if len(violations) > 60:
+        out.append(f"| … | … | … | … | ещё {len(violations) - 60} — полный список в `logs/xref_all.txt` |")
+    if not violations:
+        out.append("| — | 0 | — | — | нарушений нет |")
+
+    out += [
+        "",
+        f"### 7.2 Коллизии первых {MAX_NAME_LEN} знаков",
+        "",
+        "Если две разные метки имеют одинаковый префикс, ассемблер их не различает.",
+        "",
+        "| Первые 6 | Конфликтующие имена | Где объявлено |",
+        "|---|---|---|",
+    ]
+    for prefix, names in list(collisions.items())[:60]:
+        locs: list[Loc] = []
+        for name in names:
+            locs.extend(d.loc for d in scan.defs.get(name, ()))
+        out.append(
+            f"| `{md_escape(prefix)}` | {', '.join(f'`{md_escape(n)}`' for n in names)} | {fmt_locs(locs, 3)} |"
+        )
+    if len(collisions) > 60:
+        out.append(f"| … | … | ещё {len(collisions) - 60} — полный список в `logs/xref_all.txt` |")
+    if not collisions:
+        out.append("| — | — | коллизий нет |")
+    out += [
+        "",
+        "Правило именования и примеры коротких имён — `docs/10-naming-conventions.md` §6.",
+        "",
+    ]
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -896,7 +1063,10 @@ def reproducibility() -> list[str]:
 def build_log(scan: Scan, confirmed: list[tuple[str, str, str]]) -> str:
     L: list[str] = []
     L.append("=== XREF_ALL: полный лог ===")
-    L.append(f"MAD files: {len(scan.files)}; labels.md: {len(scan.label_files)}")
+    L.append(
+        f"MAD files: {len(scan.files)}; labels.md: {len(scan.label_files)}; "
+        f"xref.md: {len(scan.xref_files)}"
+    )
     L.append("")
     L.append("=== DEFINITIONS (symbol | kind | value | file:line) ===")
     for sym in sorted(scan.defs):
@@ -928,6 +1098,15 @@ def build_log(scan: Scan, confirmed: list[tuple[str, str, str]]) -> str:
     L.append("=== CONFIRMED (docs/06-address-map.md) ===")
     for addr, name, src in confirmed:
         L.append(f"CONF\t{addr}\t{name}\t{src}")
+    L.append("")
+    violations, collisions = six_char_report(scan)
+    L.append(f"=== SIX_CHAR_VIOLATIONS (>{MAX_NAME_LEN} символов; всего {len(violations)}) ===")
+    for sym, kind, prefix, locs in violations:
+        L.append(f"LONGNAME\t{sym}\t{len(sym)}\t{prefix}\t{kind}\t" + ", ".join(str(x) for x in locs))
+    L.append("")
+    L.append(f"=== SIX_CHAR_COLLISIONS (первые {MAX_NAME_LEN} знаков; всего {len(collisions)}) ===")
+    for prefix, names in collisions.items():
+        L.append(f"COLLIDE\t{prefix}\t" + "\t".join(names))
     L.append("")
     return "\n".join(L)
 
@@ -970,6 +1149,13 @@ def main() -> int:
                 if f"?{sym}" in scan.uses:
                     scan.uses[sym].extend(scan.uses.pop(f"?{sym}"))
 
+    # Новые подробные xref-своды по рантайму (могут появиться позже других
+    # агентов). Подхватываем и RUNTIME_*.xref.md, и остальные *.xref.md,
+    # чтобы глобальный свод действительно был глобальным.
+    xref_files = sorted((REPO / "include").glob("RUNTIME_*.xref.md"))
+    for p in xref_files:
+        scan_xref_md(p, scan)
+
     confirmed = parse_confirmed(REPO / "docs" / "06-address-map.md")
 
     doc = "\n".join(
@@ -981,6 +1167,7 @@ def main() -> int:
         + addresses_section(scan)
         + confirmed_section(scan, confirmed)
         + missing_subps_section(scan)
+        + six_char_section(scan)
         + reproducibility()
     )
     if not doc.endswith("\n"):

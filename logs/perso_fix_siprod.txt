@@ -1,0 +1,9 @@
+слов в образе: 5120, модулей в каталоге: 9, найдено объектов: 8
+  DATAPR*    @  4480 cmd=   29 const=   18 bss=   0 sym=  11 long=   1
+  FOREX*     @  2048 cmd=   96 const=    0 bss=   0 sym=   0 long=   0
+  FORMAT     @  4288 cmd=   61 const=    0 bss=   0 sym=   0 long=   0
+  FORTLIBR   @  4384 cmd=   69 const=    0 bss=   0 sym=   0 long=   0
+  GIV/PG     @  4576 cmd=   26 const=    5 bss=   4 sym=  10 long=   2
+  LO*GEN     @  3232 cmd= 1024 const=    0 bss=   0 sym=   0 long=   0
+  LO*SYN     @  2176 cmd= 1024 const=    0 bss=   0 sym=   0 long=   0
+  OCTTDEC    @  4544 cmd=   15 const=   12 bss=   0 sym=   1 long=   0

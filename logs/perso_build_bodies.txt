@@ -1,0 +1,6 @@
+FOREX*     n=   96 match=True
+LO*SYN     n= 1024 match=True
+LO*GEN     n= 1024 match=True
+FORMAT     n=   61 match=True
+FORTLIBR   n=   69 match=True
+ALL BODIES MATCH: True

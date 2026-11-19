@@ -21,7 +21,7 @@ OK   symbol LO*GEN
 OK   symbol *A*         
 OK   symbol ENTRY*      
 OK   symbol *DUMON*     
-OK   comments 1958 >= 50: /tmp/.private/azizz/opencode/re-forex/src/LO_SYN.mad
+OK   comments 1987 >= 50: /tmp/.private/azizz/opencode/re-forex/src/LO_SYN.mad
 OK   comments 3549 >= 50: /tmp/.private/azizz/opencode/re-forex/src/LO_GEN.mad
 OK   comments 185 >= 50: /tmp/.private/azizz/opencode/re-forex/include/FOREX_ROOT.mad
 OK: все обязательные символы и комментарии присутствуют

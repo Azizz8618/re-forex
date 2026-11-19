@@ -1,0 +1,4 @@
+DATAPR*    body_words=63 load=47 header={'head': 1, 'sym': 11, 'debug': 0, 'set_': 0, 'data': 0, 'long': 1, 'cmd': 29, 'bss': 0, 'const': 18} addr=2048
+OCTTDEC    body_words=32 load=27 header={'head': 1, 'sym': 1, 'debug': 0, 'set_': 0, 'data': 0, 'long': 0, 'cmd': 15, 'bss': 0, 'const': 12} addr=2048
+GIV/PG     body_words=47 load=35 header={'head': 1, 'sym': 10, 'debug': 0, 'set_': 0, 'data': 0, 'long': 2, 'cmd': 26, 'bss': 4, 'const': 5} addr=2048
+saved 3 modules

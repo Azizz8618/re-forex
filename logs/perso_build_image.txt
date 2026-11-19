@@ -1,0 +1,14 @@
+image      : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
+words      : 5120 (5 zones of 1024 words)
+bytes      : 30720
+sha256     : dbb8313dac7eb8448054a3e398ffab1b78824c06e27e27b37e5c4182a2a01674
+catalog    :
+  FOREX*     cmd=   96 comment=   0 word= 2048 (0o4000)
+  LO*SYN     cmd= 1024 comment=   0 word= 2176 (0o4200)
+  LO*GEN     cmd= 1024 comment=   0 word= 3232 (0o6240)
+  FORMAT     cmd=   61 comment=   0 word= 4288 (0o10300)
+  FORTLIBR   cmd=   69 comment=   0 word= 4384 (0o10440)
+  DATAPR*    cmd=    0 comment= 186 word= 4480 (0o10600)
+  OCTTDEC    cmd=    0 comment= 229 word= 4672 (0o11100)
+  GIV/PG     cmd=    0 comment= 113 word= 4928 (0o11500)
+  TAK/PG     cmd=    0 comment=  33 word= 5056 (0o11700)

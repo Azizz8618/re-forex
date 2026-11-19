@@ -1,0 +1,91 @@
+Лог разведки правил записи PERSO (только чтение, 19.11.2026)
+============================================================
+
+Задача: подготовить инструкцию записи библиотеки ФОРЭКС+рантайм в РАБОЧУЮ
+копию диска 2348 начиная с зоны 0o2300. Дисковые образы НЕ изменились.
+
+--- Источники (прочитаны) ---
+/home/azizz/Yandex.Disk/pascal-re/PERSO.md
+/home/azizz/Yandex.Disk/pascal-re/tools/perso-build.sh
+/home/azizz/Yandex.Disk/pascal-re/tools/perso-check.sh
+/home/azizz/Yandex.Disk/pascal-re/tools/perso-run.sh
+/home/azizz/Yandex.Disk/pascal-re/tools/init-disk-2048.sh
+/home/azizz/Yandex.Disk/pascal-re/format.md
+/home/azizz/Yandex.Disk/pascal-re/AGENTS.md:226-259
+/home/azizz/Yandex.Disk/re-siprod/tools/siprod_perso.py
+/home/azizz/Yandex.Disk/re-siprod/tools/siprod_lib.py
+/home/azizz/Yandex.Disk/re-siprod/tools/record2348_new.py
+/home/azizz/Yandex.Disk/re-siprod/notes/loader.md
+/home/azizz/Yandex.Disk/re-siprod/README.md:95-113
+/home/azizz/Yandex.Disk/re-dispak/rukava.be:2876-2959 (карта зон 2048(2348))
+besmtool --help  (v2.6.458; bsmtool НЕ установлен)
+
+--- Окружение / инструменты ---
+$ command -v besmtool bsmtool dispak
+/usr/local/bin/besmtool
+/usr/local/bin/dispak
+bsmtool: NOT FOUND
+$ echo $BESM6_PATH
+/usr/local/share/besm6
+
+ОБЯЗАТЕЛЬНО выставлять рабочую копию первым:
+export BESM6_PATH="$HOME/.besm6:/usr/local/share/besm6:$HOME/Yandex.Disk/simh/BESM6/MD/EC5061"
+
+--- Контрольные суммы образов (ДО, не менялись) ---
+$ md5sum ~/.besm6/2348 ~/Yandex.Disk/simh/BESM6/MD/EC5061/2348 /usr/local/share/besm6/2348
+de309a314bccbfaf263d49f48593f14a  /home/azizz/.besm6/2348
+15e5a52c5efe7b62c53f3bbb335e16cc  /home/azizz/Yandex.Disk/simh/BESM6/MD/EC5061/2348   <-- ЭТАЛОН
+6193cb53a140b2c8a0b5b386de623f8f  /usr/local/share/besm6/2348                            <-- БОЕВАЯ
+Рабочая копия уже отличается от эталона (в т.ч. зона 0o2500), но зона 0o2300 пуста.
+
+--- Ловушка besmtool: --start ДЕСЯТИЧНЫЙ, печать адреса ВОСЬМЕРИЧНАЯ ---
+$ besmtool view 2348 --start=1024 --length=1        -> 2000.0000: ...   (0o2000 = 1024 dec)
+$ besmtool view 2348 --start=1216 --length=1        -> * (пусто)
+$ besmtool dump 2348 --start=1216 --length=1        -> "Zone 1216: 2300.0000: ... зп"
+$ besmtool view 2348 --start=0o2300 --length=1      -> 0000.0000 (парсер остановился на 'o')
+Вывод: для зоны 0o2300 передавать --start=1216.
+
+--- Проверка свободного места: dump 220 зон с 1216 (0o2300) ---
+$ BESM6_PATH=$HOME/.besm6 besmtool dump 2348 --start=1216 --length=220 --to-file=/tmp/scan_work.bin
+$ BESM6_PATH=$HOME/Yandex.Disk/simh/BESM6/MD/EC5061 besmtool dump 2348 --start=1216 --length=220 --to-file=/tmp/scan_ref.bin
+python3: зона = 6144 байт (1024 слова x 6); искать первую ненулевую.
+
+work: первая ненулевая зона 1344 dec = 0o2500
+      ненулевые (oct): 2500 2501 2502 ... 2507 2510 .. 2516 2520 2521 2522 2523 2530 2531 2532 ... 2536 2540 ...
+ref:  первая ненулевая зона 1344 dec = 0o2500
+      ненулевые (oct): 2500 2501 ... 2547 (непрерывно)
+Зоны 0o2300..0o2477 (= 1216..1343 dec = 128 зон) на ОБОИХ образах полностью нулевые.
+
+ВЫВОД: БЕЗОПАСНОЕ число зон = 128 (0o200), писать 0o2300..0o2477;
+       граница 0o2500 — трогать запрещено.
+
+--- Карта каталога PERSO (проверено на re-siprod/build/siprod.bin) ---
+24576 слов = 24 зоны, 108 записей каталога.
+w0 = 0o0000000002152140 (служебное), w1 = 0,
+w2 = 0o6364415644410000 = TEXT 'STANDA  ',
+w3 = 0o3750640013200000 -> length-поле 0o1320 = 720 = 90*8, overlay=0,
+w4 = 'STAATP  ', w5 = 0o3450640023500000 (157*8) ...
+
+Формула (notes/loader.md п.3):
+    rec = (date << 24) | ((L*8) << 12) | overlay
+    L = cmd+const+bss  (bss=ПАМ, НЕ data; loader.md п.1)
+    у date младшие 2 бита должны быть 0; date взять из существующей записи.
+Имя: 8 символов TEXT, 6 бит/символ, ' '=0, '*'=10, выравнивание влево.
+Новые записи — ТОЛЬКО в конец каталога после завершателя (loader.md п.4).
+
+--- Формула записи ---
+Монитор:  лен 40(2348-wr)^ ; ... ; *to perso:402300 ; монитор печатает
+          "ДЛИНА LIBRARY <NNN> ЗОН" (восьмеричное, включает 2 зоны каталога)
+         LU = 30..67 (2 восьм. знака), ZZZZ = начальная зона (восьм.)
+Raw:      BESM6_PATH=$HOME/.besm6 besmtool write 2348 --from-file=forex-lib.bin --start=1216
+Контроль: besmtool dump 2348 --start=1216 --length=$NZ --to-file=/tmp/readback.bin ; cmp
+
+--- Загрузка / разрешение имён ---
+лен 60(2348)^ ; *call yesmemory ; *perso:602300  (== *PERSO:60 2300) ; *forex
+Последняя загрузка имени побеждает: системную библиотеку грузить ПЕРВОЙ,
+нашу — ПОСЛЕДНЕЙ (,cnt дозаписи). Имена: FOREX*, LO*SYN, LO*GEN, FORMAT,
+DATAPR*, OCTTDEC.
+
+--- Результат ---
+Создан единственный выходной документ: docs/14-perso-write.md
+На диски НИЧЕГО не записано; все образы остались с прежними md5.

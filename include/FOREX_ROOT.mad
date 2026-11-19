@@ -21,140 +21,140 @@ C*  приблизительны — сборка 2.02 отличается от
 C***********************************************************************
 
 C ---- КОНСТАНТЫ/ЛИТЕРАЛЫ (все операндные литералы -> ,EQU,) ----
-BASE_REG14               ,EQU, 14                           ; роль: номер индексного регистра базы M14; источник: S1:15474
-BUFFER_A_LEN             ,EQU, 4000B                        ; роль: COMMON *A*: 2048 слов; источник: S1:15465
+BS14R               ,EQU, 14                           ; роль: номер индексного регистра базы M14; источник: S1:15474  ; полное имя: BASE_REG14
+BUFALN             ,EQU, 4000B                        ; роль: COMMON *A*: 2048 слов; источник: S1:15465  ; полное имя: BUFFER_A_LEN
 DEC_15                   ,EQU, 15                           ; роль: ; S1:16796; источник: S1:16796
-DUMON_LEN                ,EQU, 5                            ; роль: COMMON *DUMON*: 5 слов; источник: S1:15454
-ENTRY_TAB_LEN            ,EQU, 50B                          ; роль: COMMON ENTRY*: 40 слов; источник: S1:15449
-ERR_TRANSLATOR_TEXT      ,EQU, 18H'200'0OШ. TPAHCЛЯTOPA'231' ; роль: сообщение «ОШ. ТРАНСЛЯТОРА»; источник: FOREX_ROOT.mad:112
-FIXED_MODE_2             ,EQU, 2                            ; роль: режим NTR 2 / шаг 2; источник: S1:16801
+DUMMYL                ,EQU, 5                            ; роль: COMMON *DUMON*: 5 слов; источник: S1:15454  ; полное имя: DUMON_LEN
+ENTTLN            ,EQU, 50B                          ; роль: COMMON ENTRY*: 40 слов; источник: S1:15449  ; полное имя: ENTRY_TAB_LEN
+ERRTRT      ,EQU, 18H'200'0OШ. TPAHCЛЯTOPA'231' ; роль: сообщение «ОШ. ТРАНСЛЯТОРА»; источник: FOREX_ROOT.mad:112  . полное имя: ERR_TRANSLATOR_TEXT
+FIXM2             ,EQU, 2                            ; роль: режим NTR 2 / шаг 2; источник: S1:16801  ; полное имя: FIXED_MODE_2
 GOST_V                   ,EQU, 1H'212'                      ; роль: GOST-код «В»; источник: S1:15520
-GOST_VREMYA              ,EQU, 6HBPEMЯ-                     ; роль: GOST «ВРЕМЯ-»; источник: S1:15521
-GOST_YA                  ,EQU, 1H'231'                      ; роль: GOST-код «Я»; источник: S1:15523
+GOSTVR              ,EQU, 6HBPEMЯ-                     ; роль: GOST «ВРЕМЯ-»; источник: S1:15521  ; полное имя: GOST_VREMYA
+GOSTYA                  ,EQU, 1H'231'                      ; роль: GOST-код «Я»; источник: S1:15523  ; полное имя: GOST_YA
 MODE_6                   ,EQU, 6                            ; роль: режим NTR 6; источник: S1:15469
-MODE_RT_OCT22_DEC        ,EQU, 18                           ; роль: NTR 18 (десятичное) = 22 восьмеричное — реальное время; источник: S1:15491
-ONE_WORD                 ,EQU, 1                            ; роль: одно слово / константа 1; источник: S1:15450
-PAGE17_ADDR              ,EQU, 17B                          ; роль: адрес 17B в механизме страниц; источник: S1:16807
-PAGE_MODE_73401          ,EQU, =73401                       ; роль: режим/маска страницы 73401; источник: S1:16789
-PG_BLOCK_MASK            ,EQU, =4000                        ; роль: маска блока страницы =4000; источник: S1:16827
-PG_EX67_CODE             ,EQU, =:11 4037 77                 ; роль: код экстракода 67; источник: S1:16793
-PG_FLAG_SHIFT            ,EQU, 64+12                        ; роль: выделение флага страницы; источник: S1:16790
-PG_GO_CODE_1             ,EQU, =:00 2677                    ; роль: код перехода GO; источник: S1:16829
-PG_GO_CODE_2             ,EQU, =:00 6736 77                 ; роль: код перехода GO (вариант); источник: S1:16830
-PG_WORD_SHIFT            ,EQU, 64-20                        ; роль: выделение слова адреса страницы; источник: S1:16798
-PRINT_BLOCK_LEN          ,EQU, 002                          ; роль: длина блока описания печати INF; источник: S1:15518
-REAL_MODE_3              ,EQU, 3                            ; роль: режим NTR 3 (вещественный); источник: S1:15495
-RET_LINK_REG             ,EQU, 13                           ; роль: номер индексного регистра связывания M13; источник: S1:15467
-RM_WORDS_4               ,EQU, 4                            ; роль: COMMON RM*: 4 слова; источник: S1:16786
-STACK_OFF_M2             ,EQU, -2                           ; роль: ; (COMM) ; S1:16800 M14 = -2 (счётчик); источник: S1:16800
-TEXT_LO_GEN              ,EQU, 8HLO*GEN                     ; роль: TEXT-имя оверлея LO*GEN; источник: S1:15526
-TEXT_LO_SYN              ,EQU, 8HLO*SYN                     ; роль: TEXT-имя оверлея LO*SYN; источник: S1:15525
-TIME_SCALE               ,EQU, =R100.0                      ; роль: масштаб пересчёта времени в секунды; источник: S1:15494
-TIME_SEP_A               ,EQU, =6H'''17''17''17''17''17'    ; роль: разделители времени (S1:15499); источник: S1:15499
-TIME_SEP_B               ,EQU, =6H'17''17''17''''17''17'    ; роль: разделители времени (S1:15500); источник: S1:15500
-TIME_SEP_C               ,EQU, =6H'''''''16'''''            ; роль: разделители времени (S1:15501); источник: S1:15501
-LINK_REG_15            ,EQU, 15                         ; роль: номер регистра связывания M15; источник: S1:16796,16826
-PG_STEP_2              ,EQU, 2                          ; роль: шаг обхода INFLOA в PG_COPY_LOOP; источник: S1:16801,16804
+MRT22D        ,EQU, 18                           ; роль: NTR 18 (десятичное) = 22 восьмеричное — реальное время; источник: S1:15491  ; полное имя: MODE_RT_OCT22_DEC
+ONEW                 ,EQU, 1                            ; роль: одно слово / константа 1; источник: S1:15450  ; полное имя: ONE_WORD
+PG17AD              ,EQU, 17B                          ; роль: адрес 17B в механизме страниц; источник: S1:16807  ; полное имя: PAGE17_ADDR
+PGMD73          ,EQU, =73401                       ; роль: режим/маска страницы 73401; источник: S1:16789  ; полное имя: PAGE_MODE_73401
+PGBLKM            ,EQU, =4000                        ; роль: маска блока страницы =4000; источник: S1:16827  ; полное имя: PG_BLOCK_MASK
+PG67CD             ,EQU, =:11 4037 77                 ; роль: код экстракода 67; источник: S1:16793  ; полное имя: PG_EX67_CODE
+PGFLGS            ,EQU, 64+12                        ; роль: выделение флага страницы; источник: S1:16790  ; полное имя: PG_FLAG_SHIFT
+PGGO1             ,EQU, =:00 2677                    ; роль: код перехода GO; источник: S1:16829  ; полное имя: PG_GO_CODE_1
+PGGO2             ,EQU, =:00 6736 77                 ; роль: код перехода GO (вариант); источник: S1:16830  ; полное имя: PG_GO_CODE_2
+PGWDSH            ,EQU, 64-20                        ; роль: выделение слова адреса страницы; источник: S1:16798  ; полное имя: PG_WORD_SHIFT
+PRBKLN          ,EQU, 002                          ; роль: длина блока описания печати INF; источник: S1:15518  ; полное имя: PRINT_BLOCK_LEN
+RMOD3              ,EQU, 3                            ; роль: режим NTR 3 (вещественный); источник: S1:15495  ; полное имя: REAL_MODE_3
+RETLR             ,EQU, 13                           ; роль: номер индексного регистра связывания M13; источник: S1:15467  ; полное имя: RET_LINK_REG
+RMWD4               ,EQU, 4                            ; роль: COMMON RM*: 4 слова; источник: S1:16786  ; полное имя: RM_WORDS_4
+STKOF2             ,EQU, -2                           ; роль: ; (COMM) ; S1:16800 M14 = -2 (счётчик); источник: S1:16800  ; полное имя: STACK_OFF_M2
+TXLGEN              ,EQU, 8HLO*GEN                     ; роль: TEXT-имя оверлея LO*GEN; источник: S1:15526  ; полное имя: TEXT_LO_GEN
+TXLSYN              ,EQU, 8HLO*SYN                     ; роль: TEXT-имя оверлея LO*SYN; источник: S1:15525  ; полное имя: TEXT_LO_SYN
+TIMSCL               ,EQU, =R100.0                      ; роль: масштаб пересчёта времени в секунды; источник: S1:15494  ; полное имя: TIME_SCALE
+TIMSEA               ,EQU, =6H'''17''17''17''17''17'    ; роль: разделители времени (S1:15499); источник: S1:15499  ; полное имя: TIME_SEP_A
+TIMSEB               ,EQU, =6H'17''17''17''''17''17'    ; роль: разделители времени (S1:15500); источник: S1:15500  ; полное имя: TIME_SEP_B
+TIMSEC               ,EQU, =6H'''''''16'''''            ; роль: разделители времени (S1:15501); источник: S1:15501  ; полное имя: TIME_SEP_C
+LNK15            ,EQU, 15                         ; роль: номер регистра связывания M15; источник: S1:16796,16826  ; полное имя: LINK_REG_15
+PGSTP2              ,EQU, 2                          ; роль: шаг обхода INFLOA в PGCOPL; источник: S1:16801,16804  ; полное имя: PG_STEP_2
 C ---- конец блока констант ----
 
-C----- ~0o510303 INIT_FOREX (INITFOR*): точка входа, инициализация (адреса оценочные) ---
+C----- ~0o510303 INITFO (INITFOR*): точка входа, инициализация (адреса оценочные) ---
   FOREX*:,NAME,                    ; S1:15448  имя модуля
-  ENTRY*   :,LC,ENTRY_TAB_LEN.               ; S1:15449  COMMON, 50B=0o50=40 слов (S4)
-  FLGEX*   :,LC,ONE_WORD.                 ; S1:15450  COMMON, 1 слово
-  NOLISFL* :,LC,ONE_WORD.                 ; S1:15451  COMMON, 1 слово
-  FULISFL* :,LC,ONE_WORD.                 ; S1:15452  COMMON, 1 слово
-  CHECKFL* :,LC,1.                 ; S1:15453  COMMON, 1 слово
-  *DUMON*  :,LC,DUMON_LEN.                 ; S1:15454  COMMON, 5 слов (0o4022+)
-  A/I0:,LC,ONE_WORD.                      ; S1:15455  COMMON, 1 слово (0o4007)
-  DATE_PRINT:,SUBP,.                  ; (DATAPR*)                  ; S1:15456  E DATAPR* (S4:198)
-  PAGE_TAKE :,SUBP,.                  ; (TAK/PG)                  ; S1:15457  внешняя (S4:204)
-  PAGE_GIVE :,SUBP,.                  ; (GIV/PG)                  ; S1:15458  внешняя (S4:200)
-  OCT_DEC:,SUBP,.                     ; (OCTTDEC)                  ; S1:15459  E OCTTDEC (S4:202)
+  ENTRY*   :,LC,ENTTLN.               ; S1:15449  COMMON, 50B=0o50=40 слов (S4)
+  FLGEX*   :,LC,ONEW.                 ; S1:15450  COMMON, 1 слово
+  NOLISF :,LC,ONEW.                 ; S1:15451  COMMON, 1 слово  . полное имя: NOLISFL*
+  FULISF :,LC,ONEW.                 ; S1:15452  COMMON, 1 слово  . полное имя: FULISFL*
+  CHECKF :,LC,1.                 ; S1:15453  COMMON, 1 слово  . полное имя: CHECKFL*
+  *DUMON  :,LC,DUMMYL.                 ; S1:15454  COMMON, 5 слов (0o4022+)  . полное имя: *DUMON*
+  A/I0:,LC,ONEW.                      ; S1:15455  COMMON, 1 слово (0o4007)
+  DATAPR:,SUBP,.                  ; (DATAPR)                  ; S1:15456  E DATAPR (S4:198)  . полное имя: DATE_PRINT
+  PAGETK :,SUBP,.                  ; (TAK/PG)                  ; S1:15457  внешняя (S4:204)  . полное имя: PAGE_TAKE
+  PAGEGV :,SUBP,.                  ; (GIV/PG)                  ; S1:15458  внешняя (S4:200)  . полное имя: PAGE_GIVE
+  OCTTDE:,SUBP,.                     ; (OCTTDE)                  ; S1:15459  E OCTTDE (S4:202)  . полное имя: OCT_DEC
   FOREX:,SUBP,                     ; S1:15460  E FOREX   (S4:199)
   CONST:,SUBP,                     ; S1:15461  E CONST   (S4:197)
   COMEQ:,SUBP,                     ; S1:15462  E COMEQ   (S4:196)
   OPRTR:,SUBP,.                    ; S1:15463  E OPRTR   (S4:203)
   ПP   :,SUBP,                     ; S1:15464  E ПP      (S4:205)
-  *A*  :,LC,BUFFER_A_LEN.                 ; S1:15465  COMMON, 4000B=0o4000=2048 слов (S4)
-  INIT_FOREX:,ENTRY,.                ; (INITFOR*)                ; S1:15466  ENTRY; загрузка по 0o1770 (S2:32)
-  0o510300  ,ITA,RET_LINK_REG.               ; S1:15467  M13 <- accumulating word
+  *A*  :,LC,BUFALN.                 ; S1:15465  COMMON, 4000B=0o4000=2048 слов (S4)
+  INITFO:,ENTRY,.                ; (INITFOR*)                ; S1:15466  ENTRY; загрузка по 0o1770 (S2:32)  . полное имя: INIT_FOREX
+  0o510300  ,ITA,RETLR.               ; S1:15467  M13 <- accumulating word
   0o510300  ,ATX,RET.              ; S1:15468  RET <- accumulator (adres возврата)
   0o510301  ,*57,MODE_6.                ; S1:15469  Э57 6 (уст. режима)
   0o510301  ,ATX,TIME.             ; S1:15470  TIME <- acc
   0o510302  ,XTA,.                 ; S1:15471
-  0o510302  ,ATX,*DUMON*+3         ; S1:15472  *DUMON*+3 <- acc
+  0o510302  ,ATX,*DUMON+3         ; S1:15472  *DUMON*+3 <- acc
   0o510303  14,VTM,ENTRY*          ; S1:15473  M14 <- адрес ENTRY* (база COMMON)
-  0o510303  ,ITA,BASE_REG14                ; S1:15474  acc <- M14
-  0o510304  ,ATX,*DUMON*           ; S1:15475  *DUMON* <- acc
-  0o510305  ,XTA,NOLISFL*          ; S1:15476
-  0o510305  ,ATX,*DUMON*+2         ; S1:15477
-  0o510306  ,UIA,DATE_PRINT_RETURN (NPR)               ; S1:15478  UIA -> NPR (возврат из DATAPR*)
-  0o510306  ,CALL,DATE_PRINT          ; S1:15479  vjm 74010(15) — M15 = возврат
-  DATE_PRINT_RETURN:,XTA,FULISFL*     ; (NPR)                ; S1:15480
-  0o510307  ,ATX,*DUMON*+1         ; S1:15481
-  0o510307  ,XTA,CHECKFL*          ; S1:15482
-  0o510310  ,ATX,*DUMON*+4         ; S1:15483
-  0o510310  ,CALL,PAGE_GIVE.  ; (GIV/PG)          ; S1:15484  vjm 74012(15)
+  0o510303  ,ITA,BS14R                ; S1:15474  acc <- M14
+  0o510304  ,ATX,*DUMON           ; S1:15475  *DUMON* <- acc
+  0o510305  ,XTA,NOLISF          ; S1:15476
+  0o510305  ,ATX,*DUMON+2         ; S1:15477
+  0o510306  ,UIA,DPRTN (NPR)               ; S1:15478  UIA -> NPR (возврат из DATAPR)
+  0o510306  ,CALL,DATAPR          ; S1:15479  vjm 74010(15) — M15 = возврат
+  DPRTN:,XTA,FULISF     ; (NPR)                ; S1:15480  ; полное имя: DATE_PRINT_RETURN
+  0o510307  ,ATX,*DUMON+1         ; S1:15481
+  0o510307  ,XTA,CHECKF          ; S1:15482
+  0o510310  ,ATX,*DUMON+4         ; S1:15483
+  0o510310  ,CALL,PAGEGV.  ; (GIV/PG)          ; S1:15484  vjm 74012(15)
 
-C----- 0o510315  LOAD_OVERLAYS (LOREX): загрузка оверлеев ---------------------------------
-C  XTS помещает в аккумулятор адрес TEXT-константы; LOADANGO читает по
+C----- 0o510315  LODOVL (LOREX): загрузка оверлеев ---------------------------------
+C  XTS помещает в аккумулятор адрес TEXT-константы; LOADAN читает по
 C  этому адресу пару «имя (TEXT), дескриптор» и грузит оверлей по 0o22654.
 C  В скомпилированном корне константы находятся по адресам 0o4031/0o4032
 C  (физические слова ленты 0o510345/0o510346, см. ниже).
-  LOAD_OVERLAYS:,ENTRY,.              ; (LOREX)                   ; S1:15485  ENTRY
+  LODOVL:,ENTRY,.              ; (LOREX)                   ; S1:15485  ENTRY  . полное имя: LOAD_OVERLAYS
   0o510315  ,XTS,LO*SYN            ; S1:15486  acc <- адрес LO*SYN = 0o4031
-  0o510315  ,CALL,LOADANGO.        ; S1:15487  vjm 74022(15) -> LOADANGO
+  0o510315  ,CALL,LOADAN.        ; S1:15487  vjm 74022(15) -> LOADAN
   0o510316  ,XTS,LO*GEN            ; S1:15488  acc <- адрес LO*GEN = 0o4032
-  0o510316  ,CALL,LOADANGO.        ; S1:15489  vjm 74022(15) -> LOADANGO
+  0o510316  ,CALL,LOADAN.        ; S1:15489  vjm 74022(15) -> LOADAN
 
-C----- 0o510317  PRINT_TIME (RMON): печать времени трансляции --------------------------
-  PRINT_TIME:,ENTRY,.                 ; (RMON)                    ; S1:15490  ENTRY
-  0o510317  ,NTR,MODE_RT_OCT22_DEC                ; S1:15491  ntr 22 (octal)
+C----- 0o510317  PRTIME (RMON): печать времени трансляции --------------------------
+  PRTIME:,ENTRY,.                 ; (RMON)                    ; S1:15490  ENTRY  . полное имя: PRINT_TIME
+  0o510317  ,NTR,MRT22D                ; S1:15491  ntr 22 (octal)
   0o510317  ,*57,MODE_6.                ; S1:15492
   0o510320  ,A-X,TIME.             ; S1:15493  время счёта
-  0o510320  ,A*X,TIME_SCALE           ; S1:15494  масштаб 100.0
-  0o510321  ,NTR,REAL_MODE_3                 ; S1:15495
+  0o510320  ,A*X,TIMSCL           ; S1:15494  масштаб 100.0
+  0o510321  ,NTR,RMOD3                 ; S1:15495
   0o510321  ,A+X,A/I0              ; S1:15496
   0o510322  ,AEX,A/I0              ; S1:15497
-  0o510322  ,CALL,OCT_DEC          ; S1:15498  dec print
-  0o510323  ,APX,TIME_SEP_A   ; S1:15499  разделители времени
-  0o510323  ,AUX,TIME_SEP_B   ; S1:15500
-  0o510324  ,AOX,TIME_SEP_C            ; S1:15501
+  0o510322  ,CALL,OCTTDE          ; S1:15498  dec print
+  0o510323  ,APX,TIMSEA   ; S1:15499  разделители времени
+  0o510323  ,AUX,TIMSEB   ; S1:15500
+  0o510324  ,AOX,TIMSEC            ; S1:15501
   0o510324  ,ATX,TIME.             ; S1:15502
   0o510325  13,VTM,TTEX            ; S1:15503  M13 = база текстовых констант
-  PRINT_MESSAGE:,*64,INF              ; (PRIN)                    ; S1:15504  *64 4037
+  PRTMSG:,*64,INF              ; (PRIN)                    ; S1:15504  *64 4037  ; полное имя: PRINT_MESSAGE
   0o510327  ,NTR,MODE_6.                ; S1:15505
-  0o510327  ,XTA,*DUMON*+3         ; S1:15506
+  0o510327  ,XTA,*DUMON+3         ; S1:15506
   0o510330  ,ATX,FLGEX*            ; S1:15507
   0o510330  ,WTC,RET.              ; S1:15508
   0o510331  13,VTM,.               ; S1:15509
-  0o510331  ,UJ,PAGE_TAKE.  ; (TAK/PG)            ; S1:15510  передача управления TAK/PG
+  0o510331  ,UJ,PAGETK.  ; (TAK/PG)            ; S1:15510  передача управления TAK/PG
 
-C----- 0o510332  ERR_TRANSLATOR (STOP/): аварийный выход -----------------------------------
-  ERR_TRANSLATOR:,ENTRY,.             ; (STOP/)                   ; S1:15511  ENTRY
+C----- 0o510332  ERRTRL (STOP/): аварийный выход -----------------------------------
+  ERRTRL:,ENTRY,.             ; (STOP/)                   ; S1:15511  ENTRY  . полное имя: ERR_TRANSLATOR
   0o510332  13,VTM,MIST            ; S1:15512
-  0o510332  ,ITA,RET_LINK_REG                ; S1:15513
-  0o510333  ,ATX,*DUMON*+3         ; S1:15514
-  0o510333  ,UJ,PRINT_MESSAGE (PRIN)               ; S1:15515
+  0o510332  ,ITA,RETLR                ; S1:15513
+  0o510333  ,ATX,*DUMON+3         ; S1:15514
+  0o510333  ,UJ,PRTMSG (PRIN)               ; S1:15515
 
 C----- ДАННЫЕ (0o510334-0o510347) -----------------------------------------
   0o510334  INF:13,,               ; S1:15516  блок описания печати
   0o510334  13,,                   ; S1:15517
-  0o510335  :,PRINT_BLOCK_LEN,.                ; S1:15518
+  0o510335  :,PRBKLN,.                ; S1:15518
   0o510335  8,,                    ; S1:15519
   0o510336  TTEX:,GOST,GOST_V      ; S1:15520  GOST-код «В»
-  0o510336  ,GOST,GOST_VREMYA          ; S1:15521  GOST «ВРЕМЯ-»
+  0o510336  ,GOST,GOSTVR          ; S1:15521  GOST «ВРЕМЯ-»
   0o510337  TIME:,OCT,             ; S1:15522  время (OCT)
-  0o510337  ,GOST,GOST_YA          ; S1:15523  GOST-код «Я»
-  0o510340  MIST:,GOST,ERR_TRANSLATOR_TEXT
+  0o510337  ,GOST,GOSTYA          ; S1:15523  GOST-код «Я»
+  0o510340  MIST:,GOST,ERRTRT
                                    ; S1:15524  GOST «ОШ. ТРАНСЛЯТОРА»
-  0o510345  LO*SYN:,TEXT,TEXT_LO_SYN  ; S1:15525  = 5457126371560000 (S3)
-  0o510346  LO*GEN:,TEXT,TEXT_LO_GEN  ; S1:15526  = 5457124745560000 (S3)
-  0o510347  RET:,BSS,ONE_WORD.            ; S1:15527  адрес возврата
+  0o510345  LO*SYN:,TEXT,TXLSYN  ; S1:15525  = 5457126371560000 (S3)
+  0o510346  LO*GEN:,TEXT,TXLGEN  ; S1:15526  = 5457124745560000 (S3)
+  0o510347  RET:,BSS,ONEW.            ; S1:15527  адрес возврата
   ,END,                           ; S1:15528
 
 C***********************************************************************
-C*  XTS-константы и передача управления LOADANGO (задание 4)              *
+C*  XTS-константы и передача управления LOADAN (задание 4)              *
 C*                                                                        *
 C*  Две TEXT-константы объявлены в конце корня (S1:15525-15526). В        *
 C*  скомпилированном модуле на monsys.9 они занимают слова 0o510345 и      *
@@ -162,11 +162,11 @@ C*  0o510346 (проверено декодером 6-бит TEXT: 5457126371560
 C*  «LO*SYN  », 5457124745560000 -> «LO*GEN  »). В адресном пространстве   *
 C*  модуля они видны как 0o4031 / 0o4032:                                  *
 C*     0o510315   xts 4031   ; acc := адрес LO*SYN                        *
-C*     0o510315   vjm 74022(15) ; CALL LOADANGO (M15 = адрес возврата)     *
+C*     0o510315   vjm 74022(15) ; CALL LOADAN (M15 = адрес возврата)     *
 C*     0o510316   xts 4032   ; acc := адрес LO*GEN                        *
-C*     0o510316   vjm 74022(15) ; CALL LOADANGO                           *
+C*     0o510316   vjm 74022(15) ; CALL LOADAN                           *
 C*                                                                        *
-C*  LOADANGO — внешняя подпрограмма (S1:15464 нет; S4:201 E LOADANGO).     *
+C*  LOADAN — внешняя подпрограмма (S1:15464 нет; S4:201 E LOADAN).     *
 C*  Она получает в аккумуляторе адрес пары «имя-TEXT + дескриптор» из      *
 C*  каталога зоны 64 (см. include/catalog.md) и грузит тело оверлея        *
 C*  с ленты по адресу 0o22654 (S2:33,59).                                  *
@@ -177,11 +177,11 @@ C*         `13,VTM,MIST` (S1:15512), `13,VTM,.` (S1:15509); в INITFOR*     *
 C*         `,ITA,13.` (S1:15467) записывает в M13 слово настройки.         *
 C*   M14 — база COMMON-блока ENTRY*: `14,VTM,ENTRY*` (S1:15473),           *
 C*         затем `,ITA,14` (S1:15474) — передача адреса в аккумулятор.     *
-C*   M15 — регистр связывания (linkage) CALL/RETURN: все `CALL,LOADANGO.`   *
+C*   M15 — регистр связывания (linkage) CALL/RETURN: все `CALL,LOADAN.`   *
 C*         компилируются в `vjm 74022(15)` — возврат через M15.            *
 C*   M16 — рабочий регистр INITFOR*: `vtm 74001(16)` на 0o510306,          *
 C*         затем `,ITA,16` на 0o510307 — используется при настройке       *
-C*         параметров перед вызовами DATAPR*/GIV/PG.                      *
+C*         параметров перед вызовами DATAPR/GIV/PG.                      *
 C*  (M13/M14/M15/M16 подтверждены дизассемблом ленты 0o510300-0o510316;   *
 C*   M14/M13 — также прямо из исходника S1.)                               *
 C***********************************************************************
@@ -224,70 +224,70 @@ C*  CONST, COMEQ, OPRTR, ПP — внешние подпрограммы кор�
 C*                                                                        *
 C*  В libra211.l21 они объявлены только как SUBP (S1:15461-15464); их       *
 C*  тел в этом файле нет. LIBREFER (S4:196-205) фиксирует их как внешние:   *
-C*      FOREX*  E COMEQ / E CONST / E DATAPR* / E FOREX / GIV/PG /          *
-C*              E LOADANGO / E OCTTDEC / E OPRTR / TAK/PG / E ПP           *
+C*      FOREX*  E COMEQ / E CONST / E DATAPR / E FOREX / GIV/PG /          *
+C*              E LOADAN / E OCTTDE / E OPRTR / TAK/PG / E ПP           *
 C*  Тела находятся в библиотеке 21 на ленте monsys.9 (TAPE:9/320240).      *
 C*  DTRAN в dispak их не нашёл (см. выше). Ниже — реально доступный        *
 C*  МАДЛЕН-текст модулей GIV/PG и TAK/PG (S1:16780-16836), которые          *
 C*  обеспечивают обмен страницами/памятью для FOREX*.                      *
 C***********************************************************************
 
-  PAGE_GIVE:,NAME,                    ; (GIV/PG)                    ; S1:16780  модуль выдачи страницы
-  INFLOAD*:LC,BLOCK,ALOAD          ; S1:16781
+  PAGEGV:,NAME,                    ; (GIV/PG)                    ; S1:16780  модуль выдачи страницы  ; полное имя: PAGE_GIVE
+  IFLOD:LC,BLOCK,ALOAD          ; S1:16781  ; полное имя: INFLOAD*
   ,CONT,INFLOA                     ; S1:16782
   ,CONT,INFDM                      ; S1:16783
   ,CONT,INFMD                      ; S1:16784
-  KCOUNT*:,LC,ONE_WORD.                   ; S1:16785
-  RM*:,LC,RM_WORDS_4                        ; S1:16786
-  PG_WORK_BASE:12,BASE,PG_WORK_BASE.  ; (*C)                   ; S1:16787  M12 = база
+  KCNT:,LC,ONEW.                   ; S1:16785  . полное имя: KCOUNT*
+  RM*:,LC,RMWD4                        ; S1:16786
+  PGWRKB:12,BASE,PGWRKB.  ; (*C)                   ; S1:16787  M12 = база  . полное имя: PG_WORK_BASE
   ,XTA,RM*+2                       ; S1:16788
-  ,AEX,PAGE_MODE_73401                      ; S1:16789
-  ,ASN,PG_FLAG_SHIFT                       ; S1:16790
-  ,ATX,PG_FLAG_SAVE.                     ; S1:16791
+  ,AEX,PGMD73                      ; S1:16789
+  ,ASN,PGFLGS                       ; S1:16790
+  ,ATX,PGFLSA.                     ; S1:16791
   13,UZA,.                         ; S1:16792
-  ,*72,PG_EX67_CODE                ; S1:16793
-  ,XTA,PAGE_MODE_73401                      ; S1:16794
+  ,*72,PG67CD                ; S1:16793
+  ,XTA,PGMD73                      ; S1:16794
   ,ATX,ALOAD.                      ; S1:16795
-  ,ATI,LINK_REG_15.                         ; S1:16796
+  ,ATI,LNK15.                         ; S1:16796
   ,AEX,RM*+2                       ; S1:16797
-  ,ASN,PG_WORD_SHIFT                       ; S1:16798
-  ,ATX,PG_SHIFT_WORD.                         ; S1:16799
-  PG_COMMON:14,VTM,STACK_OFF_M2  ; (COMM)                   ; S1:16800  M14 = -2 (счётчик)
-  PG_COPY_LOOP:14,UTC,PG_STEP_2.  ; (L/S)                    ; S1:16801
+  ,ASN,PGWDSH                       ; S1:16798
+  ,ATX,PGSHWD.                         ; S1:16799
+  PGCOMM:14,VTM,STKOF2  ; (COMM)                   ; S1:16800  M14 = -2 (счётчик)  ; полное имя: PG_COMMON
+  PGCOPL:14,UTC,PGSTP2.  ; (L/S)                    ; S1:16801  . полное имя: PG_COPY_LOOP
   ,XTA,INFLOA                      ; S1:16802
-  ,AEX,PG_SHIFT_WORD                          ; S1:16803
-  14,UTC,PG_STEP_2                         ; S1:16804
+  ,AEX,PGSHWD                          ; S1:16803
+  14,UTC,PGSTP2                         ; S1:16804
   ,ATX,INFLOA                      ; S1:16805
-  14,VLM,PG_COPY_LOOP.                      ; S1:16806  цикл по M14
-  ,XTA,PAGE17_ADDR.                        ; S1:16807
-  ,ATX,PG_SAVE_S                          ; S1:16808
-  ,ITA,LINK_REG_15.                         ; S1:16809
-  ,AEX,PG_EX67                         ; S1:16810
-  ,ATX,PG_EX67_SAVE                        ; S1:16811
-  ,XTA,PG_EX67_CONST                         ; S1:16812
-  ,CTX,PAGE17_ADDR.                        ; S1:16813
-  ,UJ,PAGE17_ADDR.                         ; S1:16814
-  PG_RESTORE17:,XTA,*S.                     ; S1:16815
-  ,ATX,PAGE17_ADDR.                        ; S1:16816
+  14,VLM,PGCOPL.                      ; S1:16806  цикл по M14
+  ,XTA,PG17AD.                        ; S1:16807
+  ,ATX,PGSAVS                          ; S1:16808
+  ,ITA,LNK15.                         ; S1:16809
+  ,AEX,PGX67                         ; S1:16810
+  ,ATX,PG67SA                        ; S1:16811
+  ,XTA,PG67CN                         ; S1:16812
+  ,CTX,PG17AD.                        ; S1:16813
+  ,UJ,PG17AD.                         ; S1:16814
+  PGRST7:,XTA,*S.                     ; S1:16815  . полное имя: PG_RESTORE17
+  ,ATX,PG17AD.                        ; S1:16816
   13,UJ,                           ; S1:16817
-  PG_EX67:,Z00,PG_RESTORE17                     ; S1:16818  экстракод 67
-  9,,ONE_WORD                             ; S1:16819
-  PG_EX67_CONST:,*67,PG_EX67_SAVE.                   ; S1:16820
-  PAGE_TAKE:,ENTRY,.                  ; (TAK/PG)                  ; S1:16821  ENTRY «взять страницу»
-  12,VTM,PG_WORK_BASE.                       ; S1:16822
-  ,XTA,PG_FLAG_SAVE.                     ; S1:16823
+  PGX67:,Z00,PGRST7                     ; S1:16818  экстракод 67  ; полное имя: PG_EX67
+  9,,ONEW                             ; S1:16819
+  PG67CN:,*67,PG67SA.                   ; S1:16820  . полное имя: PG_EX67_CONST
+  PAGETK:,ENTRY,.                  ; (TAK/PG)                  ; S1:16821  ENTRY «взять страницу»  . полное имя: PAGE_TAKE
+  12,VTM,PGWRKB.                       ; S1:16822
+  ,XTA,PGFLSA.                     ; S1:16823
   13,UZA,.                         ; S1:16824
   ,XTA,RM*+2                       ; S1:16825
-  ,ATI,LINK_REG_15.                         ; S1:16826
-  ,AAX,PG_BLOCK_MASK                       ; S1:16827
+  ,ATI,LNK15.                         ; S1:16826
+  ,AAX,PGBLKM                       ; S1:16827
   ,UIA,PG_GO.                         ; S1:16828
-  ,*72,PG_GO_CODE_1                   ; S1:16829
-  PG_PG_GO:,*72,PG_GO_CODE_2             ; S1:16830
-  ,UJ,PG_COMMON.                        ; S1:16831
-  PG_SHIFT_WORD     :,BSS,ONE_WORD.  ; (*W)                  ; S1:16832
-  PG_FLAG_SAVE: ,BSS,ONE_WORD.                  ; S1:16833
-  PG_EX67_SAVE  : ,BSS,ONE_WORD.                  ; S1:16834
-  PG_SAVE_S    : ,BSS,ONE_WORD.                  ; S1:16835
+  ,*72,PGGO1                   ; S1:16829
+  PGPGGO:,*72,PGGO2             ; S1:16830  ; полное имя: PG_PG_GO
+  ,UJ,PGCOMM.                        ; S1:16831
+  PGSHWD     :,BSS,ONEW.  ; (*W)                  ; S1:16832  . полное имя: PG_SHIFT_WORD
+  PGFLSA: ,BSS,ONEW.                  ; S1:16833  . полное имя: PG_FLAG_SAVE
+  PG67SA  : ,BSS,ONEW.                  ; S1:16834  . полное имя: PG_EX67_SAVE
+  PGSAVS    : ,BSS,ONEW.                  ; S1:16835  . полное имя: PG_SAVE_S
   ,END,GIV/PG  .                   ; S1:16836
 
 C***********************************************************************

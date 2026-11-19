@@ -1,0 +1,10 @@
+=== sha256 before ===
+97fb3196474abc3880f9d884fad6edafbefd7514da2e2c12ca24224e9a8608a8  /usr/local/share/besm6/2348
+97fb3196474abc3880f9d884fad6edafbefd7514da2e2c12ca24224e9a8608a8  /tmp/.private/azizz/opencode/re-forex/work/2348
+zone_decimal=1216 zones=5
+Written 5 zones (30 kbytes) from file build/FOREX_PERSO_2300.bin to disk 2348
+=== sha256 after ===
+97fb3196474abc3880f9d884fad6edafbefd7514da2e2c12ca24224e9a8608a8  /usr/local/share/besm6/2348
+98f16ac869b785be7775956926de728de2af6090d8df608fefe4ba9f5ebfd68e  /tmp/.private/azizz/opencode/re-forex/work/2348
+=== dump == image? ===
+YES

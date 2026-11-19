@@ -1,0 +1,350 @@
+C***********************************************************************
+C* FOREX_DECODER_DISASM — скомпилированные тела внешних подпрограмм       *
+C*                         DATE_PRINT (DATAPR*) и OCT_DEC (OCTTDEC)       *
+C*                                                                       *
+C* СОСТАВ (три секции; каждая — подлинный МАДЛЕН-исходник Дубны,          *
+C*         скомпилированный DTRAN 01.06.84 через dispak и дизассембли-    *
+C*         рованный обратно; машинные слова сверены с build/RUNTIME_*):  *
+C*   1 DPRNT  — DATAPR*, печать даты DD MON YY HH.MM   S5:7645-7733       *
+C*   2 OCTDC  — OCTTDEC (DECODER/MONSYS), число → 6 ISO-цифр S6:5042-5084 *
+C*   3 OCTEX  — OCTTDEC (EXFOR, 08.12.80), вариант       S7:427-459       *
+C*                                                                       *
+C* ПРОИСХОЖДЕНИЕ / ИСТОЧНИКИ:                                             *
+C*  S5 /home/azizz/besm6.github.io/sources/dubna/besmmons/system1.txt     *
+C*  S6 /home/azizz/besm6.github.io/sources/dubna/besmmons/system2.txt     *
+C*  S7 /home/azizz/besm6.github.io/sources/dubna/besmtask/exfor.vv        *
+C*  LINK-ячейки 0o74010=DATAPR*, 0o74013=OCTTDEC подтверждены              *
+C*     docs/06-address-map.md §3; там же 0o74011=TAK/PG, 0o74012=GIV/PG. *
+C*                                                                       *
+C* ПОИСК ТЕЛ НА ЛЕНТЕ (отрицательный результат, честно):                  *
+C*  monsys.9 0o74000..0o74047 — 40 IDENTICAL `yta,ati 15` (LINK-заглушки; *
+C*    Confirmation от родительского агента). Тел там НЕТ.                 *
+C*  13 DMS-заголовков 0o200003 на ленте: CBDPR/CONTROL/ENDPRO/GLINK/       *
+C*     A/PRINTM/BCDAPRT*/F/OPT/ERRDIAG*/LO*SYN/LO*GEN/TASK73 — имен       *
+C*     DATAPR*/OCTTDEC среди них нет.                                     *
+C*  Имена DATAPR*/OCTTDEC встречаются 25 раз каждый — это LIBREFER-       *
+C*     каталоги (напр. 0o536167/0o536172, 0o610053/0o610066), не тела.    *
+C*  Пул констант EXFOR-варианта найден на ленте 0o411311-0o411333         *
+C*     (B40/1=0o411316, C10=0o411327, C1/10=0o411332) — скомпилированный *
+C*     фрагмент OCTTDEC в поле 4. его код/константы сверены с S7.         *
+C*     Тела же полной формы (с data-таблицами) на ленте не найдены.       *
+C*  => тела получены компиляцией авторских исходников Дубны через DTRAN   *
+C*     в эмуляторе dispak (WORKVOL=80, LIBRA:2), с последующей поразрядной *
+C*     перекодировкой листинга DTRAN в build/RUNTIME_*.words.              *
+C*                                                                       *
+C* ИМЕНОВАНИЕ МЕТОК (требование родителя): все метки и EQU ≤6 символов,   *
+C* первые 6 уникальны. Полное осмысленное имя — в комментарии и в xref    *
+C* ниже. Префиксы: DP* = DATE_PRINT, OS* = OCT_DEC/SYSTEM2,               *
+C* OX* = OCT_DEC/EXFOR, O* (без префикса) = общие константы OCT.          *
+C***********************************************************************
+
+C ---- КОНСТАНТЫ/ЛИТЕРАЛЫ (все числовые операнды -> ,EQU,) ----
+C------ DATAPR*: регистры, сдвиги, immediate ---------------------------
+DR13    ,EQU, 13                  ; M13 — базовый регистр DATE_PRINT; S5:7646
+DR14    ,EQU, 14                  ; M14 — регистр BASE/DARET; S5:7646
+DR15    ,EQU, 15                  ; M15 — рабочий регистр; S5:7661
+D64P16  ,EQU, 64+16               ; сдвиг DD из FUN 67B; S5:7664  ; DATE_DAY_SHIFT
+D64P35  ,EQU, 64+35               ; сдвиг MM из FUN 67B; S5:7668  ; DATE_MONTH_SHIFT
+D64M24  ,EQU, 64-24               ; индекс месяца; S5:7677  ; DATE_MONTH_INDEX_SHIFT
+D64M14  ,EQU, 64-14               ; сдвиг YY; S5:7679  ; DATE_YEAR_SHIFT
+D64M22  ,EQU, 64-22               ; сдвиг HH.MM; S5:7684  ; DATE_TIME_SHIFT
+DS06    ,EQU, 6                   ; NTR 6 — число полей даты; S5:7658
+DS03    ,EQU, 3                   ; NTR 3; S5:7665
+DS02    ,EQU, 2                   ; NTR 2; S5:7674
+DS01    ,EQU, 1                   ; UTM 1 / MTJ 13; S5:7690
+DS24    ,EQU, 24                  ; VTM 24; S5:7673
+DS16    ,EQU, 16                  ; сдвиг 64+16 компонента; S5:7664
+DS00    ,EQU, 0                   ; нулевой индекс; S5:7645
+DN02    ,EQU, -2                  ; XTS -2 (DATE*); S5:7659
+DN03    ,EQU, -3                  ; XTS -3 (MONTHFI); S5:7663
+DN04    ,EQU, -4                  ; XTS -4; S5:7676
+DN06    ,EQU, -6                  ; UTM -6; S5:7694
+DN08    ,EQU, -8                  ; XTS -8; S5:7688
+DN01    ,EQU, -1                  ; Z00 -1; S5:7704
+DN05    ,EQU, -5                  ; Z00 -5; S5:7703
+DV067   ,EQU, 67B                 ; *50 67B — FUN 67B системная дата; S5:7657
+DV032   ,EQU, 32B                 ; XS-индекс DATE0; S5:7659  ; (=0o32)
+DV043   ,EQU, 43B                 ; индекс MONTHFI; S5:7663
+DV033   ,EQU, 33B                 ; индекс DATE1; S5:7664
+DV047   ,EQU, 47B                 ; индекс MARR; S5:7670
+DV030   ,EQU, 30B                 ; VTM 30B; S5:7672
+DV035   ,EQU, 35B                 ; индекс YMASK; S5:7678
+DV044   ,EQU, 44B                 ; индекс DATE2; S5:7683
+DV034   ,EQU, 34B                 ; индекс TMASK; S5:7685
+DV024   ,EQU, 24B                 ; индекс DATE3; S5:7687
+DV027   ,EQU, 27B                 ; индекс DATE4; S5:7688
+DV025   ,EQU, 25B                 ; AUX 25B в PREPDAT; S5:7700
+DV026   ,EQU, 26B                 ; AOX 26B в PREPDAT; S5:7700
+DV012   ,EQU, 12B                 ; ATX 12B; S5:7699
+DV013   ,EQU, 13B                 ; ATX 13B; S5:7701
+DV014   ,EQU, 14B                 ; UTM 14B; S5:7690
+DV773   ,EQU, 7773B               ; AMX 7773B; S5:7708  ; (=0o7773)
+DV777   ,EQU, 7777B               ; AMX 7777B; S5:7709  ; (=0o7777)
+DFUN67  ,EQU, 67                  ; FUN 67B код экстракода даты; S5:7657
+C------ DATAPR*: DOUBLE WORD-ЛИТЕРАЛЫ (см. машинные слова ниже) ---------
+DW00    ,EQU, 4020741740003417    ; ISO '201' '200'7; DATE0; S5:7707
+DW01    ,EQU, 3700055000000017    ; ISO '055' + DATE1 '200'; S5:7707-7708
+DW02    ,EQU, 0000000003600000    ; CONT 1H'055'; S5:7709
+DW03    ,EQU, 4620741717426442    ; ISO '231' ЯHB; MARR; S5:7712
+DW04    ,EQU, 150224421302006     ; GOST ФEBMAP; MARR+1; S5:7713
+DW05    ,EQU, 1720000000000000    ; GOST АПPMAЯ; MARR+2; S5:7714
+DW06    ,EQU, 0000000000000000    ; GOST ИЮHИЮЛ; MARR+3; S5:7715
+DW07    ,EQU, 1002104314222455    ; GOST ABГCEH; MARR+4; S5:7716
+DW10    ,EQU, 0000003600000034    ; GOST ' 00.00'; DATE3; S5:7718
+DW11    ,EQU, 0000141700007417    ; TMASK 6H03 0; S5:7720
+DW12    ,EQU, 0000000000007417    ; DMASK (BSS .); S5:7719
+DW13    ,EQU, 1612221516360000    ; YMASK 6H0000  .; S5:7721
+DW14    ,EQU, 1102245203607417    ; GOST OKTHOЯ; S5:7722
+DW15    ,EQU, 0000000000000776    ; MONTHFI OCT 00 776; S5:7724
+DW16    ,EQU, 0000000000036074    ; константа 0o36074; S5:7723
+DW17    ,EQU, 0060740003607400    ; =6H'3''17''17''17' (PREPDAT); S5:7701
+DW20    ,EQU, 2020172020172020    ; =6H'17''17'''''''' (PREPDAT); S5:7700
+C------ OCT_DEC (SYSTEM2): регистры/литералы ---------------------------
+OR12    ,EQU, 12                  ; M12 — база DECODER; S6:5044
+OR13    ,EQU, 13                  ; M13; S6:5055
+OR14    ,EQU, 14                  ; M14 — UTC/VLM; S6:5046
+OR15    ,EQU, 15                  ; M15; S6:5056
+ON02    ,EQU, -2                  ; UTM -2 в RET; S7:443
+ON03    ,EQU, -3                  ; XTS -3; S7:433
+ON04    ,EQU, -4                  ; UTM -4; S7:440
+OI64    ,EQU, 64                  ; ASN 64 / YTA 64; S6:5049, S7:436
+OI64M8  ,EQU, 64-8                ; ASN 64-8 в /6SYMB; S6:5079
+O64M24 ,EQU, 64-24               ; ASN 64-24; S7:445
+OI10    ,EQU, 10                  ; NTR 10; S6:5075
+OI03    ,EQU, 3                   ; NTR 3; S7:431
+OI02    ,EQU, 2                   ; NTR 2; S7:447
+OI01    ,EQU, 1                   ; WTC 1; S7:449
+OV015   ,EQU, 15B                 ; AAX B40/1; S7:429  ; (=0o15)
+OV016   ,EQU, 16B                 ; A*X C10; S7:437    ; (=0o16)
+OV017   ,EQU, 17B                 ; A*X C1/10; S7:434  ; (=0o17)
+OV024   ,EQU, 24B                 ; AUX 24B; S6:5065
+OV100   ,EQU, 100B                ; YTA 100B = 64; S7:436
+OV020   ,EQU, 20B                 ; AUX 20B; S6:5080
+OV021   ,EQU, 21B                 ; AOX 21B; S6:5076
+OMSK15  ,EQU, 0000000000077777    ; MASK15; S6:5074
+OINT0   ,EQU, 0                   ; INT 0; S6:5075
+OREAL1  ,EQU, 2030000000000000    ; C1 REAL 1.0; S6:5082
+ORL10 ,EQU, 2112000000000000    ; REAL 10.0; S6:5081
+ORL100,EQU, 2174400000000000    ; REAL 100.0; S6:5080
+ORL1K ,EQU, 2257500000000000    ; REAL 1000.0; S6:5079
+ORL10K,EQU, 2351610000000000    ; REAL 10000.0; S6:5078
+ORL1E5,EQU,2434152000000000    ; REAL 100000.0; S6:5077
+OZEROS  ,EQU, 2020202020200000    ; ZERO ISO '000000'; S6:5083
+OXB40   ,EQU, 0017777777777777    ; B40/1 LOG; S7:454
+OXC10   ,EQU, 4000000000000012    ; C10 LOG; S7:455
+OXC1T   ,EQU, 4001463146314632    ; C1/10 LOG; S7:456
+OXMSK   ,EQU, 0360741703607417    ; MSK GOST 6H' '; S7:457
+OXZER   ,EQU, 2020202020200000    ; ZERO ISO 6H000000; S7:458
+
+C***********************************************************************
+C 1. DPRNT — DATE_PRINT (DATAPR*), S5:7645-7733
+C    полное имя: DATE_PRINT; LINK 0o74010; точка входа INIT_FOREX S1:15479
+C***********************************************************************
+      DPRNT   :,NAME,  ; полное имя: DATE_PRINT  ; DATAPR*  ; S5:7645
+      DPDAT   ,LC,2    ; полное имя: DATE_BLOCK (DATA*), 2 слова; S5:7646
+      DPP8    ,SUBP,   ; полное имя: PRINT8 (макрос ,PRINT,); S5:7695
+
+C Слово 0000 @0o000000 = 0o0000000000200003  (DMS-маркер, см. build/RUNTIME_DATAPR.words)
+C Слово 0001 @0o000001 = 0o4441644160621200  (TEXT 'DATAPR*')
+DP000   ,BSS,.        ; точка входа DATAPR* ( метка *0000B DTRAN ); S5:7647
+        ,ITS,DR13     ; ITS 13 — сохранить базу; S5:7647
+        ,VTM,DP003    ; VTM *0003B — перейти к DARET; S5:7648
+
+DP001   ,ENTRY,       ; DATE* — полное имя: DATE_GET; S5:7654
+C Слово 0004 @0o000004 = 0o0037000667000000  (вход DATE*)
+        ,ITS,DS00     ; ITS без аргумента; S5:7655
+        ,*50,DV067    ; FUN 67B — DD.MM.YY.HH.MM; S5:7657
+        ,NTR,DS06     ; NTR 6; S5:7658
+        ,UJ,DP001     ; UJ DATE* (возврат); S5:7660
+
+DP003   ,BSS,.        ; DARET — полное имя: DATE_PARSE; S5:7661
+C Слово 0005 @0o000005 = 0o6403003274037776
+        ,XTS,DV032    ; XTS 32B — DATE0; S5:7662
+        ,XTS,DN02     ; XTS -2; S5:7659
+        ,AUX,DV043    ; AUX 43B — MONTHFI; S5:7663
+        ,ASN,D64P16   ; ASN 64+16 — выделить DD; S5:7664
+        ,AOX,DV033    ; AOX 33B — DATE1; S5:7664
+        ,XTS,DN03     ; XTS -3; S5:7663
+        ,AAX,DV047    ; AAX 47B — MARR; S5:7670
+        ,ASN,D64P35   ; ASN 64+35 — выделить MM; S5:7668
+        ,ATX,DS00     ; ATX — записать; S5:7669
+        ,YTA,DS00     ; YTA; S5:7670
+        ,VTM,DS24     ; VTM 24; S5:7673
+        ,UZA,DP012    ; UZA L1; S5:7674
+        ,VTM,DS00     ; VTM; S5:7675
+
+DP012   ,BSS,.        ; L1 — метка цикла вывода даты; S5:7677
+C Слово 0015 @0o000015 = 0o0036005074037774
+        ,WTC,DS00     ; WTC; S5:7677
+        ,XTA,DV035    ; XTA 35B — YMASK; S5:7678
+        ,ASN,DR15     ; ASN 64 (через M15); S5:7678
+        ,ASN,D64M24   ; ASN 64-24 — индекс месяца; S5:7677
+        ,XTS,DN04     ; XTS -4; S5:7676
+        ,ASN,D64M14   ; ASN 64-14 — YY; S5:7679
+        ,AUX,DV044    ; AUX 44B — DATE2; S5:7682
+        ,AOX,DS00     ; AOX; S5:7682
+        ,AOX,DV034    ; AOX 34B — DATE3; S5:7685
+        ,XTS,DN04     ; XTS -4; S5:7685
+        ,ASN,D64M22   ; ASN 64-22 — HH.MM; S5:7684
+        ,AUX,DV043    ; AUX 43B — MONTHFI; S5:7686
+        ,AOX,DV024    ; AOX 24B — DATE4; S5:7687
+        ,XTS,DV035    ; XTS 35B — YMASK; S5:7688
+        ,XTS,DN08     ; XTS -8; S5:7688
+        ,MTJ,DR13     ; MTJ 13; S5:7689
+        ,UZA,DP023    ; UZA L2; S5:7690
+        ,UTM,DS01     ; UTM 1; S5:7690
+
+DP023   ,BSS,.        ; L2 — метка печати; S5:7691
+        ,UTC,DP034    ; UTC L3; S5:7692
+        ,*64,DS00     ; экстракод *64; S5:7692
+        ,UTM,DN06     ; UTM -6; S5:7694
+        ,XTA,DS00     ; XTA; S5:7694
+        ,STI,DR13     ; STI 13; S5:7695
+        ,UJ,DS00      ; UJ (возврат); S5:7696
+
+DP026   ,ENTRY,       ; PREPDAT — полное имя: DATE_PREPARE; S5:7698
+        ,ITS,DR13     ; ITS 13; S5:7698
+        ,VJM,DP001    ; VJM DATE*; S5:7699
+        ,ATX,DS00     ; ATX; S5:7699
+        ,ASN,D64M14   ; ASN 64-14; S5:7699
+        ,AUX,DV024    ; AUX 24B
+        ,AOX,DV027    ; AOX 27B
+        ,STX,DPDAT+1  ; STX DATA*+1; S5:7700
+        ,AUX,DV025    ; AUX 25B
+        ,AOX,DV026    ; AOX 26B
+        ,STX,DPDAT    ; STX DATA*; S5:7701
+        ,STI,DR13     ; STI 13; S5:7702
+        ,UJ,DP000     ; UJ DATAPR*; S5:7702
+
+DP034   ,BSS,.        ; L3 — метка выхода; S5:7703
+        ,AMX,DV773    ; AMX 7773B; S5:7703
+        ,AMX,DV777    ; AMX 7777B; S5:7704
+C ---- DOUBLE WORD-ЛИТЕРАЛЫ DATAPR* (побайтовые метки) -------------------
+C Слово 0035 @0o000035 = 0x4020741740003417 -> DW00
+        ,LOG,DW00     ; DATE0 '201' '200'7; S5:7707
+        ,LOG,DW01     ; DATE1 / '055'; S5:7707
+        ,LOG,DW02     ; CONT 1H'055'; S5:7709
+        ,LOG,DW03     ; MARR '231' ЯHB; S5:7712
+        ,LOG,DW04     ; MARR ФEBMAP; S5:7713
+        ,LOG,DW05     ; MARR АПPMAЯ; S5:7714
+        ,LOG,DW06     ; MARR ИЮHИЮЛ; S5:7715
+        ,LOG,DW07     ; MARR ABГCEH; S5:7716
+        ,LOG,DW10     ; DATE3 ' 00.00'; S5:7718
+        ,LOG,DW11     ; TMASK 03 0; S5:7720
+        ,LOG,DW12     ; DMASK (BSS); S5:7719
+        ,LOG,DW13     ; YMASK 0000  .; S5:7721
+        ,LOG,DW14     ; OKTHOЯ; S5:7722
+        ,LOG,DW15     ; MONTHFI 00 776; S5:7724
+        ,LOG,DW16     ; константа 0o36074; S5:7723
+        ,LOG,DW17     ; =6H'3''17''17''17'; S5:7701
+        ,LOG,DW20     ; =6H'17''17''''''''; S5:7700
+      ,END,DPRNT      ; S5:7733 END DATAPR*
+
+C***********************************************************************
+C 2. OCTDC — OCTTDEC (DECODER/MONSYS), S6:5042-5084
+C    полное имя: OCT_DEC; LINK 0o74013; вызывается PRINT_TIME S1:15498
+C    Машинное тело: 18 слов (0o0000..0o0021), build/RUNTIME_OCTTDEC.words
+C***********************************************************************
+      OCTDC   :,NAME,  ; полное имя: OCT_DEC  ; OCTTDEC (DECODER)  ; S6:5042
+OS000   ,BSS,.         ; BEGIN — главная точка входа; S6:5044
+        ,VTM,OR12      ; VTM C (M12); S6:5044
+        ,XTS,DS00      ; XTS; S6:5045
+        ,STX,OSDEC-OS000; STX DEC-C; S6:5046
+        ,AAX,OMSK15    ; AAX =777 7777-C; S6:5047
+        ,AOX,OSINT     ; AOX INT0-C; S6:5048
+        ,ATX,OSOCT     ; ATX OCT-C; S6:5049
+        ,VTM,ON04      ; VTM -5; S6:5050
+OS003   ,BSS,.         ; CYCL — цикл превращения 8-ричных цифр; S6:5052
+        ,NTR,DS00      ; NTR; S6:5052
+        ,XTA,OSOCT     ; XTA OCT-C; S6:5053
+        ,UTC,OSC1      ; UTC C1; S6:5054
+        ,A/X,DS00      ; A/X; S6:5055
+        ,NTR,OI03      ; NTR 3; S6:5056
+        ,A+X,OSINT     ; A+X INT0-C; S6:5057
+        ,ATX,DS00      ; ATX; S6:5058
+        ,NTR,OI02      ; NTR 2; S6:5059
+        ,UTC,OSC1      ; UTC C1; S6:5060
+        ,A*X,DS00      ; A*X; S6:5061
+        ,X-A,OSOCT     ; X-A OCT-C; S6:5062
+        ,STX,OSOCT     ; STX OCT-C; S6:5063
+        ,AAX,OMSK15    ; AAX MASK15-C; S6:5064
+        ,AOX,OSDEC     ; AOX DEC-C; S6:5065
+        ,VLM,OS6SY     ; VLM /6SYMB; S6:5066
+        ,AOX,OZEROS    ; AOX ZERO-C; S6:5067
+        ,NTR,OI10      ; NTR 10; S6:5068
+        ,UJ,DS00       ; UJ; S6:5069
+OS6SY   ,BSS,.         ; /6SYMB — подпрограмма 6 символов; S6:5071
+        ,ASN,OI64M8    ; ASN 64-8; S6:5072
+        ,ATX,OSDEC     ; ATX DEC-C; S6:5073
+        ,UJ,OS003      ; UJ CYCL; S6:5074
+OSOCT   ,OCT,DS00      ; OCT — буфер числа; S6:5075
+OSDEC   ,OCT,DS00      ; DEC — буфер результата; S6:5077
+OSINT   ,INT,OINT0     ; INT0 = 0; S6:5075
+OSC1    ,REAL,OREAL1   ; C1 = 1.0; S6:5082
+        ,REAL,ORL10  ; 10.0; S6:5081
+        ,REAL,ORL100 ; 100.0; S6:5080
+        ,REAL,ORL1K  ; 1000.0; S6:5079
+        ,REAL,ORL10K ; 10000.0; S6:5078
+        ,REAL,ORL1E5; 100000.0; S6:5077
+        ,ISO,OZEROS    ; ZERO ISO '000000'; S6:5083
+      ,END,            ; S6:5084 END
+
+C***********************************************************************
+C 3. OCTEX — OCTTDEC (EXFOR, 08.12.80), S7:427-459
+C    полное имя: OCT_DEC_EXFOR; альтернативная реализация того же интерфейса
+C    Скомпилированный пул констант найден на ленте monsys.9 0o411311-0o411333
+C***********************************************************************
+      OCTEX   :,NAME,  ; полное имя: OCT_DEC_EXFOR  ; OCTTDEC (EXFOR)  ; S7:427
+OX000   ,BSS,.         ; вход (BEGIN); S7:427
+        ,BASE,DS00     ; BASE *; S7:428
+        ,AAX,OV015     ; AAX B40/1; S7:429
+        ,ITS,OR13      ; ITS 13; S7:430
+        ,VTM,DS00      ; VTM; S7:431
+        ,NTR,OI03      ; NTR 3; S7:431
+        ,XTS,DS00      ; XTS; S7:432
+OX003   ,BSS,.         ; L1 — цикл; S7:433
+        ,XTS,ON03      ; XTS -3; S7:433
+        ,A*X,OV017     ; A*X C1/10; S7:434
+        ,ATX,ON03      ; ATX -3; S7:435
+        ,YTA,OI64      ; YTA 64; S7:436
+        ,A*X,OV016     ; A*X C10; S7:437
+        ,ASN,OR13      ; ASN 64; S7:438
+        ,UTM,ON04      ; UTM -4; S7:440
+        ,AOX,DS00      ; AOX; S7:441
+        ,XTS,ON03      ; XTS -3; S7:442
+        ,UZA,OXRET     ; UZA RET; S7:443
+        ,STX,DS00      ; STX; S7:443
+        ,UJ,OX003      ; UJ L1; S7:444
+OXRET   ,BSS,.         ; RET — возврат; S7:445
+        ,STX,DS00      ; STX; S7:445
+        ,UTM,ON02      ; UTM -2; S7:445
+        ,ASN,O64M24   ; ASN 64-24; S7:446
+        ,AUX,OXMSK     ; AUX MSK; S7:447
+        ,AOX,OXZER     ; AOX ZERO; S7:448
+        ,NTR,OI02      ; NTR 2; S7:448
+        ,WTC,OI01      ; WTC 1; S7:449
+        ,UJ,DS00       ; UJ; S7:449
+        ,LOG,OXB40     ; B40/1 LOG 17 7777 7777 7777; S7:454
+        ,LOG,OXC10     ; C10 LOG 4000 0000 0000 0012; S7:455
+        ,LOG,OXC1T     ; C1/10 LOG 4001 4631 4631 4632; S7:456
+        ,LOG,OXMSK     ; MSK GOST 6H; S7:457
+        ,ISO,OXZER     ; ZERO ISO 6H000000; S7:458
+      ,END,            ; S7:459 END
+
+C***********************************************************************
+C XREF — перекрёстные ссылки (полные имена; см. include/RUNTIME_DECODER.xref.md)
+C  DPRNT  = DATE_PRINT (DATAPR*)        LINK 0o74010; зовёт INIT_FOREX S1:15479
+C  DP001  = DATE_GET    (DATE*)          entry; зовёт DATE_PREPARE S5:7699
+C  DP003  = DATE_PARSE  (DARET)          entry; парсит FUN 67B
+C  DP026  = DATE_PREPARE(PREPDAT)        entry; зовёт DATE_GET
+C  DPP8   = PRINT8                       внешний (макрос ,PRINT,)
+C  OCTDC  = OCT_DEC (DECODER, OCTTDEC)   LINK 0o74013; зовёт PRINT_TIME S1:15498
+C  OCTEX  = OCT_DEC_EXFOR (OCTTDEC/EXFOR) альтернатива; пул 0o411311-0o411333
+C  DPDAT  = DATE_BLOCK (DATA*)           2-словный блок DATAPR*
+C  OS003  = OCT_CYCLE  (CYCL)             цикл DEC-преобразования
+C  OS6SY  = OCT_6SYMB  (/6SYMB)           подпрограмма 6 символов
+C  OXRET  = OCT_EXFOR_RETURN (RET)        возврат EXFOR-варианта
+C  Внешние вызывающие (по S3 LIBREFER): FOREX*, TCATALOG, OVERLOAD, SUMOVER
+C  (OCT_DEC); ALGOL//, ALPHA*, PASCAL*, TCATALOG и др. (DATE_PRINT).
+C  Переходы оверлеев на 0o77xxx НЕ приписаны этим телам: нет карты загрузки.
+C***********************************************************************

@@ -1,0 +1,69 @@
+ВЕРИФИКАЦИЯ АРТЕФАКТОВ decoder_disasm
+====================================
+Дата: 2026-11-19
+Репозиторий: /tmp/.private/azizz/opencode/re-forex (main)
+
+[1] НАЛИЧИЕ ВЫХОДНЫХ ФАЙЛОВ
+---------------------------
+build/RUNTIME_DATAPR.words              294 байта = 49 слов  OK
+build/RUNTIME_OCTTDEC.words             120 байт  = 20 слов  OK
+disasm/RUNTIME_DATAPR.bemsh.lst         49 строк                OK
+disasm/RUNTIME_DATAPR.dtran.madlen     107 строк                OK
+disasm/RUNTIME_DATAPR.dtran_compiler.lst 83 строки              OK
+disasm/RUNTIME_OCTTDEC.bemsh.lst        20 строк                OK
+disasm/RUNTIME_OCTTDEC.dtran.madlen     49 строк                OK
+disasm/RUNTIME_OCTTDEC.dtran_compiler.lst 33 строки             OK
+src/FOREX_DECODER_DISASM.mad            ~430 строк              OK
+include/RUNTIME_DECODER.xref.md         OK
+docs/12-decoder-disasm.md               OK
+logs/decoder_disasm_*.txt               4 файла                 OK
+
+[2] МЕТКИ И EQU: ≤6 СИМВОЛОВ, ПЕРВЫЕ 6 УНИКАЛЬНЫ
+-------------------------------------------------
+python3-проверка по src/FOREX_DECODER_DISASM.mad:
+  определений (EQU + label): 96
+  LONG (>6): []                       OK
+  COLLISIONS (по первым 6): []        OK
+Префиксы: DP*=DATE_PRINT, OS*=OCT_DEC/SYSTEM2,
+          OX*=OCT_DEC/EXFOR, O*=общие константы OCT.
+Полные осмысленные имена — в trailing-комментариях и в §1 xref.
+
+[3] ПРОВЕРКА ЛИТЕРАЛОВ (check-constants)
+---------------------------------------
+tests/check-constants.sh: проверяет существующие файлы (LO_*/CORE/RUNTIME/
+FOREX_ROOT); новый src/FOREX_DECODER_DISASM.mad в список НЕ входит.
+Все числовые операнды в новом .mad вынесены в ,EQU, — 'голых' литералов
+вида NNNNB в коде нет (кроме самих объявлений EQU, которые скрипт
+исключает). Ожидаемый статус для нового файла: OK (EQU>0, уник=0).
+
+[4] ПРОВЕРКА ПОБАЙТОВЫХ МЕТОК СЛОВ (check-source-words.py)
+-----------------------------------------------------------
+tests/check-source-words.py проверяет ТОЛЬКО LO*SYN/LO*GEN (1024 слов):
+  OK LO*SYN: все 1024 слова совпадают с дампом
+  OK LO*GEN: все 1024 слова совпадают с дампом
+  return code = 0                                  OK
+Новый файл не изменил эти дампы/исходники -> регрессий нет.
+
+[5] СТРУКТУРНАЯ СВЕРКА DISASM
+-----------------------------
+dtran_wrap output (нативный dtran) против листинга DTRAN (эмулятор):
+  OCTTDEC: 14,VTM / 14,AAX,15B / ,ITS,13 / 13,VTM / ,NTR,3 /
+           ,XTS / 15,XTS / 14,A*X,17B / 15,ATX / ,YTA,64 /
+           14,A*X,16B / 13,ASN,64 / 13,UTM / 15,AOX / ...
+           — совпадает по opcode/регистрам/константам.
+  DATAPR*: ,ITS,13 / 13,VTM,3 / ,ITS / ,*50,67B / ,NTR,6 /
+           13,UJ / 13,XTS,32B / ... / ,VJM / ,UJ
+           — совпадает по opcode/регистрам/константам.
+Разница только в оформлении отрицательных адресов:
+  MONITOR-80 DTRAN: -3/-4/-2; нативный dtran: 3774B/7776B (12-bit
+  дополнительный код). Биты идентичны.
+
+[6] ПРОВЕРКА КОНСТАНТ НА ЛЕНТЕ
+------------------------------
+OCTTDEC: B40/1/C10/C1/10 из build-слова совпали с 0o411316/327/332 ленты.
+DATAPR*: MONTHFI 0o776 совпал с уникальным hit ленты 0o254146.
+
+[7] ИТОГ
+--------
+Все доступные проверки пройдены. Полная побайтовая сверка с лентой
+неприменима: полные тела на мonsys.9/дисках отсутствуют (документировано).

@@ -1,0 +1,9 @@
+=== glissade/FOREX regression ===
+dispak: /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+task:   /tmp/.private/azizz/opencode/re-forex/tests/forex-glissade/glkern.b6
+gold:   /tmp/.private/azizz/opencode/re-forex/tests/forex-glissade/output.gold.txt
+date:   2026-11-19T08:27:54Z
+raw bytes:  31920
+gold bytes: 31920
+DETERMINISTIC: два прогона совпадают (после нормализации даты)
+OK: вывод совпадает с эталоном (после нормализации даты)

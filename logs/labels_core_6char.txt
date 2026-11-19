@@ -1,0 +1,428 @@
+================================================================================
+ ПЕРЕИМЕНОВАНИЕ МЕТОК И EQU В FOREX_CORE / FOREX_RUNTIME / FOREX_ROOT
+     в уникальные имена длиной <= 6 символов (правило МАДЛЕН БЭСМ-6)
+================================================================================
+
+ФАЙЛЫ-ИСТОЧНИКИ:
+  src/FOREX_CORE.mad
+  src/FOREX_RUNTIME.mad
+  include/FOREX_ROOT.mad
+
+ОБНОВЛЁННАЯ ДОКУМЕНТАЦИЯ:
+  include/FOREX.labels.md  (добавлен §4 «Полные имена -> короткие имена»)
+  include/FOREX_CORE.xref.md
+  include/FOREX_RUNTIME.xref.md
+
+ДО / ПОСЛЕ (проверка check-label-length.sh до правки):
+  src/FOREX_CORE.mad   : 119 длинных, 8 коллизий  -> 0 / 0
+  src/FOREX_RUNTIME.mad: 126 длинных, 15 коллизий -> 0 / 0
+  include/FOREX_ROOT.mad: 60 длинных, 10 коллизий -> 0 / 0
+  ВСЕГО переименовано уникальных имён: 306
+
+СХЕМА (задана родительской сессией, использована без изменений):
+  INIT_FOREX                 -> INITFX
+  LOAD_OVERLAYS              -> LODOVL
+  PRINT_TIME                 -> PRTIME
+  PRINT_MESSAGE              -> PRTMSG
+  ERR_TRANSLATOR             -> ERRTRL
+  FT_FORMAT_DISPATCH         -> FTDISP
+  FT_LIBRARY_IO              -> FTLIO
+  DATE_PRINT                 -> DPRINT
+  DATE_PARSE                 -> DPARSE
+  DATE_PREPARE               -> DPREPA
+  DATE_PREP_BASE             -> DPREPB
+  OCT_DEC                    -> OCTDEC
+  OCT_DEC_EXFOR              -> OCTEXF
+  OCT_EX_DIGIT_LOOP          -> OCTEDL
+  OCT_EX_RETURN              -> OCTERT
+  PAGE_GIVE                  -> PAGEGV
+  PAGE_TAKE                  -> PAGETK
+  ENTRY_TAB_LEN              -> ENTTLN
+  BUFFER_A_LEN               -> BUFALN
+  DUMON_LEN                  -> DUMMYL
+  LOADANGO_ADDR              -> LDADDR
+  FT571_DISPATCH             -> F571DS
+  POW10_6                    -> P10_06
+
+ПОЛНАЯ ТАБЛИЦА СООТВЕТСТВИЙ (полное имя -> короткое имя):
+  ----------------------------------------------------------
+  *DUMON*                        -> DUMN
+  ADDR_OCT_4000                  -> AOC4K
+  ADDR_OCT_50                    -> AOC50
+  ALL_ONES_MASK                  -> ALLMS
+  A_I0_ADDR                      -> AI0AD
+  BASE16_ADDR                    -> BS16A
+  BASE_REG14                     -> BS14R
+  BUFFER_A_LEN                   -> BUFALN
+  CHECKFL*                       -> CHKFL
+  CHECK_ADDR                     -> CHKAD
+  CORE_ADDR_11200                -> C11200
+  CORE_ADDR_1200                 -> CA1200
+  CORE_ADDR_1247                 -> CA1247
+  CORE_ADDR_1263                 -> CA1263
+  CORE_ADDR_16617                -> C16617
+  CORE_ADDR_231                  -> CA231
+  CORE_ADDR_30453                -> C30453
+  CORE_ADDR_31056                -> C31056
+  CORE_ADDR_36464                -> C36464
+  CORE_ADDR_37013                -> C37013
+  CORE_ADDR_4040                 -> CA4040
+  CORE_ADDR_4041                 -> CA4041
+  CORE_ADDR_4042                 -> CA4042
+  CORE_ADDR_4043                 -> CA4043
+  CORE_ADDR_4044                 -> CA4044
+  CORE_ADDR_4045                 -> CA4045
+  CORE_ADDR_4046                 -> CA4046
+  CORE_ADDR_4047                 -> CA4047
+  CORE_ADDR_4050                 -> CA4050
+  CORE_ADDR_4051                 -> CA4051
+  CORE_ADDR_4052                 -> CA4052
+  CORE_ADDR_4053                 -> CA4053
+  CORE_ADDR_4054                 -> CA4054
+  CORE_ADDR_4055                 -> CA4055
+  CORE_ADDR_4056                 -> CA4056
+  CORE_ADDR_4144                 -> CA4144
+  CORE_ADDR_44000                -> C44000
+  CORE_ADDR_44745                -> C44745
+  CORE_ADDR_4543                 -> CA4543
+  CORE_ADDR_46555                -> C46555
+  CORE_ADDR_5317                 -> CA5317
+  CORE_ADDR_55451                -> C55451
+  CORE_ADDR_56                   -> CA56
+  CORE_ADDR_61200                -> C61200
+  CORE_ADDR_6264                 -> CA6264
+  CORE_ADDR_6441                 -> CA6441
+  CORE_ADDR_70031                -> C70031
+  CORE_ADDR_70035                -> C70035
+  CORE_ADDR_70042                -> C70042
+  CORE_ADDR_70043                -> C70043
+  CORE_ADDR_70044                -> C70044
+  CORE_ADDR_70045                -> C70045
+  CORE_ADDR_70046                -> C70046
+  CORE_ADDR_70047                -> C70047
+  CORE_ADDR_70050                -> C70050
+  CORE_ADDR_7017                 -> CA7017
+  CORE_ADDR_74757                -> C74757
+  CORE_ADDR_75120                -> C75120
+  CORE_ADDR_75451                -> C75451
+  CORE_ADDR_75545                -> C75545
+  CORE_ADDR_75663                -> C75663
+  CORE_ADDR_76245                -> C76245
+  CORE_ADDR_76462                -> C76462
+  CORE_MODE3                     -> CMOD3
+  CORE_WORD1                     -> CW001
+  CORE_WORD2                     -> CW002
+  CORE_WORD4                     -> CW004
+  CORE_WORD5                     -> CW005
+  DATAPR_ADDR                    -> DPRAD
+  DATA_WORD_0000000000077777     -> DW0000
+  DATA_WORD_00000000_00000000    -> DW0001
+  DATA_WORD_00000000_00000001    -> DW0002
+  DATA_WORD_00000000_00000002    -> DW0003
+  DATA_WORD_00000000_00001777    -> DW0004
+  DATA_WORD_00100000_00000000    -> DW0005
+  DATA_WORD_17_7777_7777_7777    -> DW0006
+  DATA_WORD_37777774_77777477    -> DW0007
+  DATA_WORD_77270707_00000000    -> DW0008
+  DATE_BUF_LEN                   -> DBFLN
+  DATE_DAY_SHIFT                 -> DTDAYS
+  DATE_END_CHECK                 -> DTENDC
+  DATE_FMT                       -> DATEFM
+  DATE_GET                       -> DGET
+  DATE_MONTH_INDEX_SHIFT         -> DTMISH
+  DATE_MONTH_SHIFT               -> DTMOSH
+  DATE_PARSE                     -> DPARSE
+  DATE_PREPARE                   -> DPREPA
+  DATE_PREP_BASE                 -> DPREPB
+  DATE_PRINT                     -> DPRINT
+  DATE_PRINT_RETURN              -> DPRTN
+  DATE_STACK_ADJUST              -> DTSTAD
+  DATE_TIME_SHIFT                -> DTTMSH
+  DATE_WTC_SET                   -> DTWTCS
+  DATE_YEAR_SHIFT                -> DTYRSH
+  DAY_MASK                       -> DYMSK
+  DUMON_BASE_7                   -> DMB07
+  DUMON_CELL4                    -> DMC04
+  DUMON_CELL5                    -> DMC05
+  DUMON_CELL6                    -> DMC06
+  DUMON_LEN                      -> DUMMYL
+  DUMON_TIME_CELL                -> DMTIM
+  ENTRY_TAB_ADDR                 -> ENTTA
+  ENTRY_TAB_LEN                  -> ENTTLN
+  ERR_TRANSLATOR                 -> ERRTRL
+  ERR_TRANSLATOR_TEXT            -> ERRTRT
+  EX57_MODE6                     -> X57M6
+  FIXED_MODE_2                   -> FIXM2
+  FLGEX_ADDR                     -> FLGAD
+  FL_AFTER_WRITE                 -> FLAFT
+  FL_ALT_CASE                    -> FLALT
+  FL_CONST_BASE                  -> FLCON
+  FL_WTC_CASE                    -> FLWTC
+  FMT_RZB_MASK                   -> FMRZB
+  FMT_SBR_MASK                   -> FMSBR
+  FOREX_CORE                     -> FXCOR
+  FOREX_START                    -> FXSTR
+  FT002_DISPATCH                 -> F002DS
+  FT003_DISPATCH                 -> F003DS
+  FT521_DISPATCH                 -> F521DS
+  FT531_DISPATCH                 -> F531DS
+  FT541_DISPATCH                 -> F541DS
+  FT561_DISPATCH                 -> F561DS
+  FT571_DISPATCH                 -> F571DS
+  FT611_DISPATCH                 -> F611DS
+  FT621_DISPATCH                 -> F621DS
+  FT641_DISPATCH                 -> F641DS
+  FT721_DISPATCH                 -> F721DS
+  FTD_CONST                      -> FTDCNS
+  FTD_LOOP                       -> FTDLOP
+  FTD_OFFSET                     -> FTDOFS
+  FTD_STORE                      -> FTDSTO
+  FTD_TABLE_                     -> FTDTEN
+  FTD_TABLE_BASE                 -> FTDTSB
+  FTD_TABLE_BASE_ADDR            -> FTDTBA
+  FTD_TABLE_END                  -> FTDTE
+  FT_ADDR_FIELD                  -> FTADFL
+  FT_FORMAT_DISPATCH             -> FTDISP
+  FT_LIBRARY_IO                  -> FTLIO
+  FT_LIB_BUFFER                  -> FTLBFR
+  FT_OFFSET_MASK                 -> FTOFMK
+  FULISFL*                       -> FULFL
+  FULIS_ADDR                     -> FULAD
+  FUN_DATE_TIME                  -> FUNDTM
+  GOST_ATTR_ADDR                 -> GATAD
+  GOST_BLANK                     -> GOSTBL
+  GOST_VREMYA                    -> GOSTVR
+  GOST_YA                        -> GOSTYA
+  INFLOAD*                       -> IFLOD
+  INF_ADDR                       -> INFAD
+  INIT_CONST_33                  -> IC033
+  INIT_FOREX                     -> INITFX
+  INIT_MODE_1500                 -> IM150
+  INIT_MODE_1700                 -> IM170
+  INT_ZERO                       -> INTZ
+  ISO_CODE_SHIFT                 -> ISOCSH
+  ISO_WORD_SHIFT                 -> ISOWSH
+  KCOUNT*                        -> KCNT
+  L*00023                        -> L00023
+  L*00027                        -> L00027
+  L*00042                        -> L00042
+  L*00045                        -> L00045
+  L*00050                        -> L00050
+  L*00053                        -> L00053
+  LIB_BUFFER_LEN                 -> LIBBLN
+  LINK_REG_15                    -> LNK15
+  LIT_10000000_00000000          -> LIT10M
+  LOADANGO_ADDR                  -> LDADDR
+  LOAD_OVERLAYS                  -> LODOVL
+  LO_GEN_TEXT_ADDR               -> LGTAD
+  LO_SYN_TEXT_ADDR               -> LSTAD
+  MASK_7760                      -> MK760
+  MASK_7761                      -> MK761
+  MASK_7763                      -> MK763
+  MIST_BASE_ADDR                 -> MISAD
+  MODE_RT_OCT22                  -> MRT22
+  MODE_RT_OCT22_DEC              -> MRT22D
+  MONTH_FIELD                    -> MNTHFD
+  MONTH_FIELD_OCT                -> MNTHFO
+  MONTH_INDEX_BASE               -> MNTHIB
+  MONTH_NAMES                    -> MNTHNM
+  MUL_7771                       -> ML771
+  NOLISFL*                       -> NOLFL
+  NOLIS_ADDR                     -> NOLAD
+  OCT_BASE                       -> OCTBAS
+  OCT_BEGIN                      -> OCTBGN
+  OCT_CYCLE                      -> OCTCYC
+  OCT_DEC                        -> OCTDEC
+  OCT_DEC_ADDR                   -> OCDAD
+  OCT_DEC_EXFOR                  -> OCTEXF
+  OCT_EX_DIGIT_LOOP              -> OCTEDL
+  OCT_EX_RETURN                  -> OCTERT
+  OCT_ISO_SHIFT                  -> OCTISS
+  OCT_SIX_DIGIT_MASK             -> OCTSDM
+  OCT_SYMBOL                     -> OCTSYM
+  ONE_WORD                       -> ONEW
+  PAGE17_ADDR                    -> PG17AD
+  PAGE_GIVE                      -> PAGEGV
+  PAGE_GIVE_ADDR                 -> PGVAD
+  PAGE_MODE_73401                -> PGMD73
+  PAGE_TAKE                      -> PAGETK
+  PAGE_TAKE_ADDR                 -> PTKAD
+  PG_BLOCK_MASK                  -> PGBLKM
+  PG_COMMON                      -> PGCOMM
+  PG_COPY_LOOP                   -> PGCOPL
+  PG_EX67                        -> PGX67
+  PG_EX67_CODE                   -> PG67CD
+  PG_EX67_CONST                  -> PG67CN
+  PG_EX67_SAVE                   -> PG67SA
+  PG_FLAG_SAVE                   -> PGFLSA
+  PG_FLAG_SHIFT                  -> PGFLGS
+  PG_GO_CODE_1                   -> PGGO1
+  PG_GO_CODE_2                   -> PGGO2
+  PG_PG_GO                       -> PGPGGO
+  PG_RESTORE17                   -> PGRST7
+  PG_SAVE_S                      -> PGSAVS
+  PG_SHIFT_WORD                  -> PGSHWD
+  PG_STEP_2                      -> PGSTP2
+  PG_WORD_SHIFT                  -> PGWDSH
+  PG_WORK_BASE                   -> PGWRKB
+  POW10_1                        -> P1
+  POW10_2                        -> P2
+  POW10_3                        -> P3
+  POW10_4                        -> P4
+  POW10_5                        -> P5
+  POW10_6                        -> P10_06
+  PRINT_BLOCK_LEN                -> PRBKLN
+  PRINT_MESSAGE                  -> PRTMSG
+  PRINT_MESSAGE_ADDR             -> PRMSAD
+  PRINT_TIME                     -> PRTIME
+  R100_ADDR                      -> R100A
+  REAL_MODE_3                    -> RMOD3
+  RESIDENT_ZERO_PAGE             -> RZPAG
+  RET_CELL                       -> RETCL
+  RET_LINK_REG                   -> RETLR
+  RET_MOD_ADDR                   -> RETMA
+  RM_WORDS_4                     -> RMWD4
+  STACK_OFF_M1                   -> STKOF1
+  STACK_OFF_M2                   -> STKOF2
+  STACK_OFF_M3                   -> STKOF3
+  STACK_OFF_M4                   -> STKOF4
+  STACK_OFF_M5                   -> STKOF5
+  STACK_OFF_M6                   -> STKOF6
+  STACK_OFF_M7                   -> STKOF7
+  STACK_OFF_M8                   -> SOM
+  SYMTAB_TARGET                  -> SYMTG
+  TEXT_LIT_000000                -> TL0000
+  TEXT_LIT_1H_055                -> TL0001
+  TEXT_LIT_2H_200                -> TL0002
+  TEXT_LIT_3H00                  -> TL0003
+  TEXT_LIT_6H00                  -> TL0004
+  TEXT_LIT_6H0000                -> TL0005
+  TEXT_LIT_6H000000              -> TL0006
+  TEXT_LIT_6H000_00              -> TL0007
+  TEXT_LIT_6H00_00               -> TL0008
+  TEXT_LIT_6H03_0                -> TL0009
+  TEXT_LIT_6HAB_CEH              -> TL0010
+  TEXT_LIT_6HARRAY               -> TL0011
+  TEXT_LIT_6HA_PMA               -> TL0012
+  TEXT_LIT_6HERROR               -> TL0013
+  TEXT_LIT_6HIN_STA              -> TL0014
+  TEXT_LIT_6HNDART               -> TL0015
+  TEXT_LIT_6HOKTHO               -> TL0016
+  TEXT_LIT_6H_00_00              -> TL0017
+  TEXT_LIT_6H_17_17              -> TL0018
+  TEXT_LIT_6H_201_200_7          -> TL0019
+  TEXT_LIT_6H_231_HB             -> TL0020
+  TEXT_LIT_6H_3_17_17_17         -> TL0021
+  TEXT_LIT_6H_EBMAP              -> TL0022
+  TEXT_LIT_6H_EK                 -> TL0023
+  TEXT_LIT_6H_H                  -> TL0024
+  TEXT_LO_GEN                    -> TXLGEN
+  TEXT_LO_SYN                    -> TXLSYN
+  TIME_CELL                      -> TIMCL
+  TIME_MASK                      -> TIMMSK
+  TIME_SCALE                     -> TIMSCL
+  TIME_SEP_A                     -> TIMSEA
+  TIME_SEP_B                     -> TIMSEB
+  TIME_SEP_C                     -> TIMSEC
+  TTEX_ADDR                      -> TTXAD
+  TTEX_BASE_ADDR                 -> TTXBA
+  WRITLIBR                       -> WRTLBR
+  X_COMEQ                        -> XCOM
+  X_CONST                        -> XCON
+  X_DATE_PRINT                   -> XDPRT
+  X_FOREX                        -> XFOR
+  X_OCT_DEC                      -> XODC
+  X_OPRTR                        -> XOPR
+  X_OVERLAY_LOADER               -> XOVL
+  X_PAGE_GIVE                    -> XPGV
+  X_PAGE_TAKE                    -> XPTK
+  YEAR_MASK                      -> YRMSK
+  ИМЯ_CHECK                      -> NMCHK
+  ИМЯ_COMEQ                      -> NMCOM
+  ИМЯ_CONST                      -> NMCON
+  ИМЯ_DATAPR                     -> NMDPR
+  ИМЯ_DUMON                      -> NMDUM
+  ИМЯ_ENTRY                      -> NMENT
+  ИМЯ_FLGEX                      -> NMFEX
+  ИМЯ_FOREX                      -> NMFOR
+  ИМЯ_FULIS                      -> NMFUL
+  ИМЯ_GIVPG                      -> NMGIV
+  ИМЯ_LOADANG                    -> NMLDG
+  ИМЯ_NOLIS                      -> NMNOL
+  ИМЯ_OCTTDEC                    -> NMOCT
+  ИМЯ_OPRTR                      -> NMOPR
+  ИМЯ_TAKPG                      -> NMTAK
+  ----------------------------------------------------------
+
+НЕ ТРОГАЛОСЬ:
+  - адреса и метки машинных слов (С слово NNNN @0o... = 0o...);
+  - адресная колонка 0o5103xx в FOREX_ROOT.mad;
+  - внешние имена библиотеки 21 (*A*, ENTRY*, *DUMON*, FOREX, CONST, COMEQ,
+    OPRTR, ПP, LOADANGO, DATAPR*, TAK/PG, GIV/PG, OCTTDEC, LO*SYN, LO*GEN)
+    сохранены в комментариях и в обязательном списке check-annotations.sh;
+  - полное исходное имя добавлено в trailing-комментарий каждого
+    определения: "; полное имя: ИМЯ" / ". полное имя: ИМЯ".
+
+ПРОВЕРКА СВОИМ СКРИПТОМ (all definition kinds, 3 файла):
+  Файлов проверено: 3
+  Уникальных имён-определений: 355
+  Имён длиннее 6 символов: 0
+  Коллизий первых 6 символов: 0
+  РЕЗУЛЬТАТ: OK — 0 длинных, 0 коллизий
+  rc=0
+
+ПРОВЕРКИ РЕПОЗИТОРИЯ:
+  tests/check-annotations.sh                 rc=0
+      OK   comments 185 >= 50: /tmp/.private/azizz/opencode/re-forex/include/FOREX_ROOT.mad
+      OK: все обязательные символы и комментарии присутствуют
+  python3 tests/check-source-words.py        rc=0
+      OK LO*SYN: все 1024 слова совпадают с дампом
+      OK LO*GEN: все 1024 слова совпадают с дампом
+  bash tests/check-labels.sh                 rc=0
+      OK src/FOREX_RUNTIME.mad: авто-меток 0, в include/FOREX.labels.md 625 строк соответствий
+      OK include/FOREX_ROOT.mad: авто-меток 0, в include/FOREX.labels.md 625 строк соответствий
+  bash tests/check-constants.sh              rc=0
+      -----------------------------+-------+--------+--------+--------
+      OK: все файлы вынесли литералы в ,EQU, (уник <= 20)
+  bash tests/check-label-length.sh           rc=0
+      OK src/LO_SYN.mad: 741 символов, все <=6, коллизий первых 6 нет
+
+ИТОГ: 0 имён длиннее 6 символов, 0 коллизий первых 6 символов;
+      все 5 обязательных проверок завершились с rc=0.
+
+=== ДОПОЛНЕНИЕ: ИНТЕРФЕЙСНЫЕ ИМЕНА (по запросу агента LO_SYN) ===
+
+Согласование интерфейсных имён с LO_SYN / LO_GEN: монитор и линкер
+различают только первые 6 символов, поэтому интерфейсные имена
+приведены к первым 6 знакам исходного имени БЭСМ-6.
+
+  Полное интерфейсное имя  ->  6-символьное имя
+  --------------------------------------------------
+  OCTTDEC                  ->  OCTTDE
+  DATAPR*                  ->  DATAPR
+  LOADANGO                 ->  LOADAN
+  NOLISFL*                 ->  NOLISF
+  FULISFL*                 ->  FULISF
+  CHECKFL*                 ->  CHECKF
+  *DUMON*                  ->  *DUMON
+  INITFOR*                 ->  INITFO
+  FOREX*83                 ->  FOREX*
+  ENTRY*                   ->  ENTRY* (уже 6)
+
+Дополнительно унифицированы внешние SUBP-объявления в FOREX_CORE:
+  X_OCT_DEC -> OCTTDE, X_DATE_PRINT -> DATAPR, X_OVERLAY_LOADER -> LOADAN,
+  X_PAGE_TAKE -> PAGETK, X_PAGE_GIVE -> PAGEGV (совпадают с FOREX_ROOT).
+
+Таблица добавлена в include/FOREX.labels.md §5; в xref-документах
+все ссылки приведены к 6-символьным интерфейсным именам.
+
+ПОВТОРНАЯ ПРОВЕРКА ПОСЛЕ СОГЛАСОВАНИЯ ИНТЕРФЕЙСНЫХ ИМЁН:
+  tests/check-annotations.sh                 rc=0
+  python3 tests/check-source-words.py        rc=0
+  bash tests/check-labels.sh                 rc=0
+  bash tests/check-constants.sh              rc=0
+  bash tests/check-label-length.sh           rc=0
+  python3 /tmp/verify_core_6char.py          rc=0
+
+ИТОГ (финальный): 0 длинных имён, 0 коллизий первых 6; интерфейсные имена
+совпадают с первыми 6 символами исходных имён БЭСМ-6; все проверки rc=0.

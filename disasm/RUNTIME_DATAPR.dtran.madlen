@@ -1,0 +1,107 @@
+DATAPR* :,NAME, NEW DTRAN
+C Commands: 57
+C Constants: 0
+C BSS: 0
+C Memory size: 57
+C Header: 1
+C Symbols: 7777
+C Long symbols: 0
+C Debug: 0
+C Data: 0 + set: 0
+C Actual length of the object file is 10062
+C Symbol table offset is 62
+ ,ITS,13
+ 13,VTM,3
+ ,ITS,
+ ,*50,67B
+ ,NTR,6
+ 13,UJ,
+ 13,XTS,32B
+ 15,XTS,3775B
+ 13,AUX,43B
+ ,ASN,64+16
+ 13,AOX,33B
+ 15,XTS,3774B
+ 13,AAX,47B
+ ,ASN,64+35
+ 15,ATX,
+ ,YTA,
+ 14,VTM,30B
+ ,UZA,12B
+ 14,VTM,
+ 15,WTC,
+ 13,XTA,35B
+ 14,ASN,64+0
+ ,ASN,64-24
+ 15,XTS,3773B
+ ,ASN,64-14
+ 13,AUX,44B
+ 15,AOX,
+ 13,AOX,34B
+ 15,XTS,3773B
+ ,ASN,64-22
+ 13,AUX,43B
+ 13,AOX,42B
+ 13,XTS,35B
+ 15,XTS,3767B
+ 15,MTJ,13
+ ,UZA,23B
+ 13,UTM,1
+ ,UTC,34B
+ ,*64,
+ 15,UTM,7772B
+ 15,XTA,
+ ,STI,13
+ 13,UJ,
+ ,ITS,13
+ 13,VJM,1
+ 15,ATX,
+ ,ASN,64-14
+ 13,AUX,24B
+ 13,AOX,27B
+ ,STX,
+ 13,AUX,25B
+ 13,AOX,26B
+ ,STX,0B
+ ,STI,13
+ ,UJ,
+ 13,AMX,3772B
+ 15,AMX,3776B
+ ,ATX,
+ 8,APX,3416B
+ 8,ATX,3417B
+ ,VLM,55B
+ ,ATX,17B
+ ,ATX,
+ ,36,
+ 9,UTC,7417B
+ 3,VZM,26442B
+ ,*50,dunno
+ 4,RTE,dunno
+ 3,32,
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ 2,002,1043B
+ 3,ACX,2455B
+ ,ATX,36B
+ ,ATX,34B
+ ,ATX,1417B
+ ,ATX,3416B
+ ,ATX,
+ ,ATX,3416B
+ 3,21,22215B
+ 3,WTC,60000B
+ 2,102,dunno
+ ,36,7417B
+ ,ATX,
+ ,ATX,776B
+ ,ATX,
+ ,XTS,2073B
+ ,*60,3377B
+ ,36,7400B
+ 4,APX,1720B
+ 4,A*X,2020B
+ ,ATX,
+ ,ATX,
+ ,END,

@@ -1,0 +1,87 @@
+КОМПИЛЯЦИЯ ТЕЛ DATAPR* И OCTTDEC ЧЕРЕЗ DTRAN В ЭМУЛЯТОРЕ dispak
+=============================================================
+Дата: 2026-11-19
+
+ОКРУЖЕНИЕ
+---------
+DISPAK   = /usr/local/bin/dispak  (version 2.6.458)
+ASM      = /home/azizz/Yandex.Disk/monitor80-re/tools/asm.pl
+DTRAN    = DTRAN /01.06.84/  (прошивка на LIBRA:2)
+WORKVOL  = 80 (образ скопирован из /usr/local/share/besm6/2048.bak)
+BESM6_PATH = <tmp>/buildsrc/disks
+  (2048, 2053, 2063, 2086, 2099, 2113, 2148, 2153, 2222, 2248,
+   2348, 4001, 80)
+COS Y2TXT = /home/azizz/Yandex.Disk/monitor80-re/tools/cosy2txt
+
+ИСТОЧНИКИ
+---------
+DATAPR.masm   = sed -n '7645,7733p' besmmons/system1.txt
+DATAPR%.masm  = копия DATAPR.masm (filename '%' -> '*' в имени модуля)
+OCTTDEC.masm  = sed -n '427,459p' besmtask/exfor.vv
+SYSTEM2       = sed -n '5042,5084p' besmmons/system2.txt (эталон OCTDC)
+
+ПЕРВАЯ ПОПЫТКА (ОШИБКА)
+-----------------------
+DATAPR.masm -> *CALL DTRAN(DATAPR): DTRAN нашёл в библиотеке другой модуль
+DATAPR (маленький PRINT8-подобный), НЕ DATAPR*. Листинг: 33 карты.
+Исправление: переименовать в DATAPR%.masm -> *CALL DTRAN(DATAPR*).
+
+КОМПИЛЯЦИЯ DATAPR*
+------------------
+$ BESM6_PATH=... WORKVOL=80 perl -CA asm.pl -keep DATAPR%.masm
+*NAME / *NO LIST / *MADLEN
+ DATAPR*:,NAME, ...
+ DATA*:,LC,2
+ *LIBRA:2
+ *COPY:1,270000,600000
+ *STAND
+ *CALL DTRAN(DATAPR*)
+ *EDIT / *R:1 / *W:600000 / *EE
+
+MADLEN-3.5 статистика (из листинга с *LIST):
+  ИМЯ 00001  ВХОДЫ 00003  ОПИСАНИЯ 00011
+  КОМАНДЫ 00035  КОНСТАНТЫ 00022  ИНСТРУКЦИИ 00089
+  ЧИСЛО ПЕРФ. 89   ЧИСЛО ОШИБ. ОПЕРАТОРОВ 00
+  ФАЙЛ 1: СЧИТАНО 33 КАРТ; ФАЙЛ 600000: ЗАПИСАНО 33 КАРТ
+
+Результат: disasm/RUNTIME_DATAPR.dtran_compiler.lst (83 строки COSY).
+
+КОМПИЛЯЦИЯ OCTTDEC (EXFOR)
+--------------------------
+$ BESM6_PATH=... WORKVOL=80 perl -CA asm.pl -keep OCTTDEC.masm
+*CALL DTRAN(OCTTDEC)
+MADLEN-3.5: 0 ошибок; 33 карты.
+Результат: disasm/RUNTIME_OCTTDEC.dtran_compiler.lst (33 строки COSY).
+
+СНЯТИЕ ЛИСТИНГА
+---------------
+$ besmtool dump 80 --length=10 --to-file=/dev/stdout | cosy2txt
+  -> DATAPR*: 83 строки; OCTTDEC: 33 строки.
+
+ПРЯМАЯ ПРОВЕРКА DTRAN (вспомогательная)
+---------------------------------------
+Тестовая сборка DMS с UTM (0o0a8000) + бит 18:
+  extra=0x000000 hw=0o66507774 -> ' 13,UTM,7774B'   (правильно)
+  extra=0x040000 hw=0o67507774 -> ' 13,V1M,7774B'   (бит 18 меняет opcode!)
+=> бит 18 используется как расширение адреса ТОЛЬКО для opcode < 0o40000.
+
+ПЕРЕКОДИРОВАНИЕ В МАШИННЫЕ СЛОВА
+--------------------------------
+2 МАДЛЕН-команды на 48-битное слово; DOUBLE WORD-литералы — полные слова.
+DMS-заголовок: 0o200003 + 6-битное имя (как у LO_*SYN/GEN на ленте).
+Энкодер: /tmp/.private/azizz/opencode/final_encode.py
+Результат: build/RUNTIME_DATAPR.words (49 слов),
+           build/RUNTIME_OCTTDEC.words (20 слов).
+
+ДИЗАССЕМБЛИРОВАНИЕ
+-------------------
+python3 tools/dtran_wrap.py build/RUNTIME_DATAPR.words \
+  --out disasm/RUNTIME_DATAPR.dtran.madlen
+  -> 107 строк МАДЛЕН
+python3 tools/dtran_wrap.py build/RUNTIME_OCTTDEC.words \
+  --out disasm/RUNTIME_OCTTDEC.dtran.madlen
+  -> 49 строк МАДЛЕН
+python3 besm6tape.py dis build/RUNTIME_*.words --start 0 --count N --bemsh
+  -> disasm/RUNTIME_*.bemsh.lst (49 / 20 строк)
+
+СТАТУС: успешно. Все 4Checking-этапа пройдены.

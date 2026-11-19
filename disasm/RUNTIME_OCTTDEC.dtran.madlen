@@ -1,0 +1,49 @@
+OCTTDEC :,NAME, NEW DTRAN
+C Commands: 22
+C Constants: 0
+C BSS: 0
+C Memory size: 22
+C Header: 1
+C Symbols: 7777
+C Long symbols: 0
+C Debug: 0
+C Data: 0 + set: 0
+C Actual length of the object file is 10025
+C Symbol table offset is 25
+ 14,VTM,
+ 14,AAX,15B
+ ,ITS,13
+ 13,VTM,
+ ,NTR,3
+ ,XTS,
+ 15,XTS,3774B
+ 14,A*X,17B
+ 15,ATX,3774B
+ ,YTA,64+0
+ 14,A*X,16B
+ 13,ASN,64+0
+ 13,UTM,7774B
+ 15,AOX,
+ 15,XTS,3774B
+ ,UZA,11B
+ ,STX,
+ ,UJ,3
+ ,STX,
+ 15,UTM,7776B
+ ,ASN,64-24
+ 14,AUX,20B
+ 14,AOX,21B
+ ,NTR,2
+ 15,WTC,1
+ ,UJ,
+ ,A*X,3776B
+ 15,VLM,3776B
+ 8,ATX,
+ ,ATX,12B
+ 8,STX,630B
+ 9,WTC,14632B
+ ,36,7417B
+ ,36,7417B
+ 4,APX,2020B
+ 4,APX,
+ ,END,
