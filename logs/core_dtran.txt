@@ -1,0 +1,13 @@
+== CORE_ROOT ==
+build/CORE_ROOT.words -> disasm/CORE_ROOT.madlen: 197 строк МАДЛЕН
+== CORE_SYMTAB_164 ==
+build/CORE_SYMTAB_164.words -> disasm/CORE_SYMTAB_164.madlen: 51 строк МАДЛЕН
+== CORE_SYMTAB_165 ==
+build/CORE_SYMTAB_165.words -> disasm/CORE_SYMTAB_165.madlen: 41 строк МАДЛЕН
+== CORE_INITFTN ==
+build/CORE_INITFTN.words -> disasm/CORE_INITFTN.madlen: 3859 строк МАДЛЕН
+ 3859 disasm/CORE_INITFTN.madlen
+  197 disasm/CORE_ROOT.madlen
+   51 disasm/CORE_SYMTAB_164.madlen
+   41 disasm/CORE_SYMTAB_165.madlen
+ 4148 итого

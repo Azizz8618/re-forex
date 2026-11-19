@@ -1,0 +1,8 @@
+== CORE_ROOT start=510300 count=96 ==
+96 disasm/CORE_ROOT.bemsh.lst
+== CORE_SYMTAB_164 start=510413 count=21 ==
+21 disasm/CORE_SYMTAB_164.bemsh.lst
+== CORE_SYMTAB_165 start=512420 count=16 ==
+16 disasm/CORE_SYMTAB_165.bemsh.lst
+== CORE_INITFTN (1024 words) ==
+1024 disasm/CORE_INITFTN.bemsh.lst

@@ -1,0 +1,29 @@
+# Поиск тел DATAPR*/OCTTDEC/FORMAT/FORTLIBR в исходниках Дубны
+Дата: 2026-11-19T07:25:10Z
+Команда: grep -rn 'DATAPR\*\|OCTTDEC\|FORTLIBR\|PRINT8\|WRITLIBR' $SRC
+--- тела (,NAME,), найденные ---
+/home/azizz/besm6.github.io/sources/dubna/besml21/libra211.l21:15529:      FORMAT     :,NAME,
+/home/azizz/besm6.github.io/sources/dubna/besml21/libra211.l21:15590:      FORTLIBR   :,NAME,
+/home/azizz/besm6.github.io/sources/dubna/besmmons/system1.txt:7645: DATAPR*:,NAME,
+/home/azizz/besm6.github.io/sources/dubna/besmtask/exfor.vv:427: OCTTDEC:,NAME,
+/home/azizz/besm6.github.io/sources/dubna/dub_besm/dubna.ms:7645:007645 :  DATAPR*:,NAME,
+--- все упоминания в besmmons/besmtask (сокр.) ---
+/home/azizz/besm6.github.io/sources/dubna/besmmons/system1.txt:7645: DATAPR*:,NAME,
+/home/azizz/besm6.github.io/sources/dubna/besmmons/system1.txt:7733: ,END,DATAPR*
+/home/azizz/besm6.github.io/sources/dubna/besmmons/system2.txt:5042: OCTTDEC :  ,NAME,
+/home/azizz/besm6.github.io/sources/dubna/besmtask/exfor.vv:427: OCTTDEC:,NAME,
+--- выбранные диапазоны ---
+S1 libra211.l21:15529-15712  FORMAT + FORTLIBR
+S5 system1.txt:7645-7733      DATAPR*
+S6 system2.txt:5042-5084      OCTTDEC (DECODER)
+S7 exfor.vv:427-459           OCTTDEC (EXFOR)
+--- SHA256 исходников ---
+b98b7e8f47d2bec17591f1f28fe6d647facb9997db02208b6f895a4491bc7250  /home/azizz/besm6.github.io/sources/dubna/besml21/libra211.l21
+a853c0b51b9028bea80e92be6927646b2b23a3a00e7871af00c0ce37410b13bd  /home/azizz/besm6.github.io/sources/dubna/besmmons/system1.txt
+a8428905dcd15f441cb7d1ee83f3d145f1bb7b4169c0b7051636f611f745f7b3  /home/azizz/besm6.github.io/sources/dubna/besmmons/system2.txt
+c118bcbabd7109cac8b324213f76d8912f28e2e610e5656e191a372e397eb219  /home/azizz/besm6.github.io/sources/dubna/besmtask/exfor.vv
+--- число строк в вырезках ---
+besml21/libra211.l21 15529-15712: 184 строк
+besmmons/system1.txt 7645-7733: 89 строк
+besmmons/system2.txt 5042-5084: 43 строк
+besmtask/exfor.vv 427-459: 33 строк

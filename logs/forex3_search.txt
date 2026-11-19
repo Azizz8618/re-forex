@@ -1,0 +1,70 @@
+FOREX3* — ПОИСК СИГНАТУР В ДОСТУПНЫХ ОБРАЗАХ
+======================================================================
+Дата: 2026-11-19. Формат слова: 48 бит = 6 байт big-endian; зона = 1024 слова.
+
+Вычисленные сигнатуры (слово/последовательность байтов):
+  TEXT  FOREX3*          = 0o4657624570231200  bytes=9afca5e13280
+  TEXT  *FORX3           = 0o1246576270230000  bytes=2a6bf2e13000
+  TEXT  FORX3*           = 0o4657627023120000  bytes=9afcb84ca000
+  TEXT  *FOREX3          = 0o1246576245702300  bytes=2a6bf29784c0
+  TEXT  FOREX 3          = 0o4657624570002300  bytes=9afca5e004c0
+  TEXT  FOREX3           = 0o4657624570230000  bytes=9afca5e13000
+  TEXT  FORX3            = 0o4657627023000000  bytes=9afcb84c0000
+  TEXT  NEWCOMP*         = 0o5645674357556012  bytes=ba5de3bedc0a
+  TEXT  FOREX*           = 0o4657624570120000  bytes=9afca5e0a000
+  GOST-LAT FOREX3        = 0o2002710711232403  bytes=402e47253503
+  GOST-LAT FORX3         = 0o2002710715201417  bytes=402e4735030f
+  GOST-LAT FOREX*        = 0o2002710711232431  bytes=402e47253519
+  GOST-CYR FOREX3        = 0o1502706011232403  bytes=342e30253503
+  GOST-CYR FORX3         = 0o1502706015201417  bytes=342e3035030f
+  GOST-CYR FOREX*        = 0o1502706011232431  bytes=342e30253519
+  ASCII FOREX3           = 0o2144752221254063  bytes=464f52455833
+  ASCII FORX3            = 0o0004311724454063  bytes=00464f525833
+  MARKER 200003          = 0o0000000000200003  bytes=000000010003
+
+Образы, проверенные побайтово (find по 6-байтовому шаблону, все смещения):
+  /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/b.7             23552 слов  sha256=7d6d864a103f309b
+  /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/bemsh.739       28672 слов  sha256=69458c72286e9fe8
+  /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/librar.12      327680 слов  sha256=4fbfb41bfac01949
+  /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/librar.37      434176 слов  sha256=0575e9bba22a87a1
+  /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/monsys.9       294912 слов  sha256=e26a2036011bc33a
+  /usr/local/share/besm6/2048                                     5504000 слов  sha256=fd2ed601b73dcb47
+  /usr/local/share/besm6/2048.2448                                5504000 слов  sha256=d1ca00a89f832851
+  /usr/local/share/besm6/2048.bak                                 1396640 слов  sha256=844919c089de8afa
+  /usr/local/share/besm6/2053                                     1396640 слов  sha256=e4af4fa1124e4bca
+  /usr/local/share/besm6/2063                                     1396640 слов  sha256=e3bb28e4bb816eef
+  /usr/local/share/besm6/2086                                     1396640 слов  sha256=1fe3bc4159b15115
+  /usr/local/share/besm6/2099                                      149984 слов  sha256=849cf55ce2053500
+  /usr/local/share/besm6/2113                                     1396640 слов  sha256=c631e8d8e340441f
+  /usr/local/share/besm6/2148                                     1396640 слов  sha256=75617c04fee7d90d
+  /usr/local/share/besm6/2153                                     1396640 слов  sha256=2ede95db996cc8dc
+  /usr/local/share/besm6/2222                                     5114592 слов  sha256=0c660bb0bef56352
+  /usr/local/share/besm6/2248                                     5504000 слов  sha256=9f4c18d8fbbbebd7
+  /usr/local/share/besm6/2348                                     5504000 слов  sha256=4db10c736ae17bbe
+  /usr/local/share/besm6/4001                                     1396640 слов  sha256=30223751b839a627
+
+РЕЗУЛЬТАТ ПОИСКА (все варианты кодировок):
+  TEXT  FOREX3*          hits=0: []
+  TEXT  *FORX3           hits=0: []
+  TEXT  FORX3*           hits=0: []
+  TEXT  *FOREX3          hits=0: []
+  TEXT  FOREX 3          hits=0: []
+  TEXT  FOREX3           hits=0: []
+  TEXT  FORX3            hits=0: []
+  TEXT  NEWCOMP*         hits=1: [('monsys.9', 140950, 0)]
+  TEXT  FOREX*           hits=3: [('monsys.9', 97952, 0), ('monsys.9', 164952, 0), ('monsys.9', 168171, 0)]
+  GOST-LAT FOREX3        hits=0: []
+  GOST-LAT FORX3         hits=0: []
+  GOST-LAT FOREX*        hits=0: []
+  GOST-CYR FOREX3        hits=0: []
+  GOST-CYR FORX3         hits=0: []
+  GOST-CYR FOREX*        hits=0: []
+  ASCII FOREX3           hits=0: []
+  ASCII FORX3            hits=0: []
+  MARKER 200003          hits=65: [('b.7', 17824, 0), ('librar.37', 231864, 0), ('monsys.9', 39712, 0), ('monsys.9', 41792, 0), ('monsys.9', 47050, 0), ('monsys.9', 47744, 0), ('monsys.9', 48736, 0), ('monsys.9', 59143, 0), ('monsys.9', 64512, 0), ('monsys.9', 76096, 0), ('monsys.9', 76672, 0), ('monsys.9', 80096, 0)]
+
+ИТОГО совпадений с FOREX3* (все кодировки): 0
+Единственная найденная сигнатура FOREX3-подобная: TEXT "NEWCOMP*" в monsys.9, слово 0o423226 (140950 decimal).
+Для сравнения: TEXT "FOREX*" найден в monsys.9 (слова 97952/0o277240, 164952, 168171),
+но отсутствует в librar.12 и librar.37. TEXT "LO*SYN"/"LO*GEN" найдены только в monsys.9.
+

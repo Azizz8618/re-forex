@@ -1,0 +1,29 @@
+# Итоги восстановления рантайм-модулей ФОРЭКС
+Дата: 2026-11-19
+
+## Проверка дословности
+| Фрагмент | Строк с меткой | Расхождений | Примеры |
+|---|---|---|---|
+| S1 libra211.l21:15529-15712 | 184 | 0 | [] |
+| S5 system1.txt:7645-7733 | 89 | 0 | [] |
+| S6 system2.txt:5042-5084 | 43 | 0 | [] |
+| S7 exfor.vv:427-459 | 33 | 0 | [] |
+| reference/libra211.format.inc:15529-15712 | 202 | 0 | [] |
+
+## Созданные файлы
+
+reference/libra211.format.inc: 202 строк
+src/FOREX_RUNTIME.mad: 477 строк
+include/FOREX_RUNTIME.xref.md: 152 строк
+include/FOREX_RUNTIME.registers.md: 124 строк
+docs/07-runtime.md: 142 строк
+logs/runtime_sources.txt: 29 строк
+logs/runtime_tape.txt: 168 строк
+
+## Запрещённые файлы
+src/LO_*.mad, include/LO_*.md, docs/03-symbols.md, docs/05-roundtrip.md — не изменялись.
+include/FOREX_ROOT.mad — не изменялся (GIV/PG, TAK/PG не дублируются).
+
+## Регрессия (затронутые тесты)
+bash tests/check-annotations.sh   -> exit 0
+bash tests/check-word-coverage.sh -> exit 0 (1024/1024 в каждом оверлее)

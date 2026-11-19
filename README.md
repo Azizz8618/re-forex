@@ -15,7 +15,11 @@
 |---|---|---|---|
 | `LO*SYN` | `src/LO_SYN.mad` (3122 строки, 1024/1024 слов) | `include/LO_SYN.xref.md` | `include/LO_SYN.registers.md` |
 | `LO*GEN` | `src/LO_GEN.mad` (3109 строк, 1024/1024 слов) | `include/LO_GEN.xref.md` | `include/LO_GEN.registers.md` |
-| корень `FOREX*` | `include/FOREX_ROOT.mad` | `docs/03-symbols.md`, `include/catalog.md` | — |
+| корень `FOREX*` (96 слов) | `src/FOREX_CORE.mad`, `include/FOREX_ROOT.mad` | `docs/03-symbols.md`, `include/catalog.md` | `include/FOREX_CORE.registers.md` |
+| рантайм (`FORMAT`, `FORTLIBR`, `DATAPR*`, `OCTTDEC`) | `src/FOREX_RUNTIME.mad` | `include/FOREX_RUNTIME.xref.md` | `include/FOREX_RUNTIME.registers.md` |
+
+Отдельные отчёты: `docs/06-address-map.md` (карта абсолютных адресов),
+`docs/06-core-modules.md` (ядро), `docs/07-runtime.md`, `docs/08-forex3.md`.
 
 Дизассемблирование в МАДЛЕН выполнено `dtran` через `tools/dtran_wrap.py`
 (синтетический DMS-модуль с числовой симтаблицей), по образцу `re-siprod`.

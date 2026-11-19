@@ -29,16 +29,51 @@ def read_words(path: Path) -> list[int]:
     return [int.from_bytes(data[i:i + WORD], "big") for i in range(0, len(data), WORD)]
 
 
-def make_dms(words: list[int], sym_len: int = 0o7777) -> list[int]:
+def t6_encode(text: str) -> int:
+    """MADLEN TEXT: 8 символов по 6 бит (код = ASCII - 0x20)."""
+    codes = [ord(c) - 0x20 if 32 <= ord(c) < 127 else 0
+             for c in text.upper().ljust(8)[:8]]
+    hi = lo = 0
+    for c in codes[:4]:
+        hi = (hi << 6) | c
+    for c in codes[4:]:
+        lo = (lo << 6) | c
+    return (hi << 24) | lo
+
+
+def load_symbols(path: Path | None) -> dict[int, str]:
+    """TSV: адрес (восьмеричный) <tab или пробел> имя процедуры."""
+    out: dict[int, str] = {}
+    if not path:
+        return out
+    for line in path.read_text(errors="replace").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = line.replace("\t", " ").split()
+        if len(parts) >= 2:
+            try:
+                addr = int(parts[0], 8)
+            except ValueError:
+                continue
+            out[addr & 0o3777] = parts[1]
+    return out
+
+
+def make_dms(words: list[int], sym_len: int = 0o7777,
+             symbols: dict[int, str] | None = None) -> list[int]:
     name = words[1]
     code = words[2:]
     head_len = 1
     w0 = (sym_len << 12) | head_len
     w1 = 0
     w2 = len(code)
-    # Симтаблица: числовые имена вида NNNNNB вместо пустых «dunno».
-    # Формат dtran: (0400 << 15) | значение -> symtab[i] = "%oB".
+    # Симтаблица: числовые имена вида NNNNNB вместо пустых «dunno»;
+    # для известных адресов подставляется настоящее имя процедуры.
     symtab = [(0o400 << 15) | i for i in range(sym_len)]
+    for idx, text in (symbols or {}).items():
+        if 0 <= idx < sym_len:
+            symtab[idx] = t6_encode(text)
     return [w0, w1, w2] + code + [name] + symtab
 
 
@@ -60,10 +95,12 @@ def main() -> None:
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--dtran", default=os.environ.get("DTRAN", DEFAULT_DTRAN))
     ap.add_argument("--raw", action="store_true", help="не фильтровать комментарии")
+    ap.add_argument("--symbols", type=Path,
+                    help="TSV с соответствием адрес(8) -> имя процедуры")
     args = ap.parse_args()
 
     words = read_words(args.dump)
-    dms = make_dms(words)
+    dms = make_dms(words, symbols=load_symbols(args.symbols))
     with tempfile.TemporaryDirectory(prefix="forex-dtran-") as td:
         path = Path(td) / "module.dms"
         path.write_bytes(b"".join(w.to_bytes(WORD, "big") for w in dms))

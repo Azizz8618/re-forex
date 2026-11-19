@@ -1,0 +1,26 @@
+лента      : /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/monsys.9
+начало     : 0o510300, слов: 96 (0o140)
+байт offset: 1008768
+sha256     : 3861ee47dab0952a7c6d68c7803e1543dd8f0473657348f98466ee8405bd749f
+маркеры    : []
+первые words: 370001 170000000000 150000100033 42001500004023 57000602200000 402400100000 402572474001 42001600004006
+записано   : build/CORE_ROOT.words
+лента      : /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/monsys.9
+начало     : 0o510413, слов: 21 (0o25)
+байт offset: 1009218
+sha256     : 66653a1f15eb43d27ca9e1275c25750dfbfb4c0717b69a6b147a1b31febfd679
+маркеры    : []
+первые words: 4556646271120000 4654474570120000 5657545163465412 4665545163465412 4350454353465412 1244655557561200 4441644160621200 6441531760470000
+записано   : build/CORE_SYMTAB_164.words
+лента      : /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/monsys.9
+начало     : 0o512420, слов: 16 (0o20)
+байт offset: 1015392
+sha256     : 98e56075104cfba568c38dc17a1287cdbdceb696575d74d748a05464be5b6896
+маркеры    : []
+первые words: 5163576457412000 40077770 6441531760470000 4751661760470000 5743646444454300 4657624570000000 4357566364000000 4357554561000000
+записано   : build/CORE_SYMTAB_165.words
+12288 build/CORE_INITFTN.words
+  576 build/CORE_ROOT.words
+  126 build/CORE_SYMTAB_164.words
+   96 build/CORE_SYMTAB_165.words
+13086 итого
