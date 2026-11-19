@@ -1,0 +1,27 @@
+Проверяемые файлы:
+  /tmp/.private/azizz/opencode/re-forex/src/LO_SYN.mad
+  /tmp/.private/azizz/opencode/re-forex/src/LO_GEN.mad
+  /tmp/.private/azizz/opencode/re-forex/include/FOREX_ROOT.mad
+OK   symbol INITFOR*    
+OK   symbol LOREX       
+OK   symbol RMON        
+OK   symbol STOP/       
+OK   symbol DATAPR*     
+OK   symbol TAK/PG      
+OK   symbol GIV/PG      
+OK   symbol OCTTDEC     
+OK   symbol FOREX       
+OK   symbol CONST       
+OK   symbol COMEQ       
+OK   symbol OPRTR       
+OK   symbol ПP         
+OK   symbol LOADANGO    
+OK   symbol LO*SYN      
+OK   symbol LO*GEN      
+OK   symbol *A*         
+OK   symbol ENTRY*      
+OK   symbol *DUMON*     
+OK   comments 1238 >= 50: /tmp/.private/azizz/opencode/re-forex/src/LO_SYN.mad
+OK   comments 3094 >= 50: /tmp/.private/azizz/opencode/re-forex/src/LO_GEN.mad
+OK   comments 151 >= 50: /tmp/.private/azizz/opencode/re-forex/include/FOREX_ROOT.mad
+OK: все обязательные символы и комментарии присутствуют

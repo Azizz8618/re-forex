@@ -1,0 +1,6 @@
+tape: /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/monsys.9
+LO_SYN offset=0o241500  size=6144   sha256=83a7e962a9db89e62b856b7461ce2aba91239957931a03e1520fb4d228459366
+       побайтовая сверка с build/LO_SYN.words: OK
+LO_GEN offset=0o277500  size=6144   sha256=4f4d8e4cc8fff1ec9742fe8be0a0c5f797716ab1bd085a1625d37569d222cbfd
+       побайтовая сверка с build/LO_GEN.words: OK
+OK: оверлеи LO*SYN и LO*GEN выгружены и сверены

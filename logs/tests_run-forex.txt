@@ -1,0 +1,6 @@
+dispak: /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+task:   /tmp/.private/azizz/opencode/re-forex/reference/forex.b6
+gold:   /tmp/.private/azizz/opencode/re-forex/reference/output.gold.txt
+raw bytes:  12835
+gold bytes: 12835
+OK: FOREX 2.02 вывод совпадает с эталоном (после нормализации даты)

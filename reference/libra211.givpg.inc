@@ -1,0 +1,57 @@
+ GIV/PG:,NAME,
+ INFLOAD*:LC,BLOCK,ALOAD
+ ,CONT,INFLOA
+ ,CONT,INFDM
+ ,CONT,INFMD
+ KCOUNT*:,LC,1.
+ RM*:,LC,4
+ *C:12,BASE,*C.
+ ,XTA,RM*+2
+ ,AEX,=73401
+ ,ASN,64+12
+ ,ATX,FL*SAV.
+ 13,UZA,.
+ ,*72,=:11 4037 77
+ ,XTA,=73401
+ ,ATX,ALOAD.
+ ,ATI,15.
+ ,AEX,RM*+2
+ ,ASN,64-20
+ ,ATX,*W.
+ COMM:14,VTM,-2
+ L/S:14,UTC,2.
+ ,XTA,INFLOA
+ ,AEX,*W
+ 14,UTC,2
+ ,ATX,INFLOA
+ 14,VLM,L/S.
+ ,XTA,17B.
+ ,ATX,*S
+ ,ITA,15.
+ ,AEX,Э67
+ ,ATX,Э67*
+ ,XTA,K67
+ ,CTX,17B.
+ ,UJ,17B.
+ R17:,XTA,*S.
+ ,ATX,17B.
+ 13,UJ,
+ Э67:,Z00,R17
+ 9,,1
+ K67:,*67,Э67*.
+ TAK/PG:,ENTRY,.
+ 12,VTM,*C.
+ ,XTA,FL*SAV.
+ 13,UZA,.
+ ,XTA,RM*+2
+ ,ATI,15.
+ ,AAX,=4000
+ ,UIA,GO.
+ ,*72,=:00 2677
+ GO:,*72,=:00 6736 77
+ ,UJ,COMM.
+ *W     :,BSS,1.
+ FL*SAV: ,BSS,1.
+ Э67*  : ,BSS,1.
+ *S    : ,BSS,1.
+ ,END,GIV/PG  .

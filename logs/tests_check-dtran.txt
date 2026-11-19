@@ -1,0 +1,2 @@
+OK disasm/LO_SYN.dtran.madlen: 2055 строк, заголовок LO*SYN, VTM/VJM присутствуют
+OK disasm/LO_GEN.dtran.madlen: 1905 строк, заголовок LO*GEN, VTM/VJM присутствуют

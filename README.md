@@ -7,9 +7,18 @@
 
 ## Статус
 
-Идёт подготовка к дизассемблированию оверлеев. План и разведка носителя —
-[docs/PLAN.md](docs/PLAN.md). Текущее состояние этапов —
+Оверлеи дизассемблированы и аннотированы; все регрессионные сценарии проходят.
+План и разведка носителя — [docs/PLAN.md](docs/PLAN.md), состояние этапов —
 [checklist/STATUS.md](checklist/STATUS.md).
+
+| Оверлей | Аннотированный МАДЛЕН | Перекрёстные ссылки | Регистры |
+|---|---|---|---|
+| `LO*SYN` | `src/LO_SYN.mad` (3122 строки, 1024/1024 слов) | `include/LO_SYN.xref.md` | `include/LO_SYN.registers.md` |
+| `LO*GEN` | `src/LO_GEN.mad` (3109 строк, 1024/1024 слов) | `include/LO_GEN.xref.md` | `include/LO_GEN.registers.md` |
+| корень `FOREX*` | `include/FOREX_ROOT.mad` | `docs/03-symbols.md`, `include/catalog.md` | — |
+
+Дизассемблирование в МАДЛЕН выполнено `dtran` через `tools/dtran_wrap.py`
+(синтетический DMS-модуль с числовой симтаблицей), по образцу `re-siprod`.
 
 ## Что уже установлено
 
