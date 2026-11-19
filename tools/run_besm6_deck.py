@@ -27,6 +27,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SIMH = Path("/home/azizz/Yandex.Disk/simh/BESM6")
 BASE_INI = SIMH / "OSZAGR/dispak.ini"
 EMULATOR = SIMH / "BIN/besm6"
+# Принтер ОС пишет в СТАБИЛЬНУЮ папку ACPU (prn0=output.txt, prn1=output1.txt),
+# а не во временный файл, подключённый к prn0: не перехватывать его!
+ACPU_DIR = SIMH / "ACPU"
 # Разбор выдачи АЦПУ — штатный инструмент re-dispak (docs/MEMORY.md,
 # docs/ВВОД_АНАЛИЗ.md §6): подвалы КОНЕЦ ЗАДАЧИ/СБО, маркеры * и 555...
 ACPU_ANALYZER = Path("/home/azizz/Yandex.Disk/re-dispak/acpu_analyze.pl")
@@ -92,8 +95,8 @@ def make_ini(work: Path, prn_path: Path, vu_path: Path) -> Path:
             # Не подключаем vu0 при загрузке: SIMH может переоткрыть/обнулить
             # файл. Колода подаётся командой `at vu0` уже после старта ОС.
             out.append("; " + line)
-        elif re.search(r"^\s*attach\s+-n\s+prn0\b", line):
-            out.append(f"attach -n prn0 {prn_path}")
+        elif re.search(r"^\s*attach\s+-n\s+prn[01]\b", line):
+            out.append(line)  # штатные файлы в папке ACPU — не подменять
         else:
             out.append(line)
     ini = work / "deck.ini"
@@ -152,12 +155,13 @@ def main():
 
     work = Path(tempfile.mkdtemp(prefix="besm6-deck-", dir="/var/tmp"))
     deck = work / "deck.txt"
-    prn = work / "acpu.txt"
     deck.write_text(build_deck(args), encoding="utf-8")
-    prn.touch()
-    ini = make_ini(work, prn, deck)
+    # Снимок папки ACPU до прогона: после найдём изменившийся файл.
+    acpu_before = {p.name: p.stat().st_mtime_ns for p in ACPU_DIR.glob("*")
+                   if p.is_file()}
+    ini = make_ini(work, None, deck)
     log(f"koloda : {deck} ({deck.stat().st_size} байт)")
-    log(f"acpu   : {prn}")
+    log(f"acpu   : папка {ACPU_DIR} (prn0=output.txt, prn1=output1.txt)")
     log(f"ini    : {ini}")
 
     if tmux("has-session", "-t", args.session, check=False).strip() and \
@@ -248,9 +252,15 @@ def main():
         # АЦПУ — барабанный принтер: запись в файл асинхронна, дать стечь
         time.sleep(5)
 
-        print("\n===== АЦПУ (prn0, сырая распечатка) =====")
-        print(prn.read_text(encoding="utf-8", errors="replace") or "(пусто)")
-        if ACPU_ANALYZER.exists() and prn.stat().st_size:
+        changed = [p for p in ACPU_DIR.glob("*")
+                   if p.is_file() and p.stat().st_mtime_ns != acpu_before.get(p.name, -1)]
+        changed.sort(key=lambda p: p.stat().st_mtime_ns, reverse=True)
+        prn = changed[0] if changed else None
+        log(f"изменённые файлы ACPU: {[p.name for p in changed]}")
+        if prn:
+            print(f"\n===== АЦПУ ({prn.name}, сырая распечатка) =====")
+            print(prn.read_text(encoding="utf-8", errors="replace") or "(пусто)")
+        if ACPU_ANALYZER.exists() and prn and prn.stat().st_size:
             print("===== разбор выдачи АЦПУ (re-dispak/acpu_analyze.pl) =====")
             for flag in ("--summary", "--jobs", "--errors"):
                 r = subprocess.run(["perl", str(ACPU_ANALYZER), str(prn), flag],
@@ -260,7 +270,7 @@ def main():
                     print(r.stdout)
         print("===== transcripts (консоль, последние 120 строк истории) =====")
         print("\n".join(pane(args.session).splitlines()[-120:]))
-        return 0 if done and prn.stat().st_size else 1
+        return 0 if prn and prn.stat().st_size else 1
     finally:
         if not args.keep:
             tmux("kill-session", "-t", args.session, check=False)
