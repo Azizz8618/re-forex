@@ -1,0 +1,63 @@
+=== Инвентаризация и правка лен-карт в тестовых / боевых деках ===
+Дата: 2026-11-19
+Репозиторий: /tmp/.private/azizz/opencode/re-forex (main)
+Требование: в тестовых колодах — оба диска (2048 + 2348); в боевых — только 2348.
+Отчёт: docs/18-decks-disks.md
+
+--- ИНВЕНТАРИЗАЦИЯ (до правки) ---
+Генераторы дек:
+  tests/run-f77-suite.sh:202-210   кросс-FTN дек — только лен 41(2048)        -> ТЕСТ, добавить 2348
+  tests/plan-f77/probe.sh:16       пробы 2.02 — только лен 41(2048)           -> ТЕСТ, добавить 2348
+  tests/plan-f77/e1/make_experiments.py:32-38 header — только лен 41(2048)    -> ТЕСТ, добавить 2348
+    :271                           инъекция 2348-wr в build-дек               -> дубль после правки header, удалена
+    :288                           замена 2048 -> 2348 в call-деке            -> remove, оставить обе карты
+  tests/run-f77-runtime.sh:66      lib.b6 — лен 60(2348-wr)                   -> БОЕВАЯ, без изм.
+  tests/run-glissade-forex.sh:90   job.b6 — лен 60(2348)                      -> БОЕВАЯ, без изм.
+  tests/run-f77-prep.sh            PASSPORT в src/f77prep/prep_tools.py:40    -> БОЕВАЯ, без изм. (src не трогаем)
+  tests/install-forex-perso.sh:191-204 catperso.b6 — дис 40(2348)+disc:41(2048) -> утилита (plcatalog), без изм.
+  tests/forex-glissade/run.sh      использует glkern.b6 как есть -> ТЕСТ, правим сам файл
+
+Деки (*.b6), всего 60:
+  8  tests/f77/suite/*.b6                    уже 2048 + 2348-wr           -> без изм.
+  1  tests/f77/test-runtime.b6               только 2348   (БОЕВАЯ)      -> без изм.
+  1  tests/forex-glissade/glkern.b6          только 2048   (ТЕСТ)        -> ДОБАВЛЕНА 2348-wr
+  15 tests/plan-f77/work/*/task.b6           только 2048   (ТЕСТ)        -> ПЕРЕГЕНЕРИРОВАНЫ probe.sh с двумя картами
+  35 tests/plan-f77/e1/**/*.b6               32 только 2048, 1 только 2348,
+                                             1 уже обе, 1 catperso        -> 33 ДОБАВЛЕНА/ВОССТАНОВЛЕНА карта, 2 без изм.
+  1  e1/callfortran/catperso.b6              дис 40(2348)+disc:41(2048)   -> без изм.
+
+--- ИЗМЕНЕНИЯ ---
+1. tests/run-f77-suite.sh:205                 + printf 'лен 60(2348-wr)^\n'
+2. tests/plan-f77/probe.sh:16                 + лен 60(2348-wr) в шапку пробы
+3. tests/plan-f77/e1/make_experiments.py:35   + лен 60(2348-wr) в header
+4.   :270-273  убрана инъекция 2348-wr в build-дек (иначе дублирование)
+5.   :285-290  убрана замена 2048 -> 2348 в call-деке (тест: нужны обе)
+6. tests/forex-glissade/glkern.b6:3          + лен 60(2348-wr)
+7. 32 E1-дека: добавлена лен 60(2348-wr) после лен 41(2048)
+8. tests/plan-f77/e1/callfortran/call/task.b6: + лен 41(2048), 2348 -> 2348-wr
+9. tests/plan-f77/work/*/task.b6 (15): перегенерированы probe.sh
+
+Боевые деки (только 2348) НЕ менялись:
+  tests/f77/test-runtime.b6
+  tests/run-f77-runtime.sh (lib.b6)
+  tests/run-glissade-forex.sh (job.b6)
+  tests/run-f77-prep.sh (PASSPORT в src/f77prep/prep_tools.py)
+
+--- ИТОГОВАЯ РАСКЛАДКА (сканирование всех *.b6 в tests/) ---
+  58  лен 41(2048) + лен 60(2348-wr)
+   1  только лен 60(2348)                  (test-runtime.b6, боевая)
+   1  дис 40(2348) + disc:41(2048)         (catperso.b6, plcatalog)
+
+--- ПРОГОНЫ (rc) ---
+  tests/run-f77-suite.sh           rc=0   8/8 случаев OK, кросс-*FTN 3/3
+  tests/run-f77-runtime.sh         rc=0   каталог 0o2310 OK, gold совпал
+  tests/run-f77-prep.sh            rc=0   case1+case2, pass1+pass2
+  tests/run-glissade-forex.sh      rc=0   14/14 строк
+  tests/plan-f77/probe.sh          rc=0   15 деков, verdict'ы не изменились
+  tests/install-forex-perso.sh     rc=0   эталон unchanged, PLCATALOG OK
+  tests/forex-glissade/run.sh      rc=0   (доп. проверка glkern.b6 с двумя картами)
+  Ручной прогон e1/units/read_u1 и e1/callfortran/call: rc=0, КОНЕЦ ЗАДАЧИ есть.
+
+--- НЕ ТРОГАЛОСЬ ---
+  reference/, src/, include/, docs/drakon/, docs/17-disks-2048-2348.md
+  Неотслеживаемый docs/plan-f77/13-banner-origin.md оставлен как есть.

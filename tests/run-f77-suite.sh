@@ -202,6 +202,7 @@ if [ -f "$CROSS" ]; then
         {
             printf 'шифр 419999 зс5^\n'
             printf 'лен 41(2048)^\n'
+            printf 'лен 60(2348)^\n'
             printf 'eeв1а3\n'
             printf '*name F%s\n' "$(printf '%s' "$c" | tr -cd 'A-Za-z0-9' | cut -c1-5)"
             printf '*call yesmemory\n*no list\n*system\n*full list\n*ftn\n'

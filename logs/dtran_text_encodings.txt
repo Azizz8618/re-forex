@@ -1,0 +1,166 @@
+ЛОГ: dtran -D И КОДИРОВКИ ТЕКСТОВЫХ КОНСТАНТ
+================================================================================
+Дата: 2026-11-19T18:05:11+03:00
+Репозиторий: /tmp/.private/azizz/opencode/re-forex (ветка main)
+dtran: /home/azizz/Yandex.Disk/dtran/dtran
+================================================================================
+
+1. СПРАВКА dtran -h (-opция -D)
+Command file (supersedes the capital-letter options -R and -E):
+  -D file       read commands, one per line, case-insensitive.  Text-encoding
+                offsets are set only here:
+                  iso:<list>   gost:<list>   itm:<list>   text:<list>
+                  code:<list>  (entry points)   base:<decimal register>
+                where <list> is comma-separated octal offsets or start-end
+                ranges, e.g.  code:1000,2050-2077,3001
+
+Presets:
+
+2. ПРИМЕРЫ -D ИЗ monitor80-re
+--- /home/azizz/Yandex.Disk/monitor80-re/permanent/newsyste.dtr
+equt:gak/4-:
+equt:gal/1-:
+equt:gal/7-:
+equt:gam/0-:
+equt:gam/1-:
+equt:gam/2-:
+equt:gam/3-:
+equt:gam/4-:
+equt:gam/5-:
+base:1,0
+iso:117-121
+equ*:122=rdcat
+equ*:126=nuzzzz
+equ*:166=start
+gost:237-266
+equ*:303=defnuzzz
+--- /home/azizz/Yandex.Disk/monitor80-re/permanent/print8.dtr
+gost:30-34
+--- /home/azizz/Yandex.Disk/monitor80-re/permanent/monitor%.dtr
+text:12
+--- /home/azizz/Yandex.Disk/monitor80-re/utility/overlay.dtr
+base:7,0
+equ*:354=nuzzzz,355=cont,356=tmp3,305=copy,271=find0,273=found0
+equ*:167=badcard,332=tmonitor,353=cw,352=tmp0,333=abase,212=arg
+equ*:175=tbadinfo,203=tbadcat,211=t*endr,233=proc,314=badcat,135=perror
+equ*:134=badinfo,140=exit,46=isot,15=getline,22=prline,105=shift
+equ*:1=*,141=*,160=proceed,164=copystlo,102=getname,232=monflag
+equ*:224=data2,225=data3,226=data4,227=data5,230=data6,231=data7
+equ*:111=chkmonit,120=ismonit
+equ*:122=pr1
+equ*:25=l1,35=l2,50=l3,52=l4,56=l5,60=l6,61=l7,64=l8,67=l9,71=l9a
+equ*:77=l10,132=gogetnm,143=l11,145=l12,150=l13,151=l14,152=l15,246=l16
+equ*:310=io1,315=io2,320=io3,213=buf
+liter:334-351
+text:332
+iso:167-211
+
+
+3. DEMO: -D НА DMS НЕ ВЛИЯЕТ
+--- FOREX_.dms: файл команд /tmp/FOREX_demo.dtr
+text:42-43
+gost:30-41
+iso:40
+--- dtran -F dms без -D (константы)
+ ,ISO, 6H20 -1+ . 062 060 040 055 061 053 
+ *0042B:,TEXT, 8HLO*SYN  
+ *0043B:,TEXT, 8HLO*GEN  
+--- diff plain vs -D
+(пусто — вывод идентичен)
+--- синтетический DMS из build/CORE_ROOT.words: diff
+(идентичен)
+
+4. СИНТЕТИЧЕСКИЙ Pascal-B: ВСЕ ЧЕТЫРЕ КОДИРОВКИ
+СЛОВО              КОДИР.  dtran                           octets
+----------------------------------------------------------------------------------------
+0o5457126371560000  text   |LO*SYN  |  262 362 263 346 340 000
+0o5457126371560000  gost   |_262_362_263_346_3400|  262 362 263 346 340 000
+0o5457126371560000  iso    |2Р3ФЮ_000|  262 362 263 346 340 000
+0o5457126371560000  itm    |#@##@##@##@##@#0|  262 362 263 346 340 000
+0o1502244213020060  text   |ЯБ4BЙБ P|  064 045 042 054 040 060
+0o1502244213020060  gost   |ФЕВМАР|  064 045 042 054 040 060
+0o1502244213020060  iso    |4%", 0|  064 045 042 054 040 060
+0o1502244213020060  itm    |`;$>#@#∨|  064 045 042 054 040 060
+
+5. ПОЛНЫЙ АУДИТ (18 TEXT + 4 GOST)
+МОДУЛЬ                         СЛОВО             КОДИР.  dtran                    НАШЕ
+------------------------------------------------------------------------------------------------------------
+FOREX_CORE.mad:365 LO*SYN      0o5457126371560000  TEXT   |LO*SYN  |  |LO*SYN  | OK
+                                                   GOST   |_262_362_263_346_3400|  |МП+УЩО00| (6→8)
+FOREX_CORE.mad:370 LO*GEN      0o5457124745560000  TEXT   |LO*GEN  |  |LO*GEN  | OK
+                                                   GOST   |_262_362_247_226_3400|  |МП+ЗЕО00| (6→8)
+FOREX_CORE.mad:390 FOREX*      0o4657624570120000  TEXT   |FOREX*  |  |FOREX*  | OK
+                                                   GOST   |_232_374_245_340_2400|  |ЖПТЕШ+00| (6→8)
+FOREX_CORE.mad:520 ENTRY*      0o4556646271120000  TEXT   |ENTRY*  |  |ENTRY*  | OK
+                                                   GOST   |_226_355Т_344_2400|  |ЕОФТЩ+00| (6→8)
+FOREX_CORE.mad:545 DATAPR*     0o4441644160621200  TEXT   |DATAPR* |  |DATAPR* | OK
+                                                   GOST   |_222<Б_303В_200|  |ДБФБРТ+0| (6→8)
+FOREX_CORE.mad:550 TAK/PG      0o6441531760470000  TEXT   |TAK/PG  |  |TAK/PG  | OK
+                                                   GOST   |_322`_317_302_1600|  |ФБЛ РЗ00| (6→8)
+FOREX_CORE.mad:555 GIV/PG      0o4751661760470000  TEXT   |GIV/PG  |  |GIV/PG  | OK
+                                                   GOST   |_236_235_217_302_1600|  |ЗЙЦ РЗ00| (6→8)
+FOREX_CORE.mad:560 OCTTDEC     0o5743646444454300  TEXT   |OCTTDEC |  |OCTTDEC | OK
+                                                   GOST   |_276ЮФ_222|_300|  |ПГФФДЕГ0| (6→8)
+FOREX_CORE.mad:565 FOREX       0o4657624570000000  TEXT   |FOREX   |  |FOREX   | OK
+                                                   GOST   |_232_374_245_34000|  |ЖПТЕШ000| (6→8)
+FOREX_CORE.mad:570 CONST       0o4357566364000000  TEXT   |CONST   |  |CONST   | OK
+                                                   GOST   |_216_373_263_32000|  |ГПОУФ000| (6→8)
+FOREX_CORE.mad:575 COMEQ       0o4357554561000000  TEXT   |COMEQ   |  |COMEQ   | OK
+                                                   GOST   |_216_373_145_30400|  |ГПНЕС000| (6→8)
+FOREX_CORE.mad:580 OPRTR       0o5760626462000000  TEXT   |OPRTR   |  |OPRTR   | OK
+                                                   GOST   |_277/_264_31000|  |ПРТФТ000| (6→8)
+FOREX_CORE.mad:585 LOADANGO    0o5457414441564757  TEXT   |LOADANGO|  |LOADANGO| OK
+                                                   GOST   |_262_370_144_206_351_357|  |МПБДБОЗП| (6→8)
+XREF.mad:1053 *INPUT*          0o1251566065641200  TEXT   |*INPUT* |  |*INPUT* | OK
+                                                   GOST   |К_233_260_327I_200|  |+ЙОРХФ+0| (6→8)
+XREF.mad:1054    INPUT         0o0000005156606564  TEXT   |   INPUT|  |   INPUT| OK
+                                                   GOST   |00Й_273,_164|  |000ЙОРХФ| (6→8)
+XREF.mad:1055 *OUTPUT*         0o1257656460656412  TEXT   |*OUTPUT*|  |*OUTPUT*| OK
+                                                   GOST   |К_375_164_303Ъ+|  |+ПХФРХФ+| (6→8)
+XREF.mad:1056   OUTPUT         0o0000576564606564  TEXT   |  OUTPUT|  |  OUTPUT| OK
+                                                   GOST   |0-_365_323,_164|  |00ПХФРХФ| (6→8)
+F77LIBR 4HABCD                 0o4142434400000000  TEXT   |ABCD    |  |ABCD    | OK
+                                                   GOST   |_206И_344000|  |ABCD0000| (6→8)
+------------------------------------------------------------------------------------------------------------
+проверено TEXT: 18, расхождений: 0
+GOST dtran (8-бит) на 6-битных словах ожидаемо не совпадает с GOST(6→8):
+это разные форматы, а не ошибка комментария (см. docs/19-dtran-text-encodings.md).
+
+МЕСЯЦЫ DATAPR (GOST 8 бит/символ, S5:7712-7731):
+  S5:7722 ФЕВМАР       0o1502244213020060  -D gost: |ФЕВМАР|  наш 'ФЕВМАР' OK   (-D text: |ЯБ4BЙБ P| — неприменимо)
+  S5:7723 ДЕК          0o1102245200000000  -D gost: |ДЕК000|  наш 'ДЕК' OK   (-D text: |)Б4J    | — неприменимо)
+  S5:7724 ИЮНИЮЛ       0o1203645512036453  -D gost: |ИЮНИЮЛ|  наш 'ИЮНИЮЛ' OK   (-D text: |*ЦTM*ЦTK| — неприменимо)
+  S5:7723 АПРМАЯ       0o1002746013020076  -D gost: |АПРМАЯ|  наш 'АПРМАЯ' OK   (-D text: |(БЭPЙБ Ч| — неприменимо)
+проверено GOST: 4, расхождений: 0
+audit rc=0
+
+6. РЕЗУЛЬТАТЫ ТЕСТОВ
+OK LO*SYN: все 1024 слова совпадают с дампом
+OK LO*GEN: все 1024 слова совпадают с дампом
+check-source-words.py rc=0
+Отчёт: /tmp/.private/azizz/opencode/re-forex/logs/extract_codes_check.txt
+OK: мнёмоники APX/AUX/EXT/ASN, классы аргументов 020/021 (mask-word (text) / immediate-code / address), явные формулы ASN (Монитор-80 64±N), классы Э60/Э70/Э71 и 033=STOP в LO*GEN корректны; экстракоды 050..077 расшифрованы
+OK dtran -D cross-check: TEXT/GOST-константы совпадают
+check-extract-codes.sh rc=0
+OK   [ДЛИННЫХ]: 0
+OK   [КОЛЛИЗИЙ]: 0
+
+OK: нарушений семантики имён не найдено
+check-label-semantics.sh rc=0
+
+7. ИСПРАВЛЕННЫЕ КОММЕНТАРИИ
+1054: TINPNM:,TEXT,8H   INPUT ; POLN: TEXT_INPUT_NAME S:880 . TEXT-константа "   INPUT" (имя секции INPUT)  ; DEKOD GOST '000ЙОРХФ' / TEXT '   INPUT' / ISO '··5···' [источник: src/lib21/XREF.mad:1054; dtran -D text 0o0000005156606564; confidence: high]
+1056: TOUTNM:,TEXT,8H  OUTPUT ; POLN: TEXT_OUTPUT_NAME S:882 . TEXT-константа "  OUTPUT" (имя секции OUTPUT)  ; DEKOD GOST '00ПХФРХФ' / TEXT '  OUTPUT' / ISO '·]0·@·' [источник: src/lib21/XREF.mad:1056; dtran -D text 0o0000576564606564; confidence: high]
+103:TL0020       ,EQU, 6H'231'  ЯHB                 ; роль: DEKOD GOST ''231'  Я' / TEXT ';"#!;//_' / ISO 'l ·l··' | GOST 'НВ      ' / TEXT 'MB//////' / ISO '·#·<··' [источник: src/FOREX_RUNTIME.mad:103; confidence: high]; dtran -D gost: |'231'  ЯНВ| — приоритет GOST (8 бит/символ); 6-битный TEXT ниже — альтернативная интерпретация байт, НЕ dtran -D text; ; S5:7721; источник: S5:7721  ; полное имя: TEXT_LIT_6H_231_HB
+105:TL0022        ,EQU, 6HФEBMAP                     ; роль: DEKOD GOST 'ФЕВМАР  ' / TEXT 'TEBL@P//' / ISO '·X····' [источник: src/FOREX_RUNTIME.mad:105; confidence: high]; dtran -D gost: |ФЕВМАР| — приоритет GOST (8 бит/символ); 6-битный TEXT ниже — альтернативная интерпретация байт, НЕ dtran -D text; ; S5:7722; источник: S5:7722  ; полное имя: TEXT_LIT_6H_EBMAP
+106:TL0023           ,EQU, 6HДEK                        ; роль: DEKOD GOST 'ДЕК     ' / TEXT 'DEJ/////' / ISO '·Z·<··' [источник: src/FOREX_RUNTIME.mad:106; confidence: high]; dtran -D gost: |ДЕК000| — приоритет GOST (8 бит/символ); 6-битный TEXT ниже — альтернативная интерпретация байт, НЕ dtran -D text; ; S5:7731; источник: S5:7731  ; полное имя: TEXT_LIT_6H_EK
+107:TL0024            ,EQU, 6HИЮHИЮЛ                     ; роль: DEKOD GOST 'ИЮНИЮЛ  ' / TEXT 'H^MH^K//' / ISO '··h···' [источник: src/FOREX_RUNTIME.mad:107; confidence: high]; dtran -D gost: |ИЮНИЮЛ| — приоритет GOST (8 бит/символ); 6-битный TEXT ниже — альтернативная интерпретация байт, НЕ dtran -D text; ; S5:7724; источник: S5:7724  ; полное имя: TEXT_LIT_6H_H
+
+8. ИЗМЕНЁННЫЕ ФАЙЛЫ
+ M src/FOREX_RUNTIME.mad
+ M src/lib21/XREF.mad
+ M tests/check-extract-codes.sh
+ M tools/extract_codes.py
+?? docs/19-dtran-text-encodings.md
+?? logs/dtran_text_encodings.txt
+?? tools/dtran_text.py

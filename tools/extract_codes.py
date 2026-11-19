@@ -201,6 +201,15 @@ ARGUMENT_NOTES: Dict[str, str] = {
 # литеральная форма `=...`, `6H...`, `:` или имя ETX*/TL*/*MSK*/*MAS* ⇒ текст;
 # малое восьмеричное (≤0o7777) без литеральной формы ⇒ immediate-код;
 # остальное ⇒ адрес.
+#
+# ПРОВЕРКА КОДИРОВОК ЧЕРЕЗ DTRAN (2026-11-19, см. docs/19-dtran-text-encodings.md):
+# файл `-D` задаёт `iso:/gost:/itm:/text:<octal offsets>` (monitor80-re/*.dtr),
+# но эти команды действуют только в Pascal-бэкендах.  Для DMS-модулей авторитетно
+# auto-обнаруженное `,TEXT, 8H...`.  Полный кросс-чек ключевых констант делаёт
+# `tools/dtran_text.py --audit`; он же показывает, что `gost:` dtran (8 бит/байт)
+# на наших 6-битных TEXT-словах даёт «мусор», а настоящие GOST-константы DATAPR
+# (S5:7712-7731) читаются только `-D gost:`.  Поэтому «GOST '…'» в наших
+# комментариях — это 8 шестибитных группы по gost10859.h, а НЕ dtran -D gost.
 
 APX_AUX_ARG_CLASSES: Tuple[str, ...] = (
     "mask-word (text)", "immediate-code", "address",

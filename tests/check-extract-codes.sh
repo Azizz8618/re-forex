@@ -382,4 +382,29 @@ print(f'Отчёт: {report}')
 print(out[-1])
 sys.exit(1 if fail else 0)
 PY
-exit $?
+rc=$?
+
+# ── КРОСС-ПРОВЕРКА ТЕКСТОВЫХ КОНСТАНТ ЧЕРЕЗ dtran -D ───────────────────────────
+# tools/dtran_text.py --audit сверяет 18 6-битных TEXT-констант и 4 GOST-месяца
+# DATAPR с прочтением dtran.  Подробности — docs/19-dtran-text-encodings.md.
+dt_out=$(python3 "$ROOT/tools/dtran_text.py" --audit 2>&1)
+dt_rc=$?
+{
+    printf '\nКРОСС-ПРОВЕРКА dtran -D (tools/dtran_text.py --audit)\n'
+    printf '%s\n' "$dt_out" | tail -n 8
+} >> "$REPORT"
+if [ "$dt_rc" -ne 0 ]; then
+    echo "FAIL dtran -D cross-check: rc=$dt_rc (см. $REPORT)"
+    rc=1
+else
+    echo "OK dtran -D cross-check: TEXT/GOST-константы совпадают"
+fi
+
+# Две TEXT-константы XREF должны иметь ведущие пробелы (dtran: 8H   INPUT / 8H  OUTPUT).
+if grep -Fq "DEKOD GOST 'ЙОРХФ000' / TEXT 'INPUT   '" "$ROOT/src/lib21/XREF.mad" ||
+   grep -Fq "DEKOD GOST 'ПХФРХФ00' / TEXT 'OUTPUT  '" "$ROOT/src/lib21/XREF.mad"; then
+    echo "FAIL XREF.mad: leading-space TEXT constants annotated with trailing spaces"
+    rc=1
+fi
+
+exit $rc

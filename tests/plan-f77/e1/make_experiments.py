@@ -32,6 +32,7 @@ ERR_RE = re.compile(
 header = (
     "шифр 419999 зс5^\n"
     "лен 41(2048)^\n"
+    "лен 60(2348)^\n"
     "eeв1а3\n"
     "*name {name}\n"
     "*call yesmemory\n"
@@ -266,9 +267,10 @@ b = deck("build_object", [
     "   10 FORMAT(1X,12H*CALL WORKS*)", "      RETURN", "      END",
 ], extra="*perso:602300\n",
     path=d / "build")
-# the build deck needs the writable disk mounted on LUN 60
+# обе лен-карты (2048 + 2348) уже приходят из `header`; -wr поднимаем
+# только здесь: этот дек пишет библиотеку картой *to perso:602310
 t = (d / "build" / "task.b6").read_text(encoding="utf-8")
-t = t.replace("лен 41(2048)^\n", "лен 41(2048)^\nлен 60(2348-wr)^\n")
+t = t.replace("лен 60(2348)^\n", "лен 60(2348-wr)^\n")
 t = t.replace("*execute\n", "*to perso:602310\n")
 (d / "build" / "task.b6").write_text(t, encoding="utf-8")
 out, rc = run(d / "build", diskdir=d)
@@ -285,7 +287,7 @@ c = deck("call_object", [
 ], extra="*perso:602300\n*perso:602310,cont\n",
     path=d / "call")
 t = (d / "call" / "task.b6").read_text(encoding="utf-8")
-t = t.replace("лен 41(2048)^\n", "лен 60(2348)^\n")
+# тестовая колода: обе карты остаются из `header` (2048 + 2348), записи нет
 t = t.replace("*no list\n*forex\n      CONTINUE\n", "*call hello\n")
 (d / "call" / "task.b6").write_text(t, encoding="utf-8")
 out, rc = run(d / "call", diskdir=d)

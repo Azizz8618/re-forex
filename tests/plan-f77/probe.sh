@@ -13,7 +13,7 @@ probe() {
     d=tests/plan-f77/work/$name
     mkdir -p "$d"
     {
-        printf 'шифр 419999 зс5^\nлен 41(2048)^\neeв1а3\n'
+        printf 'шифр 419999 зс5^\nлен 41(2048)^\nлен 60(2348)^\neeв1а3\n'
         printf '*name %s\n*call yesmemory\n*no list\n*forex\n' "$name"
         printf '%s\n' "$@"
         printf '*execute\n*end file\n``````\nеконец\n'

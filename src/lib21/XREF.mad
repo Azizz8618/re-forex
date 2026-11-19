@@ -1051,9 +1051,9 @@ XREF:,NAME, NEW DTRAN ; POLN: XREF S:1 . имя модуля
  ,LOG,LG4000 ; S:877 . двоичная (LOG) константа
  ,INT,VT1 ; S:878 . целая константа
  TINPMK:,TEXT,8H*INPUT* ; POLN: TEXT_INPUT_MARK S:879 . TEXT-константа "*INPUT*" (маркер секции INPUT в deck)  ; DEKOD GOST '+ЙОРХФ+0' / TEXT '*INPUT* ' / ISO '*···B·' [источник: src/lib21/XREF.mad:1053; confidence: high]
- TINPNM:,TEXT,8H   INPUT ; POLN: TEXT_INPUT_NAME S:880 . TEXT-константа "   INPUT" (имя секции INPUT)  ; DEKOD GOST 'ЙОРХФ000' / TEXT 'INPUT   ' / ISO '··5···' [источник: src/lib21/XREF.mad:1054; confidence: high]
+ TINPNM:,TEXT,8H   INPUT ; POLN: TEXT_INPUT_NAME S:880 . TEXT-константа "   INPUT" (имя секции INPUT)  ; DEKOD GOST '000ЙОРХФ' / TEXT '   INPUT' / ISO '··5···' [источник: src/lib21/XREF.mad:1054; dtran -D text 0o0000005156606564; confidence: high]
  TOUTMK:,TEXT,8H*OUTPUT* ; POLN: TEXT_OUTPUT_MARK S:881 . TEXT-константа "*OUTPUT*" (маркер секции OUTPUT в deck)  ; DEKOD GOST '+ПХФРХФ+' / TEXT '*OUTPUT*' / ISO '*·t·]·' [источник: src/lib21/XREF.mad:1055; confidence: high]
- TOUTNM:,TEXT,8H  OUTPUT ; POLN: TEXT_OUTPUT_NAME S:882 . TEXT-константа "  OUTPUT" (имя секции OUTPUT)  ; DEKOD GOST 'ПХФРХФ00' / TEXT 'OUTPUT  ' / ISO '·]0·@·' [источник: src/lib21/XREF.mad:1056; confidence: high]
+ TOUTNM:,TEXT,8H  OUTPUT ; POLN: TEXT_OUTPUT_NAME S:882 . TEXT-константа "  OUTPUT" (имя секции OUTPUT)  ; DEKOD GOST '00ПХФРХФ' / TEXT '  OUTPUT' / ISO '·]0·@·' [источник: src/lib21/XREF.mad:1056; dtran -D text 0o0000576564606564; confidence: high]
  ,INT,CN8 ; S:883 . целая константа
  ,LOG,LG176 ; S:884 . двоичная (LOG) константа
  ,LOG,LG101 ; S:885 . двоичная (LOG) константа

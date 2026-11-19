@@ -1,4 +1,4 @@
-C     VERSION STAMP FOREX 5.00 (re-forex); host banner 2.02 is external
+C     VERSION FOREX 5.00 / 19.11.2026 (re-forex); host 2.02 external
        PROGRAM F77PREP
 C=======================================================================
 C F77PREP v2 -- F77 -> FOREX 2.02 preprocessor (rule engine).

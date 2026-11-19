@@ -1,0 +1,90 @@
+Лог исправления: лен 60(2348-wr) -> лен 60(2348) там, где записи на диск нет.
+Дата: 2026-11-19. Репозиторий: re-forex, ветка main.
+Правило: -wr нужен только если в колоде есть команда записи на диск
+(*to perso, *W:, *copy ... -WR, *to perso:..., *PERSO with write, *keep).
+Простое *perso:602300 / *forex / *execute / Fortran WRITE(...) - чтение/исполнение.
+
+Формат: файл | было | стало | причина
+----------------------------------------------------------------------------------------------------------------------
+tests/f77/suite/base.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*perso:602300 + *forex + *execute)
+tests/f77/suite/blockif.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*perso:602300 + *forex + *execute)
+tests/f77/suite/charhollerith.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*perso:602300 + *forex + *execute)
+tests/f77/suite/dataparam.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*perso:602300 + *forex + *execute)
+tests/f77/suite/do2d.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*perso:602300 + *forex + *execute)
+tests/f77/suite/dpcomplex.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*perso:602300 + *forex + *execute)
+tests/f77/suite/intrinsics_ext.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*perso:602300 + *forex + *execute)
+tests/f77/suite/listio.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*perso:602300 + *forex + *execute)
+tests/forex-glissade/glkern.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex + *execute; боевой скрипт берёт только строки 10-111)
+tests/plan-f77/e1/callfortran/call/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*perso:602300 + *perso:602310,cont + *call hello)
+tests/plan-f77/e1/precision/complex/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/precision/double/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/precision/dp_f_format/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/punchinsert/bin_control/gen_punch.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/punchinsert/bin_control/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/punchinsert/text_ascii/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/punchinsert/text_gost/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/strings/a4_wrong_type/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/strings/char_data_a4/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/strings/charstar_fixed/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/strings/charstar_original/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/strings/hollerith_data_a4/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/strings/hollerith_format/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/strings/quote_format/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/read_nounit/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/read_u1/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/read_u10/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/read_u2/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/read_u40/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/read_u45/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/read_u5/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/read_u54/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/read_u6/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/write_redirect/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/write_u1/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/write_u10/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/write_u2/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/write_u40/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/write_u45/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/write_u5/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/write_u54/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+tests/plan-f77/e1/units/write_u6/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | компиляция/исполнение, команды записи на диск отсутствуют (*forex/*punch + *execute; READ/WRITE в Fortran - не запись на 2348)
+----------------------------------------------------------------------------------------------------------------------
+Генераторы:
+tests/plan-f77/e1/make_experiments.py | правка шапки/инъекции 2348-wr | 2348 | записи в генерируемых колодах нет
+tests/plan-f77/probe.sh | правка шапки/инъекции 2348-wr | 2348 | записи в генерируемых колодах нет
+tests/run-f77-suite.sh | правка шапки/инъекции 2348-wr | 2348 | записи в генерируемых колодах нет
+----------------------------------------------------------------------------------------------------------------------
+Оставлено с -wr (запись ЕСТЬ):
+tests/run-f77-runtime.sh:66 | лен 60(2348-wr) | без изм. | *to perso:602310 (сборка F77LIBR в зону 0o2310)
+tests/plan-f77/e1/callfortran/build/task.b6:3 | лен 60(2348-wr)^ | без изм. | *to perso:602310
+tests/plan-f77/e1/make_experiments.py:273 | инъекция 2348 -> 2348-wr | добавлена | только build-дек пишет library
+----------------------------------------------------------------------------------------------------------------------
+Перегенерировано probe.sh (gitignored, 15 файлов):
+tests/plan-f77/work/BASE/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/BLOCKIF/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/CHARSTAR/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/COMPLEX/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/DATAST/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/DOLOOP/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/DOUBLPR/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/ENDREAD/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/EXTERNAL/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/IMPLICIT/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/INTRINSIC/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/LISTDIR/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/LOGICAL/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/PARAMETER/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+tests/plan-f77/work/SAVE/task.b6 | лен 60(2348-wr)^ | лен 60(2348)^ | пробы *forex + *execute, записи нет
+----------------------------------------------------------------------------------------------------------------------
+ИТОГО изменено деков: 57 (42 отслеживаемых + 15 сгенерированных work/).
+Изменено генераторов: 3 (run-f77-suite.sh, probe.sh, make_experiments.py).
+Оставлено с -wr: 2 колоды + 1 генератор инъекции (реальная запись *to perso).
+
+Проверка rc (все = 0):
+  tests/run-f77-suite.sh: rc=0
+  tests/run-glissade-forex.sh: rc=0
+  tests/run-f77-prep.sh: rc=0
+  tests/run-f77-runtime.sh: rc=0
+  tests/plan-f77/probe.sh: rc=0
+  tests/install-forex-perso.sh: rc=0
+  tests/forex-glissade/run.sh: rc=0
