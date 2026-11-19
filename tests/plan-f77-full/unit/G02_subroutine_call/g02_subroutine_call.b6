@@ -1,0 +1,25 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name G02
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- G02: internal SUBROUTINE + CALL + RETURN (by reference).
+      PROGRAM G02
+      N=0
+      CALL ADDONE(N)
+      PRINT 10,N
+   10 FORMAT(1X,I4)
+      STOP
+      END
+      SUBROUTINE ADDONE(K)
+      K=K+1
+      RETURN
+      END
+*execute
+*end file
+``````
+еконец

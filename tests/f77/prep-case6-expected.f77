@@ -1,0 +1,21 @@
+      PROGRAM PREP6
+      DOUBLE PRECISION X
+      INTEGER N
+      X=2.0D0
+C@ PRINT *, X -> PRINT 9000,X
+      PRINT 9000,X
+C@ READ(*,*,ERR=99) N -> READ 90000,N
+      READ 90000,N
+C@ READ EARLY-EXIT -> IF (N .EQ. -888888.) GO TO 99
+      IF (N .EQ. -888888.) GO TO 99
+C@ PRINT *, N -> PRINT 9001,N
+      PRINT 9001,N
+   99 CONTINUE
+      STOP
+C@ (end of program) -> 9000 FORMAT(1X,D22.15)
+ 9000 FORMAT(1X,D22.15)
+C@ (end of program) -> 90000 FORMAT(I10)
+90000 FORMAT(I10)
+C@ (end of program) -> 9001 FORMAT(1X,I10)
+ 9001 FORMAT(1X,I10)
+      END

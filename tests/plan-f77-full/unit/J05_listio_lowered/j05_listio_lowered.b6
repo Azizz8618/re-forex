@@ -1,0 +1,23 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name LIO77
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- LISTDIRECTED via F77PREP: source listio.f77 (PRINT *,N) -> lowered form.
+      PROGRAM LIO77
+      INTEGER N
+      N=42
+C@ PRINT *,N -> PRINT 9000,N
+      PRINT 9000,N
+      STOP
+C@ (end of program) -> 9000 FORMAT(1X,I10)
+ 9000 FORMAT(1X,I10)
+      END
+*execute
+*end file
+``````
+еконец

@@ -1,0 +1,6 @@
+# CROSS_OK/CROSS_FAIL/CROSS_SKIP|ID|COMPILER|TOLERANCE|DETAIL
+CROSS OK X01  FTN      1 чисел совпали (допуск max(1e-06, 1e-05*max))
+CROSS OK X02  FTN      6 чисел совпали (допуск max(1e-06, 1e-05*max))
+CROSS OK X03  FTN      4 чисел совпали (допуск max(1e-06, 1e-05*max))
+CROSS OK X04  FTN      7 чисел совпали (допуск max(1e-06, 1e-05*max))
+Итог L2: 8 OK / 0 PENDING / 0 SKIP (нет эталона)

@@ -1,0 +1,20 @@
+# STATUS|ID|SOURCE|EXPECTED|FACT
+OK                   NC01  tests/plan-f77/work/CHARSTAR/out.txt ожидалось=ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ факт=ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK|NC01|tests/plan-f77/work/CHARSTAR/out.txt|ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ|ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK                   NC02  tests/plan-f77/work/LISTDIR/out.txt ожидалось=ОШИБКА В ССЫЛКЕ НА ФОРМАТ факт=ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+OK|NC02|tests/plan-f77/work/LISTDIR/out.txt|ОШИБКА В ССЫЛКЕ НА ФОРМАТ|ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+OK                   NC03  tests/plan-f77/work/IMPLICIT/out.txt ожидалось=НЕДОПУСТИМ КЛЮЧ СЛОВО факт=НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK|NC03|tests/plan-f77/work/IMPLICIT/out.txt|НЕДОПУСТИМ КЛЮЧ СЛОВО|НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK                   NC04  tests/plan-f77/work/ENDREAD/out.txt ожидалось=НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ факт=НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+OK|NC04|tests/plan-f77/work/ENDREAD/out.txt|НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ|НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+OK                   NC05  tests/plan-f77/work/SAVE/out.txt ожидалось=НЕДОПУСТИМ КЛЮЧ СЛОВО факт=НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK|NC05|tests/plan-f77/work/SAVE/out.txt|НЕДОПУСТИМ КЛЮЧ СЛОВО|НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK                   NC06  tests/plan-f77/e1/precision/dp_f_format/out.txt ожидалось=DЕТЕСТЕD IN IОСОNТD факт=DЕТЕСТЕD IN IОСОNТD
+OK|NC06|tests/plan-f77/e1/precision/dp_f_format/out.txt|DЕТЕСТЕD IN IОСОNТD|DЕТЕСТЕD IN IОСОNТD
+OK                   NC07  tests/plan-f77/e1/strings/a4_wrong_type/out.txt ожидалось=DЕТЕСТЕD IN IОСОNТ факт=DЕТЕСТЕD IN IОСОNТ
+OK|NC07|tests/plan-f77/e1/strings/a4_wrong_type/out.txt|DЕТЕСТЕD IN IОСОNТ|DЕТЕСТЕD IN IОСОNТ
+OK                   NC08  tests/forex-glissade/output.new.txt ожидалось=ОСТТDЕС факт=ОСТТDЕС без ИСПОРЧЕН (14/14)
+OK|NC08|tests/forex-glissade/output.new.txt|ОСТТDЕС|ОСТТDЕС без ИСПОРЧЕН (14/14)
+OK                   NC09  tests/check-source-words.py    ожидалось=rc=1 on tampered word факт=tampered rc=1; clean rc=0
+OK|NC09|tests/check-source-words.py|rc=1 on tampered word|tampered rc=1; clean rc=0
+Итог L4: 9 OK / 0 PENDING

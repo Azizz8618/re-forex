@@ -7,8 +7,8 @@
 #   2. ФОРЭКСОМ из зоны 0o2300 компилируется src/f77libr/F77LIB.FTN;
 #      объект записывается в ОТДЕЛЬНУЮ PERSO-библиотеку зоны 0o2310
 #      картой *to perso:602310;
-#   3. проверяется каталог новой библиотеки (MYABS, MYMAX, FMTLNK + завершатель)
-#      и неизменность базовой библиотеки 0o2300;
+#   3. проверяется каталог новой библиотеки (все 13 процедур F77LIBR +
+#      завершатель) и неизменность базовой библиотеки 0o2300;
 #   4. запускается tests/f77/test-runtime.b6 с *perso:602300 +
 #      *perso:602310,cont; вывод программы сравнивается с
 #      tests/f77/output.gold.txt.
@@ -123,7 +123,10 @@ for i in range(2, 64, 2):
         raise SystemExit(f"zero transfer vector for {n}")
     names.append(n)
 print("PERSO 0o2310 catalog: " + " ".join(names))
-need = {"MYABS", "MYMAX", "FMTLNK"}
+need = {"MYABS", "MYMAX", "FMTLNK", "IMAX0", "ISGN0", "IDIV", "STRCMP",
+        "STRCAT", "SUBSTR", "ISTRCM", "DMOD2", "DINT2"}
+# CONJG присутствует в исходнике, но ФОРЭКС 2.02 резервирует это имя
+# как встроенное и не заносит его в каталог PERSO (как и ISIGN).
 if not need.issubset(names):
     raise SystemExit(f"missing modules: {sorted(need - set(names))}")
 PY
@@ -143,11 +146,11 @@ printf 'job.b6\n' > "$WORK/options.txt"
     || fail "dispak (тест) завершился ненулевым кодом"
 [ -s "$WORK/stderr.txt" ] && { printf 'dispak stderr:\n' >&2; cat "$WORK/stderr.txt" >&2; }
 
-# Блок результата — две строки перед "КОНЕЦ ЗАДАЧИ".
+# Блок результата — четыре строки перед "КОНЕЦ ЗАДАЧИ".
 ln=$(grep -an 'КОНЕЦ ЗАДАЧИ' "$WORK/output.raw" | head -1 | cut -d: -f1)
 [ -n "$ln" ] || fail "в выводе нет 'КОНЕЦ ЗАДАЧИ'"
-sed -n "$((ln-2)),$((ln-1))p" "$WORK/output.raw" > "$WORK/result.txt"
-[ "$(wc -l < "$WORK/result.txt")" -eq 2 ] || fail "блок результата не из 2 строк"
+sed -n "$((ln-4)),$((ln-1))p" "$WORK/output.raw" > "$WORK/result.txt"
+[ "$(wc -l < "$WORK/result.txt")" -eq 4 ] || fail "блок результата не из 4 строк"
 
 # ---------------------------------------------------------------- 5. отчёт
 {

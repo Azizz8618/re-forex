@@ -1,0 +1,76 @@
+ID|DECK|GOLD|SOURCE|STATUS|DETAIL
+OK A01  A01_fixed_form.gold new 01-matrix:A1/A3/A4
+A01|a01_fixed_form.b6|A01_fixed_form.gold|new|OK|new:01-matrix:A1/A3/A4
+OK A02  A02_names6.gold new 01-matrix:A5
+A02|a02_names6.b6|A02_names6.gold|new|OK|new:01-matrix:A5
+OK B01  B01_integer_real.gold suite tests/f77/suite/base.b6
+B01|b01_integer_real.b6|B01_integer_real.gold|suite|OK|suite:tests/f77/suite/base.b6
+OK B02  B02_double_precision.gold e1 e1/precision/double/out.txt
+B02|b02_double_precision.b6|B02_double_precision.gold|e1|OK|e1:e1/precision/double/out.txt
+OK B03  B03_complex_ops.gold suite tests/f77/suite/dpcomplex.b6
+B03|b03_complex_ops.b6|B03_complex_ops.gold|suite|OK|suite:tests/f77/suite/dpcomplex.b6
+OK C01  C01_arith_expr.gold new 01-matrix:C1/C2/C3/C7
+C01|c01_arith_expr.b6|C01_arith_expr.gold|new|OK|new:01-matrix:C1/C2/C3/C7
+OK C02  C02_relational_logical.gold new 01-matrix:C4/C5
+C02|c02_relational_logical.b6|C02_relational_logical.gold|new|OK|new:01-matrix:C4/C5
+OK D01  D01_numeric_assign.gold new 01-matrix:D1/D4
+D01|d01_numeric_assign.b6|D01_numeric_assign.gold|new|OK|new:01-matrix:D1/D4
+OK D02  D02_logical_assign.gold new 01-matrix:D2/B5
+D02|d02_logical_assign.b6|D02_logical_assign.gold|new|OK|new:01-matrix:D2/B5
+OK E01  E01_goto.gold new 01-matrix:E1
+E01|e01_goto.b6|E01_goto.gold|new|OK|new:01-matrix:E1
+OK E02  E02_if_goto.gold new 01-matrix:E5
+E02|e02_if_goto.b6|E02_if_goto.gold|new|OK|new:01-matrix:E5
+OK E03  E03_block_if.gold suite tests/f77/suite/blockif.b6
+E03|e03_block_if.b6|E03_block_if.gold|suite|OK|suite:tests/f77/suite/blockif.b6
+OK E04  E04_do_negative_step.gold new 01-matrix:E9
+E04|e04_do_negative_step.b6|E04_do_negative_step.gold|new|OK|new:01-matrix:E9
+OK F01  F01_dimension_data.gold suite tests/f77/suite/dataparam.b6
+F01|f01_dimension_data.b6|F01_dimension_data.gold|suite|OK|suite:tests/f77/suite/dataparam.b6
+OK F02  F02_parameter.gold new 01-matrix:F5
+F02|f02_parameter.b6|F02_parameter.gold|new|OK|new:01-matrix:F5
+PENDING (E4/MADLEN) F03  F03_external_intrinsic.gold new НЕДОПУСТИМ КЛЮЧ СЛОВО
+F03|f03_external_intrinsic.b6|F03_external_intrinsic.gold|new|PENDING (E4/MADLEN)|НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK F04  F04_implicit_lowered.gold new 01-matrix:F13
+F04|f04_implicit_lowered.b6|F04_implicit_lowered.gold|new|OK|new:01-matrix:F13
+OK G01  G01_function.gold suite tests/f77/suite/intrinsics_ext.b6
+G01|g01_function.b6|G01_function.gold|suite|OK|suite:tests/f77/suite/intrinsics_ext.b6
+OK G02  G02_subroutine_call.gold new 01-matrix:G1/G6
+G02|g02_subroutine_call.b6|G02_subroutine_call.gold|new|OK|new:01-matrix:G1/G6
+OK H01  H01_dimension2.gold suite tests/f77/suite/do2d.b6
+H01|h01_dimension2.b6|H01_dimension2.gold|suite|OK|suite:tests/f77/suite/do2d.b6
+OK H02  H02_common_blockdata.gold e1 tests/forex-glissade/output.gold.txt
+H02|h02_common_blockdata.b6|H02_common_blockdata.gold|e1|OK|e1:tests/forex-glissade/output.gold.txt
+OK I01  I01_hollerith.gold suite tests/f77/suite/charhollerith.b6
+I01|i01_hollerith.b6|I01_hollerith.gold|suite|OK|suite:tests/f77/suite/charhollerith.b6
+PENDING (E4/MADLEN) I02  I02_charstar.gold new ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+I02|i02_charstar.b6|I02_charstar.gold|new|PENDING (E4/MADLEN)|ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK J01  J01_write54.gold e1 e1/units/write_u54/out.txt
+J01|j01_write54.b6|J01_write54.gold|e1|OK|e1:e1/units/write_u54/out.txt
+OK J02  J02_format_l.gold new 01-matrix:J15
+J02|j02_format_l.b6|J02_format_l.gold|new|OK|new:01-matrix:J15
+OK J03  J03_format_slash.gold new 01-matrix:J18
+J03|j03_format_slash.b6|J03_format_slash.gold|new|OK|new:01-matrix:J18
+OK J04  J04_read_nounit.gold e1 tests/plan-f77/e1/units/read_nounit/task.b6
+J04|j04_read_nounit.b6|J04_read_nounit.gold|e1|OK|e1:tests/plan-f77/e1/units/read_nounit/task.b6
+OK J05  J05_listio_lowered.gold suite tests/f77/suite/listio.b6
+J05|j05_listio_lowered.b6|J05_listio_lowered.gold|suite|OK|suite:tests/f77/suite/listio.b6
+OK K01  K01_sqrt_abs.gold new e1/precision/double/out.txt
+K01|k01_sqrt_abs.b6|K01_sqrt_abs.gold|new|OK|new:e1/precision/double/out.txt
+OK K02  K02_amod.gold new 01-matrix:K
+K02|k02_amod.b6|K02_amod.gold|new|OK|new:01-matrix:K
+PENDING (E4/MADLEN) K03  K03_cabs.gold e1 нет совпадения с gold
+  gold:      5.0000|
+  fact:  *3184.0000|
+K03|k03_cabs.b6|K03_cabs.gold|e1|PENDING (E4/MADLEN)|нет совпадения с gold
+OK K04  K04_dsqrt.gold e1 e1/precision/double/out.txt
+K04|k04_dsqrt.b6|K04_dsqrt.gold|e1|OK|e1:e1/precision/double/out.txt
+REUSED OK B01  <- tests/f77/suite/base.gold
+REUSED OK B03  <- tests/f77/suite/dpcomplex.gold
+REUSED OK E03  <- tests/f77/suite/blockif.gold
+REUSED OK F01  <- tests/f77/suite/dataparam.gold
+REUSED OK G01  <- tests/f77/suite/intrinsics_ext.gold
+REUSED OK H01  <- tests/f77/suite/do2d.gold
+REUSED OK I01  <- tests/f77/suite/charhollerith.gold
+REUSED OK J05  <- tests/f77/suite/listio.gold
+Итог L1: 29 OK / 3 PENDING; suite-пар переиспользовано 8, расхождений 0

@@ -1,0 +1,33 @@
+ИСПРАВЛЕНИЕ ССЫЛОК [rukava.be:N] В КОММЕНТАРИЯХ ЭКСТРАКОДОВ
+Дата: 2026-11-19
+Проблема: 7 комментариев утратили/имели устаревшую ссылку [rukava.be:N]
+(параллельные правки других агентов). Фактически номера строк были
+устаревшими: все на 3 меньше актуальных (rukava.be пополнился на 3 строки).
+
+ПРОВЕРКА ПО ИСТОЧНИКУ: /home/azizz/Yandex.Disk/re-dispak/rukava.be
+Все 5 пар имеют запись в rukava.be (случай «нет записи для пары» не встретился):
+
+  Э50 1202 -> rukava.be:3027  "*| Э50 1202 | ГРАФОПОСТРОИТЕЛЬ: ..."
+  Э62 40   -> rukava.be:3099  "*| Э62 0040 | ЗАПРОС СОСТОЯНИЯ ЗАДАЧИ ПО ШИФРУ"
+  Э62 102  -> rukava.be:3138  "*| Э62 0102 | ОТМЕНА РЕЖИМА ПРИЕМА С ТЕРМИНАЛА..."
+  Э62 110  -> rukava.be:3142  "*| Э62 0110 | УСТАНОВКА (ВОССТАНОВЛЕНИЕ) ПАРОЛЯ..."
+  Э63 7    -> rukava.be:3158  "*| Э63 07   | ЗАПРОС СВЕДЕНИЙ ОБ ОБЛАСТИ"
+
+ВНЕСЁННЫЕ ПРАВКИ (только комментарии; мнемоники/метки/EQU/адреса не тронуты):
+
+  src/LO_SYN.mad:1580  Э62 110   [rukava.be:3139] -> [rukava.be:3142]
+  src/LO_SYN.mad:1760  Э62 40    [rukava.be:3096] -> [rukava.be:3099]
+  src/LO_SYN.mad:1865  Э62 102   [rukava.be:3135] -> [rukava.be:3138]
+  src/LO_SYN.mad:1974  Э62 102   [rukava.be:3135] -> [rukava.be:3138]
+  src/LO_SYN.mad:3475  Э50 1202  [rukava.be:3024] -> [rukava.be:3027]
+  src/lib21/CHEKJOB_.mad:192  Э63 7  [rukava.be:3155] -> [rukava.be:3158]
+  src/lib21/CHEKJOB_.mad:247  Э63 7  [rukava.be:3155] -> [rukava.be:3158]
+
+РЕЗУЛЬТАТЫ ПРОВЕРОК (все rc=0):
+
+  tests/check-extract-codes.sh   rc=0  (Неверная ссылка на источник: 0)
+  tests/check-source-words.py    rc=0
+  tests/check-label-semantics.sh rc=0
+  tests/check-text-decoded.sh    rc=0  (OK: 539, FAIL: 0)
+
+Отчёт check-extract-codes: logs/extract_codes_check.txt — 7 строк подтверждены OK.

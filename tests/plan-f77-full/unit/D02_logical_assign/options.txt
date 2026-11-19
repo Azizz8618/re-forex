@@ -1,0 +1,1 @@
+d02_logical_assign.b6

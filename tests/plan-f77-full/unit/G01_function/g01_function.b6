@@ -1,0 +1,27 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name INT77
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- INTRINSICS + external call: SQRT/ABS/AMOD + FUNCTION MYFUN in one deck.
+      PROGRAM INT77
+      X=SQRT(16.0)
+      Y=ABS(-3.5)
+      Z=AMOD(7.0,3.0)
+      R=MYFUN(3.0)
+      PRINT 10,X,Y,Z,R
+   10 FORMAT(1X,4F10.4)
+      STOP
+      END
+      FUNCTION MYFUN(T)
+      MYFUN=T*T+1.0
+      RETURN
+      END
+*execute
+*end file
+``````
+еконец

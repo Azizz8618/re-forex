@@ -1,17 +1,25 @@
 шифр 419999 зс5^
 лен 60(2348)^
 eeв1а3
-*name T77run
+*name T77RUN
 *call yesmemory
 *perso:602300
 *perso:602310,cont
 *no list
 *forex
-c---- ПРОВЕРКА ВНЕШНИХ ПРОЦЕДУР ИЗ F77LIBR (ЗОНА 0o2310).
+c---- ПРОВЕРКА 13 ВНЕШНИХ ПРОЦЕДУР ИЗ F77LIBR (ЗОНА 0o2310).
       program t77run
       integer m, m2, s, s2, q, q2, c, c2, w1, w2
+      integer a(4), b(2), cs(6), ct(3)
+      integer x1(2), y1(2), k1, k2, k3
+      double precision dm, di, dn
+      complex z, cz
       data w1 /4HABCD/
       data w2 /4HABCF/
+      data a /65,66,67,68/
+      data b /69,70/
+      data x1(1)/4HABCD/, x1(2)/4H1234/
+      data y1(1)/4HABCF/, y1(2)/4H1234/
       x = myabs(-3.5)
       y = mymax(2.0, 7.0)
       m = imax0(-4, 9)
@@ -22,9 +30,23 @@ c---- ПРОВЕРКА ВНЕШНИХ ПРОЦЕДУР ИЗ F77LIBR (ЗОНА 0o
       q2 = idiv(5, 0)
       c = strcmp(w1, w2)
       c2 = strcmp(w2, w1)
+      call strcat(a, b, cs, 4, 2)
+      call substr(a, 2, 4, ct)
+      k1 = istrcm(x1, y1)
+      k2 = istrcm(y1, x1)
+      k3 = istrcm(x1, x1)
+      dm = dmod2(7.5d0, 2.0d0)
+      di = dint2(7.5d0)
+      dn = dint2(-3.7d0)
+      z = (3.0, 4.0)
+      cz = conjg(z)
       print 1000, x, y, m, m2, s, s2, q, q2, c, c2
       call fmtlnk(9.0)
+      print 2000, cs, ct, k1, k2, k3
+      print 3000, dm, di, dn, cz
  1000 format(1x,2f10.4,8i5)
+ 2000 format(1x,12i4)
+ 3000 format(1x,3d16.8,2f10.4)
       stop
       end
 *execute

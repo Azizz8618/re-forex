@@ -1,0 +1,60 @@
+P7 — МАДЛЕН-spine: исследование и прототип (19.11.2026)
+Прототип: /tmp/.private/azizz/opencode/forex-madlen-proto/
+
+[1] Анализ свободных слов в дампах (analyze_space.py)
+LO_SYN: zero runs = []                  -> 0 свободных слов из 1024
+LO_GEN: zero runs = [('0370', 1)]       -> 1 ноль, но BW0370/BUF_WRITE_0370 (не резерв)
+LO_SYN 1764..1777: живой диспетчер; последнее слово 1777 занято (ATX SC0501 / Э60)
+LO_GEN 0532..0623: 29/29 пар NMLN5D+TEXT заняты (*REWIN 0615, *BACKS 0617, *ENDFI 0621)
+
+[2] check-source-words.py на копиях (baseline)
+$ python3 tests/check-source-words.py
+OK LO*SYN: все 1024 слова совпадают с дампом
+OK LO*GEN: все 1024 слова совпадают с дампом
+rc=0
+
+[3] Опкод-сверка на копиях (прототип tools/compare_opcodes.py; в репозитории НЕТ)
+$ python3 tools/compare_opcodes.py
+A gold-vs-gold: opcode diffs = 0
+B one-opcode-change at 0144: diffs = 1 first = (100, (18, 25), (18, 10))
+C insert 10 words @0532: len=1024 opcode diffs=590 (shifted=590)
+C insert 20 words @0532: len=1024 opcode diffs=609 (shifted=609)
+C insert 60 words @0532: len=1024 opcode diffs=630 (shifted=630)
+D insert 10 words @1517 (LO_SYN): opcode diffs=173
+D insert 20 words @1517 (LO_SYN): opcode diffs=171
+D insert 60 words @1517 (LO_SYN): opcode diffs=176
+rc=0
+
+[4] Негативный контроль check-source-words.py (вставка 10 слов в LO_GEN:0532 на копии)
+$ python3 tests/check-source-words.py
+OK LO*SYN: все 1024 слова совпадают с дампом
+FAIL LO*GEN: 634 расхождений, первое: слово 0532 дамп=0000000000000000 текст=0000000000020005
+rc=1
+(дамп восстановлен из копии, повторный прогон: rc=0; sha256
+ 4f4d8e4cc8fff1ec9742fe8be0a0c5f797716ab1bd085a1625d37569d222cbfd)
+
+[5] check-extract-codes.sh на копиях (полный src/tools/disasm скопирован)
+$ bash tests/check-extract-codes.sh
+Отчёт: .../logs/extract_codes_check.txt
+FAIL: часть мнёмоник/комментариев отсутствует или неверна
+OK dtran -D cross-check: TEXT/GOST-константы совпадают
+rc=1
+Причина rc=1: 7 предсуществующих "Неверная ссылка на источник" (5 x LO_SYN.mad:
+1580/1760/1865/1974 Э62, 3475 Э50 — ожидался rukava.be; 2 x src/lib21/CHEKJOB_.mad:
+Э63 7). К P7 отношения не имеют.
+
+[6] Пробы REWIND/BACKSPACE/ENDFILE на системном ФОРЭКСЕ 2.02 (диск 2048/2348)
+BASE       -> КОНЕЦ ЗАДАЧИ
+REWIND 10  -> КОНЕЦ ЗАДАЧИ; LIBREFER: *RЕWIN 01016, *ВАСКS Е 01017
+BACKSPACE 10 -> КОНЕЦ ЗАДАЧИ; LIBREFER: *RЕWIN 01016, *ВАСКS Е 01017
+ENDFILE 10 -> КОНЕЦ ЗАДАЧИ; LIBREFER: *ЕNDFI 01016
+Вывод: компилятор уже распознаёт операторы и выдаёт *REWIN/*BACKS/*ENDFI
+из таблицы LO_GEN:0615/0617/0621. Правка НЕ требуется (0 слов).
+Runtime "ОШ.В ИНФ.СЛ.ЭКСТ / *70" в пробе = неподключённое устройство 10, не ошибка трансляции.
+
+[7] Решение
+Основные src/*.mad НЕ изменены. Проверки из списка родителя (20/20 gate,
+install-forex-perso, run-f77-suite и др.) НЕ запускались, т.к. нет правки основных файлов.
+Вердикт: P7 требует полной пересборки оверлеев с релокацией ибо"\u0438 TryFrom".
+Эскалация родителю: оставить гибрид E1/E2 (0 слов в оверлеях);
+REWIND/BACKSPACE/ENDFILE закрыть как уже поддерживаемые.

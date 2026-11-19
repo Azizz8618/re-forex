@@ -1,0 +1,5 @@
+# ID|NAME|SOURCE|CONTROL|MODE
+R01|GLISSADE|tests/forex-glissade/glkern.b6|14/14|local
+R02|SIEVE|reference/forex.b6|sha256|local
+R03|DHRYSTONE|/home/azizz/Yandex.Disk/besm6-new/besm6.net/examples/dhrystone-forex.dub|18+4|external
+R04|WHETSTONE|/home/azizz/Yandex.Disk/besm6-new/besm6.net/examples/whetstone-longbottom-forex.dub|8/8 MWIPS|external

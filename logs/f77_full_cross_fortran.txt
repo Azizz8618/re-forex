@@ -1,0 +1,6 @@
+# CROSS_OK/CROSS_FAIL/CROSS_SKIP|ID|COMPILER|TOLERANCE|DETAIL
+CROSS OK X01  FORTRAN  1 чисел совпали (допуск max(0.0001, 0.0001*max)); score=1.000 first=True last=True rows=1/1
+CROSS OK X02  FORTRAN  6 чисел совпали (допуск max(0.0001, 0.0001*max)); score=1.000 first=True last=True rows=3/3
+CROSS OK X03  FORTRAN  4 чисел совпали (допуск max(0.0001, 0.0001*max)); score=1.000 first=True last=True rows=1/1
+CROSS OK X04  FORTRAN  7 чисел совпали (допуск max(0.0001, 0.0001*max)); score=1.000 first=True last=True rows=4/4
+Итог L2: 8 OK / 0 PENDING / 0 SKIP (нет эталона)

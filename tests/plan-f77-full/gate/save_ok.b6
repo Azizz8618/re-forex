@@ -1,0 +1,21 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name SAVE_O
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- GATE/SAVE: SAVE removed by F77PREP rule 2 (positive compile test).
+      PROGRAM GTSAV
+      INTEGER N
+      N=1
+      PRINT 10,N
+   10 FORMAT(1X,I4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

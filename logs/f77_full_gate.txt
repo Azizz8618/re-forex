@@ -1,0 +1,42 @@
+# STATUS|N|SCENARIO|EXPECTED|FACT
+OK    1 BASE           ожидалось=OK (baseline)                                           факт=OK   BASE           compiled+ran
+OK|1|BASE|OK (baseline)|OK   BASE           compiled+ran
+OK    2 DOLOOP         ожидалось=OK (baseline)                                           факт=OK   DOLOOP         compiled+ran
+OK|2|DOLOOP|OK (baseline)|OK   DOLOOP         compiled+ran
+OK    3 BLOCKIF        ожидалось=OK (baseline)                                           факт=OK   BLOCKIF        compiled+ran
+OK|3|BLOCKIF|OK (baseline)|OK   BLOCKIF        compiled+ran
+OK    4 CHARSTAR       ожидалось=FAIL ТИП ОП-ДА (baseline) -> OK допустимо после P1-P7 факт=FAIL CHARSTAR       ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK|4|CHARSTAR|FAIL ТИП ОП-ДА (baseline) -> OK допустимо после P1-P7|FAIL CHARSTAR       ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK    5 DOUBLPR        ожидалось=OK (baseline)                                           факт=OK   DOUBLPR        compiled+ran
+OK|5|DOUBLPR|OK (baseline)|OK   DOUBLPR        compiled+ran
+OK    6 COMPLEX        ожидалось=OK (baseline)                                           факт=OK   COMPLEX        compiled+ran
+OK|6|COMPLEX|OK (baseline)|OK   COMPLEX        compiled+ran
+OK    7 LISTDIR        ожидалось=FAIL ОШИБКА В ССЫЛКЕ НА ФОРМАТ (baseline) -> OK допустимо после P1-P7 факт=FAIL LISTDIR        ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+OK|7|LISTDIR|FAIL ОШИБКА В ССЫЛКЕ НА ФОРМАТ (baseline) -> OK допустимо после P1-P7|FAIL LISTDIR        ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+OK    8 DATAST         ожидалось=OK (baseline)                                           факт=OK   DATAST         compiled+ran
+OK|8|DATAST|OK (baseline)|OK   DATAST         compiled+ran
+OK    9 IMPLICIT       ожидалось=FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7 факт=FAIL IMPLICIT       НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK|9|IMPLICIT|FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7|FAIL IMPLICIT       НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK   10 PARAMETER      ожидалось=OK (baseline)                                           факт=OK   PARAMETER      compiled+ran
+OK|10|PARAMETER|OK (baseline)|OK   PARAMETER      compiled+ran
+OK   11 INTRINSIC      ожидалось=OK (baseline)                                           факт=OK   INTRINSIC      compiled+ran
+OK|11|INTRINSIC|OK (baseline)|OK   INTRINSIC      compiled+ran
+OK   12 EXTERNAL       ожидалось=OK (baseline)                                           факт=OK   EXTERNAL       compiled+ran
+OK|12|EXTERNAL|OK (baseline)|OK   EXTERNAL       compiled+ran
+OK   13 ENDREAD        ожидалось=FAIL НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ (baseline) -> OK допустимо после P1-P7 факт=FAIL ENDREAD        НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+OK|13|ENDREAD|FAIL НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ (baseline) -> OK допустимо после P1-P7|FAIL ENDREAD        НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+OK   14 SAVE           ожидалось=FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7 факт=FAIL SAVE           НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK|14|SAVE|FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7|FAIL SAVE           НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK   15 LOGICAL        ожидалось=OK (baseline)                                           факт=OK   LOGICAL        compiled+ran
+OK|15|LOGICAL|OK (baseline)|OK   LOGICAL        compiled+ran
+OK   16 GLISSADE       ожидалось=14/14 факт=14/14
+OK|16|GLISSADE|14/14|14/14
+OK   17 listdir_ok     ожидалось=gold факт=gold совпал
+OK|17|listdir_ok|gold|gold совпал
+OK   18 implicit_ok    ожидалось=gold факт=gold совпал
+OK|18|implicit_ok|gold|gold совпал
+OK   19 endread_ok     ожидалось=gold факт=gold совпал
+OK|19|endread_ok|gold|gold совпал
+OK   20 save_ok        ожидалось=gold факт=gold совпал
+OK|20|save_ok|gold|gold совпал
+Итог GATE: 20/20 OK, FAIL=0 (обязателен rc=0)

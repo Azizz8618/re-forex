@@ -1,5 +1,5 @@
 === E5: F77 acceptance suite ===
-date    : 2026-11-19T15:25:26Z
+date    : 2026-11-19T17:11:59Z
 dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
 etalon  : /usr/local/share/besm6/2348
 image   : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin

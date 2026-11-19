@@ -1,0 +1,22 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name LISTDI
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- GATE/LISTDIR: lowered list-directed PRINT (F77PREP rule 3).
+      PROGRAM GTDIR
+      INTEGER N
+      N=42
+C@ PRINT *,N -> PRINT 9000,N
+      PRINT 9000,N
+      STOP
+ 9000 FORMAT(1X,I10)
+      END
+*execute
+*end file
+``````
+еконец

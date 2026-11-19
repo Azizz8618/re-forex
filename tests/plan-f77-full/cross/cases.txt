@@ -1,0 +1,5 @@
+# ID|unit dir|compiler
+X01|A01_fixed_form|FTN
+X02|H01_dimension2|FTN
+X03|G01_function|FTN
+X04|B03_complex_ops|FTN

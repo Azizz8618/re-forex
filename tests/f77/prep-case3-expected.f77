@@ -1,0 +1,13 @@
+      PROGRAM PREP3
+      INTEGER N, M
+      N=1
+C@ READ *, N, M -> READ 90000,N,M
+      READ 90000,N,M
+C@ PRINT *, N, M -> PRINT 9000,N,M
+      PRINT 9000,N,M
+      STOP
+C@ (end of program) -> 90000 FORMAT(I10,I10)
+90000 FORMAT(I10,I10)
+C@ (end of program) -> 9000 FORMAT(1X,I10,I10)
+ 9000 FORMAT(1X,I10,I10)
+      END

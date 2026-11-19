@@ -1,0 +1,20 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name K02
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- K02: AMOD intrinsic.
+      PROGRAM K02
+      Z=AMOD(7.0,3.0)
+      PRINT 10,Z
+   10 FORMAT(1X,F10.4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

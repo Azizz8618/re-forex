@@ -1,0 +1,24 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name E04
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- E04: counted DO with negative step.
+      PROGRAM E04
+      INTEGER S
+      S=0
+      DO 20 I=10,1,-2
+         S=S+I
+   20 CONTINUE
+      PRINT 30,S
+   30 FORMAT(1X,I4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

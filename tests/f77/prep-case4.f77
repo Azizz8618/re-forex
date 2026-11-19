@@ -1,0 +1,12 @@
+      PROGRAM PREP4
+      ASSIGN 100 TO I
+      GO TO I
+  100 CONTINUE
+      GO TO (110,120),I
+  110 CONTINUE
+      PRINT *, 1
+      STOP
+  120 CONTINUE
+      PRINT *, 2
+      STOP
+      END

@@ -1,0 +1,23 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name ENDREA
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- GATE/ENDREAD: READ(*,*,END=99) lowered to READ 10 with data card.
+      PROGRAM GTEND
+      REAL X
+      READ 10,X
+   10 FORMAT(F8.2)
+      PRINT 20,X
+   20 FORMAT(1X,F8.2)
+      STOP
+      END
+*execute
+  3.50
+*end file
+``````
+еконец

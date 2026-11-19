@@ -1,0 +1,28 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name DATA77
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- DATA/PARAMETER: PARAMETER (N=4), DATA INTEGER/REAL, sum over N.
+      PROGRAM DATA77
+      PARAMETER (N=4)
+      INTEGER V(4)
+      REAL R
+      DATA V/1,2,3,4/
+      DATA R/2.5/
+      S=0
+      DO 10 I=1,N
+         S=S+V(I)
+   10 CONTINUE
+      PRINT 100,S,R,N
+  100 FORMAT(1X,I4,F10.2,I4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

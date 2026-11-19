@@ -1,5 +1,5 @@
 === E2: F77LIBR from PERSO 0o2310 ===
-date    : 2026-11-19T15:25:23Z
+date    : 2026-11-19T17:11:59Z
 dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
 image   : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
 etalon  : /usr/local/share/besm6/2348
@@ -13,7 +13,11 @@ source  : /tmp/.private/azizz/opencode/re-forex/src/f77libr/F77LIB.FTN
 --- gold ---
      3.0000    7.0000    9    6   -1    0    3    0   -1    1
  F77LIВR Х=,   9.000
+   65  66  67  68  69  70  66  67  68  -1   1   0
+   1.50000000+000  7.00000000+000 -3.00000000+000    3.0000   -4.0000
 --- fact ---
      3.0000    7.0000    9    6   -1    0    3    0   -1    1
  F77LIВR Х=,   9.000
+   65  66  67  68  69  70  66  67  68  -1   1   0
+   1.50000000+000  7.00000000+000 -3.00000000+000    3.0000   -4.0000
 --- diff (gold / fact) ---

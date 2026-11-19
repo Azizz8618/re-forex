@@ -1,0 +1,6 @@
+      PROGRAM PREPTR
+      INTEGER AAAAAAX, AAAAAAY
+      AAAAAAX=1
+      AAAAAAY=2
+      STOP
+      END

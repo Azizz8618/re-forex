@@ -1,164 +1,337 @@
-C     VERSION FOREX 5.00 / 19.11.2026 (re-forex); host 2.02 external
-       PROGRAM F77PREP
+C     VERSION FOREX 5.00 / 19.11.2026 (re-forex)
 C=======================================================================
-C F77PREP v2 -- F77 -> FOREX 2.02 preprocessor (rule engine).
+C F77PREP v3 -- F77 -> FOREX 2.02 preprocessor (rule engine).
 C
-C Input : NL lines of 72 ASCII character codes held in C(72,20).  The
-C         host script injects DATA NL /.../ and DATA C /.../ at the
-C         injection marker below (a comment line).  This substitutes for
-C         reading cards: E1 showed the only working form is the unitless
-C         `READ 10,X`, but the preprocessing stage has no data cards.
+C Compiled by FOREX 2.02 (PERSO 0o2300).  Fixed form, 72 columns;
+C no IMPLICIT, SAVE, CHARACTER, PRINT *, READ in this program.
 C
-C Output: numeric records (markers 777001/777002/777003), because the
-C         A-format and CHARACTER output are not usable on FOREX 2.02.
-C           777001 <line> <rule> <itype>   rule per source line
-C           777002 <pos> <char-code>      chars of a rewritten variable
-C           777003 <nlines> <nrewrites>   summary
+C The host injects at the two standalone injection markers below:
+C   PARAMETER (NLV=..,LL=132), INTEGER C(LL,NLV), INTEGER SEQ(NLV)
+C   DATA NL /../ , DATA SEQ /../ , DATA C /.../   (ASCII card codes)
+C C holds logical lines (continuations already glued by the host); SEQ
+C is the stable number of the first physical card of each logical line.
 C
-C Rules (v2):
-C   0 other line                       keep as is
-C   1 IMPLICIT NONE                    drop
-C   2 SAVE ...                         drop
-C   3 PRINT *,vars                     PRINT <fmt>,vars (varmap carries
-C                                      the comma separated variable list;
-C                                      host picks I10/F12.4/A4 per item)
-C   4 READ(*,*,END=LL) var             READ <fmt>,var (END= label dropped)
-C   5 DO WHILE (cond)                  LOOP top + IF (.NOT.(cond)) GO TO
-C   6 END DO                           loop bottom (GO TO top + CONTINUE)
-C   7 CHARACTER*n var                  INTEGER Ivar (host renames var)
-C   8 var='literal'                    DATA Ivar/nHliteral/
+C Output records (all numeric, A-format is unusable on 2.02):
+C   777001 <seq> <rule> <itype>        rule per logical line
+C   777002 <seq> <pos> <code>          v2 variable list (rule 3 only)
+C   777004 <seq> <kind> <pos> <code>   v3 auxiliary record:
+C          kind 10 = READ * variable list character (code = ASCII)
+C          kind 11 = END=/ERR= target label (pos 1/2, code = label)
+C          kind 20 = long identifier, one char per record (pos = 1..)
+C          kind 21/22/23 = host label request (FORMAT/loop/READ)
+C   777003 <nlines> <nrewrites>        summary
 C
-C itype: 1 = integer (first letter I..N), 2 = real.  Used by rule 3 only.
-C Subset: INTEGER, DIMENSION, DATA, DO, GOTO, IF, PRINT n,I  (no IMPLICIT,
-C         SAVE, CHARACTER, list-directed I/O, READ in this program).
+C Rules: 0 keep; 1 IMPLICIT NONE; 2 SAVE; 3 PRINT *; 4 READ END= (v2);
+C 5 DO WHILE; 6 END DO; 7 CHARACTER*n<=4; 8 'literal' -> DATA;
+C 9 typed IMPLICIT; 10 READ * list; 11 END=/ERR= sentinel request;
+C 12 CHARACTER*n>4; 13 // concat; 14 substring/string compare;
+C 15 ASSIGN/computed GO TO; 16 EQUIVALENCE; 20 long-name diagnostic.
 C=======================================================================
-       INTEGER C(72,20)
-       INTEGER NL
-       INTEGER PATIMP(13), PATSAV(5), PATPRN(7)
-       INTEGER PATRD(13), PATDWH(10), PATDDR(6), PATCHR(10)
-       DATA PATIMP /73,77,80,76,73,67,73,84,32,78,79,78,69/
-       DATA PATSAV /83,65,86,69,32/
-       DATA PATPRN /80,82,73,78,84,32,42/
-       DATA PATRD /82,69,65,68,40,42,44,42,44,69,78,68,61/
-       DATA PATDWH /68,79,32,87,72,73,76,69,32,40/
-       DATA PATDDR /69,78,68,32,68,79/
-       DATA PATCHR /67,72,65,82,65,67,84,69,82,42/
+C@@DECL@@
+      INTEGER IV(132)
+      INTEGER NL, NR, NCHAR, I, J, K, L, M, IFIRST, LV, MATCH
+      INTEGER IRULE, ITYPE, ISENT, ISENTL
+      INTEGER PATIMP(13), PATSAV(5), PATPRN(7)
+      INTEGER PATRD(13), PATDWH(10), PATDDR(6), PATCHR(10)
+      INTEGER PATI8(8), PATRDS(6), PATRDA(9), PATRDX(9), PATASG(7)
+      INTEGER PATEQV(11), PATTPR(6), PATEND(4), PATERR(4)
+      DATA PATIMP /73,77,80,76,73,67,73,84,32,78,79,78,69/
+      DATA PATSAV /83,65,86,69,32/
+      DATA PATPRN /80,82,73,78,84,32,42/
+      DATA PATRD /82,69,65,68,40,42,44,42,44,69,78,68,61/
+      DATA PATDWH /68,79,32,87,72,73,76,69,32,40/
+      DATA PATDDR /69,78,68,32,68,79/
+      DATA PATCHR /67,72,65,82,65,67,84,69,82,42/
+      DATA PATI8 /73,77,80,76,73,67,73,84/
+      DATA PATRDS /82,69,65,68,32,42/
+      DATA PATRDA /82,69,65,68,40,42,44,42,41/
+      DATA PATRDX /82,69,65,68,40,42,44,42,44/
+      DATA PATASG /65,83,83,73,71,78,32/
+      DATA PATEQV /69,81,85,73,86,65,76,69,78,67,69/
+      DATA PATTPR /71,79,32,84,79,32/
+      DATA PATEND /69,78,68,61/
+      DATA PATERR /69,82,82,61/
 C@@DATA@@
-       INTEGER IV(72)
-       INTEGER I, J, K, L, IFIRST, LV, MATCH, IRULE, ITYPE, NR
-       NR = 0
-       DO 100 I = 1, NL
-          IRULE = 0
-          ITYPE = 0
-          LV = 0
-          IFIRST = 1
-   10 IF (IFIRST .GT. 72) GOTO 20
-          IF (C(IFIRST,I) .EQ. 32) GOTO 15
-          GOTO 20
+      NR = 0
+      DO 100 I = 1, NL
+         IRULE = 0
+         ITYPE = 0
+         LV = 0
+         NCHAR = 0
+         ISENT = 0
+         ISENTL = 0
+         IFIRST = 1
+   10 IF (IFIRST .GT. LL) GOTO 20
+         IF (C(IFIRST,I) .EQ. 32) GOTO 15
+         GOTO 20
    15 IFIRST = IFIRST + 1
-          GOTO 10
+         GOTO 10
 C-- rule 1: IMPLICIT NONE
    20 MATCH = 1
-          DO 21 J = 1, 13
-             IF (C(IFIRST+J-1,I) .NE. PATIMP(J)) MATCH = 0
+         DO 21 J = 1, 13
+            IF (C(IFIRST+J-1,I) .NE. PATIMP(J)) MATCH = 0
    21 CONTINUE
-          IF (MATCH .EQ. 0) GOTO 30
-          IRULE = 1
-          GOTO 80
+         IF (MATCH .EQ. 0) GOTO 25
+         IRULE = 1
+         GOTO 80
+C-- rule 9: typed IMPLICIT t(a-z,...)
+   25 MATCH = 1
+         DO 26 J = 1, 8
+            IF (C(IFIRST+J-1,I) .NE. PATI8(J)) MATCH = 0
+   26 CONTINUE
+         IF (MATCH .EQ. 0) GOTO 30
+         IRULE = 9
+         GOTO 80
 C-- rule 2: SAVE
    30 MATCH = 1
-          DO 31 J = 1, 5
-             IF (C(IFIRST+J-1,I) .NE. PATSAV(J)) MATCH = 0
+         DO 31 J = 1, 5
+            IF (C(IFIRST+J-1,I) .NE. PATSAV(J)) MATCH = 0
    31 CONTINUE
-          IF (MATCH .EQ. 0) GOTO 40
-          IRULE = 2
-          GOTO 80
-C-- rule 3: PRINT *, ... -- pack the whole variable list into IV
+         IF (MATCH .EQ. 0) GOTO 35
+         IRULE = 2
+         GOTO 80
+C-- rule 3: PRINT *, ... (v2: varmap via 777002)
+   35 MATCH = 1
+         DO 36 J = 1, 7
+            IF (C(IFIRST+J-1,I) .NE. PATPRN(J)) MATCH = 0
+   36 CONTINUE
+         IF (MATCH .EQ. 0) GOTO 40
+         IRULE = 3
+         K = IFIRST + 7
+   37 IF (K .GT. LL) GOTO 39
+         IF (C(K,I) .EQ. 32) GOTO 38
+         IF (C(K,I) .EQ. 44) GOTO 38
+         GOTO 39
+   38 K = K + 1
+         GOTO 37
+   39 IF (K .GT. LL) GOTO 453
+         ITYPE = 2
+         IF (C(K,I) .GE. 73 .AND. C(K,I) .LE. 78) ITYPE = 1
+  451 IF (K .GT. LL) GOTO 453
+         IF (C(K,I) .EQ. 32) GOTO 452
+         LV = LV + 1
+         IV(LV) = C(K,I)
+  452 K = K + 1
+         GOTO 451
+  453 IF (LV .LE. 0) IRULE = 0
+         GOTO 80
+C-- rule 4: READ(*,*,END=LL) var (v2 legacy)
    40 MATCH = 1
-          DO 41 J = 1, 7
-             IF (C(IFIRST+J-1,I) .NE. PATPRN(J)) MATCH = 0
+         DO 41 J = 1, 13
+            IF (C(IFIRST+J-1,I) .NE. PATRD(J)) MATCH = 0
    41 CONTINUE
-          IF (MATCH .EQ. 0) GOTO 50
-          IRULE = 3
-          K = IFIRST + 7
-   42 IF (K .GT. 72) GOTO 44
-          IF (C(K,I) .EQ. 32) GOTO 43
-          IF (C(K,I) .EQ. 44) GOTO 43
-          GOTO 44
-   43 K = K + 1
-          GOTO 42
-   44 IF (K .GT. 72) GOTO 49
-          ITYPE = 2
-          IF (C(K,I) .GE. 73 .AND. C(K,I) .LE. 78) ITYPE = 1
-   45 IF (K .GT. 72) GOTO 49
-          IF (C(K,I) .EQ. 32) GOTO 46
-          LV = LV + 1
-          IV(LV) = C(K,I)
-   46 K = K + 1
-          GOTO 45
-   49 IF (LV .LE. 0) IRULE = 0
-          GOTO 80
-C-- rule 4: READ(*,*,END=LL) var
+         IF (MATCH .EQ. 0) GOTO 42
+         IRULE = 4
+         GOTO 80
+C-- rule 10: READ * / READ(*,*) ... ; rule 11 sentinel request
+   42 MATCH = 1
+         DO 43 J = 1, 6
+            IF (C(IFIRST+J-1,I) .NE. PATRDS(J)) MATCH = 0
+   43 CONTINUE
+         K = IFIRST + 6
+         IF (MATCH .EQ. 0) GOTO 44
+         GOTO 46
+   44 MATCH = 1
+         DO 45 J = 1, 9
+            IF (C(IFIRST+J-1,I) .NE. PATRDA(J)) MATCH = 0
+   45 CONTINUE
+         K = IFIRST + 9
+         IF (MATCH .NE. 0) GOTO 443
+  441 MATCH = 1
+         DO 442 J = 1, 9
+            IF (C(IFIRST+J-1,I) .NE. PATRDX(J)) MATCH = 0
+  442 CONTINUE
+         K = IFIRST + 9
+         IF (MATCH .EQ. 0) GOTO 50
+  443 CONTINUE
+   46 IRULE = 10
+C-- END= / ERR= target label (pos 1 = END, pos 2 = ERR)
+         DO 47 J = 1, LL-3
+            MATCH = 1
+            DO 471 L = 1, 4
+               IF (C(J+L-1,I) .NE. PATEND(L)) MATCH = 0
+  471       CONTINUE
+            IF (MATCH .EQ. 1) GOTO 473
+            MATCH = 1
+            DO 472 L = 1, 4
+               IF (C(J+L-1,I) .NE. PATERR(L)) MATCH = 0
+  472       CONTINUE
+            IF (MATCH .EQ. 0) GOTO 47
+            ISENT = 2
+            GOTO 474
+  473    ISENT = 1
+  474    M = J + 4
+         ISENTL = 0
+  475 IF (M .GT. LL) GOTO 476
+         L = C(M,I)
+         IF (L .LT. 48 .OR. L .GT. 57) GOTO 476
+         ISENTL = ISENTL*10 + L - 48
+         M = M + 1
+         GOTO 475
+  476    GOTO 477
+   47 CONTINUE
+  477 CONTINUE
+C-- pack variable list (M4: 777004 kind 10)
+         K = IFIRST + 6
+         MATCH = 1
+         DO 478 J = 1, 6
+            IF (C(IFIRST+J-1,I) .NE. PATRDS(J)) MATCH = 0
+  478    CONTINUE
+         IF (MATCH .EQ. 0) K = IFIRST + 9
+         MATCH = 1
+         DO 479 J = 1, 9
+            IF (C(IFIRST+J-1,I) .NE. PATRDX(J)) MATCH = 0
+  479    CONTINUE
+         IF (MATCH .EQ. 0) GOTO 483
+  480    IF (K .GT. LL) GOTO 50
+         IF (C(K,I) .NE. 41) GOTO 481
+         K = K + 1
+         GOTO 483
+  481    K = K + 1
+         GOTO 480
+  483 CONTINUE
+   48 IF (K .GT. LL) GOTO 50
+         IF (C(K,I) .EQ. 32) GOTO 482
+         IF (C(K,I) .EQ. 41) GOTO 50
+         LV = LV + 1
+         IV(LV) = C(K,I)
+  482    K = K + 1
+         GOTO 48
+C-- rule 5: DO WHILE
    50 MATCH = 1
-          DO 51 J = 1, 13
-             IF (C(IFIRST+J-1,I) .NE. PATRD(J)) MATCH = 0
+         DO 51 J = 1, 10
+            IF (C(IFIRST+J-1,I) .NE. PATDWH(J)) MATCH = 0
    51 CONTINUE
-          IF (MATCH .EQ. 0) GOTO 60
-          IRULE = 4
-          GOTO 80
-C-- rule 5: DO WHILE (cond)
-   60 MATCH = 1
-          DO 61 J = 1, 10
-             IF (C(IFIRST+J-1,I) .NE. PATDWH(J)) MATCH = 0
-   61 CONTINUE
-          IF (MATCH .EQ. 0) GOTO 62
-          IRULE = 5
-          GOTO 80
+         IF (MATCH .EQ. 0) GOTO 55
+         IRULE = 5
+         GOTO 80
 C-- rule 6: END DO
-   62 MATCH = 1
-          DO 63 J = 1, 6
-             IF (C(IFIRST+J-1,I) .NE. PATDDR(J)) MATCH = 0
-   63 CONTINUE
-          IF (MATCH .EQ. 0) GOTO 64
-          IRULE = 6
-          GOTO 80
-C-- rule 7: CHARACTER*n var
-   64 MATCH = 1
-          DO 65 J = 1, 10
-             IF (C(IFIRST+J-1,I) .NE. PATCHR(J)) MATCH = 0
-   65 CONTINUE
-          IF (MATCH .EQ. 0) GOTO 66
-          IRULE = 7
-          GOTO 80
-C-- rule 8: simple string assignment  var='literal'
-   66 K = IFIRST
-   67 IF (K .GT. 72) GOTO 70
-          IF (C(K,I) .NE. 61) GOTO 68
-          IF (K .EQ. IFIRST) GOTO 70
-          L = K + 1
-  671 IF (L .GT. 72) GOTO 70
-          IF (C(L,I) .EQ. 32) GOTO 672
-          GOTO 673
-  672 L = L + 1
-          GOTO 671
-  673 IF (C(L,I) .NE. 39) GOTO 70
-          IRULE = 8
-          GOTO 80
+   55 MATCH = 1
+         DO 56 J = 1, 6
+            IF (C(IFIRST+J-1,I) .NE. PATDDR(J)) MATCH = 0
+   56 CONTINUE
+         IF (MATCH .EQ. 0) GOTO 60
+         IRULE = 6
+         GOTO 80
+C-- rules 7/12: CHARACTER*n (n parsed; n>4 -> rule 12)
+   60 MATCH = 1
+         DO 61 J = 1, 10
+            IF (C(IFIRST+J-1,I) .NE. PATCHR(J)) MATCH = 0
+   61 CONTINUE
+         IF (MATCH .EQ. 0) GOTO 65
+         IRULE = 7
+         K = IFIRST + 10
+   62 IF (K .GT. LL) GOTO 64
+         L = C(K,I)
+         IF (L .LT. 48 .OR. L .GT. 57) GOTO 64
+         NCHAR = NCHAR*10 + L - 48
+         K = K + 1
+         GOTO 62
+   64 IF (NCHAR .GT. 4) IRULE = 12
+         GOTO 80
+C-- rule 8: simple string assignment var='literal'
+   65 K = IFIRST
+   66 IF (K .GT. LL) GOTO 70
+         IF (C(K,I) .NE. 61) GOTO 68
+         IF (K .EQ. IFIRST) GOTO 70
+         L = K + 1
+  661 IF (L .GT. LL) GOTO 70
+         IF (C(L,I) .EQ. 32) GOTO 662
+         GOTO 663
+  662 L = L + 1
+         GOTO 661
+  663 IF (C(L,I) .NE. 39) GOTO 70
+         IRULE = 8
+         GOTO 80
    68 K = K + 1
-          GOTO 67
-   70 CONTINUE
-C-- emit records for this line
+         GOTO 66
+C-- rule 13: // concatenation
+   70 DO 71 K = IFIRST, LL-1
+         IF (C(K,I) .NE. 47) GOTO 71
+         IF (C(K+1,I) .NE. 47) GOTO 71
+         IRULE = 13
+         GOTO 80
+   71 CONTINUE
+C-- rule 14: substring S(i:j) or string comparison
+       DO 72 K = IFIRST, LL
+         IF (C(K,I) .NE. 58) GOTO 72
+         IRULE = 14
+         GOTO 80
+   72 CONTINUE
+       DO 73 K = IFIRST, LL-3
+         IF (C(K,I) .NE. 46 .OR. C(K+1,I) .NE. 69) GOTO 73
+         IF (C(K+2,I) .NE. 81 .OR. C(K+3,I) .NE. 46) GOTO 73
+         IRULE = 14
+         GOTO 80
+   73 CONTINUE
+C-- rule 15: ASSIGN / computed GO TO
+       MATCH = 1
+       DO 74 J = 1, 7
+          IF (C(IFIRST+J-1,I) .NE. PATASG(J)) MATCH = 0
+   74 CONTINUE
+       IF (MATCH .EQ. 0) GOTO 75
+       IRULE = 15
+       GOTO 80
+   75 MATCH = 1
+       DO 76 J = 1, 6
+          IF (C(IFIRST+J-1,I) .NE. PATTPR(J)) MATCH = 0
+   76 CONTINUE
+       IF (MATCH .EQ. 0) GOTO 77
+       L = C(IFIRST+6,I)
+       IF (L .GE. 48 .AND. L .LE. 57) GOTO 77
+       IRULE = 15
+       GOTO 80
+C-- rule 16: EQUIVALENCE
+   77 MATCH = 1
+       DO 78 J = 1, 11
+          IF (C(IFIRST+J-1,I) .NE. PATEQV(J)) MATCH = 0
+   78 CONTINUE
+       IF (MATCH .EQ. 0) GOTO 80
+       IRULE = 16
+C-- emit 777001 for this logical line
    80 IF (IRULE .NE. 0) NR = NR + 1
-          PRINT 9001, 777001, I, IRULE, ITYPE
-          IF (IRULE .NE. 3) GOTO 95
-          DO 90 K = 1, LV
-             PRINT 9002, 777002, I, K, IV(K)
+       PRINT 9001, 777001, SEQ(I), IRULE, ITYPE
+       IF (IRULE .NE. 3) GOTO 95
+       DO 90 K = 1, LV
+          PRINT 9002, 777002, SEQ(I), K, IV(K)
    90 CONTINUE
-   95 CONTINUE
+       GOTO 96
+   95 IF (IRULE .NE. 10) GOTO 96
+       DO 91 K = 1, LV
+          PRINT 9004, 777004, SEQ(I), 10, K, IV(K)
+   91 CONTINUE
+       IF (ISENT .EQ. 0) GOTO 96
+       PRINT 9004, 777004, SEQ(I), 11, ISENT, ISENTL
+C-- rule 20: every identifier longer than six characters (A5 collision)
+   96 K = IFIRST
+   97 IF (K .GT. LL) GOTO 100
+       L = C(K,I)
+       IF (L .GE. 65 .AND. L .LE. 90) GOTO 98
+       IF (L .GE. 97 .AND. L .LE. 122) GOTO 98
+       IF (L .GE. 48 .AND. L .LE. 57) GOTO 98
+       K = K + 1
+       GOTO 97
+   98 M = 0
+   99 IF (K .GT. LL) GOTO 105
+       L = C(K,I)
+       IF (L .GE. 65 .AND. L .LE. 90) GOTO 101
+       IF (L .GE. 97 .AND. L .LE. 122) GOTO 101
+       IF (L .GE. 48 .AND. L .LE. 57) GOTO 101
+       GOTO 105
+  101 M = M + 1
+       IV(M) = L
+       K = K + 1
+       GOTO 99
+  105 IF (M .LE. 6) GOTO 97
+       DO 106 J = 1, M
+          PRINT 9004, 777004, SEQ(I), 20, J, IV(J)
+  106 CONTINUE
+       GOTO 97
   100 CONTINUE
        PRINT 9003, 777003, NL, NR
  9001 FORMAT(1X,4I8)
  9002 FORMAT(1X,4I8)
  9003 FORMAT(1X,3I8)
+ 9004 FORMAT(1X,5I8)
        STOP
        END

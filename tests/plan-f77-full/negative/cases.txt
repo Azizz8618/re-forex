@@ -1,0 +1,9 @@
+NC01|tests/plan-f77/work/CHARSTAR/out.txt|ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+NC02|tests/plan-f77/work/LISTDIR/out.txt|ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+NC03|tests/plan-f77/work/IMPLICIT/out.txt|НЕДОПУСТИМ КЛЮЧ СЛОВО
+NC04|tests/plan-f77/work/ENDREAD/out.txt|НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+NC05|tests/plan-f77/work/SAVE/out.txt|НЕДОПУСТИМ КЛЮЧ СЛОВО
+NC06|tests/plan-f77/e1/precision/dp_f_format/out.txt|DЕТЕСТЕD IN IОСОNТD
+NC07|tests/plan-f77/e1/strings/a4_wrong_type/out.txt|DЕТЕСТЕD IN IОСОNТ
+NC08|tests/forex-glissade/output.new.txt|ОСТТDЕС
+NC09|tests/check-source-words.py|rc=1 on tampered word

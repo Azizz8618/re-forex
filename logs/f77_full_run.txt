@@ -1,0 +1,131 @@
+F77 full verification — 2026-11-19T17:11:49Z
+dispak=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak etalon=/usr/local/share/besm6/2348 image=/tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
+
+=== L0/L1: unit-пробы и gold-пары стандарт-матрицы A-K ===
+OK A01  A01_fixed_form               01-matrix:A1/A3/A4
+OK A01  A01_fixed_form.gold new 01-matrix:A1/A3/A4
+OK A02  A02_names6                   01-matrix:A5
+OK A02  A02_names6.gold new 01-matrix:A5
+OK B01  B01_integer_real             tests/f77/suite/base.b6
+OK B01  B01_integer_real.gold suite tests/f77/suite/base.b6
+OK B02  B02_double_precision         e1/precision/double/out.txt
+OK B02  B02_double_precision.gold e1 e1/precision/double/out.txt
+OK B03  B03_complex_ops              tests/f77/suite/dpcomplex.b6
+OK B03  B03_complex_ops.gold suite tests/f77/suite/dpcomplex.b6
+OK C01  C01_arith_expr               01-matrix:C1/C2/C3/C7
+OK C01  C01_arith_expr.gold new 01-matrix:C1/C2/C3/C7
+OK C02  C02_relational_logical       01-matrix:C4/C5
+OK C02  C02_relational_logical.gold new 01-matrix:C4/C5
+OK D01  D01_numeric_assign           01-matrix:D1/D4
+OK D01  D01_numeric_assign.gold new 01-matrix:D1/D4
+OK D02  D02_logical_assign           01-matrix:D2/B5
+OK D02  D02_logical_assign.gold new 01-matrix:D2/B5
+OK E01  E01_goto                     01-matrix:E1
+OK E01  E01_goto.gold new 01-matrix:E1
+OK E02  E02_if_goto                  01-matrix:E5
+OK E02  E02_if_goto.gold new 01-matrix:E5
+OK E03  E03_block_if                 tests/f77/suite/blockif.b6
+OK E03  E03_block_if.gold suite tests/f77/suite/blockif.b6
+OK E04  E04_do_negative_step         01-matrix:E9
+OK E04  E04_do_negative_step.gold new 01-matrix:E9
+OK F01  F01_dimension_data           tests/f77/suite/dataparam.b6
+OK F01  F01_dimension_data.gold suite tests/f77/suite/dataparam.b6
+OK F02  F02_parameter                01-matrix:F5
+OK F02  F02_parameter.gold new 01-matrix:F5
+PENDING (E4/MADLEN) F03  F03_external_intrinsic       НЕДОПУСТИМ КЛЮЧ СЛОВО
+PENDING (E4/MADLEN) F03  F03_external_intrinsic.gold new НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK F04  F04_implicit_lowered         01-matrix:F13
+OK F04  F04_implicit_lowered.gold new 01-matrix:F13
+OK G01  G01_function                 tests/f77/suite/intrinsics_ext.b6
+OK G01  G01_function.gold suite tests/f77/suite/intrinsics_ext.b6
+OK G02  G02_subroutine_call          01-matrix:G1/G6
+OK G02  G02_subroutine_call.gold new 01-matrix:G1/G6
+OK H01  H01_dimension2               tests/f77/suite/do2d.b6
+OK H01  H01_dimension2.gold suite tests/f77/suite/do2d.b6
+OK H02  H02_common_blockdata         tests/forex-glissade/output.gold.txt
+OK H02  H02_common_blockdata.gold e1 tests/forex-glissade/output.gold.txt
+OK I01  I01_hollerith                tests/f77/suite/charhollerith.b6
+OK I01  I01_hollerith.gold suite tests/f77/suite/charhollerith.b6
+PENDING (E4/MADLEN) I02  I02_charstar                 ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+PENDING (E4/MADLEN) I02  I02_charstar.gold new ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK J01  J01_write54                  e1/units/write_u54/out.txt
+OK J01  J01_write54.gold e1 e1/units/write_u54/out.txt
+OK J02  J02_format_l                 01-matrix:J15
+OK J02  J02_format_l.gold new 01-matrix:J15
+OK J03  J03_format_slash             01-matrix:J18
+OK J03  J03_format_slash.gold new 01-matrix:J18
+OK J04  J04_read_nounit              tests/plan-f77/e1/units/read_nounit/task.b6
+OK J04  J04_read_nounit.gold e1 tests/plan-f77/e1/units/read_nounit/task.b6
+OK J05  J05_listio_lowered           tests/f77/suite/listio.b6
+OK J05  J05_listio_lowered.gold suite tests/f77/suite/listio.b6
+OK K01  K01_sqrt_abs                 e1/precision/double/out.txt
+OK K01  K01_sqrt_abs.gold new e1/precision/double/out.txt
+OK K02  K02_amod                     01-matrix:K
+OK K02  K02_amod.gold new 01-matrix:K
+PENDING (E4/MADLEN) K03  K03_cabs                     нет совпадения с gold
+PENDING (E4/MADLEN) K03  K03_cabs.gold e1 нет совпадения с gold
+OK K04  K04_dsqrt                    e1/precision/double/out.txt
+OK K04  K04_dsqrt.gold e1 e1/precision/double/out.txt
+Итог L0: 29 OK / 3 PENDING (E4/MADLEN)
+Итог L1: 29 OK / 3 PENDING; suite-пар переиспользовано 8, расхождений 0
+
+=== L2: кросс-компиляция *FTN / *FORTRAN (диск 2048) ===
+CROSS OK X01  FTN      1 чисел совпали (допуск max(1e-06, 1e-05*max))
+CROSS OK X01  FORTRAN  1 чисел совпали (допуск max(0.0001, 0.0001*max)); score=1.000 first=True last=True rows=1/1
+CROSS OK X02  FTN      6 чисел совпали (допуск max(1e-06, 1e-05*max))
+CROSS OK X02  FORTRAN  6 чисел совпали (допуск max(0.0001, 0.0001*max)); score=1.000 first=True last=True rows=3/3
+CROSS OK X03  FTN      4 чисел совпали (допуск max(1e-06, 1e-05*max))
+CROSS OK X03  FORTRAN  4 чисел совпали (допуск max(0.0001, 0.0001*max)); score=1.000 first=True last=True rows=1/1
+CROSS OK X04  FTN      7 чисел совпали (допуск max(1e-06, 1e-05*max))
+CROSS OK X04  FORTRAN  7 чисел совпали (допуск max(0.0001, 0.0001*max)); score=1.000 first=True last=True rows=4/4
+
+=== L3: реальные программы ===
+OK   R01 GLISSADE 14/14
+OK   R02 SIEVE sha256
+SKIP R03 DHRYSTONE: внешний эталон (F77_FULL_EXTERNAL=1 для прогона)
+SKIP R04 WHETSTONE: внешний эталон (F77_FULL_EXTERNAL=1 для прогона)
+
+=== L4: negative cases ===
+OK                   NC01  tests/plan-f77/work/CHARSTAR/out.txt ожидалось=ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ факт=ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK                   NC02  tests/plan-f77/work/LISTDIR/out.txt ожидалось=ОШИБКА В ССЫЛКЕ НА ФОРМАТ факт=ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+OK                   NC03  tests/plan-f77/work/IMPLICIT/out.txt ожидалось=НЕДОПУСТИМ КЛЮЧ СЛОВО факт=НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK                   NC04  tests/plan-f77/work/ENDREAD/out.txt ожидалось=НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ факт=НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+OK                   NC05  tests/plan-f77/work/SAVE/out.txt ожидалось=НЕДОПУСТИМ КЛЮЧ СЛОВО факт=НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK                   NC06  tests/plan-f77/e1/precision/dp_f_format/out.txt ожидалось=DЕТЕСТЕD IN IОСОNТD факт=DЕТЕСТЕD IN IОСОNТD
+OK                   NC07  tests/plan-f77/e1/strings/a4_wrong_type/out.txt ожидалось=DЕТЕСТЕD IN IОСОNТ факт=DЕТЕСТЕD IN IОСОNТ
+OK                   NC08  tests/forex-glissade/output.new.txt ожидалось=ОСТТDЕС факт=ОСТТDЕС без ИСПОРЧЕН (14/14)
+OK                   NC09  tests/check-source-words.py    ожидалось=rc=1 on tampered word факт=tampered rc=1; clean rc=0
+
+=== GATE: регрессия 20/20 (16 базовых + 4 новых F77-теста) ===
+OK    1 BASE           ожидалось=OK (baseline)                                           факт=OK   BASE           compiled+ran
+OK    2 DOLOOP         ожидалось=OK (baseline)                                           факт=OK   DOLOOP         compiled+ran
+OK    3 BLOCKIF        ожидалось=OK (baseline)                                           факт=OK   BLOCKIF        compiled+ran
+OK    4 CHARSTAR       ожидалось=FAIL ТИП ОП-ДА (baseline) -> OK допустимо после P1-P7 факт=FAIL CHARSTAR       ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK    5 DOUBLPR        ожидалось=OK (baseline)                                           факт=OK   DOUBLPR        compiled+ran
+OK    6 COMPLEX        ожидалось=OK (baseline)                                           факт=OK   COMPLEX        compiled+ran
+OK    7 LISTDIR        ожидалось=FAIL ОШИБКА В ССЫЛКЕ НА ФОРМАТ (baseline) -> OK допустимо после P1-P7 факт=FAIL LISTDIR        ОШИБКА В ССЫЛКЕ НА ФОРМАТ
+OK    8 DATAST         ожидалось=OK (baseline)                                           факт=OK   DATAST         compiled+ran
+OK    9 IMPLICIT       ожидалось=FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7 факт=FAIL IMPLICIT       НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK   10 PARAMETER      ожидалось=OK (baseline)                                           факт=OK   PARAMETER      compiled+ran
+OK   11 INTRINSIC      ожидалось=OK (baseline)                                           факт=OK   INTRINSIC      compiled+ran
+OK   12 EXTERNAL       ожидалось=OK (baseline)                                           факт=OK   EXTERNAL       compiled+ran
+OK   13 ENDREAD        ожидалось=FAIL НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ (baseline) -> OK допустимо после P1-P7 факт=FAIL ENDREAD        НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ
+OK   14 SAVE           ожидалось=FAIL НЕДОПУСТИМ КЛЮЧ СЛОВО (baseline) -> OK допустимо после P1-P7 факт=FAIL SAVE           НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK   15 LOGICAL        ожидалось=OK (baseline)                                           факт=OK   LOGICAL        compiled+ran
+OK   16 GLISSADE       ожидалось=14/14 факт=14/14
+OK   17 listdir_ok     ожидалось=gold факт=gold совпал
+OK   18 implicit_ok    ожидалось=gold факт=gold совпал
+OK   19 endread_ok     ожидалось=gold факт=gold совпал
+OK   20 save_ok        ожидалось=gold факт=gold совпал
+
+------------------------------------------------------------------------
+Итоговая таблица F77 full
+LEVEL    OK     PENDING    SKIP     DETAIL
+L0       29     3          0        unit A-K
+L1       29     3          0        gold pairs
+L2       8      0          0        cross FTN/FORTRAN
+L3       2      0          2        real programs
+L4       9      0          0        negative
+GATE     20     0(FAIL)    0        20/20 mandatory
+Логи: logs/f77_full_*.txt; манифест: logs/f77_full.sha256
+OK: gate 20/20; PENDING L0-L4 допустимы до завершения P1-P7

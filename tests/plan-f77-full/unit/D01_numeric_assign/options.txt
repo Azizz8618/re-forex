@@ -1,0 +1,1 @@
+d01_numeric_assign.b6

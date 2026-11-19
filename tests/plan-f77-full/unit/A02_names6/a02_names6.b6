@@ -1,0 +1,22 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348)^
+eeв1а3
+*name A02
+*call yesmemory
+*perso:602300
+*no list
+*forex
+c---- A02: identifiers longer than 6 chars (P0 collision detector).
+      PROGRAM A02
+      INTEGER AAAAAX,AAAAAY
+      AAAAAX=1
+      AAAAAY=2
+      PRINT 10,AAAAAX,AAAAAY
+   10 FORMAT(1X,I2,1X,I2)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

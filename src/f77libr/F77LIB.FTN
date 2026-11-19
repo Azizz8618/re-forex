@@ -1,9 +1,9 @@
-C     VERSION FOREX 5.00 / 19.11.2026 (re-forex); host 2.02 external
+C     VERSION FOREX 5.10 / 19.11.2026 (re-forex); 13 externals
 C==============================================================
-C     F77LIBR - МИНИМАЛЬНЫЙ FORTRAN-РАНТАЙМ ДЛЯ ЭТАПА E2.
-C     СЕМЬ ВНЕШНИХ ПРОЦЕДУР, ИМЯ КАЖДОЙ <= 6 СИМВОЛОВ.
+C     F77LIBR - FORTRAN-RANTAIM ДЛЯ ЭТАПА E2/E3.
+C     ТРИНАДЦАТЬ ВНЕШНИХ ПРОЦЕДУР, ИМЯ КАЖДОЙ <= 6 СИМВОЛОВ.
 C     ИСТОЧНИК НА ПОДДЕРЖИВАЕМОМ ФОРЭКСОМ 2.02 ПОДМНОЖЕСТВЕ:
-C     БЕЗ НОВЫХ КЛЮЧЕВЫХ СЛОВ, СПИСКОВОЙ ПЕЧАТИ И СИМВОЛЬНОГО ТИПА.
+C     БЕЗ IMPLICIT/SAVE/CHARACTER/PRINT *.
 C     КОМПИЛЯЦИЯ: *PERSO:602300 + *FOREX, ОБЪЕКТ -> *TO PERSO:602310.
 C==============================================================
       FUNCTION MYABS(X)
@@ -20,7 +20,6 @@ C---- МАКСИМУМ ДВУХ ВЕЩЕСТВЕННЫХ АРГУМЕНТОВ.
       END
       SUBROUTINE FMTLNK(X)
 C---- ПЕЧАТЬ СТРОКИ С ЯВНЫМ FORMAT (HOLLERITH 11H... + F8.3).
-C---- ВЫЗЫВАЕТСЯ КАК CALL FMTLNK(ЗНАЧЕНИЕ).
       PRINT 1000, X
  1000 FORMAT(1X,11HF77LIBR X=,F8.3)
       RETURN
@@ -40,16 +39,78 @@ C---- ЗНАК ЦЕЛОГО: -1, 0 ИЛИ +1.
       END
       INTEGER FUNCTION IDIV(I,J)
 C---- ЦЕЛОЧИСЛЕННОЕ ДЕЛЕНИЕ С ПРОВЕРКОЙ ДЕЛИТЕЛЯ.
-C---- ПРИ J=0 ВОЗВРАЩАЕТ 0 (ДЕЛЕНИЕ НЕ ВЫПОЛНЯЕТСЯ).
       IDIV=0
       IF (J .NE. 0) IDIV=I/J
       RETURN
       END
       INTEGER FUNCTION STRCMP(A,B)
-C---- СРАВНЕНИЕ ДВУХ 4-СИМВОЛЬНЫХ HOLLERITH-СЛОВ, УПАКОВАННЫХ
-C---- В ЦЕЛЫЕ (INTEGER W; DATA W/4HABCD/). ВОЗВРАЩАЕТ -1/0/+1.
+C---- СРАВНЕНИЕ ДВУХ 4-СИМВОЛЬНЫХ HOLLERITH-СЛОВ В INTEGER.
       STRCMP=0
       IF (A .LT. B) STRCMP=-1
       IF (A .GT. B) STRCMP=1
+      RETURN
+      END
+C--------------------------------------------------------------
+C     НОВЫЕ ПРОЦЕДУРЫ РЕЕСТРА v3 (docs/plan-f77-full/03 §4.3).
+C     СИМВОЛЬНЫЕ ПРОЦЕДУРЫ РАБОТАЮТ С ASCII-КОДАМИ В
+C     INTEGER-МАССИВАХ: ОДИН СИМВОЛ = ОДИН ЭЛЕМЕНТ. ПРИЧИНА:
+C     ФОРЭКС 2.02 ХРАНИТ nH-КОНСТАНТУ КАК TEXT-СЛОВО: НАД
+C     НИМ АРИФМЕТИКА ОТКАЗЫВАЕТ, А СРАВНЕНИЕ РАБОТАЕТ.
+C--------------------------------------------------------------
+      SUBROUTINE STRCAT(A,B,C,LA,LB)
+C---- КОНКАТЕНАЦИЯ: C(1..LA+LB) = A(1..LA) // B(1..LB).
+      INTEGER A(16),B(16),C(32)
+      INTEGER LA,LB,N,I
+      N=LA+LB
+      DO 10 I=1,LA
+        C(I)=A(I)
+ 10   CONTINUE
+      DO 20 I=1,LB
+        C(LA+I)=B(I)
+ 20   CONTINUE
+      RETURN
+      END
+      SUBROUTINE SUBSTR(A,I,J,C)
+C---- ПОДСТРОКА: C(1..J-I+1) = A(I..J), I/J - ОТ 1.
+      INTEGER A(32),C(32)
+      INTEGER I,J,N,K
+      N=J-I+1
+      DO 10 K=1,N
+        C(K)=A(I+K-1)
+ 10   CONTINUE
+      RETURN
+      END
+      INTEGER FUNCTION ISTRCM(A,B)
+C---- ЛЕКСИКОГРАФИЧЕСКОЕ СРАВНЕНИЕ ДВУХ 6-СИМВОЛЬНЫХ СЛОВ.
+C---- A,B - INTEGER-МАССИВЫ ПО 2 СЛОВА (TEXT-ФОРМАТ nH).
+      INTEGER A(2),B(2)
+      INTEGER K
+      ISTRCM=0
+      DO 10 K=1,2
+        IF (A(K) .LT. B(K)) ISTRCM=-1
+        IF (A(K) .GT. B(K)) ISTRCM=1
+        IF (ISTRCM .NE. 0) RETURN
+ 10   CONTINUE
+      RETURN
+      END
+      DOUBLE PRECISION FUNCTION DMOD2(X,Y)
+C---- DP-OSTATOK: X - AINT(X/Y)*Y.
+      DOUBLE PRECISION X,Y
+      DMOD2=X-AINT(X/Y)*Y
+      RETURN
+      END
+      DOUBLE PRECISION FUNCTION DINT2(X)
+C---- DP-УСЕЧЕНИЕ К НУЛЮ (IDINT-ЭКВИВАЛЕНТ С DP-РЕЗУЛЬТАТОМ).
+      DOUBLE PRECISION X
+      DINT2=AINT(X)
+      RETURN
+      END
+      FUNCTION CONJG(Z)
+C---- СОПРЯЖЕНИЕ КОМПЛЕКСНОГО ЧИСЛА (ЭТАЛОННАЯ ФОРМА ИЗ §4.3).
+C---- ФОРЭКС 2.02 РЕЗЕРВИРУЕТ ЭТО ИМЯ КАК ВСТРОЕННОЕ И НЕ
+C---- ЗАНОСИТ ЕГО В КАТАЛОГ PERSO; ВЫЗОВ CONJG РАЗРЕШАЕТСЯ
+C---- ВСТРОЕННОЙ ПРОЦЕДУРОЙ С ТЕМ ЖЕ РЕЗУЛЬТАТОМ.
+      COMPLEX Z,CONJG
+      CONJG=(REAL(Z),-AIMAG(Z))
       RETURN
       END

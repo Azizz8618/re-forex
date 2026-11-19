@@ -1,0 +1,191 @@
+# 07. Реализация Fortran-пути: F77PREP v3 (этапы P1–P4, P6)
+
+Дата: 19.11.2026. Версия изделия: **FOREX 5.00 / 19.11.2026 (re-forex)**.
+Статус: реализовано и проверено; исходники — `src/f77prep/F77PREP.FTN` (337
+строк) и `src/f77prep/prep_tools.py`. Обратная совместимость с v1/v2
+полная: `tests/run-f77-prep.sh` rc=0 для `prep-case.f77` и `prep-case2.f77`,
+`lowered.f77` побайтово совпадает с эталонами.
+
+Объект работ — только `src/f77prep/`, `tests/f77/prep-*`,
+`docs/plan-f77/09-preprocessor.md` и настоящий документ. `src/f77libr`,
+`src/lib21`, `include/`, `reference/`, `docs/drakon` не изменялись.
+
+---
+
+## 1. Инфраструктура P2 (M1–M4)
+
+| Механизм | Реализация |
+|---|---|
+| **M1 SEQ** | host пишет стабильный SEQ каждой физической карты и инъецирует `PARAMETER (NLV=…,LL=132)`, `INTEGER C(LL,NLV)`, `INTEGER SEQ(NLV)`; F77PREP печатает `777001 <seq> <rule> <itype>` вместо индекса массива |
+| **M2 Continuation** | непустая кол. 6 склеивает кол. 7–72 в логическую строку до `LL=132`; карта `SEQ → логическая строка` сохраняется для якорей `C@` |
+| **M3 Динамические метки** | единый аллокатор из зоны **90000–99999** с проверкой коллизий с метками исходника; каждое выделение фиксируется записью `777004 <seq> <rule> <pos> <code>` (файл `*.lowered.f77.777004.json`) |
+| **M4 Список переменных** | старый `777002 <seq> <pos> <code>` сохранён для rule 3; новый `777004 <seq> <rule> <pos> <code>` несёт списки правил 10/11 и диагностику правила 20; `varmap` ключуется парой `(seq, rule)` |
+
+Форматы `777001`/`777002`/`777003` и `C@`-якоря сохранены без изменений.
+F77PREP по-прежнему компилируется ФОРЭКСОМ 2.02: fixed-form 72 колонки,
+без `IMPLICIT`/`SAVE`/`CHARACTER`/`PRINT *`/`READ` в собственном исходнике,
+штамп `FOREX 5.00 / 19.11.2026 (re-forex)` — 46 знаков.
+
+---
+
+## 2. Таблица правил 9–20
+
+| rule | Конструкция |Lowering| Статус |
+|---:|---|---|---|
+| **9** | `IMPLICIT t(a-z,…)` | оператор удаляется; для каждого неявно типизированного имени, не объявленного явно, эмитируется `INTEGER X` / `REAL X` / …; якорь `C@ … -> (removed; explicit decls)` | ✅ P3 |
+| **10** | `READ *, v1..vk`, `READ(*,*) v1..vk`, `READ(*,*,ERR=LL) …` | `READ <fmt>,v1,…,vk` **без номера юнита**; `<fmt>` — динамическая метка 90000+, дескриптор по каждой переменной (`I10`/`F12.4`/`D22.15`/`A6…`); список из `777004` | ✅ P3, P6 |
+| **11** | `END=` / `ERR=` | после READ: `IF (V .EQ. -999999.) GO TO <END>` / `IF (V .EQ. -888888.) GO TO <ERR>`; метка из `777004 kind=11` | ✅ P3, P6 (эмуляция EOF по значению; `END=` в канонической форме rule 4 сохраняет v2-поведение ради совместимости) |
+| **12** | `CHARACTER*n`, n>4 | `INTEGER IS(W)`, `W=ceil(n/6)`; литерал → `DATA IS(k)/6H…/` (последнее слово с паддингом); печать `A6`×`W-1` + `A<ost>` | ✅ P4 |
+| **13** | `A // B` | `CALL STRCAT(IA,IB,IC,LA,LB)`; если левый операнд — подстрока, сначала `CALL SUBSTR(...)`; строковый литерал → `DATA ILn/kH…/` | ✅ lowering P4; **зависит от F77LIBR** |
+| **14** | `S(i:j)`, `IF (S .EQ. T)` | `CALL SUBSTR(IS,i,j,IT)`; сравнение → `KCn = ISTRCM(IS,IT)` + `IF (KCn .EQ. 0) GO TO LL` | ✅ lowering P4; **зависит от F77LIBR** |
+| **15** | `ASSIGN ll TO I`, `GO TO I`, `GO TO (l1,…,lk),I` | `ASSIGN` → `I = ordinal`; `GO TO I` → цепочка `IF (I .EQ. j) GO TO L_I[j]`; для computed GO TO метки берутся из списка | ✅ P3 |
+| **16** | `EQUIVALENCE (A(i),B(j))` (однотипные) | rename-карта `B(k) → A(k+i-j)`, объявление `B` удаляется, оператор заменяется якорем; разнотипный случай — `SystemExit` с диагностикой | ✅ P3 |
+| **17** | `DO WHILE` без `END DO` | — | ❌ не реализовано (этап F2/P5, вне P1–P4/P6) |
+| **18** | — | — | ❌ не определено в плане |
+| **19** | inline 2-аргументные intrinsic | — | ❌ не реализовано (этап P5) |
+| **20** | идентификатор >6 знаков | F77PREP эмитирует `777004 <seq> 20 <pos> <ASCII>` для каждого такого имени; host печатает `C@ <orig> -> TRUNCATED NAME: …` и завершается ошибкой. Ключевые слова и имя program unit-а исключены. `AAAAAAX`/`AAAAAY` → FAIL/diagnostic, молчаливого слияния нет | ✅ P1 |
+
+Правила 0–8 (v1/v2) сохранены побайтово: `IMPLICIT NONE`, `SAVE`,
+`PRINT *`, `READ(*,*,END=LL)`, `DO WHILE`/`END DO`, `CHARACTER*1..4`,
+`S='literal'`.
+
+---
+
+## 3. Примеры lowering
+
+### 3.1 Rule 10 + динамическая метка
+
+```fortran
+      READ *, N, M
+```
+↓
+```fortran
+C@ READ *, N, M -> READ 90000,N,M
+      READ 90000,N,M
+C@ (end of program) -> 90000 FORMAT(I10,I10)
+ 90000 FORMAT(I10,I10)
+```
+`777004`: `90000 10 0` (seq, rule, pos, code).
+
+### 3.2 Rule 11 (ERR= sentinel) + rule 15 + DP D22.15
+
+```fortran
+      READ(*,*,ERR=99) N
+```
+↓
+```fortran
+C@ READ(*,*,ERR=99) N -> READ 90000,N
+      READ 90000,N
+C@ READ EARLY-EXIT -> IF (N .EQ. -888888.) GO TO 99
+      IF (N .EQ. -888888.) GO TO 99
+```
+DP-печать: `PRINT *, X` (`DOUBLE PRECISION X`) → `9000 FORMAT(1X,D22.15)`.
+
+### 3.3 Rule 9 + rule 16
+
+```fortran
+      IMPLICIT INTEGER (A-Z)
+      INTEGER IA(10), IB(5)
+      EQUIVALENCE (IA(2),IB(1))
+      IB(1) = 7
+```
+↓
+```fortran
+C@ IMPLICIT INTEGER (A-Z) -> (removed; explicit decls)
+      INTEGER X
+C@ INTEGER IA(10), IB(5) -> INTEGER IA(10)
+      INTEGER IA(10)
+C@ EQUIVALENCE (IA(2),IB(1)) -> (removed; rename map applied)
+C@ IB(1) = 7 -> IA(2) = 7
+      IA(2) = 7
+```
+
+### 3.4 Rules 12/13/14 (CHARACTER*10)
+
+```fortran
+      CHARACTER*10 S
+      CHARACTER*6 T
+      S='ABCDEF'
+      T = S(2:4) // 'XY'
+      IF (S .EQ. T) GO TO 99
+```
+↓
+```fortran
+      INTEGER IS(2)
+      INTEGER IT
+      DATA IS(1)/6HABCDEF/
+C@ T = S(2:4)//'XY' -> CALL SUBSTR(IS,2,4,IW5)
+      CALL SUBSTR(IS,2,4,IW5)
+      DATA IL5/2HXY/
+C@ T = S(2:4)//'XY' -> CALL STRCAT(IW5,IL5,IT,3,2)
+      CALL STRCAT(IW5,IL5,IT,3,2)
+C@ IF (S .EQ. T) GO TO 99 -> KC6 = ISTRCM(IS,IT)
+      KC6 = ISTRCM(IS,IT)
+      IF (KC6 .EQ. 0) GO TO 99
+C@ PRINT *, S -> PRINT 9000,IS(1),IS(2)
+ 9000 FORMAT(1X,A6,A4)
+```
+
+**Соглашение по F77LIBR (для другого агента):** имена ровно `STRCAT`,
+`SUBSTR`, `ISTRCM` (≤6 знаков, не системные), сигнатуры:
+
+```
+SUBROUTINE STRCAT(A,B,C,LA,LB)   ! A,B - 6-битные слова, LA/LB - длины
+SUBROUTINE SUBSTR(A,I,J,C)       ! C = A(I:J), 1-based
+INTEGER FUNCTION ISTRCM(A,B)     ! -1 / 0 / +1 по TEXT-кодам
+```
+
+До появления этих процедур в PERSO `0o2310` тест `prep-case7` проверяется
+только на проходе 1 (lowering); проход 2 ожидаемо даёт
+`ОТСУТСТВУЕТ STRCAT / SUBSTR / ISTRCM`. Это граница lowering-а, не ошибка
+препроцессора.
+
+---
+
+## 4. Тесты
+
+| Файл | Что проверяет | Проход 2 |
+|---|---|---|
+| `prep-case.f77`, `prep-case2.f77` | регрессия v1/v2 (правила 1–8) | ✅ эталоны |
+| `prep-case3.f77` (+`.data`) | rule 10, список из двух переменных, метка 90000 | ✅ `10 20` |
+| `prep-case4.f77` | rule 15 (ASSIGN, computed GO TO) | ✅ `1.0000` |
+| `prep-case5.f77` | rules 9 + 16 (IMPLICIT, EQUIVALENCE) | ✅ `7 3` |
+| `prep-case6.f77` (+`.data`) | rules 10/11 + `D22.15` | ✅ DP + `5` |
+| `prep-case7.f77` | rules 12/13/14 | только проход 1 (F77LIBR) |
+| `prep-trunc.f77` | rule 20, negative: `AAAAAAX`/`AAAAAY` → `TRUNCATED NAME`, rc≠0 | ожидаемый FAIL |
+
+Новые кейсы 3–7 и negative-кейс подготовлены в `tests/f77/prep-*`; текущий
+`tests/run-f77-prep.sh` по-прежнему прогоняет два исходных случая и guarantees
+обратную совместимость. Интеграция кейсов 3–7 в сценарий — отдельный шаг
+(не выполнялся, чтобы не выходить за перечень файлов настоящей задачи).
+
+---
+
+## 5. Результаты проверок
+
+```
+tests/run-f77-prep.sh          rc=0   (case1 11/11, case2 29/29, вывод 1/1 и 3/3)
+tests/run-f77-full.sh          rc=0   (L0 29/32, L1 29/32, L2 8/8, L3 2/2+2 skip,
+                                       L4 9/9, GATE 20/20)
+python3 tests/check-source-words.py  rc=0  (LO*SYN, LO*GEN: 1024/1024 слов)
+tests/check-label-semantics.sh rc=0   (0 AUTO/TEXT/ОКТАЛ+/ДЛИННЫХ/КОЛЛИЗИЙ)
+tests/check-constants.sh       rc=0
+tests/check-text-decoded.sh    rc=0
+tests/run-glissade-forex.sh    rc=0   (14/14 строк)
+```
+
+---
+
+## 6. Что осталось за границей Fortran-пути
+
+* **F77LIBR**: `STRCAT`, `SUBSTR`, `ISTRCM` (правила 13/14), затем проход 2
+  для `prep-case7`; при необходимости зоны `0o2314..0o2317`.
+* **P5** (вне настоящей задачи): rule 17 (`DO WHILE` без `END DO`) и rule 19
+  (inline intrinsic).
+* **E4 / МАДЛЕН-spine** (`03-fortran-path.md` §3): новые FORMAT-дескрипторы
+  (`E`, `ES`, `G`, `A` без ширины, `T/TR/BN`), unformatted I/O, `REWIND`/
+  `BACKSPACE`/`ENDFILE`, настоящий тип-вариант `CHARACTER` в GENERATOR,
+  подлинный `IOSTAT`/EOF; только type-preserving `EQUIVALENCE` и sentinel
+  `END=`/`ERR=` не дают полной F77-семантики.
+* Сентинал END=/ERR= — **эмуляция по значению**, число задаётся host и не
+  должно встречаться в данных; документировано в `03-fortran-path.md` §2.4.
