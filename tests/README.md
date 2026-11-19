@@ -14,6 +14,7 @@ tests/check-annotations.sh
 tests/check-disasm.sh
 tests/check-dtran.sh
 tests/check-word-coverage.sh
+python3 tests/check-source-words.py
 ```
 
 Прогнать все и сохранить логи:
@@ -24,6 +25,8 @@ for s in run-forex verify-dumps check-annotations check-disasm check-dtran check
     tests/$s.sh > logs/tests_$s.txt 2>&1
     printf '%-20s rc=%s\n' "$s" "$?"
 done
+python3 tests/check-source-words.py > logs/tests_check-source-words.txt 2>&1
+printf '%-20s rc=%s\n' check-source-words "$?"
 ```
 
 ## Что проверяет каждый сценарий
@@ -36,6 +39,7 @@ done
 | `check-disasm.sh` | `disasm/LO_{SYN,GEN}.raw.lst` содержат `СТАРТ` и `ФИНИШ` и ≥900 строк; размеры `build/LO_{SYN,GEN}.words` кратны 6 байтам | `OK: листинги и дампы прошли проверку` |
 | `check-dtran.sh` | `disasm/LO_{SYN,GEN}.dtran.madlen` exist, ≥1500 строк, заголовок `LO*SYN`/`LO*GEN`, присутствуют `VTM`/`VJM` | `OK …: N строк, заголовок …, VTM/VJM присутствуют` |
 | `check-word-coverage.sh` | в `src/LO_{SYN,GEN}.mad` ровно 1024 уникальных строк-меток слов (формат `С--- слово NNNN`) | `OK …: 1024/1024 слов аннотировано` |
+| `check-source-words.py` | каждое из 1024 машинных слов в аннотированном тексте совпадает с дампом `build/LO_*.words` | `OK …: все 1024 слова совпадают с дампом` |
 
 ## Переменные окружения
 

@@ -14,7 +14,7 @@
 | 4b | Дизассембл `LO*GEN` | завершён | `disasm/LO_GEN.dtran.madlen` 1905 строк + `LO_GEN.bemsh.lst` 1024 |
 | 5a | Реконструкция `LO*SYN` | завершён | `src/LO_SYN.mad` 3122 строки, 1024/1024 слов, xref+registers |
 | 5b | Реконструкция `LO*GEN` | завершён | `src/LO_GEN.mad` 3109 строк, 1024/1024 слов, xref+registers |
-| 6 | Сборка и сверка | в работе | `run-forex`, `verify-dumps`, `check-disasm`, `check-dtran`, `check-annotations`, `check-word-coverage` — все OK; обратная сборка оверлеев МАДЛЕН-компилятором ещё не выполнена |
+| 6 | Сборка и сверка | завершён (с оговоркой) | 7 сценариев OK, включая `check-source-words` (1024/1024 слов побайтово); полная символьная пересборка невозможна без исходной симтаблицы — см. `docs/05-roundtrip.md` |
 | 7 | Публикация | в работе | коммит и push results в GitHub |
 
 ## Итоги реконструкции
