@@ -46,14 +46,14 @@
 | `BUFFER` | `FTLBFR` | PU 2000B — буфер обмена с библиотекой |
 | `WRTLBR, PRINT8` | `WRTLBR, PRINT8` | официальные экспортные имена (KEEP) |
 | `*00010` | `FLAFT` | возврат после VJM WRTLBR+1 |
-| `*00023` | `FLSIGC` | проверка знака/разряда |
-| `*00027` | `FLXORL` | цикл AEX/сборки выходного слова |
+| `*00023` | `FLSIGC` | проверка знака/разряда; в исходнике `L00023` (полное `L*00023`), POLN: `FL_SIGN_CHECK_62` |
+| `*00027` | `FLXORL` | цикл AEX/сборки выходного слова; в исходнике `L00027` (полное `L*00027`), POLN: `FL_XOR_LOOP_63` |
 | `*00032` | `FLWTC` | ветка установки модификатора WTC |
 | `*00036` | `FLALT` | альтернативная ветка сборки |
-| `*00042` | `FLSHIN` | сдвиг и подстановка разрядов |
-| `*00045` | `FLCMPR` | сравнение и проверка маски |
-| `*00050` | `FLMASK` | ветка маскирования 77777B |
-| `*00053` | `FLASMB` | сборка 8-символьного ISO-слова |
+| `*00042` | `FLSHIN` | сдвиг и подстановка разрядов; в исходнике `L00042` (полное `L*00042`), POLN: `FL_SHIFT_IN_71` |
+| `*00045` | `FLCMPR` | сравнение и проверка маски; в исходнике `L00045` (полное `L*00045`), POLN: `FL_COMPARE_72` |
+| `*00050` | `FLMASK` | ветка маскирования 77777B; в исходнике `L00050` (полное `L*00050`), POLN: `FL_MASK_ALL_72` |
+| `*00053` | `FLASMB` | сборка 8-символьного ISO-слова; в исходнике `L00053` (полное `L*00053`), POLN: `FL_ASSEMBLE_65` |
 | `*00061` | `FLCON` | база блока LOG-констант |
 | `DATAPR` | `DATAPR` | главная точка входа печати даты (S5:7645) |
 | `DATE*` | `DGET` | ENTRY FUN 67B — системная дата/время |
@@ -170,11 +170,11 @@
 | `DEC_38` | `38` | . прочитать индексный регистр-модификатор [счим] | FOREX_CORE.mad:241 |
 | `DEC_43` | `43` | . прочитать индексный регистр-модификатор [счим] | FOREX_CORE.mad:224 |
 | `DMB07` | `40007B` | адрес 0o40007 — база *DUMON* | FOREX_CORE.mad:110 |
-| `DMC04` | `4026B` | *DUMON*+4 | FOREX_CORE.mad:105 |
-| `DMC05` | `4027B` | *DUMON*+5 | FOREX_CORE.mad:116 |
-| `DMC06` | `4030B` | *DUMON*+6 | FOREX_CORE.mad:121 |
+| `DMC04` | `*DUMON+4` | *DUMON*[4] (было `4026B` = 0o4022+4 = 2070) | FOREX_CORE.mad:105 |
+| `DMC05` | `*DUMON+5` | *DUMON*[5] (было `4027B` = 0o4022+5 = 2071) | FOREX_CORE.mad:116 |
+| `DMC06` | `*DUMON+6` | *DUMON*[6] (было `4030B` = 0o4022+6 = 2072) | FOREX_CORE.mad:121 |
 | `DUMMYL` | `5` | COMMON *DUMON*: 5 слов | FOREX_CORE.mad:41 |
-| `DMTIM` | `4025B` | *DUMON*+3 — время/режим | FOREX_CORE.mad:94 |
+| `DMTIM` | `*DUMON+3` | *DUMON*[3] — время/режим (было `4025B` = 0o4022+3 = 2069) | FOREX_CORE.mad:94 |
 | `ENTTA` | `4006B` | база таблицы ENTRY* | FOREX_CORE.mad:100 |
 | `ENTTLN` | `50B` | COMMON ENTRY*: 40 слов | FOREX_CORE.mad:280 |
 | `X57M6` | `6B` | экстракод *57 / режим 6 | FOREX_CORE.mad:84 |
@@ -480,8 +480,14 @@ trailing-комментарии каждого определения (`; пол
 | `FLGAD` | FLGEX_ADDR | FOREX_CORE |
 | `FLAFT` | FL_AFTER_WRITE | FOREX_RUNTIME |
 | `FLALT` | FL_ALT_CASE | FOREX_RUNTIME |
+| `FLASMB` | FL_ASSEMBLE_65 | FOREX_RUNTIME (было `L00053` / `L*00053`) |
+| `FLCMPR` | FL_COMPARE_72 | FOREX_RUNTIME (было `L00045` / `L*00045`) |
 | `FLCON` | FL_CONST_BASE | FOREX_RUNTIME |
+| `FLMASK` | FL_MASK_ALL_72 | FOREX_RUNTIME (было `L00050` / `L*00050`) |
+| `FLSIGC` | FL_SIGN_CHECK_62 | FOREX_RUNTIME (было `L00023` / `L*00023`) |
+| `FLSHIN` | FL_SHIFT_IN_71 | FOREX_RUNTIME (было `L00042` / `L*00042`) |
 | `FLWTC` | FL_WTC_CASE | FOREX_RUNTIME |
+| `FLXORL` | FL_XOR_LOOP_63 | FOREX_RUNTIME (было `L00027` / `L*00027`) |
 | `FMRZB` | FMT_RZB_MASK | FOREX_CORE |
 | `FMSBR` | FMT_SBR_MASK | FOREX_CORE |
 | `FXCOR` | FOREX_CORE | FOREX_CORE |
@@ -527,12 +533,6 @@ trailing-комментарии каждого определения (`; пол
 | `ISOCSH` | ISO_CODE_SHIFT | FOREX_RUNTIME |
 | `ISOWSH` | ISO_WORD_SHIFT | FOREX_RUNTIME |
 | `KCNT` | KCOUNT* | FOREX_ROOT |
-| `L00023` | L*00023 | FOREX_RUNTIME |
-| `L00027` | L*00027 | FOREX_RUNTIME |
-| `L00042` | L*00042 | FOREX_RUNTIME |
-| `L00045` | L*00045 | FOREX_RUNTIME |
-| `L00050` | L*00050 | FOREX_RUNTIME |
-| `L00053` | L*00053 | FOREX_RUNTIME |
 | `LIBBLN` | LIB_BUFFER_LEN | FOREX_RUNTIME |
 | `LNK15` | LINK_REG_15 | FOREX_ROOT |
 | `LIT10M` | LIT_10000000_00000000 | FOREX_RUNTIME |

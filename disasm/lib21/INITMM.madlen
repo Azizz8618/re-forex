@@ -1,0 +1,376 @@
+INITMM  :,NAME, NEW DTRAN
+ FT*571  :,SUBP,
+ FT*002  :,SUBP,
+ FT*003  :,SUBP,
+ STOP*   :,SUBP,
+ 7,MTJ,8
+ 9,VJM,*0214B
+ ,WTC,*0321B
+ 14,VTM,
+ ,ITA,14
+ 7,ATX,dunno
+ ,ATI,6
+ 7,XTA,dunno
+ 6,AEX,
+ 7,AAX,dunno
+ 6,AEX,
+ 6,ATX,
+ 6,XTA,
+ 7,AAX,dunno
+ 6,ATX,
+ 7,XTA,dunno
+ 7,ARX,dunno
+ 7,AAX,dunno
+ 7,ATX,dunno
+ ,ATI,6
+ 6,XTA,
+ 7,AAX,dunno
+ 6,ATX,
+ ,NTR,7
+ 7,XTA,dunno
+ 7,A+X,dunno
+ ,ASN,64-24
+ 7,ATX,dunno
+ 6,AEX,
+ 7,AAX,dunno
+ 6,AEX,
+ 6,ATX,
+ ,UJ,*0210B
+ ,ATX,
+ *0021B:7,XTA,dunno
+ 7,ATX,dunno
+ *0022B:7,XTA,dunno
+ 7,ARX,dunno
+ 7,AAX,dunno
+ 7,ATX,dunno
+ ,ATI,6
+ 6,XTA,
+ 7,AAX,dunno
+ 7,AOX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,ARX,dunno
+ 7,AAX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,AEX,dunno
+ ,UZA,*0064B
+ ,WTC,*0327B
+ 6,VTM,
+ 6,XTA,
+ ,ASN,64+24
+ 7,AOX,dunno
+ ,NTR,7
+ ,WTC,*0335B
+ ,A-X,
+ 7,ATX,dunno
+ ,UZA,*0041B
+ 7,XTA,dunno
+ 7,ATX,dunno
+ ,UJ,*0022B
+ ,ATX,
+ *0041B:,NTR,3
+ 7,XTA,dunno
+ 7,A+X,dunno
+ 7,XTS,dunno
+ 15,ARX,
+ 7,AAX,dunno
+ ,WTC,*0332B
+ ,ATX,
+ 7,XTA,dunno
+ 7,AEX,dunno
+ ,U1A,*0055B
+ ,WTC,*0333B
+ 6,VTM,
+ ,WTC,*0327B
+ 5,VTM,
+ 5,XTA,
+ 6,AEX,
+ 7,AAX,dunno
+ 6,AEX,
+ 6,ATX,
+ 7,XTA,dunno
+ 7,ATX,dunno
+ ,UJ,*0063B
+ ,ATX,
+ *0055B:,WTC,*0327B
+ 6,VTM,
+ 7,XTA,dunno
+ ,ASN,64-24
+ 7,ATX,dunno
+ 6,AEX,
+ 7,AAX,dunno
+ 6,AEX,
+ 6,ATX,
+ 7,XTA,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0063B:,UJ,*0210B
+ ,ATX,
+ *0064B:14,VTM,*0242B
+ ,ITS,14
+ ,NTR,6
+ 13,VJM,FT*571  
+ ,WTC,*0335B
+ 14,VTM,
+ ,ITS,14
+ 13,VJM,FT*002  
+ 13,VJM,FT*003  
+ ,ATX,
+ 13,VJM,STOP*   
+ ,ATX,
+ *0072B:,WTC,*0326B
+ ,XTA,
+ 7,ATX,dunno
+ ,WTC,*0336B
+ ,XTA,
+ ,WTC,*0335B
+ ,ATX,
+ 7,XTA,dunno
+ ,ASN,64+0
+ 7,ATX,dunno
+ 7,AAX,dunno
+ 7,AOX,dunno
+ 7,XTS,dunno
+ ,ASN,64+0
+ 7,ATX,dunno
+ 7,AAX,dunno
+ 7,AOX,dunno
+ ,NTR,7
+ 15,A-X,
+ 7,ATX,dunno
+ 7,X-A,dunno
+ ,UZA,*0107B
+ 7,XTA,dunno
+ 7,ATX,dunno
+ ,UJ,*0110B
+ ,ATX,
+ *0107B:7,XTA,dunno
+ 7,ATX,dunno
+ *0110B:7,XTA,dunno
+ 7,ARX,dunno
+ 7,AAX,dunno
+ 7,ATX,dunno
+ ,ATI,6
+ 6,XTA,
+ 7,AAX,dunno
+ 7,AOX,dunno
+ 7,ATX,dunno
+ 7,AEX,dunno
+ ,UZA,*0141B
+ ,NTR,7
+ 7,XTA,dunno
+ 7,A-X,dunno
+ ,U1A,*0121B
+ 7,XTA,dunno
+ 7,ATX,dunno
+ ,UJ,*0110B
+ *0121B:,NTR,3
+ 7,XTA,dunno
+ ,WTC,*0335B
+ ,A+X,
+ 7,X-A,dunno
+ ,U1A,*0200B
+ 7,XTA,dunno
+ 7,ARX,dunno
+ 7,AAX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ ,WTC,*0335B
+ ,A+X,
+ 7,AEX,dunno
+ ,U1A,*0141B
+ ,WTC,*0327B
+ 6,VTM,
+ 6,XTA,
+ ,ASN,64+24
+ 7,AOX,dunno
+ ,WTC,*0335B
+ ,A+X,
+ ,WTC,*0335B
+ ,ATX,
+ ,WTC,*0325B
+ 5,VTM,
+ 6,XTA,
+ 5,AEX,
+ 7,AAX,dunno
+ 5,AEX,
+ 5,ATX,
+ ,UJ,*0146B
+ *0141B:,WTC,*0325B
+ 6,VTM,
+ 7,XTA,dunno
+ ,ASN,64-24
+ 7,ATX,dunno
+ ,ASN,64+24
+ 6,AEX,
+ 7,AAX,dunno
+ 6,AEX,
+ 6,ATX,
+ *0146B:,WTC,*0333B
+ 6,VTM,
+ 6,XTA,
+ ,ASN,64+24
+ 7,AOX,dunno
+ 7,ATX,dunno
+ ,NTR,7
+ 7,A+X,dunno
+ 7,X-A,dunno
+ ,U1A,*0200B
+ 7,XTA,dunno
+ 7,A+X,dunno
+ 7,AEX,dunno
+ ,U1A,*0166B
+ 7,XTA,dunno
+ ,WTC,*0335B
+ ,A+X,
+ ,ASN,64-24
+ 7,ATX,dunno
+ 6,AEX,
+ 7,AAX,dunno
+ 6,AEX,
+ 6,ATX,
+ ,WTC,*0325B
+ 5,VTM,
+ 5,XTA,
+ 6,AEX,
+ 7,AAX,dunno
+ 6,AEX,
+ 6,ATX,
+ ,UJ,*0177B
+ ,ATX,
+ *0166B:7,XTA,dunno
+ ,ASN,64-24
+ 7,ATX,dunno
+ ,ASN,64+24
+ 6,AEX,
+ 7,AAX,dunno
+ 6,AEX,
+ 6,ATX,
+ ,WTC,*0325B
+ 5,VTM,
+ ,WTC,*0335B
+ ,XTA,
+ ,ASN,64-24
+ 7,ATX,dunno
+ 5,AEX,
+ 7,AAX,dunno
+ 5,AEX,
+ 5,ATX,
+ *0177B:,UJ,*0210B
+ ,ATX,
+ *0200B:14,VTM,*0262B
+ ,ITS,14
+ ,NTR,6
+ 13,VJM,FT*571  
+ 14,VTM,*0325B
+ ,ITS,14
+ 13,VJM,FT*002  
+ ,ATX,
+ ,WTC,*0335B
+ 14,VTM,
+ ,ITS,14
+ 13,VJM,FT*002  
+ 13,VJM,FT*003  
+ ,ATX,
+ 13,VJM,STOP*   
+ ,ATX,
+ *0210B:,STI,
+ ,STI,13
+ ,STI,5
+ ,STI,6
+ ,STI,7
+ ,NTR,22B
+ 13,UJ,
+ ,ATX,
+ *0214B:7,VTM,50231B
+ 7,STX,dunno
+ 7,STX,dunno
+ ,WTC,*0320B
+ ,XTS,
+ 7,STX,dunno
+ *0217B:,ITS,8
+ ,ITS,6
+ ,ITS,5
+ ,ITS,13
+ ,ITS,
+ 9,UJ,
+ 7,MTJ,8
+ 7,VTM,50231B
+ 7,STX,dunno
+ 7,STX,dunno
+ 9,VJM,*0217B
+ ,ATX,
+ ,UJ,*0072B
+ ,ATX,
+ 7,MTJ,8
+ 7,VTM,50231B
+ 7,STX,dunno
+ 7,STX,dunno
+ 9,VJM,*0217B
+ ,ATX,
+ ,UJ,*0021B
+ ,ATX,
+ ,LOG,1
+ ,LOG,7777777777777777
+ ,LOG,77777777
+ ,LOG,77777
+ ,LOG,7777777700000000
+ ,INT,1
+ ,INT,0
+ ,INT,-1
+ *0242B:,ISO, 6H('47' COO . 050 047 040 103 117 117 
+ ,ISO, 6HБЩAET  . 142 175 101 105 124 040 
+ ,ISO, 6HПOДПPO . 160 117 144 160 120 117 
+ ,ISO, 6HГPAMMA . 147 120 101 115 115 101 
+ ,ISO, 6H ALLOC . 040 101 114 114 117 103 
+ ,ISO, 6H:'47',/,  . 072 047 054 057 054 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H    '47'  . 040 040 040 040 047 040 
+ ,ISO, 6HHET CB . 110 105 124 040 103 102 
+ ,ISO, 6HOБOДHO . 117 142 117 144 110 117 
+ ,ISO, 6HГO БЛO . 147 117 040 142 154 117 
+ ,ISO, 6HKA ДЛИ . 113 101 040 144 154 151 
+ ,ISO, 6HHЫ'47',I1 . 110 171 047 054 111 061 
+ ,ISO, 6H3)     . 063 051 040 040 040 040 
+ *0262B:,ISO, 6H('47' COO . 050 047 040 103 117 117 
+ ,ISO, 6HБЩAET  . 142 175 101 105 124 040 
+ ,ISO, 6HПOДПPO . 160 117 144 160 120 117 
+ ,ISO, 6HГPAMMA . 147 120 101 115 115 101 
+ ,ISO, 6H FREE: . 040 106 122 105 105 072 
+ ,ISO, 6H'47',/,   . 047 054 057 054 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H     '47' . 040 040 040 040 040 047 
+ ,ISO, 6H БЛOK  . 040 142 154 117 113 040 
+ ,ISO, 6HC AДPE . 103 040 101 144 120 105 
+ ,ISO, 6HCOM '47', . 103 117 115 040 047 054 
+ ,ISO, 6HO5,'47' И . 117 065 054 047 040 151 
+ ,ISO, 6H ДЛИHO . 040 144 154 151 110 117 
+ ,ISO, 6HЙ'47',I13 . 152 047 054 111 061 063 
+ ,ISO, 6H,      . 054 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H '47' ПEP . 040 047 040 160 105 120 
+ ,ISO, 6HECEKAE . 105 103 105 113 101 105 
+ ,ISO, 6HTCЯ CO . 124 103 161 040 103 117 
+ ,ISO, 6H CBOБO . 040 103 102 117 142 117 
+ ,ISO, 6HДHЫM П . 144 110 171 115 040 160 
+ ,ISO, 6HPOCTPA . 120 117 103 124 120 101 
+ ,ISO, 6HHCTBOM . 110 103 124 102 117 115 
+ ,ISO, 6H'47')     . 047 051 040 040 040 040 
+ ,BSS,2
+ *0320B:,BSS,1
+ *0321B:,BSS,4
+ *0325B:,BSS,1
+ *0326B:,BSS,1
+ *0327B:,BSS,3
+ *0332B:,BSS,1
+ *0333B:,BSS,2
+ *0335B:,BSS,1
+ *0336B:,BSS,2
+ ,END,

@@ -1,0 +1,2978 @@
+С******************************************************************************
+С* TCATALOG — каталог (19.04.73)
+С* Аннотированный МАДЛЕН-текст (субагент «системная группа», библиотека 21).
+С* ПРОИСХОЖДЕНИЕ: libra213.l21:1570-4271; исходный модуль TCATALOG.
+С* СВЕРКА: disasm/lib21/TCATALOG.madlen (dtran).
+С* ИМЕНОВАНИЕ: метки/EQU <=6 символов, уникальные первые 6; полные имена —
+С*   в комментариях `; (POLN: ...)` и в include/lib21/<MODULE>.xref.md.
+С* ЛИТЕРАЛЫ: все числовые/текстовые литералы вынесены в ,EQU, ниже.
+С******************************************************************************
+
+С ---- КОНСТАНТЫ И ЛИТЕРАЛЫ (,EQU,) ----
+PL3293 ,EQU,PL291-3                     ; роль: символический эквивалент из исходника; S3:4119  ; (POLN: PL3)
+PL1292 ,EQU,PL291-1                     ; роль: символический эквивалент из исходника; S3:4118  ; (POLN: PL1)
+PL291  ,EQU,66                          ; роль: символический эквивалент из исходника; S3:4117  ; (POLN: PL)
+NMA233 ,EQU,WBE379+1                    ; роль: символический эквивалент из исходника; S3:3542  ; (POLN: NMATR)
+N63232 ,EQU,WBE379                      ; роль: символический эквивалент из исходника; S3:3541  ; (POLN: N*63)
+COM209 ,EQU,SRCAT                       ; роль: символический эквивалент из исходника; S3:3308  ; (POLN: COMORD)
+CNT180 ,EQU,STR380+2                    ; роль: символический эквивалент из исходника; S3:3056  ; (POLN: CNTW)
+FLE179 ,EQU,STR380+1                    ; роль: символический эквивалент из исходника; S3:3055  ; (POLN: FLEXT)
+COM178 ,EQU,STR380                      ; роль: символический эквивалент из исходника; S3:3054  ; (POLN: COMBCNT)
+BUF158 ,EQU,PRI410+5                    ; роль: символический эквивалент из исходника; S3:2836  ; (POLN: BUF)
+LDE101 ,EQU,LON364                      ; роль: символический эквивалент из исходника; S3:2287  ; (POLN: LDEF)
+LCA100 ,EQU,ATA363                      ; роль: символический эквивалент из исходника; S3:2273  ; (POLN: LCALLS)
+STR099 ,EQU,STR380+2                    ; роль: символический эквивалент из исходника; S3:2269  ; (POLN: STR2)
+STR098 ,EQU,STR380+1                    ; роль: символический эквивалент из исходника; S3:2268  ; (POLN: STR1)
+USE096 ,EQU,USE407+32                   ; роль: символический эквивалент из исходника; S3:2248  ; (POLN: USESET)
+EFP094 ,EQU,RA368                       ; роль: символический эквивалент из исходника; S3:2236  ; (POLN: EFPLE1)
+FPL093 ,EQU,RB369                       ; роль: символический эквивалент из исходника; S3:2235  ; (POLN: FPLE1)
+CEC092 ,EQU,N9366                       ; роль: символический эквивалент из исходника; S3:2234  ; (POLN: CECNT1)
+LIB091 ,EQU,=:2                         ; роль: символический эквивалент из исходника; S3:2227  ; (POLN: LIBMASK)
+BIT089 ,EQU,MAX320                      ; роль: символический эквивалент из исходника; S3:2221  ; (POLN: BIT12)
+CEC086 ,EQU,RA1371                      ; роль: символический эквивалент из исходника; S3:2189  ; (POLN: CECNT)
+EFP085 ,EQU,RB1372                      ; роль: символический эквивалент из исходника; S3:2188  ; (POLN: EFPLE)
+EDS084 ,EQU,MXL374                      ; роль: символический эквивалент из исходника; S3:2187  ; (POLN: EDSHIFT)
+DSH083 ,EQU,ALE375                      ; роль: символический эквивалент из исходника; S3:2186  ; (POLN: DSHIFT)
+DEL075 ,EQU,ATA361                      ; роль: символический эквивалент из исходника; S3:2118  ; (POLN: DELTA)
+MUN074 ,EQU,DIF360                      ; роль: символический эквивалент из исходника; S3:2117  ; (POLN: MUNP)
+FLS073 ,EQU,FTA362                      ; роль: символический эквивалент из исходника; S3:2115  ; (POLN: FLSH)
+IW019  ,EQU,60B                         ; роль: символический эквивалент из исходника; S3:1619  ; (POLN: IW)
+TIW018 ,EQU,47B                         ; роль: символический эквивалент из исходника; S3:1618  ; (POLN: TIW)
+MAC013 ,EQU,RMA012+1024                 ; роль: символический эквивалент из исходника; S3:1609  ; (POLN: MACROTB)
+RMA012 ,EQU,REF004                      ; роль: символический эквивалент из исходника; S3:1608  ; (POLN: RMACRTB)
+BUF010 ,EQU,ORD003                      ; роль: символический эквивалент из исходника; S3:1606  ; (POLN: BUFDEF)
+EDC041 ,EQU,2048                        ; роль: десятичная константа/сдвиг; S3:1597  ; (POLN: DEC_2048)
+EDC042 ,EQU,1024                        ; роль: десятичная константа/сдвиг; S3:1598  ; (POLN: DEC_1024)
+EDC043 ,EQU,330                         ; роль: десятичная константа/сдвиг; S3:1610  ; (POLN: DEC_330)
+EDC044 ,EQU,12                          ; роль: десятичная константа/сдвиг; S3:1611  ; (POLN: DEC_12)
+EDC045 ,EQU,16                          ; роль: десятичная константа/сдвиг; S3:1612  ; (POLN: DEC_16)
+EDC046 ,EQU,13                          ; роль: десятичная константа/сдвиг; S3:1631  ; (POLN: DEC_13)
+ETX046 ,EQU,=111113                     ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1632  ; (POLN: LITERAL__111113)
+EDC047 ,EQU,1                           ; роль: десятичная константа/сдвиг; S3:1633  ; (POLN: DEC_1)
+EDC048 ,EQU,2                           ; роль: десятичная константа/сдвиг; S3:1634  ; (POLN: DEC_2)
+ETX048 ,EQU,=:4                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1656  ; (POLN: LITERAL___4)
+ETX049 ,EQU,=67 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1673  ; (POLN: LITERAL__67_0000)
+EDC049 ,EQU,4                           ; роль: десятичная константа/сдвиг; S3:1675  ; (POLN: DEC_4)
+EDC050 ,EQU,14                          ; роль: десятичная константа/сдвиг; S3:1691  ; (POLN: DEC_14)
+EDC051 ,EQU,21                          ; роль: десятичная константа/сдвиг; S3:1694  ; (POLN: DEC_21)
+ETX051 ,EQU,=3776                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1706  ; (POLN: LITERAL__3776)
+ETX052 ,EQU,=7777 4077 7777 7777        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1713  ; (POLN: LITERAL__7777_4077_7777_7777)
+ETX053 ,EQU,=1000 000 0001              ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1718  ; (POLN: LITERAL__1000_000_0001)
+ETX054 ,EQU,=I1                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1753  ; (POLN: LITERAL__I1)
+EDC054 ,EQU,9                           ; роль: десятичная константа/сдвиг; S3:1756  ; (POLN: DEC_9)
+EDC055 ,EQU,64                          ; роль: десятичная константа/сдвиг; S3:1772  ; (POLN: DEC_64)
+EDC056 ,EQU,23                          ; роль: десятичная константа/сдвиг; S3:1772  ; (POLN: DEC_23)
+ETX056 ,EQU,=77 0777                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1774  ; (POLN: LITERAL__77_0777)
+EDC057 ,EQU,33                          ; роль: десятичная константа/сдвиг; S3:1775  ; (POLN: DEC_33)
+EDC058 ,EQU,3                           ; роль: десятичная константа/сдвиг; S3:1776  ; (POLN: DEC_3)
+ETX058 ,EQU,=1040                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1777  ; (POLN: LITERAL__1040)
+ETX059 ,EQU,=6H'''''''7''7''7'          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1782  ; (POLN: LITERAL__6H_______7__7__7_)
+ETX060 ,EQU,=6H''''''000                ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1783  ; (POLN: LITERAL__6H______000)
+ETX061 ,EQU,=6H'7''7''''3''7'           ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1788  ; (POLN: LITERAL__6H_7__7____3__7_)
+ETX062 ,EQU,=6H00 00                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1789  ; (POLN: LITERAL__6H00_00)
+EDC062 ,EQU,27                          ; роль: десятичная константа/сдвиг; S3:1792  ; (POLN: DEC_27)
+EDC063 ,EQU,32                          ; роль: десятичная константа/сдвиг; S3:1796  ; (POLN: DEC_32)
+ETX063 ,EQU,= 0017777700177777          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1801  ; (POLN: LITERAL___0017777700177777)
+EDC064 ,EQU,10                          ; роль: десятичная константа/сдвиг; S3:1815  ; (POLN: DEC_10)
+EDC065 ,EQU,5                           ; роль: десятичная константа/сдвиг; S3:1821  ; (POLN: DEC_5)
+EDC066 ,EQU,36                          ; роль: десятичная константа/сдвиг; S3:1830  ; (POLN: DEC_36)
+ETX066 ,EQU,=:2                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1834  ; (POLN: LITERAL___2)
+ETX067 ,EQU,=:0037 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1840  ; (POLN: LITERAL___0037_77)
+EDC067 ,EQU,30                          ; роль: десятичная константа/сдвиг; S3:1842  ; (POLN: DEC_30)
+ETX068 ,EQU,=:0007 77                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1844  ; (POLN: LITERAL___0007_77)
+ETX069 ,EQU,=:37                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1848  ; (POLN: LITERAL___37)
+ETX070 ,EQU,=:0707 0000 0707 07         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1850  ; (POLN: LITERAL___0707_0000_0707_07)
+EDC070 ,EQU,18                          ; роль: десятичная константа/сдвиг; S3:1860  ; (POLN: DEC_18)
+ETX071 ,EQU,=77                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1866  ; (POLN: LITERAL__77)
+ETX072 ,EQU,=6H'77''77''77''77'''''     ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1872  ; (POLN: LITERAL__6H_77__77__77__77_____)
+ETX073 ,EQU,=:176                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1880  ; (POLN: LITERAL___176)
+EDC073 ,EQU,24                          ; роль: десятичная константа/сдвиг; S3:1883  ; (POLN: DEC_24)
+ETX074 ,EQU,=37477                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1902  ; (POLN: LITERAL__37477)
+ETX075 ,EQU,=2000 000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1905  ; (POLN: LITERAL__2000_000)
+ETX076 ,EQU,=:022                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1919  ; (POLN: LITERAL___022)
+ETX077 ,EQU,=77777                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:1948  ; (POLN: LITERAL__77777)
+EDC077 ,EQU,11                          ; роль: десятичная константа/сдвиг; S3:2008  ; (POLN: DEC_11)
+EDC078 ,EQU,7                           ; роль: десятичная константа/сдвиг; S3:2038  ; (POLN: DEC_7)
+EDC079 ,EQU,6                           ; роль: десятичная константа/сдвиг; S3:2040  ; (POLN: DEC_6)
+ETX079 ,EQU,=1                          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2070  ; (POLN: LITERAL__1)
+EDC080 ,EQU,8                           ; роль: десятичная константа/сдвиг; S3:2074  ; (POLN: DEC_8)
+ETX080 ,EQU,=7700030                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2077  ; (POLN: LITERAL__7700030)
+EDC081 ,EQU,15                          ; роль: десятичная константа/сдвиг; S3:2079  ; (POLN: DEC_15)
+ETX081 ,EQU,=:776                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2083  ; (POLN: LITERAL___776)
+ETX082 ,EQU,=:0004                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2119  ; (POLN: LITERAL___0004)
+ETX083 ,EQU,=7 7400 0077 0037           ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2121  ; (POLN: LITERAL__7_7400_0077_0037)
+ETX084 ,EQU,=10040                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2145  ; (POLN: LITERAL__10040)
+ETX085 ,EQU,=777 0777                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2147  ; (POLN: LITERAL__777_0777)
+ETX086 ,EQU,=6HUSE                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2176  ; (POLN: LITERAL__6HUSE)
+ETX087 ,EQU,=6HINTER                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2183  ; (POLN: LITERAL__6HINTER)
+EDC087 ,EQU,5119                        ; роль: десятичная константа/сдвиг; S3:2191  ; (POLN: DEC_5119)
+EDC088 ,EQU,63                          ; роль: десятичная константа/сдвиг; S3:2250  ; (POLN: DEC_63)
+EDC089 ,EQU,19                          ; роль: десятичная константа/сдвиг; S3:2351  ; (POLN: DEC_19)
+ETX089 ,EQU,=0370 0000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2372  ; (POLN: LITERAL__0370_0000)
+ETX090 ,EQU,=0220 0000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2373  ; (POLN: LITERAL__0220_0000)
+ETX091 ,EQU,=7407 7777                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2379  ; (POLN: LITERAL__7407_7777)
+ETX092 ,EQU,=37                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2383  ; (POLN: LITERAL__37)
+ETX093 ,EQU,=7400 0000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2394  ; (POLN: LITERAL__7400_0000)
+ETX094 ,EQU,=50                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2400  ; (POLN: LITERAL__50)
+ETX095 ,EQU,=30                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2402  ; (POLN: LITERAL__30)
+ETX096 ,EQU,=4000 0000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2411  ; (POLN: LITERAL__4000_0000)
+ETX097 ,EQU,=1700 0000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2414  ; (POLN: LITERAL__1700_0000)
+ETX098 ,EQU,=100 0000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2559  ; (POLN: LITERAL__100_0000)
+ETX099 ,EQU,=1000 0000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2561  ; (POLN: LITERAL__1000_0000)
+ETX100 ,EQU,=300 0000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2563  ; (POLN: LITERAL__300_0000)
+ETX101 ,EQU,=700 0000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2565  ; (POLN: LITERAL__700_0000)
+ETX102 ,EQU,=500 0000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2566  ; (POLN: LITERAL__500_0000)
+ETX103 ,EQU,=200 0000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2624  ; (POLN: LITERAL__200_0000)
+ETX104 ,EQU,=400 0000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2628  ; (POLN: LITERAL__400_0000)
+ETX105 ,EQU,=77734                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2734  ; (POLN: LITERAL__77734)
+EDC105 ,EQU,25                          ; роль: десятичная константа/сдвиг; S3:2742  ; (POLN: DEC_25)
+ETX106 ,EQU,=:7777 7777                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2746  ; (POLN: LITERAL___7777_7777)
+EOC106 ,EQU,4001B                       ; роль: восьмеричная константа; S3:2752  ; (POLN: OCT_4001)
+ETX107 ,EQU,=6H''''''D                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2879  ; (POLN: LITERAL__6H______D)
+ETX108 ,EQU,=6H)                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2935  ; (POLN: LITERAL__6H_)
+ETX109 ,EQU,=3                          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:2955  ; (POLN: LITERAL__3)
+ETX110 ,EQU,=2000                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3017  ; (POLN: LITERAL__2000)
+ETX111 ,EQU,=:7777 7777 776             ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3020  ; (POLN: LITERAL___7777_7777_776)
+ETX112 ,EQU,=6H''''''''E                ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3021  ; (POLN: LITERAL__6H________E)
+ETX113 ,EQU,=6H''''''C                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3089  ; (POLN: LITERAL__6H______C)
+ETX114 ,EQU,=24                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3111  ; (POLN: LITERAL__24)
+ETX115 ,EQU,=6H''''''E                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3170  ; (POLN: LITERAL__6H______E)
+ETX116 ,EQU,=6H''''''''N                ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3237  ; (POLN: LITERAL__6H________N)
+ETX117 ,EQU,=6000                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3316  ; (POLN: LITERAL__6000)
+ETX118 ,EQU,=40                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3442  ; (POLN: LITERAL__40)
+ETX119 ,EQU,=6H'''''' ''''              ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3453  ; (POLN: LITERAL__6H___________)
+ETX120 ,EQU,=6H''''''D''''              ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3461  ; (POLN: LITERAL__6H______D____)
+ETX121 ,EQU,=6H''''''N''''              ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3466  ; (POLN: LITERAL__6H______N____)
+ETX122 ,EQU,=6H''''''''S                ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3480  ; (POLN: LITERAL__6H________S)
+ETX123 ,EQU,=100 00000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3482  ; (POLN: LITERAL__100_00000)
+ETX124 ,EQU,=6H''''''''P                ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3484  ; (POLN: LITERAL__6H________P)
+ETX125 ,EQU,=4 00000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3486  ; (POLN: LITERAL__4_00000)
+ETX126 ,EQU,=6H''''''''L                ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3488  ; (POLN: LITERAL__6H________L)
+ETX127 ,EQU,=6H*LBL069LBL069            ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3503  ; (POLN: LITERAL__6H_LBL069LBL069)
+ETX128 ,EQU,=177                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3528  ; (POLN: LITERAL__177)
+EDC128 ,EQU,26                          ; роль: десятичная константа/сдвиг; S3:3569  ; (POLN: DEC_26)
+ETX129 ,EQU,=6H'7''7''7''7''7'''        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3570  ; (POLN: LITERAL__6H_7__7__7__7__7___)
+ETX130 ,EQU,=6H00000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3571  ; (POLN: LITERAL__6H00000)
+ETX131 ,EQU,=77 00000                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3779  ; (POLN: LITERAL__77_00000)
+ETX132 ,EQU,=1 77777                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3820  ; (POLN: LITERAL__1_77777)
+ETX133 ,EQU,=5                          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3857  ; (POLN: LITERAL__5)
+ETX134 ,EQU,=1777                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3967  ; (POLN: LITERAL__1777)
+ETX135 ,EQU,=1 00000 00000              ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S3:3999  ; (POLN: LITERAL__1_00000_00000)
+EDC135 ,EQU,20                          ; роль: десятичная константа/сдвиг; S3:4029  ; (POLN: DEC_20)
+ETX136 ,EQU,00                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4034  ; (POLN: LIT_00)
+ETX137 ,EQU,77                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4035  ; (POLN: LIT_77)
+ETX138 ,EQU,46                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4036  ; (POLN: LIT_46)
+ETX139 ,EQU,60                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4037  ; (POLN: LIT_60)
+ETX140 ,EQU,50                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4038  ; (POLN: LIT_50)
+ETX141 ,EQU,57                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4039  ; (POLN: LIT_57)
+ETX142 ,EQU,47                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4040  ; (POLN: LIT_47)
+ETX143 ,EQU,53                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4041  ; (POLN: LIT_53)
+ETX144 ,EQU,54                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4045  ; (POLN: LIT_54)
+ETX145 ,EQU,55                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4046  ; (POLN: LIT_55)
+ETX146 ,EQU,70                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4047  ; (POLN: LIT_70)
+ETX147 ,EQU,51                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4048  ; (POLN: LIT_51)
+ETX148 ,EQU,01                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4049  ; (POLN: LIT_01)
+ETX149 ,EQU,02                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4050  ; (POLN: LIT_02)
+ETX150 ,EQU,03                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4051  ; (POLN: LIT_03)
+ETX151 ,EQU,04                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4052  ; (POLN: LIT_04)
+ETX152 ,EQU,05                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4053  ; (POLN: LIT_05)
+ETX153 ,EQU,06                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4054  ; (POLN: LIT_06)
+ETX154 ,EQU,07                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4055  ; (POLN: LIT_07)
+ETX155 ,EQU,10                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4056  ; (POLN: LIT_10)
+ETX156 ,EQU,11                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4057  ; (POLN: LIT_11)
+ETX157 ,EQU,12                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4058  ; (POLN: LIT_12)
+ETX158 ,EQU,13                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4059  ; (POLN: LIT_13)
+ETX159 ,EQU,65                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4060  ; (POLN: LIT_65)
+ETX160 ,EQU,56                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4062  ; (POLN: LIT_56)
+ETX161 ,EQU,64                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4065  ; (POLN: LIT_64)
+ETX162 ,EQU,52                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4066  ; (POLN: LIT_52)
+ETX163 ,EQU,14                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4067  ; (POLN: LIT_14)
+ETX164 ,EQU,15                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4068  ; (POLN: LIT_15)
+ETX165 ,EQU,16                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4069  ; (POLN: LIT_16)
+ETX166 ,EQU,17                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4070  ; (POLN: LIT_17)
+ETX167 ,EQU,20                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4071  ; (POLN: LIT_20)
+ETX168 ,EQU,21                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4072  ; (POLN: LIT_21)
+ETX169 ,EQU,22                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4073  ; (POLN: LIT_22)
+ETX170 ,EQU,23                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4074  ; (POLN: LIT_23)
+ETX171 ,EQU,24                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4075  ; (POLN: LIT_24)
+ETX172 ,EQU,25                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4076  ; (POLN: LIT_25)
+ETX173 ,EQU,26                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4077  ; (POLN: LIT_26)
+ETX174 ,EQU,27                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4078  ; (POLN: LIT_27)
+ETX175 ,EQU,30                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4079  ; (POLN: LIT_30)
+ETX176 ,EQU,31                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4080  ; (POLN: LIT_31)
+ETX177 ,EQU,32                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4081  ; (POLN: LIT_32)
+ETX178 ,EQU,33                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4082  ; (POLN: LIT_33)
+ETX179 ,EQU,34                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4083  ; (POLN: LIT_34)
+ETX180 ,EQU,35                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4084  ; (POLN: LIT_35)
+ETX181 ,EQU,36                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4085  ; (POLN: LIT_36)
+ETX182 ,EQU,37                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4086  ; (POLN: LIT_37)
+ETX183 ,EQU,40                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4087  ; (POLN: LIT_40)
+ETX184 ,EQU,41                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4088  ; (POLN: LIT_41)
+ETX185 ,EQU,42                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4089  ; (POLN: LIT_42)
+ETX186 ,EQU,43                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4090  ; (POLN: LIT_43)
+ETX187 ,EQU,44                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4091  ; (POLN: LIT_44)
+ETX188 ,EQU,45                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4092  ; (POLN: LIT_45)
+ETX189 ,EQU,62                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4093  ; (POLN: LIT_62)
+ETX190 ,EQU,66                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4094  ; (POLN: LIT_66)
+ETX191 ,EQU,63                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4095  ; (POLN: LIT_63)
+ETX192 ,EQU,61                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4096  ; (POLN: LIT_61)
+ETX193 ,EQU,67                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4097  ; (POLN: LIT_67)
+ETX194 ,EQU,4HЦБ                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4098  ; (POLN: LIT_4H__)
+ETX195 ,EQU,4HИГФД                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4099  ; (POLN: LIT_4H____)
+ETX196 ,EQU,4HЙ*)(                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4100  ; (POLN: LIT_4H____)
+ETX197 ,EQU,4H/ЖЯЛ                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4101  ; (POLN: LIT_4H____)
+ETX198 ,EQU,4H3210                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4102  ; (POLN: LIT_4H3210)
+ETX199 ,EQU,4H7654                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4103  ; (POLN: LIT_4H7654)
+ETX200 ,EQU,4H Ь98                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4104  ; (POLN: LIT_4H__98)
+ETX201 ,EQU,4HЫ+-П                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4105  ; (POLN: LIT_4H____)
+ETX202 ,EQU,4HCBAЗ                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4106  ; (POLN: LIT_4HCBA_)
+ETX203 ,EQU,4HGFED                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4107  ; (POLN: LIT_4HGFED)
+ETX204 ,EQU,4HKJIH                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4108  ; (POLN: LIT_4HKJIH)
+ETX205 ,EQU,4HONML                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4109  ; (POLN: LIT_4HONML)
+ETX206 ,EQU,4HSRQP                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4110  ; (POLN: LIT_4HSRQP)
+ETX207 ,EQU,4HWVUT                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4111  ; (POLN: LIT_4HWVUT)
+ETX208 ,EQU,4HШZYX                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4112  ; (POLN: LIT_4H_ZYX)
+ETX209 ,EQU,4HЮЧЩЭ                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4113  ; (POLN: LIT_4H____)
+ETX210 ,EQU,1763747717637477            ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4139  ; (POLN: LIT_1763747717637477)
+ETX211 ,EQU,10020040 10020040           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4140  ; (POLN: LIT_10020040_10020040)
+ETX212 ,EQU,8H0000 00                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4141  ; (POLN: LIT_8H0000_00)
+ETX213 ,EQU,8H00  000                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4142  ; (POLN: LIT_8H00__000)
+ETX214 ,EQU,0401 0020 0401 0020         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4143  ; (POLN: LIT_0401_0020_0401_0020)
+ETX215 ,EQU,0307 0707 0003 07           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4144  ; (POLN: LIT_0307_0707_0003_07)
+ETX216 ,EQU,01603403 01601407           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4145  ; (POLN: LIT_01603403_01601407)
+ETX217 ,EQU,01603407 01603407           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4146  ; (POLN: LIT_01603407_01603407)
+ETX218 ,EQU,04010020 04010000           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4147  ; (POLN: LIT_04010020_04010000)
+ETX219 ,EQU,7777 7777 7777 7777         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4148  ; (POLN: LIT_7777_7777_7777_7777)
+ETX220 ,EQU,7777                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4149  ; (POLN: LIT_7777)
+ETX221 ,EQU,77777                       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4150  ; (POLN: LIT_77777)
+ETX222 ,EQU,6H'''''7''7'''''            ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4151  ; (POLN: LIT_6H_____7__7_____)
+ETX223 ,EQU,6H'''''3''7'''''            ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4152  ; (POLN: LIT_6H_____3__7_____)
+ETX224 ,EQU,6H 000                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4153  ; (POLN: LIT_6H_000)
+ETX225 ,EQU,6H  00                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4154  ; (POLN: LIT_6H__00)
+ETX226 ,EQU,117                         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4156  ; (POLN: LIT_117)
+ETX227 ,EQU,0077 0000                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4157  ; (POLN: LIT_0077_0000)
+ETX228 ,EQU,037 00000                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4158  ; (POLN: LIT_037_00000)
+ETX229 ,EQU,4000                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4159  ; (POLN: LIT_4000)
+ETX230 ,EQU,74000                       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4160  ; (POLN: LIT_74000)
+ETX231 ,EQU,40000                       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4162  ; (POLN: LIT_40000)
+ETX232 ,EQU,4                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4163  ; (POLN: LIT_4)
+ETX233 ,EQU,1 00000                     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4164  ; (POLN: LIT_1_00000)
+ETX234 ,EQU,7777 0000                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4165  ; (POLN: LIT_7777_0000)
+ETX235 ,EQU,3777                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4166  ; (POLN: LIT_3777)
+ETX236 ,EQU,1777                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4167  ; (POLN: LIT_1777)
+ETX237 ,EQU,000 7777 7773               ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4169  ; (POLN: LIT_000_7777_7773)
+ETX238 ,EQU,677 7777 7400               ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4170  ; (POLN: LIT_677_7777_7400)
+ETX239 ,EQU,000 0013 1714               ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4171  ; (POLN: LIT_000_0013_1714)
+ETX240 ,EQU,16 0000                     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4172  ; (POLN: LIT_16_0000)
+ETX241 ,EQU,174                         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4174  ; (POLN: LIT_174)
+ETX242 ,EQU,0037 77                     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4175  ; (POLN: LIT_0037_77)
+ETX243 ,EQU,001                         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4176  ; (POLN: LIT_001)
+ETX244 ,EQU,18HPERSONAL LIBRARY         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4181  ; (POLN: LIT_18HPERSONAL_LIBRARY)
+ETX245 ,EQU,18H TEMPORARY LIBRARY       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4182  ; (POLN: LIT_18H_TEMPORARY_LIBRARY)
+ETX246 ,EQU,18HPERMANENT LIBRARY        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4183  ; (POLN: LIT_18HPERMANENT_LIBRARY)
+ETX247 ,EQU,30HCCЫЛKИ HA ПOДПPOГPAMMЫ   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4184  ; (POLN: LIT_30HCC__K__HA__O__PO_PAMM_)
+ETX248 ,EQU,30HИCПOЛЬЗOBAHИE ПOДПPOГPAMM; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4185  ; (POLN: LIT_30H_C_O___OBAH_E__O__PO_PAMM)
+ETX249 ,EQU,30HCCЫЛKИ HA COMMON'47'Ы    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4186  ; (POLN: LIT_30HCC__K__HA_COMMON_47__)
+ETX250 ,EQU,30HИCПOЛЬЗOBAHИE COMMON'47'OB; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4187  ; (POLN: LIT_30H_C_O___OBAH_E_COMMON_47_OB)
+ETX251 ,EQU,30HИCПOЛЬЗOBAHИE ИCTИHHЫX AДPECOB; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4188  ; (POLN: LIT_30H_C_O___OBAH_E__CT_HH_X_A_PE)
+ETX252 ,EQU,30HИCПOЛЬЗOBAHИE ЭKCTPAKOДOB; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4189  ; (POLN: LIT_30H_C_O___OBAH_E__KCTPAKO_OB)
+ETX253 ,EQU,24HHEИCПOЛЬЗYEMЫE BXOДЫ     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4190  ; (POLN: LIT_24HHE_C_O___YEM_E_BXO__)
+ETX254 ,EQU,24HИCПOЛЬЗYEMЫE BXOДЫ       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4191  ; (POLN: LIT_24H_C_O___YEM_E_BXO__)
+ETX255 ,EQU,24HB ЭKCTPAKOДAX            ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4192  ; (POLN: LIT_24HB__KCTPAKO_AX)
+ETX256 ,EQU,24HB OCTAЛЬHЫX KOMAHДAX     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4193  ; (POLN: LIT_24HB_OCTA__H_X_KOMAH_AX)
+ETX257 ,EQU,30HD - PACCЫЛKA ДAHHЫX      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4194  ; (POLN: LIT_30HD___PACC__KA__AHH_X)
+ETX258 ,EQU,30HE - BHEШHЯЯ П/П          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4195  ; (POLN: LIT_30HE___BHE_H______)
+ETX259 ,EQU,30HN - OПИCAHA,HE ИCПOЛЬЗYETCЯ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4196  ; (POLN: LIT_30HN___O__CAHA_HE__C_O___YETC_)
+ETX260 ,EQU,30HC - ECTЬ OДHO359ИMEHHЫЙ COMMON; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4197  ; (POLN: LIT_30HC___ECT__O_HO359_MEHH___COM)
+ETX261 ,EQU,30HE - ECTЬ OДHO359ИMEHHAЯ П/П; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4198  ; (POLN: LIT_30HE___ECT__O_HO359_MEHHA_____)
+ETX262 ,EQU,30HN - OПИCAH,HE ИCПOЛЬЗYETCЯ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4200  ; (POLN: LIT_30HN___O__CAH_HE__C_O___YETC_)
+ETX263 ,EQU,30HP - CTPAHИЧHЫЙ COMMON    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4201  ; (POLN: LIT_30HP___CTPAH__H___COMMON)
+ETX264 ,EQU,30HS - CEKTOPHЫЙ COMMON     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4202  ; (POLN: LIT_30HS___CEKTOPH___COMMON)
+ETX265 ,EQU,30HL - ПPOCTOЙ COMMON       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4203  ; (POLN: LIT_30HL____POCTO__COMMON)
+ETX266 ,EQU,30H*LBL069LBL069 - ДЛИHA OПИCAHA HEЯBHO; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4204  ; (POLN: LIT_30H_LBL069LBL069______HA_O__CA)
+ETX267 ,EQU,18HИCПOPЧEH KATAЛOГ         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4205  ; (POLN: LIT_18H_C_OP_EH_KATA_O_)
+ETX268 ,EQU,18HOШИБOЧHЫЙ ПAPAMETP       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4206  ; (POLN: LIT_18HO___O_H____APAMETP)
+ETX269 ,EQU,6HPERM                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4207  ; (POLN: LIT_6HPERM)
+ETX270 ,EQU,6HMACROS                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4211  ; (POLN: LIT_6HMACROS)
+ETX271 ,EQU,6HRADDRE                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4212  ; (POLN: LIT_6HRADDRE)
+ETX272 ,EQU,6HREFERS                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4213  ; (POLN: LIT_6HREFERS)
+ETX273 ,EQU,6H                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4215  ; (POLN: LIT_6H)
+ETX274 ,EQU,6HCBOБOД                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4216  ; (POLN: LIT_6HCBO_O_)
+ETX275 ,EQU,2                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4217  ; (POLN: LIT_2)
+ETX276 ,EQU,6HHO                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4218  ; (POLN: LIT_6HHO)
+ETX277 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4219  ; (POLN: LIT_1)
+ETX278 ,EQU,3                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S3:4240  ; (POLN: LIT_3)
+С ---- конец блока констант ----
+
+С ---- ТЕЛО МОДУЛЯ ----
+TCA001: NAME . 19.04.73  ; (POLN: TCATALOG) ; S3:1570
+С*
+С******************  P.З.ЗAЛЯЛOB.
+С*
+С*      L I B R E F E R
+С*   ПPOГPAMMA ДЛЯ ПEЧATИ BЗAИMHЫX CCЫЛOK
+С*   MEЖДY ПPOГPAMMAMИ, BXOДЯЩИMИ B БИБЛИ-
+С*   OTEKY ЗAДAHHOГO TИПA.
+С*
+С*   BЫЗOB C ПOMOЩЬЮ YПP.KAPTЫ  *CALL
+С*   *CALL LIBREFER:<TИП БИБЛ.>,<PEЖИM>
+С*
+С*   <PEЖИM>: ПYCTO ИЛИ REFERS - ПEЧATЬ CCЫЛOK
+С*            RADDR - ИCПOЛЬЗOBAHИE ИCTИH.AДPECOB
+С*            MACROS - ИCПOЛЬЗOBAHИE ЭKCTPAKOДOB
+С*   <TИП БИБЛ.> : TEMP - BPEMEHHAЯ БИБЛИOTEKA
+С*            PERM - ПOCTOЯHHAЯ БИБЛИOTEKA
+С*            TAPE,<YK.MЛ> - ЛИЧHAЯ БИБЛИOTEKA
+С*
+С*   ПPИMEPЫ:
+С*      *CALL LIBREFER:TAPE,67100
+С*      *CALL LIBREFER:TEMP,REFERS
+С*      *CALL LIBREFER:PERM,MACROS
+С*      *CALL LIBREFER:TAPE,30000,RADDR
+С*
+С************************************************
+С*
+CTL002: PC,EDC041 . длина памяти  ; (POLN: CTLG) ; S3:1597
+ORD003: PC,EDC042 . длина памяти  ; (POLN: ORDER) ; S3:1598
+REF004: PP,BLOCK,SRCAT(EDC042),SECAT(EDC042)  ; (POLN: REFERS) ; S3:1599
+CONT,SEXECAT(EDC042),CRCAT(EDC042),RAECAT(EDC042)  ; S3:1600
+RAC005: PP,EDC042  ; (POLN: RACAT) ; S3:1601
+CEC006: PP,EDC041  ; (POLN: CECAT) ; S3:1602
+COM007: PP,EDC042  ; (POLN: COMCAT) ; S3:1603
+SEX008: PP,EDC042  ; (POLN: SEXTCAT) ; S3:1604
+BUF009: PP,EDC042  ; (POLN: BUFFER) ; S3:1605
+COM011: PP,EDC042  ; (POLN: COMBORD) ; S3:1607
+PRB014: LP,EDC043  ; (POLN: PRBUF) ; S3:1610
+MON015: LC,EDC044 . объявление длины/COMMON  ; (POLN: *MONCRD*) ; S3:1611
+NLC016: P/P,(CTL002)EDC045  ; (POLN: NLC) ; S3:1612
+N1017: BLOCK,C,NP,R  ; (POLN: *1) ; S3:1613
+CONT,B  ; S3:1614
+CONT,A  ; S3:1615
+CONT,GR  ; S3:1616
+CONT,F,S,NS  ; S3:1617
+С-----------------------
+BS020: BSS . зарезервированная область  ; (POLN: BS) ; S3:1621
+B,BASE,* . база модуля  ; S3:1622
+UJ,TCT024 . переход/возврат  ; S3:1623
+TCA021: ENTRY . точка входа  ; (POLN: TCATDOR) ; S3:1624
+C,VTM, . установка индексного регистра  ; S3:1625
+UJ,TCT025 . переход/возврат  ; S3:1626
+C,VTM, . установка индексного регистра  ; S3:1627
+UJ,PCT032 . переход/возврат  ; S3:1628
+CAT022: ENTRY . точка входа  ; (POLN: CATALOG*) ; S3:1629
+B,VTM,BS020 . установка индексного регистра  ; S3:1630
+ITA,EDC046 . взятие из стека в индексный регистр  ; S3:1631
+ATX,ETX046 . запись с модификатором  ; S3:1632
+13,VJM,BS020+EDC047 . вызов через индексный регистр  ; S3:1633
+13,VJM,BS020+EDC048 . вызов через индексный регистр  ; S3:1634
+RET023: BSS . зарезервированная область  ; (POLN: RET) ; S3:1635
+WTC,ETX046  ; S3:1636
+UJ, . переход/возврат  ; S3:1637
+С---BPEM БИБ.---------
+TCT024: BSS . зарезервированная область  ; (POLN: TCTL) ; S3:1639
+C,VTM,EDC047 . установка индексного регистра  ; S3:1640
+TCT025: BSS . зарезервированная область  ; (POLN: TCT) ; S3:1641
+B,VTM,BS020 . установка индексного регистра  ; S3:1642
+13,MTJ,GR  ; S3:1643
+XTA . считывание в аккумулятор  ; S3:1644
+ATX,FTA362 . запись с модификатором  ; S3:1645
+CALL,DATAPR* . вызов подпрограммы  ; S3:1646
+14,VTM,TEM337 . установка индексного регистра  ; S3:1647
+A,VJM,HEA028 . вызов через индексный регистр  ; S3:1648
+XTA,TIW018 . считывание в аккумулятор  ; S3:1649
+A,VJM,RDC030 . вызов через индексный регистр  ; S3:1650
+A,VTM,N2033 . установка индексного регистра  ; S3:1651
+13,VTM, . установка индексного регистра  ; S3:1652
+SEE026: 13,UTM,EDC048 . переход при >0  ; (POLN: SEEKEND) ; S3:1653
+13,UTC,CTL002 . сравнение/переход  ; S3:1654
+XTA,EDC047 . считывание в аккумулятор  ; S3:1655
+AAX,ETX048  ; S3:1656
+UZA,SEE026 . переход при =0  ; S3:1657
+XTA,C7A313 . считывание в аккумулятор  ; S3:1658
+13,UTC,CTL002 . сравнение/переход  ; S3:1659
+ATX,EDC047 . запись с модификатором  ; S3:1660
+A,UJ, . переход/возврат  ; S3:1661
+PLC027: ENTRY . точка входа  ; (POLN: PLCATALO) ; S3:1662
+B,VTM,BS020 . установка индексного регистра  ; S3:1663
+ITA,EDC046 . взятие из стека в индексный регистр  ; S3:1664
+ATX,ETX046 . запись с модификатором  ; S3:1665
+ATX,FTA362 . запись с модификатором  ; S3:1666
+XTA . считывание в аккумулятор  ; S3:1667
+CALL,DATAPR* . вызов подпрограммы  ; S3:1668
+14,VTM,TAP336 . установка индексного регистра  ; S3:1669
+A,VJM,HEA028 . вызов через индексный регистр  ; S3:1670
+10,VTM, . установка индексного регистра  ; S3:1671
+CALL,PARAMT* . вызов подпрограммы  ; S3:1672
+XTA,ETX049 . считывание в аккумулятор  ; S3:1673
+ATX,ATA363 . запись с модификатором  ; S3:1674
+10,VTM,EDC049 . установка индексного регистра  ; S3:1675
+9,VTM,ATA363 . установка индексного регистра  ; S3:1676
+CALL,PARAMT* . вызов подпрограммы  ; S3:1677
+XTA,ATA363 . считывание в аккумулятор  ; S3:1678
+A,VJM,RDC030 . вызов через индексный регистр  ; S3:1679
+13,VJM,CHC029 . вызов через индексный регистр  ; S3:1680
+C,VTM, . установка индексного регистра  ; S3:1681
+GR,VJM,N2033 . вызов через индексный регистр  ; S3:1682
+XTA . считывание в аккумулятор  ; S3:1683
+CALL,DATAPR* . вызов подпрограммы  ; S3:1684
+14,VTM,TAP336 . установка индексного регистра  ; S3:1685
+A,VJM,HEA028 . вызов через индексный регистр  ; S3:1686
+WTC,ETX046  ; S3:1687
+GR,VTM, . установка индексного регистра  ; S3:1688
+C,VTM,EDC047 . установка индексного регистра  ; S3:1689
+UJ,N2033 . переход/возврат  ; S3:1690
+HEA028: ITS,EDC050 . сохранение индексного регистра в стек  ; (POLN: HEAD) ; S3:1691
+14,UTM,EDC048 . переход при >0  ; S3:1692
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:1693
+14,VTM,EDC051 . установка индексного регистра  ; S3:1694
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:1695
+CALL,PRINT8// . вызов подпрограммы  ; S3:1696
+A,UJ, . переход/возврат  ; S3:1697
+CHC029: BSS . зарезервированная область  ; (POLN: CHCTLG) ; S3:1698
+14,VTM, . установка индексного регистра  ; S3:1699
+UTC,CTL002+EDC048 . сравнение/переход  ; S3:1700
+14,XTA,EDC047 . считывание в аккумулятор  ; S3:1701
+AEX,C7A313  ; S3:1702
+13,UZA, . переход при =0  ; S3:1703
+14,UTM,EDC048 . переход при >0  ; S3:1704
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:1705
+AEX,ETX051  ; S3:1706
+U1A,CHC029+EDC047  ; S3:1707
+14,VTM,ERR353 . установка индексного регистра  ; S3:1708
+A,VJM,HEA028 . вызов через индексный регистр  ; S3:1709
+GR,VTM,RET023 . установка индексного регистра  ; S3:1710
+UJ,END057+EDC047 . переход/возврат  ; S3:1711
+RDC030: BSS . зарезервированная область  ; (POLN: RDCAT) ; S3:1712
+AAX,ETX052  ; S3:1713
+AOX,TW335  ; S3:1714
+ATX,XX367 . запись с модификатором  ; S3:1715
+*70,XX367  ; S3:1716 . Э70 XX367 = НЕ НАЙДЕНО в rukava.be
+XTA,XX367 . считывание в аккумулятор  ; S3:1717
+ARX,ETX053  ; S3:1718
+ATX,XX367 . запись с модификатором  ; S3:1719
+*70,XX367  ; S3:1720 . Э70 XX367 = НЕ НАЙДЕНО в rukava.be
+A,UJ, . переход/возврат  ; S3:1721
+PCA031: ENTRY . точка входа  ; (POLN: PCATALOG) ; S3:1722
+C,VTM,EDC047 . установка индексного регистра  ; S3:1723
+PCT032: BSS . зарезервированная область  ; (POLN: PCTL) ; S3:1724
+B,VTM,BS020 . установка индексного регистра  ; S3:1725
+13,MTJ,GR  ; S3:1726
+XTA . считывание в аккумулятор  ; S3:1727
+ATX,FTA362 . запись с модификатором  ; S3:1728
+CALL,DATAPR* . вызов подпрограммы  ; S3:1729
+14,VTM,PER338 . установка индексного регистра  ; S3:1730
+A,VJM,HEA028 . вызов через индексный регистр  ; S3:1731
+XTA,IW019 . считывание в аккумулятор  ; S3:1732
+A,VJM,RDC030 . вызов через индексный регистр  ; S3:1733
+С---------------
+N2033: BSS . зарезервированная область  ; (POLN: *2) ; S3:1735
+13,VTM,N1037 . установка индексного регистра  ; S3:1736
+BOR034: BSS . зарезервированная область  ; (POLN: BORDE) ; S3:1737
+14,VTM,CTL002+EDC048 . установка индексного регистра  ; S3:1738
+A,VTM, . установка индексного регистра  ; S3:1739
+ORD035: 14,UTC, . сравнение/переход  ; (POLN: ORDE) ; S3:1740
+XTA,EDC047 . считывание в аккумулятор  ; S3:1741
+AEX,C7A313  ; S3:1742
+UZA,N1017 . переход при =0  ; S3:1743
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:1744
+A,UTC,ORD003 . сравнение/переход  ; S3:1745
+ATX . запись с модификатором  ; S3:1746
+14,UTM,EDC048 . переход при >0  ; S3:1747
+A,UTM,EDC047 . переход при >0  ; S3:1748
+UJ,ORD035 . переход/возврат  ; S3:1749
+N1036: BSS . зарезервированная область  ; (POLN: *1) ; S3:1750
+A,VZM,END057+EDC047 . переход при <0  ; S3:1751
+ITA,A . взятие из стека в индексный регистр  ; S3:1752
+ARX,ETX054  ; S3:1753
+ATX,CAT373 . запись с модификатором  ; S3:1754
+C,VZM,N1037 . переход при <0  ; S3:1755
+A,MTJ,EDC054  ; S3:1756
+10,VTM,ORD003 . установка индексного регистра  ; S3:1757
+UJ,YPO058 . переход/возврат  ; S3:1758
+С---------------
+N1037: BSS . зарезервированная область  ; (POLN: /1) ; S3:1760
+F,VTM, . установка индексного регистра  ; S3:1761
+С---ПEЧATЬ KOHЦA-------
+XTA,SPA357 . считывание в аккумулятор  ; S3:1763
+ATX,CBH358+EDC048 . запись с модификатором  ; S3:1764
+XTA,HO359 . считывание в аккумулятор  ; S3:1765
+ATX,CBH358+EDC047 . запись с модификатором  ; S3:1766
+UTC,CTL002 . сравнение/переход  ; S3:1767
+XTA . считывание в аккумулятор  ; S3:1768
+WTC,FTA362  ; S3:1769
+10,VTM, . установка индексного регистра  ; S3:1770
+10,VZM,DRM038 . переход при <0  ; S3:1771
+ASN,EDC055-EDC056  ; S3:1772
+XTS,ATA363 . считывание с модификатором  ; S3:1773
+APX,ETX056  ; S3:1774
+ASN,EDC055+EDC057  ; S3:1775
+NTR,EDC058  ; S3:1776
+A-X,ETX058  ; S3:1777
+ATX,DIF360 . запись с модификатором  ; S3:1778
+ASN,EDC055-EDC057  ; S3:1779
+15,ARX,  ; S3:1780
+ATX,LOC365 . запись с модификатором  ; S3:1781
+AUX,ETX059  ; S3:1782
+ARX,ETX060  ; S3:1783
+AOX,CBH358+EDC047  ; S3:1784
+ATX,CBH358+EDC047 . запись с модификатором  ; S3:1785
+XTA,LOC365 . считывание в аккумулятор  ; S3:1786
+ASN,EDC055-EDC054  ; S3:1787
+AUX,ETX061  ; S3:1788
+AOX,ETX062  ; S3:1789
+UJ,RET039 . переход/возврат  ; S3:1790
+DRM038: BSS . зарезервированная область  ; (POLN: DRM) ; S3:1791
+ASN,EDC055-EDC062  ; S3:1792
+AUX,MAS310  ; S3:1793
+ARX,TR8308  ; S3:1794
+ATX,LOC365 . запись с модификатором  ; S3:1795
+ASN,EDC055+EDC063  ; S3:1796
+ARX,CBH358+EDC047  ; S3:1797
+ATX,CBH358+EDC047 . запись с модификатором  ; S3:1798
+XTA,LOC365 . считывание в аккумулятор  ; S3:1799
+ASN,EDC055-EDC045  ; S3:1800
+AUX,ETX063  ; S3:1801
+ARX,CBH358+EDC048  ; S3:1802
+RET039: BSS . зарезервированная область  ; (POLN: RETCB) ; S3:1803
+ATX,CBH358+EDC048 . запись с модификатором  ; S3:1804
+14,VTM,CBH358 . установка индексного регистра  ; S3:1805
+A,VJM,HEA028 . вызов через индексный регистр  ; S3:1806
+A,VTM,-EDC047 . установка индексного регистра  ; S3:1807
+С-------------------------
+XTA,AII301 . считывание в аккумулятор  ; S3:1809
+ATX,ALE375 . запись с модификатором  ; S3:1810
+XTA,MXL300 . считывание в аккумулятор  ; S3:1811
+ATX,MXL374 . запись с модификатором  ; S3:1812
+XTA,SPA357 . считывание в аккумулятор  ; S3:1813
+ATX,PRI410-EDC047 . запись с модификатором  ; S3:1814
+14,VTM,EDC047-EDC064 . установка индексного регистра  ; S3:1815
+XTA,PRI410-EDC047 . считывание в аккумулятор  ; S3:1816
+ERA040: BSS . зарезервированная область  ; (POLN: ERASE) ; S3:1817
+14,ATX,PRI410+EDC054 . запись с модификатором  ; S3:1818
+14,VLM,ERA040 . цикл: переход при <0  ; S3:1819
+R,VJM,PR055 . вызов через индексный регистр  ; S3:1820
+NP,VTM,-EDC065 . установка индексного регистра  ; S3:1821
+UJ,NEX047 . переход/возврат  ; S3:1822
+С---------------
+STR041: BSS . зарезервированная область  ; (POLN: STRING) ; S3:1824
+C,XTA, . считывание в аккумулятор  ; S3:1825
+AUX,MAS304  ; S3:1826
+R,VJM,TRN068 . вызов через индексный регистр  ; S3:1827
+NP,ATX,PRI410 . запись с модификатором  ; S3:1828
+C,XTA, . считывание в аккумулятор  ; S3:1829
+ASN,EDC055-EDC066  ; S3:1830
+AUX,MAS304  ; S3:1831
+NP,ATX,PRI410+EDC047 . запись с модификатором  ; S3:1832
+C,XTA,EDC047 . считывание в аккумулятор  ; S3:1833
+AAX,ETX066  ; S3:1834
+UZA,ENT044 . переход при =0  ; S3:1835
+C,XTA,EDC047 . считывание в аккумулятор  ; S3:1836
+WTC,FTA362  ; S3:1837
+10,VTM, . установка индексного регистра  ; S3:1838
+10,VZM,NOT042 . переход при <0  ; S3:1839
+AAX,ETX067  ; S3:1840
+XTS,DIF360 . считывание с модификатором  ; S3:1841
+ASN,EDC055-EDC067  ; S3:1842
+15,ARX,  ; S3:1843
+AAX,ETX068  ; S3:1844
+ASN,EDC055-EDC058  ; S3:1845
+C,XTS,EDC047 . считывание с модификатором  ; S3:1846
+ASN,EDC055-EDC047  ; S3:1847
+AAX,ETX069  ; S3:1848
+15,AOX,  ; S3:1849
+AUX,ETX070  ; S3:1850
+ARX,TR8307  ; S3:1851
+UJ,RET043 . переход/возврат  ; S3:1852
+NOT042: BSS . зарезервированная область  ; (POLN: NOTAP) ; S3:1853
+ASN,EDC055-EDC048  ; S3:1854
+AUX,MAS309  ; S3:1855
+ARX,TR8306  ; S3:1856
+RET043: BSS . зарезервированная область  ; (POLN: RETT) ; S3:1857
+ATX,LOC365 . запись с модификатором  ; S3:1858
+C,XTA,EDC047 . считывание в аккумулятор  ; S3:1859
+ASN,EDC055-EDC070  ; S3:1860
+AUX,MAS311  ; S3:1861
+ARX,TR8312  ; S3:1862
+ATX,LON364 . запись с модификатором  ; S3:1863
+XTA,LOC365 . считывание в аккумулятор  ; S3:1864
+ASN,EDC055+EDC067  ; S3:1865
+AAX,ETX071  ; S3:1866
+NP,AOX,PRI410+EDC047  ; S3:1867
+R,VJM,TRN068 . вызов через индексный регистр  ; S3:1868
+NP,ATX,PRI410+EDC047 . запись с модификатором  ; S3:1869
+XTA,LOC365 . считывание в аккумулятор  ; S3:1870
+ASN,EDC055-EDC070  ; S3:1871
+AUX,ETX072  ; S3:1872
+XTS,LOC365 . считывание с модификатором  ; S3:1873
+AUX,ETX071  ; S3:1874
+15,AOX,  ; S3:1875
+ARX,TR305  ; S3:1876
+NP,ATX,PRI410+EDC048 . запись с модификатором  ; S3:1877
+XTA,LOC365 . считывание в аккумулятор  ; S3:1878
+ASN,EDC055-EDC049  ; S3:1879
+AAX,ETX073  ; S3:1880
+NP,ATX,PRI410+EDC058 . запись с модификатором  ; S3:1881
+XTA,LON364 . считывание в аккумулятор  ; S3:1882
+ASN,EDC055+EDC073  ; S3:1883
+NP,AOX,PRI410+EDC058  ; S3:1884
+ARX,TR305  ; S3:1885
+NP,ATX,PRI410+EDC058 . запись с модификатором  ; S3:1886
+XTA,LON364 . считывание в аккумулятор  ; S3:1887
+ASN,EDC055-EDC073  ; S3:1888
+ARX,TR305  ; S3:1889
+NP,ATX,PRI410+EDC049 . запись с модификатором  ; S3:1890
+UJ,NEX047 . переход/возврат  ; S3:1891
+ENT044: BSS . зарезервированная область  ; (POLN: ENT) ; S3:1892
+C,MTJ,EDC050  ; S3:1893
+NS045: 14,XTA,-EDC047 . считывание в аккумулятор  ; (POLN: NS/) ; S3:1894
+AAX,ETX066  ; S3:1895
+14,UTM,-EDC048 . переход при >0  ; S3:1896
+UIA,NAM046 . переход  ; S3:1897
+UJ,NS045 . переход/возврат  ; S3:1898
+NAM046: BSS . зарезервированная область  ; (POLN: NAM) ; S3:1899
+14,XTA, . считывание в аккумулятор  ; S3:1900
+14,MTJ,EDC046  ; S3:1901
+AUX,ETX074  ; S3:1902
+NP,AOX,PRI410+EDC047  ; S3:1903
+R,VJM,TRN068 . вызов через индексный регистр  ; S3:1904
+ARX,ETX075  ; S3:1905
+NP,ATX,PRI410+EDC047 . запись с модификатором  ; S3:1906
+13,XTA, . считывание в аккумулятор  ; S3:1907
+ASN,EDC055-EDC044  ; S3:1908
+AUX,MAS304  ; S3:1909
+R,VJM,TRN068 . вызов через индексный регистр  ; S3:1910
+NP,ATX,PRI410+EDC048 . запись с модификатором  ; S3:1911
+C,XTA,EDC047 . считывание в аккумулятор  ; S3:1912
+ASN,EDC055-EDC057  ; S3:1913
+AUX,MAS311  ; S3:1914
+ARX,TR8312  ; S3:1915
+ATX,LOC365 . запись с модификатором  ; S3:1916
+ASN,EDC055+EDC073  ; S3:1917
+ARX,TR305  ; S3:1918
+ARX,ETX076  ; S3:1919
+NP,ATX,PRI410+EDC058 . запись с модификатором  ; S3:1920
+XTA,LOC365 . считывание в аккумулятор  ; S3:1921
+ASN,EDC055-EDC073  ; S3:1922
+ARX,TR305  ; S3:1923
+NP,ATX,PRI410+EDC049 . запись с модификатором  ; S3:1924
+NEX047: NP,MTJ,EDC050  ; (POLN: NEXTP) ; S3:1925
+NP,UTM,EDC065 . переход при >0  ; S3:1926
+14,UTM,-EDC065 . переход при >0  ; S3:1927
+14,VIM,CTN048 . переход  ; S3:1928
+R,VJM,PR055 . вызов через индексный регистр  ; S3:1929
+CTN048: BSS . зарезервированная область  ; (POLN: CTNUE) ; S3:1930
+С--ПPOBEPKA HA HAЧAЛO БЛOKA--
+F,VIM,NOU049 . переход  ; S3:1932
+A,MTJ,EDC050  ; S3:1933
+WTC,MXL374  ; S3:1934
+14,UTM,EDC047 . переход при >0  ; S3:1935
+14,VIM,NOU049 . переход  ; S3:1936
+С--ЗAПOMИHAHИE KOHЦA HOBOГO БЛOKA--
+WTC,ALE375  ; S3:1938
+A,UTM, . переход при >0  ; S3:1939
+С--YCTAHOBKA HOBOГO БЛOKA--
+XTA,ALE375 . считывание в аккумулятор  ; S3:1941
+ASN,EDC055+EDC073  ; S3:1942
+ATI,EDC050 . запись в индексный регистр  ; S3:1943
+14,XTA, . считывание в аккумулятор  ; S3:1944
+ATX,ALE375 . запись с модификатором  ; S3:1945
+ITA,A . взятие из стека в индексный регистр  ; S3:1946
+ARX,ALE375  ; S3:1947
+AEX,ETX077  ; S3:1948
+ATX,MXL374 . запись с модификатором  ; S3:1949
+NOU049: BSS . зарезервированная область  ; (POLN: NOUT) ; S3:1950
+F,VIM,N7050 . переход  ; S3:1951
+A,UTM,EDC047 . переход при >0  ; S3:1952
+N7050: BSS . зарезервированная область  ; (POLN: *7) ; S3:1953
+С--BЫXOД ЗA KATAЛOГ---
+13,VTM, . установка индексного регистра  ; S3:1955
+A,MTJ,EDC050  ; S3:1956
+F,UTC, . сравнение/переход  ; S3:1957
+14,UTM,EDC047 . переход при >0  ; S3:1958
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:1959
+ARX,ETX054  ; S3:1960
+X-A,CAT373  ; S3:1961
+UZA,N3051 . переход при =0  ; S3:1962
+13,VTM,EDC047 . установка индексного регистра  ; S3:1963
+N3051: BSS . зарезервированная область  ; (POLN: *3) ; S3:1964
+С--BЫБOPKA ИMEHИ---
+F,UTC, . сравнение/переход  ; S3:1966
+A,WTC,ORD003  ; S3:1967
+C,VTM, . установка индексного регистра  ; S3:1968
+С--ПEPEБPOC ФЛAГA---
+F,VIM,N6052 . переход  ; S3:1970
+WTC,ALE375  ; S3:1971
+F,VTM, . установка индексного регистра  ; S3:1972
+UJ,N5053 . переход/возврат  ; S3:1973
+N6052: F,VTM, . установка индексного регистра  ; (POLN: *6) ; S3:1974
+N5053: BSS . зарезервированная область  ; (POLN: *5) ; S3:1975
+13,VZM,N4054 . переход при <0  ; S3:1976
+F,VIM,END057 . переход  ; S3:1977
+UJ,NEX047 . переход/возврат  ; S3:1978
+N4054: BSS . зарезервированная область  ; (POLN: *4) ; S3:1979
+UJ,STR041 . переход/возврат  ; S3:1980
+PR055: 14,VTM,PRI410 . установка индексного регистра  ; (POLN: PR) ; S3:1981
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:1982
+14,UTM,EDC064 . переход при >0  ; S3:1983
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:1984
+14,VTM,EDC058 . установка индексного регистра  ; S3:1985
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:1986
+CALL,PRINT8// . вызов подпрограммы  ; S3:1987
+NP,VTM, . установка индексного регистра  ; S3:1988
+14,VTM,EDC047-EDC064 . установка индексного регистра  ; S3:1989
+XTA,PRI410-EDC047 . считывание в аккумулятор  ; S3:1990
+ER056: BSS . зарезервированная область  ; (POLN: ER) ; S3:1991
+14,ATX,PRI410+EDC054 . запись с модификатором  ; S3:1992
+14,VLM,ER056 . цикл: переход при <0  ; S3:1993
+R,UJ, . переход/возврат  ; S3:1994
+END057: R,VJM,PR055 . вызов через индексный регистр  ; (POLN: END) ; S3:1995
+UTC,EDC047 . сравнение/переход  ; S3:1996
+CALL,PRINT8// . вызов подпрограммы  ; S3:1997
+GR,UJ, . переход/возврат  ; S3:1998
+YPO058: BSS . зарезервированная область  ; (POLN: YPOR) ; S3:1999
+ITA,EDC046 . взятие из стека в индексный регистр  ; S3:2000
+ATX,I13370 . запись с модификатором  ; S3:2001
+YPP059: 9,MTJ,EDC044  ; (POLN: YPP) ; S3:2002
+12,UTM,-EDC047 . переход при >0  ; S3:2003
+12,VZM,YOU063 . переход при <0  ; S3:2004
+10,J+M,EDC044  ; S3:2005
+ITA,EDC044 . взятие из стека в индексный регистр  ; S3:2006
+ATX,N9366 . запись с модификатором  ; S3:2007
+10,MTJ,EDC077  ; S3:2008
+XTA . считывание в аккумулятор  ; S3:2009
+ATX,XX367 . запись с модификатором  ; S3:2010
+NN060: 11,WTC,  ; (POLN: NN) ; S3:2011
+XTA . считывание в аккумулятор  ; S3:2012
+ATX,RA368 . запись с модификатором  ; S3:2013
+11,WTC,EDC047  ; S3:2014
+XTA . считывание в аккумулятор  ; S3:2015
+ATX,RB369 . запись с модификатором  ; S3:2016
+CON061: 13,VJM,ALE064 . вызов через индексный регистр  ; (POLN: CONT1) ; S3:2017
+UZA,YFI062 . переход при =0  ; S3:2018
+11,XTA, . считывание в аккумулятор  ; S3:2019
+11,XTS,EDC047 . считывание с модификатором  ; S3:2020
+11,STX,  ; S3:2021
+11,ATX,EDC047 . запись с модификатором  ; S3:2022
+ATX,XX367 . запись с модификатором  ; S3:2023
+YFI062: 11,UTM,EDC047 . переход при >0  ; (POLN: YFIN) ; S3:2024
+ITA,EDC077 . взятие из стека в индексный регистр  ; S3:2025
+AEX,N9366  ; S3:2026
+U1A,NN060  ; S3:2027
+9,UTM,-EDC047 . переход при >0  ; S3:2028
+XTA,XX367 . считывание в аккумулятор  ; S3:2029
+U1A,YPP059  ; S3:2030
+YOU063: WTC,I13370  ; (POLN: YOUT) ; S3:2031
+UJ, . переход/возврат  ; S3:2032
+ALE064: BSS . зарезервированная область  ; (POLN: ALEB) ; S3:2033
+ITA,EDC065 . взятие из стека в индексный регистр  ; S3:2034
+ITS,EDC054 . сохранение индексного регистра в стек  ; S3:2035
+ITS,EDC077 . сохранение индексного регистра в стек  ; S3:2036
+XTS . считывание с модификатором  ; S3:2037
+5,VTM,-EDC078 . установка индексного регистра  ; S3:2038
+AL065: XTA,RA368 . считывание в аккумулятор  ; (POLN: AL) ; S3:2039
+ASN,EDC055-EDC079  ; S3:2040
+ATX,RA368 . запись с модификатором  ; S3:2041
+YTA  ; S3:2042
+ATI,EDC044 . запись в индексный регистр  ; S3:2043
+12,XTA,T289 . считывание в аккумулятор  ; S3:2044
+ATX,RA1371 . запись с модификатором  ; S3:2045
+XTA,RB369 . считывание в аккумулятор  ; S3:2046
+ASN,EDC055-EDC079  ; S3:2047
+ATX,RB369 . запись с модификатором  ; S3:2048
+YTA  ; S3:2049
+ATI,EDC044 . запись в индексный регистр  ; S3:2050
+12,XTA,T289 . считывание в аккумулятор  ; S3:2051
+ATX,RB1372 . запись с модификатором  ; S3:2052
+NTR,EDC058  ; S3:2053
+A-X,RA1371  ; S3:2054
+U1A,WRA067  ; S3:2055
+XTA,RA1371 . считывание в аккумулятор  ; S3:2056
+AEX,RB1372  ; S3:2057
+U1A,WRA066  ; S3:2058
+5,VLM,AL065 . цикл: переход при <0  ; S3:2059
+WRA066: STX  ; (POLN: TCAT_INDEXED_WRITE_0066) ; S3:2060
+STI,EDC077 . сохранение в стек  ; S3:2061
+STI,EDC054 . сохранение в стек  ; S3:2062
+ATI,EDC065 . запись в индексный регистр  ; S3:2063
+XTA . считывание в аккумулятор  ; S3:2064
+13,UJ, . переход/возврат  ; S3:2065
+WRA067: STX  ; (POLN: TCAT_INDEXED_WRITE_0067) ; S3:2066
+STI,EDC077 . сохранение в стек  ; S3:2067
+STI,EDC054 . сохранение в стек  ; S3:2068
+ATI,EDC065 . запись в индексный регистр  ; S3:2069
+XTA,ETX079 . считывание в аккумулятор  ; S3:2070
+13,UJ, . переход/возврат  ; S3:2071
+TRN068: BSS . зарезервированная область  ; (POLN: TRNSL) ; S3:2072
+14,VTM,EDC047-EDC079 . установка индексного регистра  ; S3:2073
+LBL069: ASN,EDC055+EDC080  ; (POLN: **) ; S3:2074
+ATX,WC376 . запись с модификатором  ; S3:2075
+YTA  ; S3:2076
+AUX,ETX080  ; S3:2077
+ATI,S . запись в индексный регистр  ; S3:2078
+ASN,EDC055+EDC081  ; S3:2079
+ATI,NS . запись в индексный регистр  ; S3:2080
+NS,XTA,TAB290 . считывание в аккумулятор  ; S3:2081
+S,ASN,EDC055-EDC073  ; S3:2082
+AAX,ETX081  ; S3:2083
+AOX,WC376  ; S3:2084
+14,VLM,LBL069 . цикл: переход при <0  ; S3:2085
+R,UJ, . переход/возврат  ; S3:2086
+С
+С      ПEЧATЬ CПPABOK O БИБЛИOTEKE
+С------------------------------
+С
+LIB070: ENTRY . точка входа  ; (POLN: LIBREFER) ; S3:2091
+B,VTM,BS020 . установка индексного регистра  ; S3:2092
+ITA,EDC046 . взятие из стека в индексный регистр  ; S3:2093
+ATX,ETX046 . запись с модификатором  ; S3:2094
+A,VTM,-EDC048 . установка индексного регистра  ; S3:2095
+10,VTM, . установка индексного регистра  ; S3:2096
+CALL,PARAMT* . вызов подпрограммы  ; S3:2097
+10,VTM,EDC047 . установка индексного регистра  ; S3:2098
+CALL,PARAMT* . вызов подпрограммы  ; S3:2099
+LNL071: BSS . зарезервированная область  ; (POLN: LNL) ; S3:2100
+UTC,MON015 . сравнение/переход  ; S3:2101
+XTA . считывание в аккумулятор  ; S3:2102
+A,UTC,EDC048 . сравнение/переход  ; S3:2103
+AEX,NLI355  ; S3:2104
+ASN,EDC055+EDC045  ; S3:2105
+A,UZA,SWI078+EDC048 . переход при =0  ; S3:2106
+A,VLM,LNL071 . цикл: переход при <0  ; S3:2107
+14,VTM,ERR354 . установка индексного регистра  ; S3:2108
+A,VJM,HEA028 . вызов через индексный регистр  ; S3:2109
+GR,VTM,RET023 . установка индексного регистра  ; S3:2110
+UJ,END057+EDC047 . переход/возврат  ; S3:2111
+С       PERMANENT LIBRARY
+PER072: XTA,IW019 . считывание в аккумулятор  ; (POLN: PERREF) ; S3:2113
+A,VJM,RDC030 . вызов через индексный регистр  ; S3:2114
+С      CONST'S ДЛЯ PAЗБOPKИ ИHФ. CЛOB CM.
+XTA,ETX082 . считывание в аккумулятор  ; S3:2119
+SET076: ATX,DEL075 . запись с модификатором  ; (POLN: SETD) ; S3:2120
+XTA,ETX083 . считывание в аккумулятор  ; S3:2121
+ATX,MUN074 . запись с модификатором  ; S3:2122
+UJ,CHJ079 . переход/возврат  ; S3:2123
+С       TEMPORARY LIBRARY
+TEM077: XTA,TIW018 . считывание в аккумулятор  ; (POLN: TEMPR) ; S3:2125
+A,VJM,RDC030 . вызов через индексный регистр  ; S3:2126
+13,VTM, . установка индексного регистра  ; S3:2127
+A,VJM,SEE026 . вызов через индексный регистр  ; S3:2128
+XTA . считывание в аккумулятор  ; S3:2129
+UJ,SET076 . переход/возврат  ; S3:2130
+С
+SWI078: BSS . зарезервированная область  ; (POLN: SWITCH) ; S3:2132
+UJ,PER072 . переход/возврат  ; S3:2133
+UJ,TEM077 . переход/возврат  ; S3:2134
+С      БИБЛИOTEKA HA ЛEHTE
+XTA,ETX049 . считывание в аккумулятор  ; S3:2136
+ATX,ATA363 . запись с модификатором  ; S3:2137
+10,VTM,EDC049 . установка индексного регистра  ; S3:2138
+9,VTM,ATA363 . установка индексного регистра  ; S3:2139
+CALL,PARAMT* . вызов подпрограммы  ; S3:2140
+XTA,ATA363 . считывание в аккумулятор  ; S3:2141
+A,VJM,RDC030 . вызов через индексный регистр  ; S3:2142
+XTA,ATA363 . считывание в аккумулятор  ; S3:2143
+NTR,EDC058  ; S3:2144
+A-X,ETX084  ; S3:2145
+ATX,DEL075 . запись с модификатором  ; S3:2146
+XTA,ETX085 . считывание в аккумулятор  ; S3:2147
+ATX,MUN074 . запись с модификатором  ; S3:2148
+13,VJM,CHC029 . вызов через индексный регистр  ; S3:2149
+С       KAKИE TAБЛИЦЫ
+CHJ079: BSS . зарезервированная область  ; (POLN: CHJOB) ; S3:2151
+10,VTM,EDC047 . установка индексного регистра  ; S3:2152
+CALL,PARAMT* . вызов подпрограммы  ; S3:2153
+XTA,ETX079 . HE ПEЧATATЬ:  ; S3:2154
+ATX,FLM384 . ЭKCTPAKOДЫ,  ; S3:2155
+ATX,FLA385 . ИCTИH.AДPECA.  ; S3:2156
+A,VTM,-EDC048 . установка индексного регистра  ; S3:2157
+LTJ080: UTC,MON015 . сравнение/переход  ; (POLN: LTJ) ; S3:2158
+XTA . считывание в аккумулятор  ; S3:2159
+A,UTC,EDC048 . сравнение/переход  ; S3:2160
+AEX,TYP356  ; S3:2161
+ASN,EDC055+EDC073  ; S3:2162
+A,UZA,JSW081+EDC048 . переход при =0  ; S3:2163
+A,VLM,LTJ080 . цикл: переход при <0  ; S3:2164
+UJ,PRR082 . переход/возврат  ; S3:2165
+JSW081: BSS . зарезервированная область  ; (POLN: JSWITCH) ; S3:2166
+ATX,FLM384 . запись с модификатором  ; S3:2167
+UJ,BEG087 . переход/возврат  ; S3:2168
+ATX,FLA385 . запись с модификатором  ; S3:2169
+UJ,BEG087 . переход/возврат  ; S3:2170
+PRR082: BSS . зарезервированная область  ; (POLN: PRREFS) ; S3:2171
+10,VTM,EDC047 . установка индексного регистра  ; S3:2172
+CALL,PARAMT* . вызов подпрограммы  ; S3:2173
+UTC,MON015 . сравнение/переход  ; S3:2174
+XTA . считывание в аккумулятор  ; S3:2175
+AEX,ETX086  ; S3:2176
+ASN,EDC055+EDC066  ; S3:2177
+ATX,FLB409 . OБP.CCЫЛKИ  ; S3:2178
+10,VTM,EDC047 . установка индексного регистра  ; S3:2179
+CALL,PARAMT* . вызов подпрограммы  ; S3:2180
+UTC,MON015 . сравнение/переход  ; S3:2181
+XTA . считывание в аккумулятор  ; S3:2182
+AEX,ETX087  ; S3:2183
+ASN,EDC055+EDC066  ; S3:2184
+ATX,FLS073 . BHEШH.П/П  ; S3:2185
+BEG087: BSS . зарезервированная область  ; (POLN: BEGJOB) ; S3:2190
+14,VTM,-EDC087 . установка индексного регистра  ; S3:2191
+XTA . считывание в аккумулятор  ; S3:2192
+UTC,REF004+EDC087 . сравнение/переход  ; S3:2193
+14,ATX, . запись с модификатором  ; S3:2194
+14,VLM,*-1 . цикл: переход при <0  ; S3:2195
+ATX,MAC386 . запись с модификатором  ; S3:2196
+ATX,DUB404 . запись с модификатором  ; S3:2197
+ATX,RAC392 . запись с модификатором  ; S3:2198
+ATX,RAD393 . запись с модификатором  ; S3:2199
+ATX,RFP394 . запись с модификатором  ; S3:2200
+ATX,CMC377 . запись с модификатором  ; S3:2201
+ATX,SBC378 . запись с модификатором  ; S3:2202
+ATX,DSH083 . запись с модификатором  ; S3:2203
+ATX,EDS084 . запись с модификатором  ; S3:2204
+ATX,FPL383 . запись с модификатором  ; S3:2205
+ATX,EFP085 . запись с модификатором  ; S3:2206
+ATX,CEC086 . запись с модификатором  ; S3:2207
+ATX,LIB329 . запись с модификатором  ; S3:2208
+1,VTM, . установка индексного регистра  ; S3:2209
+LLC088: UTC,CTL002+EDC048 . сравнение/переход  ; (POLN: LLCAT) ; S3:2210
+1,XTA,EDC047 . считывание в аккумулятор  ; S3:2211
+AEX,C7A313  ; S3:2212
+1,UTM,EDC048 . переход при >0  ; S3:2213
+UIA,LLC088 . переход  ; S3:2214
+1,UTM,-EDC048 . переход при >0  ; S3:2215
+ITA,EDC047 . взятие из стека в индексный регистр  ; S3:2216
+ASN,EDC055+EDC047  ; S3:2217
+ATX,LCA382 . запись с модификатором  ; S3:2218
+GR,VTM,RET023 . установка индексного регистра  ; S3:2219
+UZA,END057+EDC047 . переход при =0  ; S3:2220
+С
+С      OБPAБOTKA CM И COCTABЛEHИE TAБЛИЦ
+С------------------------------
+С
+SET090: BSS . зарезервированная область  ; (POLN: SETREF) ; S3:2226
+UTC,CTL002 . сравнение/переход  ; S3:2228
+1,XTA,EDC047 . считывание в аккумулятор  ; S3:2229
+AAX,LIB091  ; S3:2230
+UIA,MEN095 . переход  ; S3:2231
+1,UTM,-EDC048 . переход при >0  ; S3:2232
+UJ,SET090 . переход/возврат  ; S3:2233
+MEN095: BSS . зарезервированная область  ; (POLN: MENTRY) ; S3:2237
+XTA,CEC086 . считывание в аккумулятор  ; S3:2238
+ATX,CEC092 . запись с модификатором  ; S3:2239
+XTA,FPL383 . считывание в аккумулятор  ; S3:2240
+ATX,FPL093 . запись с модификатором  ; S3:2241
+XTA,EFP085 . считывание в аккумулятор  ; S3:2242
+ATX,EFP094 . запись с модификатором  ; S3:2243
+XTA,MAC386 . считывание в аккумулятор  ; S3:2244
+ATX,MAC387 . запись с модификатором  ; S3:2245
+XTA,RFP394 . считывание в аккумулятор  ; S3:2246
+ATX,RFP395 . запись с модификатором  ; S3:2247
+XTA . считывание в аккумулятор  ; S3:2249
+14,VTM,-EDC088 . установка индексного регистра  ; S3:2250
+UTC,USE407 . сравнение/переход  ; S3:2251
+14,ATX,EDC088 . запись с модификатором  ; S3:2252
+14,VLM,*-1 . цикл: переход при <0  ; S3:2253
+ATX,FLU391 . запись с модификатором  ; S3:2254
+ATX,PEK399 . запись с модификатором  ; S3:2255
+С       ПEPBЫЙПPOXOД ПO CM
+1,UTC,CTL002 . сравнение/переход  ; S3:2257
+XTA,EDC047 . считывание в аккумулятор  ; S3:2258
+ATX,WBE379 . запись с модификатором  ; S3:2259
+ATX,WBE379+EDC047 . запись с модификатором  ; S3:2260
+С       ИЗBЛEЧEHИE CTPYKTYPЫ CM
+3,VTM,-EDC048 . установка индексного регистра  ; S3:2262
+RST097: BSS . зарезервированная область  ; (POLN: RSTR) ; S3:2263
+13,VJM,RDS276 . вызов через индексный регистр  ; S3:2264
+UTC,STR380 . сравнение/переход  ; S3:2265
+3,ATX,EDC048 . запись с модификатором  ; S3:2266
+3,VLM,RST097 . цикл: переход при <0  ; S3:2267
+XTA,STR380 . считывание в аккумулятор  ; S3:2270
+ASN,EDC055+EDC044  ; S3:2271
+AAX,M4S314 . DECLARATIONS  ; S3:2272
+ATX,LCA100 . запись с модификатором  ; S3:2274
+XTS,STR380 . считывание с модификатором  ; S3:2275
+ASN,EDC055+EDC073  ; S3:2276
+AAX,M4S314 . PAR. EXPRETIONS  ; S3:2277
+15,ARX,  ; S3:2278
+XTS,STR380 . считывание с модификатором  ; S3:2279
+ASN,EDC055+EDC066  ; S3:2280
+15,ARX,  ; S3:2281
+XTS,STR098 . считывание с модификатором  ; S3:2282
+ASN,EDC055+EDC067  ; S3:2283
+AAX,M3L315 . LONG IDENT.  ; S3:2284
+15,ARX,  ; S3:2285
+ATI,EDC048 . запись в индексный регистр  ; S3:2286
+ATX,LDE101 . запись с модификатором  ; S3:2288
+XTA,STR380 . считывание в аккумулятор  ; S3:2289
+AAX,M4S314 . HEAD  ; S3:2290
+XTS,STR098 . считывание с модификатором  ; S3:2291
+AAX,M3L315 . SET DATA  ; S3:2292
+ATX,SET388 . запись с модификатором  ; S3:2293
+15,ARX,  ; S3:2294
+XTS,STR098 . считывание с модификатором  ; S3:2295
+ASN,EDC055+EDC081  ; S3:2296
+AAX,M3L315 . DATA  ; S3:2297
+ATX,DAT406 . запись с модификатором  ; S3:2298
+15,ARX,  ; S3:2299
+XTS,STR099 . считывание с модификатором  ; S3:2300
+AAX,M3L315 . INSTRUCTIONS  ; S3:2301
+ATX,INS389 . запись с модификатором  ; S3:2302
+15,ARX,  ; S3:2303
+XTS,STR099 . считывание с модификатором  ; S3:2304
+ASN,EDC055+EDC067  ; S3:2305
+AAX,M3L315 . ABS. CONST.  ; S3:2306
+15,ATX, . запись с модификатором  ; S3:2307
+ARX,DAT406  ; S3:2308
+STX,DAT406  ; S3:2309
+15,ARX,  ; S3:2310
+ATI,EDC058 . запись в индексный регистр  ; S3:2311
+XTA,FLM384 . считывание в аккумулятор  ; S3:2312
+UZA,RDI105 . переход при =0  ; S3:2313
+RDP102: BSS . зарезервированная область  ; (POLN: RDPRG) ; S3:2314
+3,VZM,RDD103 . переход при <0  ; S3:2315
+13,VJM,RDS276 . вызов через индексный регистр  ; S3:2316
+3,UTM,-EDC047 . переход при >0  ; S3:2317
+UJ,RDP102 . переход/возврат  ; S3:2318
+С       ИЗBЛEKAEM TAБЛИЦY OПИCAHИЙ
+RDD103: BSS . зарезервированная область  ; (POLN: RDDEF) ; S3:2320
+2,VZM,CHI104 . переход при <0  ; S3:2321
+13,VJM,RDS276 . вызов через индексный регистр  ; S3:2322
+UTC,BUF010 . сравнение/переход  ; S3:2323
+3,ATX, . запись с модификатором  ; S3:2324
+3,UTM,EDC047 . переход при >0  ; S3:2325
+2,UTM,-EDC047 . переход при >0  ; S3:2326
+UJ,RDD103 . переход/возврат  ; S3:2327
+С       BTOPOЙ ПPOXOД ПO CM
+С      ПPOBEPKA HAЛИЧИЯ ИCTИHHЫX AДPECOB
+С      И CCЫЛOK HA TAБЛИЦY OПИCAHИЙ.
+CHI104: BSS . зарезервированная область  ; (POLN: CHINST) ; S3:2331
+1,UTC,CTL002 . сравнение/переход  ; S3:2332
+XTA,EDC047 . считывание в аккумулятор  ; S3:2333
+ATX,WBE379 . запись с модификатором  ; S3:2334
+ATX,WBE379+EDC047 . запись с модификатором  ; S3:2335
+NTR,EDC058  ; S3:2336
+3,VTM,-EDC048 . установка индексного регистра  ; S3:2337
+13,VJM,RDS276 . вызов через индексный регистр  ; S3:2338
+3,VLM,*-1 . цикл: переход при <0  ; S3:2339
+RDI105: BSS . зарезервированная область  ; (POLN: RDINST) ; S3:2340
+XTA,INS389 . считывание в аккумулятор  ; S3:2341
+ATI,EDC058 . запись в индексный регистр  ; S3:2342
+LCH106: 3,VZM,SET123 . переход при <0  ; (POLN: LCHINST) ; S3:2343
+13,VJM,RDS276 . вызов через индексный регистр  ; S3:2344
+ATX,CCM398 . запись с модификатором  ; S3:2345
+ASN,EDC055+EDC073  ; S3:2346
+ATX,WOR381 . запись с модификатором  ; S3:2347
+CHW107: BSS . зарезервированная область  ; (POLN: CHWORD) ; S3:2348
+XTA,WOR381 . считывание в аккумулятор  ; S3:2349
+UZA,ECH117 . переход при =0  ; S3:2350
+ASN,EDC055+EDC089  ; S3:2351
+AAX,ETX079 . 0-KOPOTKAЯ CTP.  ; S3:2352
+ATI,EDC050 . запись в индексный регистр  ; S3:2353
+XTA,WOR381 . считывание в аккумулятор  ; S3:2354
+14,APX,MP1319  ; S3:2355
+14,AUX,MU2318  ; S3:2356
+ATX,LOC365 . KOMAHДA  ; S3:2357
+XTA,FLM384 . ИЩEM  ; S3:2358
+UZA,CHM122 . ЭKCTPAKOДOB  ; S3:2359
+XTA,WOR381 . считывание в аккумулятор  ; S3:2360
+14,AAX,M4S314  ; S3:2361
+ATX,ADR390 . AДPEC  ; S3:2362
+14,A-X,MAX320  ; S3:2363
+U1A,NOD108  ; S3:2364
+10,VTM,USE407 . установка индексного регистра  ; S3:2365
+11,VJM,CCH119 . вызов через индексный регистр  ; S3:2366
+NOD108: BSS . зарезервированная область  ; (POLN: NODECL) ; S3:2367
+XTA,FLA385 . ИCT.AДPECA  ; S3:2368
+U1A,ECH117 . HE HYЖHЫ.  ; S3:2369
+С      HE MOДИФИЦИPYETCЯ ЛИ ПPEДЫД. KOMAHДOЙ
+XTA,PEK399 . считывание в аккумулятор  ; S3:2371
+AAX,ETX089  ; S3:2372
+AEX,ETX090 . UTC  ; S3:2373
+UZA,CHM109 . переход при =0  ; S3:2374
+AEX,BIT323 . WTC  ; S3:2375
+U1A,NON110 . HE MOД-CЯ  ; S3:2376
+CHM109: BSS . зарезервированная область  ; (POLN: CHMADR) ; S3:2377
+XTA,PEK399 . считывание в аккумулятор  ; S3:2378
+AAX,ETX091  ; S3:2379
+U1A,ECH117 . MOД-CЯ  ; S3:2380
+NON110: BSS . зарезервированная область  ; (POLN: NONMOD) ; S3:2381
+XTA,LOC365 . считывание в аккумулятор  ; S3:2382
+AAX,ETX092  ; S3:2383
+ATI,EDC046 . запись в индексный регистр  ; S3:2384
+XTA,LOC365 . считывание в аккумулятор  ; S3:2385
+ASN,EDC055+EDC065  ; S3:2386
+ATI,EDC044 . запись в индексный регистр  ; S3:2387
+12,XTA,MEM327 . считывание в аккумулятор  ; S3:2388
+13,ASN,EDC055  ; S3:2389
+AAX,ETX079  ; S3:2390
+UZA,ECH117 . переход при =0  ; S3:2391
+С      AДPECYETCЯ ПAMЯTЬ.
+XTA,WOR381 . считывание в аккумулятор  ; S3:2393
+AAX,ETX093 . ИMEETCЯ  ; S3:2394
+U1A,ECH117 . ИHД. PEГИCTP  ; S3:2395
+XTA,ADR390 . считывание в аккумулятор  ; S3:2396
+U1A,NOZ111  ; S3:2397
+С        ПPOBEPKA HA ЭKCTPAKOД
+XTA,LOC365 . считывание в аккумулятор  ; S3:2399
+A-X,ETX094  ; S3:2400
+U1A,ECH117  ; S3:2401
+A-X,ETX095  ; S3:2402
+UZA,ECH117 . переход при =0  ; S3:2403
+NOZ111: XTA,ADR390 . считывание в аккумулятор  ; (POLN: NOZADR) ; S3:2404
+14,A-X,MAX320  ; S3:2405
+U1A,NOR112  ; S3:2406
+ATI,EDC077 . запись в индексный регистр  ; S3:2407
+UTC,BUF010 . сравнение/переход  ; S3:2408
+11,XTA,-EDC047 . считывание в аккумулятор  ; S3:2409
+ATX,INF405 . запись с модификатором  ; S3:2410
+AAX,ETX096 . B24  ; S3:2411
+UZA,ECH117 . переход при =0  ; S3:2412
+XTA,INF405 . считывание в аккумулятор  ; S3:2413
+AAX,ETX097  ; S3:2414
+U1A,ECH117  ; S3:2415
+XTA,INF405 . считывание в аккумулятор  ; S3:2416
+AAX,M3L315  ; S3:2417
+UJ,WRA113 . переход/возврат  ; S3:2418
+NOR112: XTA,ADR390 . считывание в аккумулятор  ; (POLN: NOREF) ; S3:2419
+14,A-X,MAX321  ; S3:2420
+UZA,ECH117 . переход при =0  ; S3:2421
+XTA,ADR390 . считывание в аккумулятор  ; S3:2422
+WRA113: BSS . зарезервированная область  ; (POLN: WRADR) ; S3:2423
+ASN,EDC055-EDC078  ; S3:2424
+AOX,LOC365  ; S3:2425
+ATX,RAD396 . запись с модификатором  ; S3:2426
+XTA,RAC392 . считывание в аккумулятор  ; S3:2427
+ATI,EDC064 . запись в индексный регистр  ; S3:2428
+11,VTM, . установка индексного регистра  ; S3:2429
+С      ПPOBEPKA HAЛИЧИЯ B RACAT
+CHR114: 10,VZM,ECH115 . переход при <0  ; (POLN: CHRACAT) ; S3:2431
+UTC,RAC005 . сравнение/переход  ; S3:2432
+11,XTA, . считывание в аккумулятор  ; S3:2433
+AEX,RAD396  ; S3:2434
+UZA,SET116 . переход при =0  ; S3:2435
+10,UTM,-EDC047 . переход при >0  ; S3:2436
+11,UTM,EDC047 . переход при >0  ; S3:2437
+UJ,CHR114 . переход/возврат  ; S3:2438
+С      ЗAHOCИM B RACAT
+ECH115: XTA,RAD396 . считывание в аккумулятор  ; (POLN: ECHRCAT) ; S3:2440
+UTC,RAC005 . сравнение/переход  ; S3:2441
+11,ATX, . запись с модификатором  ; S3:2442
+XTA,RAC392 . считывание в аккумулятор  ; S3:2443
+ARX,ETX079  ; S3:2444
+ATX,RAC392 . запись с модификатором  ; S3:2445
+SET116: ITA,EDC077 . взятие из стека в индексный регистр  ; (POLN: SETRA) ; S3:2446
+9,VTM,RAECAT . установка индексного регистра  ; S3:2447
+10,VTM,RAD393 . установка индексного регистра  ; S3:2448
+11,VTM,RFP394 . установка индексного регистра  ; S3:2449
+13,VJM,WRE146 . вызов через индексный регистр  ; S3:2450
+ECH117: BSS . зарезервированная область  ; (POLN: ECHWORD) ; S3:2451
+XTA,WOR381 . считывание в аккумулятор  ; S3:2452
+ATX,PEK399 . запись с модификатором  ; S3:2453
+XTA,CCM398 . считывание в аккумулятор  ; S3:2454
+UZA,ERD118 . переход при =0  ; S3:2455
+ATX,WOR381 . запись с модификатором  ; S3:2456
+XTA . считывание в аккумулятор  ; S3:2457
+ATX,CCM398 . запись с модификатором  ; S3:2458
+UJ,CHW107 . переход/возврат  ; S3:2459
+ERD118: BSS . зарезервированная область  ; (POLN: ERDPRG) ; S3:2460
+3,UTM,-EDC047 . переход при >0  ; S3:2461
+UJ,LCH106 . переход/возврат  ; S3:2462
+CCH119: BSS . зарезервированная область  ; (POLN: CCHATO) ; S3:2463
+15,ATX, . запись с модификатором  ; S3:2464
+AAX,ETX092  ; S3:2465
+X-A  ; S3:2466
+STI,EDC046 . B L. CДBИГA  ; S3:2467
+ASN,EDC055+EDC065  ; S3:2468
+AAX,ETX092  ; S3:2469
+ATI,EDC044 . N CЛOBA  ; S3:2470
+XTA,ETX079 . считывание в аккумулятор  ; S3:2471
+13,ASN,EDC055  ; S3:2472
+10,UTC, . сравнение/переход  ; S3:2473
+12,AOX,  ; S3:2474
+10,UTC, . сравнение/переход  ; S3:2475
+12,ATX, . запись с модификатором  ; S3:2476
+11,UJ, . переход/возврат  ; S3:2477
+CCT120: 15,ATX, . запись с модификатором  ; (POLN: CCИЗTO) ; S3:2478
+AAX,ETX092  ; S3:2479
+STI,EDC046 . сохранение в стек  ; S3:2480
+ASN,EDC055+EDC065  ; S3:2481
+AAX,ETX092  ; S3:2482
+ATI,EDC044 . запись в индексный регистр  ; S3:2483
+CCT121: BSS . зарезервированная область  ; (POLN: CCИЗTO1) ; S3:2484
+10,UTC, . сравнение/переход  ; S3:2485
+12,XTA, . считывание в аккумулятор  ; S3:2486
+13,ASN,EDC055-EDC077  ; S3:2487
+AAX,BIT089  ; S3:2488
+11,UJ, . переход/возврат  ; S3:2489
+С       CБOP ИCПOЛЬЗYEMЫX ЭKCTPAKOДOB
+CHM122: BSS . зарезервированная область  ; (POLN: CHMACRO) ; S3:2491
+XTA,LOC365 . считывание в аккумулятор  ; S3:2492
+A-X,ETX094  ; S3:2493
+U1A,ECH117  ; S3:2494
+A-X,ETX095  ; S3:2495
+UZA,ECH117 . переход при =0  ; S3:2496
+ITA,EDC058 . AДPEC  ; S3:2497
+X-A,INS389 . KOMAHДЫ.  ; S3:2498
+XTS,LOC365 . KOMAHДA.  ; S3:2499
+ASN,EDC055-EDC081  ; S3:2500
+15,AOX,  ; S3:2501
+WTC,MAC386  ; S3:2502
+UTC,MAC013 . сравнение/переход  ; S3:2503
+ATX . запись с модификатором  ; S3:2504
+XTA,MAC386 . считывание в аккумулятор  ; S3:2505
+ARX,ETX079  ; S3:2506
+ATX,MAC386 . запись с модификатором  ; S3:2507
+UJ,ECH117 . переход/возврат  ; S3:2508
+С        ПPOПYCK DATA И KOHCTAHT
+SET123: BSS . зарезервированная область  ; (POLN: SETDATA) ; S3:2510
+С       ДЛЯ ЭKCTPAKOДOB И ИCT.AДPECOB BЫXOД ИЗ CM.
+XTA,FLM384 . считывание в аккумулятор  ; S3:2512
+UZA,END153 . переход при =0  ; S3:2513
+XTA,FLA385 . считывание в аккумулятор  ; S3:2514
+UZA,END153 . переход при =0  ; S3:2515
+XTA,SET388 . считывание в аккумулятор  ; S3:2516
+UZA,REF126 . переход при =0  ; S3:2517
+ATI,EDC058 . запись в индексный регистр  ; S3:2518
+XTA,DAT406 . считывание в аккумулятор  ; S3:2519
+ATI,EDC048 . запись в индексный регистр  ; S3:2520
+2,VZM,LSC124 . переход при <0  ; S3:2521
+13,VJM,RDS276 . вызов через индексный регистр  ; S3:2522
+2,UTM,-EDC047 . переход при >0  ; S3:2523
+UJ,*-1 . переход/возврат  ; S3:2524
+С       PAЗБOPKA SET DATA
+LSC124: BSS . зарезервированная область  ; (POLN: LSCHSET) ; S3:2526
+3,VZM,REF126 . переход при <0  ; S3:2527
+13,VJM,RDS276 . вызов через индексный регистр  ; S3:2528
+AAX,M4S314  ; S3:2529
+A-X,MAX320  ; S3:2530
+U1A,ELS125  ; S3:2531
+10,VTM,USE096 . установка индексного регистра  ; S3:2532
+11,VJM,CCH119 . вызов через индексный регистр  ; S3:2533
+ELS125: 3,UTM,-EDC047 . переход при >0  ; (POLN: ELSCHS) ; S3:2534
+UJ,LSC124 . переход/возврат  ; S3:2535
+С       CCЫЛKИ BBEPX B TO
+REF126: BSS . зарезервированная область  ; (POLN: REFUPP) ; S3:2537
+WTC,LCA100  ; S3:2538
+3,VTM, . установка индексного регистра  ; S3:2539
+LCD127: BSS . зарезервированная область  ; (POLN: LCDEF) ; S3:2540
+3,VZM,SET133 . переход при <0  ; S3:2541
+ITA,EDC058 . взятие из стека в индексный регистр  ; S3:2542
+10,VTM,USE407 . установка индексного регистра  ; S3:2543
+11,VJM,CCT120 . вызов через индексный регистр  ; S3:2544
+ATX,FLU391 . запись с модификатором  ; S3:2545
+10,VTM,USE096 . установка индексного регистра  ; S3:2546
+11,VJM,CCT121 . вызов через индексный регистр  ; S3:2547
+ATX,SET388 . запись с модификатором  ; S3:2548
+AOX,FLU391  ; S3:2549
+UZA,ECD130 . переход при =0  ; S3:2550
+UTC,BUF010 . сравнение/переход  ; S3:2551
+3,XTA,-EDC047 . считывание в аккумулятор  ; S3:2552
+ATX,INF405 . запись с модификатором  ; S3:2553
+AAX,ETX096 . B24  ; S3:2554
+UZA,SET131 . переход при =0  ; S3:2555
+XTA,INF405 . считывание в аккумулятор  ; S3:2556
+AAX,ETX097  ; S3:2557
+UZA,ECD130 . ИCTИHHOE ЗHAЧ  ; S3:2558
+AEX,ETX098 . B19  ; S3:2559
+UZA,ECD130 . OTH. AДPEC  ; S3:2560
+AEX,ETX099 . B22  ; S3:2561
+UZA,ECD130 . OTH. AДP. WEQ  ; S3:2562
+AEX,ETX100  ; S3:2563
+UZA,SET128 . ECTЬ 20,22,24 P  ; S3:2564
+AAX,ETX101  ; S3:2565
+AEX,ETX102  ; S3:2566
+U1A,ECD130 . MACCИBЫ  ; S3:2567
+С       OCTAЛCЯ COMMON
+SET128: BSS . зарезервированная область  ; (POLN: SETBREF) ; S3:2569
+XTA,INF405 . считывание в аккумулятор  ; S3:2570
+AAX,BIT323  ; S3:2571
+UZA,ECD130 . переход при =0  ; S3:2572
+XTA,FLU391 . считывание в аккумулятор  ; S3:2573
+UZA,SET129 . переход при =0  ; S3:2574
+XTA,INF405 . считывание в аккумулятор  ; S3:2575
+10,VTM,USE407 . установка индексного регистра  ; S3:2576
+11,VJM,CCH119 . вызов через индексный регистр  ; S3:2577
+SET129: XTA,SET388 . считывание в аккумулятор  ; (POLN: SETREFS) ; S3:2578
+UZA,ECD130 . переход при =0  ; S3:2579
+XTA,INF405 . считывание в аккумулятор  ; S3:2580
+10,VTM,USE096 . установка индексного регистра  ; S3:2581
+11,VJM,CCH119 . вызов через индексный регистр  ; S3:2582
+ECD130: BSS . зарезервированная область  ; (POLN: ECDEF) ; S3:2583
+3,UTM,-EDC047 . переход при >0  ; S3:2584
+UJ,LCD127 . переход/возврат  ; S3:2585
+SET131: XTA,INF405 . считывание в аккумулятор  ; (POLN: SETLADR) ; S3:2586
+ASN,EDC055+EDC073  ; S3:2587
+ATX,WOR381 . запись с модификатором  ; S3:2588
+XTA,FLU391 . считывание в аккумулятор  ; S3:2589
+UZA,SET132 . переход при =0  ; S3:2590
+XTA,WOR381 . считывание в аккумулятор  ; S3:2591
+10,VTM,USE407 . установка индексного регистра  ; S3:2592
+11,VJM,CCH119 . вызов через индексный регистр  ; S3:2593
+SET132: XTA,SET388 . считывание в аккумулятор  ; (POLN: SETLADRS) ; S3:2594
+UZA,SET128 . переход при =0  ; S3:2595
+XTA,WOR381 . считывание в аккумулятор  ; S3:2596
+10,VTM,USE096 . установка индексного регистра  ; S3:2597
+11,VTM,SET128 . установка индексного регистра  ; S3:2598
+UJ,CCH119 . переход/возврат  ; S3:2599
+SET133: XTA,LCA100 . считывание в аккумулятор  ; (POLN: SETCALL) ; S3:2600
+ATI,EDC058 . запись в индексный регистр  ; S3:2601
+2,VTM, . установка индексного регистра  ; S3:2602
+С       PAЗБOPKA CCЫЛOK
+CHD134: BSS . зарезервированная область  ; (POLN: CHDEF) ; S3:2604
+3,VZM,END153 . переход при <0  ; S3:2605
+2,UTM,EDC047 . переход при >0  ; S3:2606
+С      1 B FLUSED,ECЛИ OБ'EKT ИCПOЛЗOBAH B П/П
+ITA,EDC048 . взятие из стека в индексный регистр  ; S3:2608
+10,VTM,USE407 . установка индексного регистра  ; S3:2609
+11,VJM,CCT120 . вызов через индексный регистр  ; S3:2610
+ATX,FLU391 . запись с модификатором  ; S3:2611
+ITA,EDC048 . взятие из стека в индексный регистр  ; S3:2612
+10,VTM,USE096 . установка индексного регистра  ; S3:2613
+11,VJM,CCT120 . вызов через индексный регистр  ; S3:2614
+ASN,EDC055+EDC047  ; S3:2615
+ATX,SET388 . запись с модификатором  ; S3:2616
+3,UTM,-EDC047 . переход при >0  ; S3:2617
+2,UTC,BUF010 . сравнение/переход  ; S3:2618
+9,VTM,-EDC047 . установка индексного регистра  ; S3:2619
+9,XTA, . считывание в аккумулятор  ; S3:2620
+ATX,INF405 . запись с модификатором  ; S3:2621
+AAX,ETX097  ; S3:2622
+ATX,B19397 . запись с модификатором  ; S3:2623
+AEX,ETX103  ; S3:2624
+UZA,SUB140 . переход при =0  ; S3:2625
+AEX,ETX098  ; S3:2626
+UZA,SUB140 . переход при =0  ; S3:2627
+AEX,ETX104  ; S3:2628
+AAX,ETX101  ; S3:2629
+U1A,CHD134  ; S3:2630
+13,VJM,ID148 . COMMON  ; S3:2631
+XTA,CMC377 . считывание в аккумулятор  ; S3:2632
+ATI,EDC064 . запись в индексный регистр  ; S3:2633
+11,VTM, . установка индексного регистра  ; S3:2634
+С       ПPOBEPKA HAЛИЧИЯ B COMCAT
+CHC135: BSS . зарезервированная область  ; (POLN: CHCOM) ; S3:2636
+10,VZM,END136 . переход при <0  ; S3:2637
+UTC,COM007 . сравнение/переход  ; S3:2638
+11,XTA, . считывание в аккумулятор  ; S3:2639
+AEX,WOR381  ; S3:2640
+UZA,SET137 . переход при =0  ; S3:2641
+10,UTM,-EDC047 . переход при >0  ; S3:2642
+11,UTM,EDC047 . переход при >0  ; S3:2643
+UJ,CHC135 . переход/возврат  ; S3:2644
+С       ЗAHOCИM B COMCAT
+END136: XTA,WOR381 . считывание в аккумулятор  ; (POLN: ENDCCAT) ; S3:2646
+UTC,COM007 . сравнение/переход  ; S3:2647
+11,ATX, . запись с модификатором  ; S3:2648
+XTA,CMC377 . считывание в аккумулятор  ; S3:2649
+ARX,ETX079  ; S3:2650
+ATX,CMC377 . запись с модификатором  ; S3:2651
+SET137: XTA,INF405 . считывание в аккумулятор  ; (POLN: SETINF) ; S3:2652
+AAX,BIT323  ; S3:2653
+U1A,CLE139  ; S3:2654
+XTA,INF405 . считывание в аккумулятор  ; S3:2655
+SET138: BSS . зарезервированная область  ; (POLN: SETINF1) ; S3:2656
+ASN,EDC055-EDC081  ; S3:2657
+ITS,EDC077 . сохранение индексного регистра в стек  ; S3:2658
+15,AOX,  ; S3:2659
+AOX,FLU391  ; S3:2660
+AOX,SET388  ; S3:2661
+WTC,CEC086  ; S3:2662
+UTC,CEC006 . сравнение/переход  ; S3:2663
+ATX . запись с модификатором  ; S3:2664
+XTA,CEC086 . считывание в аккумулятор  ; S3:2665
+ARX,ETX079  ; S3:2666
+ATX,CEC086 . запись с модификатором  ; S3:2667
+UJ,CHD134 . переход/возврат  ; S3:2668
+С      ДЛИHA OПPEДEЛEHA HEЯBHO
+CLE139: BSS . зарезервированная область  ; (POLN: CLEADR) ; S3:2670
+XTA,INF405 . считывание в аккумулятор  ; S3:2671
+ASN,EDC055+EDC081  ; S3:2672
+ASN,EDC055-EDC081  ; S3:2673
+UJ,SET138 . переход/возврат  ; S3:2674
+С       ПOMEЧAEM CCЫЛKИ BHИЗ B TO
+С
+SUB140: 13,VJM,ID148 . SUBPROGRAM  ; (POLN: SUB) ; S3:2677
+13,VJM,SCH144 . вызов через индексный регистр  ; S3:2678
+UZA,INC151 . переход при =0  ; S3:2679
+С       BHEШHЯЯ ПOДПPOГPAMMA
+XTA,SBC378 . считывание в аккумулятор  ; S3:2681
+ATI,EDC064 . запись в индексный регистр  ; S3:2682
+11,VTM, . установка индексного регистра  ; S3:2683
+С ПPOBEPKA HAЛИЧИЯ B SEXTCAT
+CHS141: 10,VZM,END142 . переход при <0  ; (POLN: CHSB) ; S3:2685
+UTC,SEX008 . сравнение/переход  ; S3:2686
+11,XTA, . считывание в аккумулятор  ; S3:2687
+AEX,WOR381  ; S3:2688
+UZA,SET143 . ECTЬ  ; S3:2689
+10,UTM,-EDC047 . переход при >0  ; S3:2690
+11,UTM,EDC047 . переход при >0  ; S3:2691
+UJ,CHS141 . переход/возврат  ; S3:2692
+С       ЗAHOCИM B SEXTCAT
+END142: XTA,WOR381 . считывание в аккумулятор  ; (POLN: ENDSBCAT) ; S3:2694
+UTC,SEX008 . сравнение/переход  ; S3:2695
+11,ATX, . запись с модификатором  ; S3:2696
+XTA,SBC378 . считывание в аккумулятор  ; S3:2697
+ARX,ETX079  ; S3:2698
+ATX,SBC378 . запись с модификатором  ; S3:2699
+С       CCЫЛKY B SEXECAT
+SET143: ITA,EDC077 . взятие из стека в индексный регистр  ; (POLN: SETSUB) ; S3:2701
+9,VTM,SEXECAT . установка индексного регистра  ; S3:2702
+10,VTM,EDS084 . установка индексного регистра  ; S3:2703
+11,VTM,EFP085 . установка индексного регистра  ; S3:2704
+13,VTM,CHD134 . установка индексного регистра  ; S3:2705
+UJ,WRE146 . переход/возврат  ; S3:2706
+С       ПOИCK П/П B KATAЛOГE
+SCH144: XTA,LCA382 . считывание в аккумулятор  ; (POLN: SCHC) ; S3:2708
+ATI,EDC064 . запись в индексный регистр  ; S3:2709
+9,VTM, . установка индексного регистра  ; S3:2710
+LSC145: UTC,CTL002+EDC048 . сравнение/переход  ; (POLN: LSCH) ; S3:2711
+9,XTA, . считывание в аккумулятор  ; S3:2712
+AEX,WOR381  ; S3:2713
+13,UZA, . переход при =0  ; S3:2714
+10,UTM,-EDC047 . переход при >0  ; S3:2715
+9,UTM,EDC048 . переход при >0  ; S3:2716
+10,VIM,LSC145 . переход  ; S3:2717
+13,UJ, . переход/возврат  ; S3:2718
+С       ЗAHECEHИE N CCЫЛAEMOЙ П/П B E KATAЛOГ
+WRE146: 10,WTC,  ; (POLN: WRECAT) ; S3:2720
+12,VTM, . установка индексного регистра  ; S3:2721
+AOX,FLU391  ; S3:2722
+12,ASN,EDC055  ; S3:2723
+11,XTS, . считывание с модификатором  ; S3:2724
+15,ATX, . запись с модификатором  ; S3:2725
+ARX,ETX079  ; S3:2726
+11,STX,  ; S3:2727
+ASN,EDC055+EDC048  ; S3:2728
+STI,EDC050 . сохранение в стек  ; S3:2729
+9,J+M,EDC050  ; S3:2730
+14,AOX,  ; S3:2731
+14,ATX, . запись с модификатором  ; S3:2732
+ITA,EDC044 . взятие из стека в индексный регистр  ; S3:2733
+AEX,ETX105  ; S3:2734
+UZA,RET147 . переход при =0  ; S3:2735
+12,UTM,-EDC044 . переход при >0  ; S3:2736
+ITA,EDC044 . взятие из стека в индексный регистр  ; S3:2737
+RET147: 10,ATX, . запись с модификатором  ; (POLN: RETWRE) ; S3:2738
+13,UJ, . переход/возврат  ; S3:2739
+С       ИЗBЛEЧEHИE HAЗBAHИЯ
+ID148: 9,XTA, . считывание в аккумулятор  ; (POLN: ID) ; S3:2741
+ASN,EDC055-EDC105  ; S3:2742
+ARX  ; S3:2743
+UZA,IRE150 . переход при =0  ; S3:2744
+9,XTA, . считывание в аккумулятор  ; S3:2745
+AAX,ETX106  ; S3:2746
+WRA149: ATX,WOR381 . запись с модификатором  ; (POLN: TCAT_MEM_WRITE_0149) ; S3:2747
+13,UJ, . переход/возврат  ; S3:2748
+IRE150: 9,XTA, . считывание в аккумулятор  ; (POLN: TCAT_IDX_READ_0150) ; S3:2749
+ASN,EDC055+EDC073  ; S3:2750
+ATI,EDC054 . запись в индексный регистр  ; S3:2751
+9,UTM,-EOC106 . переход при >0  ; S3:2752
+UTC,BUF010 . сравнение/переход  ; S3:2753
+9,XTA, . считывание в аккумулятор  ; S3:2754
+UJ,WRA149 . переход/возврат  ; S3:2755
+С       CCЫЛKA HA БИБЛИOT. П/П
+INC151: ITA,EDC054 . взятие из стека в индексный регистр  ; (POLN: INCAT) ; S3:2757
+9,VTM,SECAT . установка индексного регистра  ; S3:2758
+10,VTM,DSH083 . установка индексного регистра  ; S3:2759
+11,VTM,FPL383 . установка индексного регистра  ; S3:2760
+13,VTM,CHD134 . установка индексного регистра  ; S3:2761
+UJ,WRE146 . переход/возврат  ; S3:2762
+С       CCЫЛKИ HA ЭKCTPAKOДЫ.
+TOR152: XTA,MAC386 . считывание в аккумулятор  ; (POLN: TORMTB) ; S3:2764
+A-X,MAC387  ; S3:2765
+ASN,EDC055-EDC081  ; S3:2766
+UZA,END157 . переход при =0  ; S3:2767
+AOX,MAC387 . AДPEC  ; S3:2768
+UTC,RMA012 . сравнение/переход  ; S3:2769
+9,ATX, . запись с модификатором  ; S3:2770
+UJ,END157 . переход/возврат  ; S3:2771
+С       KOЛ-BO И AДPECA CCЫЛOK B R KATAЛOГИ
+END153: NTR,EDC058  ; (POLN: ENDCALL) ; S3:2773
+ITA,EDC047 . взятие из стека в индексный регистр  ; S3:2774
+ASN,EDC055+EDC047  ; S3:2775
+ATI,EDC054 . запись в индексный регистр  ; S3:2776
+9,UTM,-EDC047 . переход при >0  ; S3:2777
+XTA,FLM384 . считывание в аккумулятор  ; S3:2778
+UZA,TOR152 . переход при =0  ; S3:2779
+С      ПPИЗHAK SET DATA
+XTA,SET388 . считывание в аккумулятор  ; S3:2781
+UZA,NOS154 . переход при =0  ; S3:2782
+XTA,BIT322 . считывание в аккумулятор  ; S3:2783
+NOS154: BSS . зарезервированная область  ; (POLN: NOSET) ; S3:2784
+С      CCЫЛKИ HA ИCTИHHЫE AДPECA
+XTS,RFP394 . считывание с модификатором  ; S3:2786
+A-X,RFP395  ; S3:2787
+AAX,M11325  ; S3:2788
+ASN,EDC055-EDC044  ; S3:2789
+AOX,RFP395  ; S3:2790
+ASN,EDC055-EDC073  ; S3:2791
+15,AOX,  ; S3:2792
+UTC,CRCAT . сравнение/переход  ; S3:2793
+9,ATX, . запись с модификатором  ; S3:2794
+XTA,FLA385 . считывание в аккумулятор  ; S3:2795
+UZA,END157 . переход при =0  ; S3:2796
+С       CCЫЛKИ HA COMMON'Ы
+XTA,CEC086 . считывание в аккумулятор  ; S3:2798
+A-X,CEC092  ; S3:2799
+AAX,M3L315  ; S3:2800
+UZA,CHE155 . HET CCЫЛOK  ; S3:2801
+ASN,EDC055-EDC044  ; S3:2802
+AOX,CEC092  ; S3:2803
+UTC,CRCAT . сравнение/переход  ; S3:2804
+9,AOX,  ; S3:2805
+UTC,CRCAT . сравнение/переход  ; S3:2806
+9,ATX, . запись с модификатором  ; S3:2807
+CHE155: BSS . зарезервированная область  ; (POLN: CHESUB) ; S3:2808
+С       CCЫЛKИ HA BHEШHИE П/П
+XTA,EFP085 . считывание в аккумулятор  ; S3:2810
+A-X,EFP094  ; S3:2811
+AAX,M3L315  ; S3:2812
+UZA,CHS156 . переход при =0  ; S3:2813
+ASN,EDC055-EDC044  ; S3:2814
+AOX,EFP094  ; S3:2815
+ASN,EDC055-EDC073  ; S3:2816
+UTC,SRCAT . сравнение/переход  ; S3:2817
+9,ATX, . запись с модификатором  ; S3:2818
+С      CCЫЛKИ HA БИБЛИOT. П/П
+CHS156: XTA,FPL383 . считывание в аккумулятор  ; (POLN: CHSUB) ; S3:2820
+A-X,FPL093  ; S3:2821
+AAX,M3L315  ; S3:2822
+UZA,END157 . переход при =0  ; S3:2823
+ASN,EDC055-EDC044  ; S3:2824
+AOX,FPL093  ; S3:2825
+9,UTM,SRCAT . переход при >0  ; S3:2826
+9,AOX,  ; S3:2827
+9,ATX, . запись с модификатором  ; S3:2828
+END157: BSS . зарезервированная область  ; (POLN: ENDCH) ; S3:2829
+1,UTM,-EDC048 . переход при >0  ; S3:2830
+1,V1M,SET090  ; S3:2831
+С
+С       HAЧИHAEM ПEЧATATЬ
+С------------------------------
+С
+TOP159: C,VTM,EDC047 . установка индексного регистра  ; (POLN: TOPR) ; S3:2837
+13,VJM,BOR034 . YПOPЯД. KATAЛOГA  ; S3:2838
+XTA,FLA385 . считывание в аккумулятор  ; S3:2839
+UZA,BEG229 . переход при =0  ; S3:2840
+XTA,FLM384 . считывание в аккумулятор  ; S3:2841
+UZA,BEG252 . переход при =0  ; S3:2842
+XTA,FLB409 . считывание в аккумулятор  ; S3:2843
+UZA,BEG175 . переход при =0  ; S3:2844
+С
+С       ПEЧATЬ 1OЙ TAБЛИЦЫ
+С------------------------------
+С
+R,VTM,REF339 . установка индексного регистра  ; S3:2849
+GR,VJM,PRH162 . вызов через индексный регистр  ; S3:2850
+C,VTM,EDC048 . установка индексного регистра  ; S3:2851
+R,VTM,COM349 . установка индексного регистра  ; S3:2852
+GR,VJM,PRC250 . вызов через индексный регистр  ; S3:2853
+PR1160: BSS . зарезервированная область  ; (POLN: PR1TB) ; S3:2854
+NTR,EDC058  ; S3:2855
+NP,WTC,ORD003  ; S3:2856
+C,VTM, . установка индексного регистра  ; S3:2857
+C,XTA, . считывание в аккумулятор  ; S3:2858
+12,VTM, . установка индексного регистра  ; S3:2859
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:2860
+C,XTA,EDC047 . считывание в аккумулятор  ; S3:2861
+AAX,ETX066  ; S3:2862
+GR,VTM,END174 . установка индексного регистра  ; S3:2863
+UZA,ENT163 . переход при =0  ; S3:2864
+С       ГЛABHЫЙ BXOД
+F,VTM, . установка индексного регистра  ; S3:2866
+C,UTC, . сравнение/переход  ; S3:2867
+14,VTM,-CTL002-EDC048 . установка индексного регистра  ; S3:2868
+ITA,EDC050 . N BXOДA B KAT.  ; S3:2869
+ASN,EDC055+EDC047  ; S3:2870
+ATI,A . запись в индексный регистр  ; S3:2871
+С       ПPOBEPKA HA SET DATA
+UTC,CRCAT . сравнение/переход  ; S3:2873
+A,XTA, . считывание в аккумулятор  ; S3:2874
+ARX  ; S3:2875
+U1A,NOP161  ; S3:2876
+XTA,BUF158+EDC047 . считывание в аккумулятор  ; S3:2877
+AAX,ETX106  ; S3:2878
+AOX,ETX107  ; S3:2879
+ATX,BUF158+EDC047 . запись с модификатором  ; S3:2880
+NOP161: BSS . зарезервированная область  ; (POLN: NOPRSETD) ; S3:2881
+UTC,SRCAT . сравнение/переход  ; S3:2882
+A,XTA, . считывание в аккумулятор  ; S3:2883
+13,VTM,END174 . установка индексного регистра  ; S3:2884
+UZA,PRS265 . CCЫЛOK HET  ; S3:2885
+ATX,WOR381 . запись с модификатором  ; S3:2886
+14,VTM,CTL002+EDC048 . установка индексного регистра  ; S3:2887
+9,VTM,SECAT . установка индексного регистра  ; S3:2888
+R,VJM,SUM169 . вызов через индексный регистр  ; S3:2889
+XTA,FLS073 . считывание в аккумулятор  ; S3:2890
+UZA,PRR171 . переход при =0  ; S3:2891
+С       CБOP BHEШHИX П/П
+UTC,SRCAT . сравнение/переход  ; S3:2893
+A,XTA, . считывание в аккумулятор  ; S3:2894
+ASN,EDC055+EDC073  ; S3:2895
+UZA,PRR171 . HET CCЫЛOK  ; S3:2896
+ATX,WOR381 . запись с модификатором  ; S3:2897
+9,VTM,SEXECAT . установка индексного регистра  ; S3:2898
+14,VTM,SEX008 . установка индексного регистра  ; S3:2899
+R,VTM,PRR171 . установка индексного регистра  ; S3:2900
+UJ,SUM169 . переход/возврат  ; S3:2901
+С       ПEЧATЬ ЗAГOЛOBKA
+PRH162: BSS . зарезервированная область  ; (POLN: PRHEAD) ; S3:2903
+XTA . считывание в аккумулятор  ; S3:2904
+CALL,DATAPR* . вызов подпрограммы  ; S3:2905
+R,MTJ,EDC050  ; S3:2906
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:2907
+14,UTM,EDC049 . переход при >0  ; S3:2908
+A,VJM,HEA028+EDC047 . вызов через индексный регистр  ; S3:2909
+GR,MTJ,EDC046  ; S3:2910
+NP,VTM, . установка индексного регистра  ; S3:2911
+UJ,BEG263 . переход/возврат  ; S3:2912
+С       ENTRY-BXOД
+ENT163: BSS . зарезервированная область  ; (POLN: ENTRY) ; S3:2914
+C,XTA, . считывание в аккумулятор  ; S3:2915
+ASN,EDC055-EDC066  ; S3:2916
+AUX,MAS304  ; S3:2917
+ATX,BUF158+EDC047 . запись с модификатором  ; S3:2918
+SCH164: C,XTA,-EDC047 . считывание в аккумулятор  ; (POLN: SCHM) ; S3:2919
+AAX,ETX066  ; S3:2920
+C,UTM,-EDC048 . переход при >0  ; S3:2921
+UIA,MEN165 . переход  ; S3:2922
+UJ,SCH164 . переход/возврат  ; S3:2923
+MEN165: C,XTA, . считывание в аккумулятор  ; (POLN: MENT) ; S3:2924
+AUX,ETX074  ; S3:2925
+AOX,BUF158+EDC047  ; S3:2926
+R,VJM,TRN068 . вызов через индексный регистр  ; S3:2927
+ARX,ETX075  ; S3:2928
+ATX,BUF158+EDC047 . запись с модификатором  ; S3:2929
+C,XTA, . считывание в аккумулятор  ; S3:2930
+ASN,EDC055-EDC044  ; S3:2931
+AUX,MAS304  ; S3:2932
+R,VJM,TRN068 . вызов через индексный регистр  ; S3:2933
+ATX,BUF158+EDC048 . запись с модификатором  ; S3:2934
+XTA,ETX108 . считывание в аккумулятор  ; S3:2935
+ATX,BUF158+EDC058 . запись с модификатором  ; S3:2936
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:2937
+GR,UJ, . переход/возврат  ; S3:2938
+С       ПEPEBOД ИЗ TEXT B ISO ЗAПИCЬ B BUF
+TOI166: BSS . зарезервированная область  ; (POLN: TOISO) ; S3:2940
+15,ATX, . запись с модификатором  ; S3:2941
+AUX,MAS304  ; S3:2942
+R,VJM,TRN068 . вызов через индексный регистр  ; S3:2943
+12,STX,BUF158  ; S3:2944
+ASN,EDC055-EDC066  ; S3:2945
+AUX,MAS304  ; S3:2946
+R,VJM,TRN068 . вызов через индексный регистр  ; S3:2947
+12,ATX,BUF158+EDC047 . запись с модификатором  ; S3:2948
+13,UJ, . переход/возврат  ; S3:2949
+С       BЫДAЧA CCЫЛKИ ИЗ EKATAЛOГA
+UNP167: BSS . зарезервированная область  ; (POLN: UNPREF) ; S3:2951
+15,ATX, . запись с модификатором  ; S3:2952
+ASN,EDC055+EDC048  ; S3:2953
+STI,EDC064 . сохранение в стек  ; S3:2954
+AAX,ETX109  ; S3:2955
+ATI,EDC050 . запись в индексный регистр  ; S3:2956
+12,VTM, . установка индексного регистра  ; S3:2957
+14,VZM,TKW168 . переход при <0  ; S3:2958
+14,UTM,-EDC047 . переход при >0  ; S3:2959
+12,UTM,EDC044 . переход при >0  ; S3:2960
+UJ,*-1 . переход/возврат  ; S3:2961
+TKW168: 9,UTC, . сравнение/переход  ; (POLN: TKW) ; S3:2962
+10,XTA, . считывание в аккумулятор  ; S3:2963
+12,ASN,EDC055  ; S3:2964
+15,ATX, . запись с модификатором  ; S3:2965
+AAX,BIT089  ; S3:2966
+ASN,EDC055-EDC066  ; S3:2967
+STX,FLU391  ; S3:2968
+AAX,M11325  ; S3:2969
+13,UJ, . переход/возврат  ; S3:2970
+С       CБOP CCЫЛOK HA П/П
+SUM169: ITA,EDC050 . взятие из стека в индексный регистр  ; (POLN: SUMREF) ; S3:2972
+ATX,LOC365 . AДP. KATAЛOГA  ; S3:2973
+XTA,WOR381 . CЛOBO ИЗ RCAT  ; S3:2974
+ASN,EDC055+EDC044  ; S3:2975
+AAX,M4S314  ; S3:2976
+R,UZA, . переход при =0  ; S3:2977
+ATI,GR . KOЛ-BO  ; S3:2978
+XTA,WOR381 . считывание в аккумулятор  ; S3:2979
+AAX,M4S314  ; S3:2980
+ATI,S . AДPEC  ; S3:2981
+LTR170: ITA,S . взятие из стека в индексный регистр  ; (POLN: LTREF) ; S3:2982
+13,VJM,UNP167 . вызов через индексный регистр  ; S3:2983
+ATI,EDC050 . запись в индексный регистр  ; S3:2984
+WTC,LOC365  ; S3:2985
+14,UTM, . переход при >0  ; S3:2986
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:2987
+AOX,FLU391  ; S3:2988
+UTC,BUF009 . сравнение/переход  ; S3:2989
+F,ATX, . запись с модификатором  ; S3:2990
+F,UTM,EDC047 . переход при >0  ; S3:2991
+S,UTM,EDC047 . переход при >0  ; S3:2992
+GR,UTM,-EDC047 . переход при >0  ; S3:2993
+GR,VIM,LTR170 . переход  ; S3:2994
+R,UJ, . переход/возврат  ; S3:2995
+С       YПOPЯДOЧИBAHИE CCЫЛOK HA П/П
+PRR171: 13,VTM,END174 . установка индексного регистра  ; (POLN: PRREF) ; S3:2997
+F,VZM,PRS265 . переход при <0  ; S3:2998
+F,MTJ,EDC054  ; S3:2999
+10,VTM,BUF009 . установка индексного регистра  ; S3:3000
+A,VTM, . установка индексного регистра  ; S3:3001
+13,VJM,YPO058 . вызов через индексный регистр  ; S3:3002
+С       ПEЧATЬ CCЫЛOK
+LPR172: A,WTC,BUF009  ; (POLN: LPRREF) ; S3:3004
+XTA . считывание в аккумулятор  ; S3:3005
+12,VTM,EDC048 . установка индексного регистра  ; S3:3006
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:3007
+С       HE BHEШHЯЯ ЛИ
+NTR,EDC058  ; S3:3009
+14,VTM,SEX008 . установка индексного регистра  ; S3:3010
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3011
+A,UTC,BUF009 . сравнение/переход  ; S3:3012
+XTS . считывание с модификатором  ; S3:3013
+AAX,M3L315  ; S3:3014
+15,A-X,  ; S3:3015
+U1A,ECH173  ; S3:3016
+X-A,ETX110  ; S3:3017
+U1A,ECH173  ; S3:3018
+XTA,BUF158+EDC047 . считывание в аккумулятор  ; S3:3019
+AAX,ETX111  ; S3:3020
+AOX,ETX112  ; S3:3021
+ATX,BUF158+EDC047 . запись с модификатором  ; S3:3022
+ECH173: BSS . зарезервированная область  ; (POLN: ECHEXT) ; S3:3023
+A,UTM,EDC047 . переход при >0  ; S3:3024
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3025
+F,UTM,-EDC047 . переход при >0  ; S3:3026
+F,VIM,LPR172 . переход  ; S3:3027
+С       CЛEДYЮЩИЙ BXOД
+END174: NP,UTM,EDC047 . переход при >0  ; (POLN: ENDSTR) ; S3:3029
+ITA,NP . взятие из стека в индексный регистр  ; S3:3030
+AEX,LCA382  ; S3:3031
+UIA,PR1160 . переход  ; S3:3032
+13,VJM,END272 . вызов через индексный регистр  ; S3:3033
+С
+С       ПEЧATЬ 2 OЙ TAБЛИЦЫ
+С------------------------------
+С
+BEG175: BSS . зарезервированная область  ; (POLN: BEGPR2TB) ; S3:3038
+R,VTM,REF340 . установка индексного регистра  ; S3:3039
+GR,VJM,PRH162 . вызов через индексный регистр  ; S3:3040
+C,VTM,EDC058 . установка индексного регистра  ; S3:3041
+R,VTM,COM350 . установка индексного регистра  ; S3:3042
+GR,VJM,PRC250 . вызов через индексный регистр  ; S3:3043
+A,VTM,PRH181 . установка индексного регистра  ; S3:3044
+R,VTM,HEC345 . установка индексного регистра  ; S3:3045
+PRS176: 14,VTM,-EDC058 . установка индексного регистра  ; (POLN: PRSUBH) ; S3:3046
+SET177: R,UTC, . сравнение/переход  ; (POLN: SETSH) ; S3:3047
+14,XTA,EDC058 . считывание в аккумулятор  ; S3:3048
+14,ATX,BUF158+EDC058 . запись с модификатором  ; S3:3049
+14,VLM,SET177 . цикл: переход при <0  ; S3:3050
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3051
+A,MTJ,EDC046  ; S3:3052
+UJ,PRS265 . переход/возврат  ; S3:3053
+PRH181: XTA . считывание в аккумулятор  ; (POLN: PRHEИCП) ; S3:3057
+ATX,COM178 . запись с модификатором  ; S3:3058
+XTA,ETX079 . считывание в аккумулятор  ; S3:3059
+ATX,FLE179 . запись с модификатором  ; S3:3060
+С       PAЗДEЛEHИE BXOДOB HA ИCПOЛЬЗ. И HEИCПOЛЬЗ.
+LPR182: NP,WTC,ORD003  ; (POLN: LPRHEИCП) ; S3:3062
+14,VTM,-CTL002-EDC048 . установка индексного регистра  ; S3:3063
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3064
+UJ,SCH196 . переход/возврат  ; S3:3065
+С       ЗAHECEHИE ИCПOЛЬЗ. BXOДOB
+TOC183: NP,UTC,ORD003 . сравнение/переход  ; (POLN: TOCOMBOR) ; S3:3067
+XTA . считывание в аккумулятор  ; S3:3068
+WTC,COM178  ; S3:3069
+UTC,COM011 . сравнение/переход  ; S3:3070
+ATX . запись с модификатором  ; S3:3071
+XTA,COM178 . считывание в аккумулятор  ; S3:3072
+ARX,ETX079  ; S3:3073
+ATX,COM178 . запись с модификатором  ; S3:3074
+UJ,END188 . переход/возврат  ; S3:3075
+С       ПPOBEPKA COBПAДEHИЯ C HAЗBAHИEM COMMONA
+CHE184: XTA,CMC377 . считывание в аккумулятор  ; (POLN: CHEQCOM) ; S3:3077
+13,UZA, . переход при =0  ; S3:3078
+ATI,EDC050 . запись в индексный регистр  ; S3:3079
+LCH185: UTC,COM007 . сравнение/переход  ; (POLN: LCHEQ) ; S3:3080
+14,XTA,-EDC047 . считывание в аккумулятор  ; S3:3081
+AEX,WOR381  ; S3:3082
+UZA,EQC186 . переход при =0  ; S3:3083
+14,UTM,-EDC047 . переход при >0  ; S3:3084
+14,V1M,LCH185  ; S3:3085
+13,UJ, . переход/возврат  ; S3:3086
+EQC186: XTA,BUF158+EDC047 . считывание в аккумулятор  ; (POLN: EQCOM) ; S3:3087
+AAX,ETX106  ; S3:3088
+AOX,ETX113  ; S3:3089
+ATX,BUF158+EDC047 . запись с модификатором  ; S3:3090
+13,UJ, . переход/возврат  ; S3:3091
+С
+SET187: U1A,TOC183 . ИCПOЛЬЗ-CЯ  ; (POLN: SETENT) ; S3:3093
+NP,WTC,ORD003  ; S3:3094
+XTA . считывание в аккумулятор  ; S3:3095
+ATX,WOR381 . запись с модификатором  ; S3:3096
+12,VTM, . установка индексного регистра  ; S3:3097
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:3098
+13,VJM,CHE184 . вызов через индексный регистр  ; S3:3099
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3100
+END188: NP,UTM,EDC047 . переход при >0  ; (POLN: ENDLPHП) ; S3:3101
+ITA,NP . взятие из стека в индексный регистр  ; S3:3102
+AEX,LCA382  ; S3:3103
+U1A,LPR182  ; S3:3104
+R,VTM,PRC190 . установка индексного регистра  ; S3:3105
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3106
+NEW189: BSS . зарезервированная область  ; (POLN: NEWPAGE) ; S3:3107
+NTR,EDC058  ; S3:3108
+XTA,MXL374 . считывание в аккумулятор  ; S3:3109
+A-X,ALE375  ; S3:3110
+A-X,ETX114  ; S3:3111
+R,MTJ,EDC046  ; S3:3112
+UZA,PRS265 . переход при =0  ; S3:3113
+С       BЫBOД HA HAЧAЛO CTPAHИЦЫ
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3115
+XTA,ALE375 . считывание в аккумулятор  ; S3:3116
+U1A,*-1  ; S3:3117
+R,UJ, . переход/возврат  ; S3:3118
+PRC190: BSS . зарезервированная область  ; (POLN: PRИCП) ; S3:3119
+XTA,COM178 . считывание в аккумулятор  ; S3:3120
+ATI,EDC054 . запись в индексный регистр  ; S3:3121
+XTA,FLS073 . считывание в аккумулятор  ; S3:3122
+UZA,END192 . переход при =0  ; S3:3123
+XTA,SBC378 . считывание в аккумулятор  ; S3:3124
+ATI,EDC044 . запись в индексный регистр  ; S3:3125
+С       ПEPEПИCЬ BHEШHИX П/П
+LRW191: 12,VZM,END192 . переход при <0  ; (POLN: LRW) ; S3:3127
+12,UTC,SEX008 . сравнение/переход  ; S3:3128
+14,VTM,-EDC047 . установка индексного регистра  ; S3:3129
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3130
+UTC,COM011 . сравнение/переход  ; S3:3131
+9,ATX, . запись с модификатором  ; S3:3132
+9,UTM,EDC047 . переход при >0  ; S3:3133
+12,UTM,-EDC047 . переход при >0  ; S3:3134
+UJ,LRW191 . переход/возврат  ; S3:3135
+END192: BSS . зарезервированная область  ; (POLN: ENDRW) ; S3:3136
+ITA,EDC054 . взятие из стека в индексный регистр  ; S3:3137
+ATX,COM178 . запись с модификатором  ; S3:3138
+UZA,BEG205 . переход при =0  ; S3:3139
+NP,VTM, . установка индексного регистра  ; S3:3140
+XTA,FLS073 . считывание в аккумулятор  ; S3:3141
+UZA,TOP193 . переход при =0  ; S3:3142
+10,VTM,COM011 . установка индексного регистра  ; S3:3143
+13,VJM,YPO058 . вызов через индексный регистр  ; S3:3144
+TOP193: BSS . зарезервированная область  ; (POLN: TOPRSH) ; S3:3145
+R,VTM,C346 . установка индексного регистра  ; S3:3146
+A,VJM,PRS176 . вызов через индексный регистр  ; S3:3147
+XTA . считывание в аккумулятор  ; S3:3148
+ATX,FLE179 . запись с модификатором  ; S3:3149
+PR2194: NP,WTC,COM011  ; (POLN: PR2TB) ; S3:3150
+C,VTM, . установка индексного регистра  ; S3:3151
+C,XTA, . считывание в аккумулятор  ; S3:3152
+ATX,WOR381 . запись с модификатором  ; S3:3153
+12,VTM, . установка индексного регистра  ; S3:3154
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:3155
+F,VTM, . установка индексного регистра  ; S3:3156
+XTA,FLS073 . считывание в аккумулятор  ; S3:3157
+UZA,NOE195 . переход при =0  ; S3:3158
+С       OПPEДEЛЯEM BHEШHЮЮ П/П
+NTR,EDC058  ; S3:3160
+14,VTM,SEX008 . установка индексного регистра  ; S3:3161
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3162
+NP,UTC,COM011 . сравнение/переход  ; S3:3163
+X-A  ; S3:3164
+U1A,NOE195  ; S3:3165
+X-A,ETX110  ; S3:3166
+U1A,NOE195  ; S3:3167
+XTS,BUF158+EDC047 . считывание с модификатором  ; S3:3168
+AAX,ETX106  ; S3:3169
+AOX,ETX115  ; S3:3170
+STX,BUF158+EDC047  ; S3:3171
+X-A,ETX110  ; S3:3172
+9,VTM,SEXECAT . установка индексного регистра  ; S3:3173
+C,VTM,EDC073 . установка индексного регистра  ; S3:3174
+UJ,SCH197 . переход/возврат  ; S3:3175
+NOE195: BSS . зарезервированная область  ; (POLN: NOEXT) ; S3:3176
+C,UTM,-CTL002-EDC048 . переход при >0  ; S3:3177
+ITA,C . взятие из стека в индексный регистр  ; S3:3178
+SCH196: BSS . зарезервированная область  ; (POLN: SCHREF) ; S3:3179
+9,VTM,SECAT . установка индексного регистра  ; S3:3180
+C,VTM, . установка индексного регистра  ; S3:3181
+SCH197: BSS . зарезервированная область  ; (POLN: SCHREFE) ; S3:3182
+ATX,LOC365 . N BXOДA  ; S3:3183
+A,VTM, . установка индексного регистра  ; S3:3184
+С       ПOИCK CCЫЛAEMЫX ПPOГPAMM
+CHR198: A,WTC,ORD003  ; (POLN: CHREF) ; S3:3186
+14,VTM,-CTL002-EDC048 . установка индексного регистра  ; S3:3187
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3188
+ASN,EDC055+EDC047  ; S3:3189
+ATI,EDC050 . запись в индексный регистр  ; S3:3190
+UTC,SRCAT . сравнение/переход  ; S3:3191
+14,XTA, . считывание в аккумулятор  ; S3:3192
+UZA,CHN201 . переход при =0  ; S3:3193
+C,ASN,EDC055+EDC044  ; S3:3194
+AAX,M4S314  ; S3:3195
+UZA,CHN201 . HET CCЫЛOK  ; S3:3196
+ATI,GR . KOЛ-BO  ; S3:3197
+UTC,SRCAT . сравнение/переход  ; S3:3198
+14,XTA, . считывание в аккумулятор  ; S3:3199
+C,ASN,EDC055  ; S3:3200
+AAX,M4S314  ; S3:3201
+ATI,S . AДPEC  ; S3:3202
+LTR199: ITA,S . взятие из стека в индексный регистр  ; (POLN: LTREF2) ; S3:3203
+13,VJM,UNP167 . вызов через индексный регистр  ; S3:3204
+AEX,LOC365  ; S3:3205
+U1A,NEX200  ; S3:3206
+XTA,FLE179 . считывание в аккумулятор  ; S3:3207
+U1A,SET187  ; S3:3208
+UJ,TOT260 . переход/возврат  ; S3:3209
+NEX200: BSS . зарезервированная область  ; (POLN: NEXTREF) ; S3:3210
+S,UTM,EDC047 . переход при >0  ; S3:3211
+GR,UTM,-EDC047 . переход при >0  ; S3:3212
+GR,VIM,LTR199 . переход  ; S3:3213
+CHN201: A,UTM,EDC047 . переход при >0  ; (POLN: CHNW) ; S3:3214
+ITA,A . взятие из стека в индексный регистр  ; S3:3215
+AEX,LCA382  ; S3:3216
+UIA,CHR198 . переход  ; S3:3217
+WTC,FLE179  ; S3:3218
+14,VTM, . установка индексного регистра  ; S3:3219
+14,V1M,SET187  ; S3:3220
+13,VTM,END204 . установка индексного регистра  ; S3:3221
+F,VZM,PRS265 . переход при <0  ; S3:3222
+13,VJM,CHE184 . вызов через индексный регистр  ; S3:3223
+A,VTM, . установка индексного регистра  ; S3:3224
+С       ПEЧATЬ CПИCKA CCЫЛAEMЫX ПPГPAMM
+LPR202: A,WTC,BUF009  ; (POLN: LPR2) ; S3:3226
+XTA . считывание в аккумулятор  ; S3:3227
+12,VTM,EDC048 . установка индексного регистра  ; S3:3228
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:3229
+С      N - П/П OПИCAHA HO HE ИCПOЛЬЗYETCЯ
+A,UTC,BUF009 . сравнение/переход  ; S3:3231
+XTA . считывание в аккумулятор  ; S3:3232
+ARX  ; S3:3233
+UZA,USE203 . переход при =0  ; S3:3234
+XTA,BUF158+EDC047 . считывание в аккумулятор  ; S3:3235
+AAX,ETX111  ; S3:3236
+AOX,ETX116  ; S3:3237
+ATX,BUF158+EDC047 . запись с модификатором  ; S3:3238
+USE203: BSS . зарезервированная область  ; (POLN: USED) ; S3:3239
+A,UTM,EDC047 . переход при >0  ; S3:3240
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3241
+F,UTM,-EDC047 . переход при >0  ; S3:3242
+F,VIM,LPR202 . переход  ; S3:3243
+END204: NP,UTM,EDC047 . переход при >0  ; (POLN: ENDSTR2) ; S3:3244
+ITA,NP . взятие из стека в индексный регистр  ; S3:3245
+AEX,COM178  ; S3:3246
+UIA,PR2194 . переход  ; S3:3247
+13,VJM,END272 . вызов через индексный регистр  ; S3:3248
+С
+С       ПEЧATЬ  3 EЙ TAБЛИЦЫ
+С------------------------------
+С
+BEG205: BSS . зарезервированная область  ; (POLN: BEGPR3TB) ; S3:3253
+XTA,CMC377 . считывание в аккумулятор  ; S3:3254
+UZA,RET023 . COMMON'OB HET  ; S3:3255
+XTA,FLB409 . считывание в аккумулятор  ; S3:3256
+UZA,BEG213 . переход при =0  ; S3:3257
+R,VTM,REF341 . установка индексного регистра  ; S3:3258
+GR,VJM,PRH162 . вызов через индексный регистр  ; S3:3259
+C,VTM,EDC079 . установка индексного регистра  ; S3:3260
+R,VTM,COM352 . установка индексного регистра  ; S3:3261
+GR,VJM,PRC250 . вызов через индексный регистр  ; S3:3262
+PR3206: BSS . зарезервированная область  ; (POLN: PR3TB1) ; S3:3263
+NP,WTC,ORD003  ; S3:3264
+C,VTM, . установка индексного регистра  ; S3:3265
+12,VTM, . установка индексного регистра  ; S3:3266
+C,XTA, . считывание в аккумулятор  ; S3:3267
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:3268
+C,XTA,EDC047 . считывание в аккумулятор  ; S3:3269
+AAX,ETX066  ; S3:3270
+ATX,RA1371 . запись с модификатором  ; S3:3271
+U1A,CHC207  ; S3:3272
+C,MTJ,EDC046  ; S3:3273
+С       ИЩEM ГЛABHЫЙ BXOД
+C,UTM,-EDC048 . переход при >0  ; S3:3275
+C,XTA,EDC047 . считывание в аккумулятор  ; S3:3276
+AAX,ETX066  ; S3:3277
+UZA,*-1 . переход при =0  ; S3:3278
+CHC207: C,UTC, . сравнение/переход  ; (POLN: CHCREF) ; S3:3279
+14,VTM,-CTL002-EDC048 . установка индексного регистра  ; S3:3280
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3281
+ASN,EDC055+EDC047  ; S3:3282
+ATI,EDC050 . запись в индексный регистр  ; S3:3283
+UTC,CRCAT . сравнение/переход  ; S3:3284
+14,XTA, . считывание в аккумулятор  ; S3:3285
+AAX,B24324  ; S3:3286
+UZA,EPR212 . HET CCЫЛKИ  ; S3:3287
+XTA,RA1371 . считывание в аккумулятор  ; S3:3288
+U1A,PRM208  ; S3:3289
+GR,VTM,EPR212 . установка индексного регистра  ; S3:3290
+13,MTJ,C  ; S3:3291
+UJ,ENT163 . переход/возврат  ; S3:3292
+С       ГЛABHЫЙ BXOД
+PRM208: BSS . зарезервированная область  ; (POLN: PRMENT) ; S3:3294
+UTC,CRCAT . сравнение/переход  ; S3:3295
+14,XTA, . считывание в аккумулятор  ; S3:3296
+AAX,M4S314  ; S3:3297
+ATI,EDC064 . запись в индексный регистр  ; S3:3298
+UTC,CRCAT . сравнение/переход  ; S3:3299
+14,XTA, . считывание в аккумулятор  ; S3:3300
+ASN,EDC055+EDC044  ; S3:3301
+AAX,M4S314  ; S3:3302
+ATI,EDC054 . запись в индексный регистр  ; S3:3303
+9,MTJ,A  ; S3:3304
+11,VTM, . установка индексного регистра  ; S3:3305
+F,VTM, . установка индексного регистра  ; S3:3306
+10,UTM,CEC006 . переход при >0  ; S3:3307
+С       CБOP CCЫЛOK
+SET210: 10,XTA, . считывание в аккумулятор  ; (POLN: SETCOM) ; S3:3310
+AAX,M10326  ; S3:3311
+ATI,EDC050 . запись в индексный регистр  ; S3:3312
+10,XTA, . считывание в аккумулятор  ; S3:3313
+ASN,EDC055+EDC081  ; S3:3314
+10,XTS, . считывание с модификатором  ; S3:3315
+AAX,ETX117  ; S3:3316
+ASN,EDC055-EDC066  ; S3:3317
+15,AOX,  ; S3:3318
+UTC,BUF009 . сравнение/переход  ; S3:3319
+F,ATX,EDC047 . запись с модификатором  ; S3:3320
+UTC,COM007 . сравнение/переход  ; S3:3321
+14,XTA, . считывание в аккумулятор  ; S3:3322
+UTC,BUF009 . сравнение/переход  ; S3:3323
+F,ATX, . запись с модификатором  ; S3:3324
+F,UTC,BUF009 . сравнение/переход  ; S3:3325
+14,VTM, . установка индексного регистра  ; S3:3326
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3327
+UTC,COM209 . сравнение/переход  ; S3:3328
+11,ATX, . запись с модификатором  ; S3:3329
+F,UTM,EDC048 . переход при >0  ; S3:3330
+10,UTM,EDC047 . переход при >0  ; S3:3331
+11,UTM,EDC047 . переход при >0  ; S3:3332
+9,UTM,-EDC047 . переход при >0  ; S3:3333
+9,V1M,SET210  ; S3:3334
+ITA,EDC077 . взятие из стека в индексный регистр  ; S3:3335
+ATX,COM178 . запись с модификатором  ; S3:3336
+10,VTM,COM209 . установка индексного регистра  ; S3:3337
+A,MTJ,EDC054  ; S3:3338
+13,VJM,YPO058 . вызов через индексный регистр  ; S3:3339
+С       ПEЧATЬ CCЫЛOK
+XTA . считывание в аккумулятор  ; S3:3341
+ATX,CNT180 . запись с модификатором  ; S3:3342
+PRC211: WTC,CNT180  ; (POLN: PRCOM) ; S3:3343
+WTC,COM209  ; S3:3344
+A,VTM,-BUF009 . установка индексного регистра  ; S3:3345
+F,VTM,EDC048 . установка индексного регистра  ; S3:3346
+C,VJM,LPR221 . вызов через индексный регистр  ; S3:3347
+XTA,CNT180 . считывание в аккумулятор  ; S3:3348
+ARX,ETX079  ; S3:3349
+ATX,CNT180 . запись с модификатором  ; S3:3350
+AEX,COM178  ; S3:3351
+U1A,PRC211  ; S3:3352
+EPR212: BSS . зарезервированная область  ; (POLN: EPR3TB1) ; S3:3353
+NP,UTM,EDC047 . переход при >0  ; S3:3354
+ITA,NP . взятие из стека в индексный регистр  ; S3:3355
+AEX,LCA382  ; S3:3356
+U1A,PR3206  ; S3:3357
+13,VJM,END272 . вызов через индексный регистр  ; S3:3358
+С
+С       ПEЧATЩ 4-OЙ TAБЛИЦЫ
+С------------------------------
+С
+BEG213: BSS . зарезервированная область  ; (POLN: BEGPR4TB) ; S3:3363
+R,VTM,REF342 . установка индексного регистра  ; S3:3364
+GR,VJM,PRH162 . вызов через индексный регистр  ; S3:3365
+C,VTM,EDC078 . установка индексного регистра  ; S3:3366
+R,VTM,COM351 . установка индексного регистра  ; S3:3367
+GR,VJM,PRC250 . вызов через индексный регистр  ; S3:3368
+WTC,CMC377  ; S3:3369
+9,VTM, . установка индексного регистра  ; S3:3370
+9,MTJ,A  ; S3:3371
+10,VTM, . установка индексного регистра  ; S3:3372
+С       YПOPЯДOЧИBAHИE COMMON'OB
+SET214: 10,UTC,COM007 . сравнение/переход  ; (POLN: SETADR) ; S3:3374
+14,VTM, . установка индексного регистра  ; S3:3375
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3376
+UTC,COM209 . сравнение/переход  ; S3:3377
+10,ATX, . запись с модификатором  ; S3:3378
+A,UTM,-EDC047 . переход при >0  ; S3:3379
+10,UTM,EDC047 . переход при >0  ; S3:3380
+A,VIM,SET214 . переход  ; S3:3381
+10,VTM,COM209 . установка индексного регистра  ; S3:3382
+13,VJM,YPO058 . вызов через индексный регистр  ; S3:3383
+PR3215: NP,WTC,COM209  ; (POLN: PR3TB) ; S3:3384
+C,VTM, . установка индексного регистра  ; S3:3385
+C,XTA, . считывание в аккумулятор  ; S3:3386
+12,VTM, . установка индексного регистра  ; S3:3387
+ATX,WOR381 . запись с модификатором  ; S3:3388
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:3389
+F,VTM, . установка индексного регистра  ; S3:3390
+13,VJM,SCH144 . вызов через индексный регистр  ; S3:3391
+U1A,NOD216  ; S3:3392
+С       ИMEETCЯ BLOCK DATA
+XTA,BUF158+EDC047 . считывание в аккумулятор  ; S3:3394
+AAX,ETX111  ; S3:3395
+AOX,ETX112  ; S3:3396
+ATX,BUF158+EDC047 . запись с модификатором  ; S3:3397
+NOD216: BSS . зарезервированная область  ; (POLN: NODATA) ; S3:3398
+C,UTM,-COM007 . переход при >0  ; S3:3399
+ITA,C . взятие из стека в индексный регистр  ; S3:3400
+ATX,LOC365 . запись с модификатором  ; S3:3401
+XTA . считывание в аккумулятор  ; S3:3402
+ATX,LON364 . запись с модификатором  ; S3:3403
+A,VTM, . установка индексного регистра  ; S3:3404
+С       CБOP CCЫЛAEMЫX П/П
+CHE217: A,WTC,ORD003  ; (POLN: CHECOM) ; S3:3406
+C,VTM, . установка индексного регистра  ; S3:3407
+C,UTC,-CTL002-EDC048 . сравнение/переход  ; S3:3408
+14,VTM, . установка индексного регистра  ; S3:3409
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3410
+ASN,EDC055+EDC047  ; S3:3411
+ATI,EDC050 . запись в индексный регистр  ; S3:3412
+UTC,CRCAT . сравнение/переход  ; S3:3413
+14,XTA, . считывание в аккумулятор  ; S3:3414
+AAX,B24324  ; S3:3415
+UZA,ECH219 . HET CCЫЛKИ  ; S3:3416
+ASN,EDC055+EDC044  ; S3:3417
+ATI,GR . KOЛ-BO  ; S3:3418
+UTC,CRCAT . сравнение/переход  ; S3:3419
+14,XTA, . считывание в аккумулятор  ; S3:3420
+AAX,M4S314  ; S3:3421
+ATI,S . AДPEC  ; S3:3422
+S,UTM,CEC006 . переход при >0  ; S3:3423
+LTR218: S,XTA, . считывание в аккумулятор  ; (POLN: LTREF3) ; S3:3424
+AEX,LOC365  ; S3:3425
+AAX,M10326  ; S3:3426
+UZA,FIX261 . ECTЬ CCЫЛKA  ; S3:3427
+S,UTM,EDC047 . переход при >0  ; S3:3428
+GR,UTM,-EDC047 . переход при >0  ; S3:3429
+GR,VIM,LTR218 . переход  ; S3:3430
+ECH219: A,UTM,EDC047 . переход при >0  ; (POLN: ECHCOM) ; S3:3431
+ITA,A . взятие из стека в индексный регистр  ; S3:3432
+AEX,LCA382  ; S3:3433
+UIA,CHE217 . переход  ; S3:3434
+XTA,LON364 . MAX. ДЛИHA  ; S3:3435
+AAX,BIT323  ; S3:3436
+13,VTM,SET220 . установка индексного регистра  ; S3:3437
+U1A,NOL227  ; S3:3438
+XTA,LON364 . считывание в аккумулятор  ; S3:3439
+CALL,OCTTDEC . вызов подпрограммы  ; S3:3440
+ASN,EDC055-EDC080  ; S3:3441
+AOX,ETX118  ; S3:3442
+SET220: BSS . зарезервированная область  ; (POLN: SETMLONG) ; S3:3443
+ATX,BUF158+EDC048 . запись с модификатором  ; S3:3444
+13,VJM,PRS265 . ПEЧATЬ COMMON'A  ; S3:3445
+C,VTM,EPR228 . установка индексного регистра  ; S3:3446
+A,VTM, . установка индексного регистра  ; S3:3447
+С       ПEЧATЬ CCЫЛOK
+LPR221: UTC,BUF009 . сравнение/переход  ; (POLN: LPRCOM) ; S3:3449
+A,XTA, . считывание в аккумулятор  ; S3:3450
+12,VTM,EDC058 . установка индексного регистра  ; S3:3451
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:3452
+XTA,ETX119 . считывание в аккумулятор  ; S3:3453
+ATX,WOR381 . запись с модификатором  ; S3:3454
+UTC,BUF009 . сравнение/переход  ; S3:3455
+A,XTA,EDC047 . считывание в аккумулятор  ; S3:3456
+ATX,LON364 . запись с модификатором  ; S3:3457
+ASN,EDC055-EDC047  ; S3:3458
+ARX  ; S3:3459
+U1A,CHN222  ; S3:3460
+XTA,ETX120 . считывание в аккумулятор  ; S3:3461
+UJ,TOW223 . переход/возврат  ; S3:3462
+CHN222: XTA,LON364 . считывание в аккумулятор  ; (POLN: CHNOUSE) ; S3:3463
+ARX  ; S3:3464
+UZA,CUS224 . переход при =0  ; S3:3465
+XTA,ETX121 . считывание в аккумулятор  ; S3:3466
+TOW223: BSS . зарезервированная область  ; (POLN: TOWORD) ; S3:3467
+ATX,WOR381 . запись с модификатором  ; S3:3468
+XTA,LON364 . считывание в аккумулятор  ; S3:3469
+CUS224: AAX,BIT323  ; (POLN: CUSED) ; S3:3470
+13,VTM,SET225 . установка индексного регистра  ; S3:3471
+U1A,NOL227  ; S3:3472
+XTA,LON364 . считывание в аккумулятор  ; S3:3473
+AAX,M3L315  ; S3:3474
+CALL,OCTTDEC . вызов подпрограммы  ; S3:3475
+ASN,EDC055-EDC080  ; S3:3476
+AOX,ETX118  ; S3:3477
+SET225: BSS . зарезервированная область  ; (POLN: SETLONG) ; S3:3478
+ATX,BUF158+EDC048 . запись с модификатором  ; S3:3479
+14,VTM,ETX122 . S  ; S3:3480
+XTA,LON364 . считывание в аккумулятор  ; S3:3481
+AAX,ETX123  ; S3:3482
+UIA,TYP226 . CEKTOPHЫЙ  ; S3:3483
+14,VTM,ETX124 . P  ; S3:3484
+XTA,LON364 . считывание в аккумулятор  ; S3:3485
+AAX,ETX125  ; S3:3486
+UIA,TYP226 . CTPAHИЧHЫЙ  ; S3:3487
+14,VTM,ETX126 . L  ; S3:3488
+TYP226: BSS . зарезервированная область  ; (POLN: TYPEC) ; S3:3489
+XTA,BUF158+EDC047 . считывание в аккумулятор  ; S3:3490
+AAX,ETX106  ; S3:3491
+14,AOX,  ; S3:3492
+AOX,WOR381  ; S3:3493
+ATX,BUF158+EDC047 . запись с модификатором  ; S3:3494
+A,UTM,EDC048 . переход при >0  ; S3:3495
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3496
+F,UTM,-EDC048 . переход при >0  ; S3:3497
+F,VIM,LPR221 . переход  ; S3:3498
+C,UJ, . переход/возврат  ; S3:3499
+С
+С      ДЛИHA COMMON'A OПPEДEЛEHA HEЯBHO
+NOL227: BSS . зарезервированная область  ; (POLN: NOLONG) ; S3:3502
+XTA,ETX127 . считывание в аккумулятор  ; S3:3503
+13,UJ, . переход/возврат  ; S3:3504
+С
+EPR228: BSS . зарезервированная область  ; (POLN: EPRCOM) ; S3:3506
+NP,UTM,EDC047 . переход при >0  ; S3:3507
+ITA,NP . взятие из стека в индексный регистр  ; S3:3508
+AEX,CMC377  ; S3:3509
+UIA,PR3215 . переход  ; S3:3510
+13,VJM,END272 . вызов через индексный регистр  ; S3:3511
+С
+С      ПEЧATЬ 5-OЙ TAБЛИЦЫ.
+С------------------------------
+С
+BEG229: BSS . зарезервированная область  ; (POLN: BEGPR5TB) ; S3:3516
+XTA,RAC392 . считывание в аккумулятор  ; S3:3517
+UZA,RET023 . переход при =0  ; S3:3518
+ATI,EDC054 . запись в индексный регистр  ; S3:3519
+11,VTM, . установка индексного регистра  ; S3:3520
+R,VTM,REF343 . установка индексного регистра  ; S3:3521
+GR,VJM,PRH162 . вызов через индексный регистр  ; S3:3522
+10,VTM, . установка индексного регистра  ; S3:3523
+14,VTM,RAC005 . установка индексного регистра  ; S3:3524
+NTR,EDC058  ; S3:3525
+SCH230: BSS . зарезервированная область  ; (POLN: SCH*63) ; S3:3526
+14,XTA, . считывание в аккумулятор  ; S3:3527
+AAX,ETX128  ; S3:3528
+A-X,ETX094  ; S3:3529
+U1A,NO6245  ; S3:3530
+A-X,ETX095  ; S3:3531
+UZA,NO6245 . переход при =0  ; S3:3532
+С      AДPEC B *63
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3534
+UTC,COM011 . сравнение/переход  ; S3:3535
+10,ATX, . запись с модификатором  ; S3:3536
+10,UTM,EDC047 . переход при >0  ; S3:3537
+ESC231: 14,UTM,EDC047 . переход при >0  ; (POLN: ESCH*63) ; S3:3538
+9,UTM,-EDC047 . переход при >0  ; S3:3539
+9,V1M,SCH230  ; S3:3540
+ITA,EDC077 . взятие из стека в индексный регистр  ; S3:3543
+ATX,NMA233 . запись с модификатором  ; S3:3544
+ITA,EDC064 . взятие из стека в индексный регистр  ; S3:3545
+ATX,N63232 . запись с модификатором  ; S3:3546
+UZA,PRM243 . переход при =0  ; S3:3547
+10,MTJ,EDC054  ; S3:3548
+10,VTM,COM011 . установка индексного регистра  ; S3:3549
+ITA,EDC064 . взятие из стека в индексный регистр  ; S3:3550
+ATX,ADR390 . запись с модификатором  ; S3:3551
+ATX,FPL383 . запись с модификатором  ; S3:3552
+13,VJM,SOR246 . вызов через индексный регистр  ; S3:3553
+R,VTM,C63347 . установка индексного регистра  ; S3:3554
+A,VJM,PRS176 . вызов через индексный регистр  ; S3:3555
+С      ПEЧATЬ OДHOЙ ПOДTAБЛЦЫ
+PR5234: BSS . зарезервированная область  ; (POLN: PR5TB1) ; S3:3557
+XTA,BIT322 . считывание в аккумулятор  ; S3:3558
+ATX,INS389 . запись с модификатором  ; S3:3559
+LPR235: BSS . зарезервированная область  ; (POLN: LPR5TB1) ; S3:3560
+WTC,ADR390  ; S3:3561
+NP,WTC,  ; S3:3562
+A,VTM, . установка индексного регистра  ; S3:3563
+A,XTA, . считывание в аккумулятор  ; S3:3564
+AEX,INS389  ; S3:3565
+ASN,EDC055+EDC078  ; S3:3566
+UZA,NOP236 . TOT ЖE AДPEC  ; S3:3567
+A,XTA, . считывание в аккумулятор  ; S3:3568
+ASN,EDC055-EDC128  ; S3:3569
+AUX,ETX129  ; S3:3570
+AOX,ETX130  ; S3:3571
+ATX,BUF158 . запись с модификатором  ; S3:3572
+NOP236: BSS . зарезервированная область  ; (POLN: NOPRADR) ; S3:3573
+A,XTA, . считывание в аккумулятор  ; S3:3574
+ASN,EDC055+EDC079  ; S3:3575
+AAX,ETX079  ; S3:3576
+ATI,EDC050 . запись в индексный регистр  ; S3:3577
+A,XTA, . считывание в аккумулятор  ; S3:3578
+14,APX,MU2318  ; S3:3579
+14,AUX,MU1316  ; S3:3580
+14,AOX,MO317  ; S3:3581
+ATX,BUF158+EDC047 . запись с модификатором  ; S3:3582
+A,UTC, . сравнение/переход  ; S3:3583
+14,VTM,-RAC005 . установка индексного регистра  ; S3:3584
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3585
+ATX,LOC365 . N B RACAT  ; S3:3586
+A,VTM, . установка индексного регистра  ; S3:3587
+F,VTM, . установка индексного регистра  ; S3:3588
+9,VTM,RAECAT . установка индексного регистра  ; S3:3589
+С      ПOИCK CCЫЛAЮЩИXCЯ П/П
+SCH237: BSS . зарезервированная область  ; (POLN: SCHRRA) ; S3:3591
+A,WTC,ORD003  ; S3:3592
+14,VTM,-CTL002-EDC048 . установка индексного регистра  ; S3:3593
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3594
+ASN,EDC055+EDC047  ; S3:3595
+ATI,EDC050 . запись в индексный регистр  ; S3:3596
+UTC,CRCAT . сравнение/переход  ; S3:3597
+14,XTA, . считывание в аккумулятор  ; S3:3598
+ASN,EDC055+EDC073  ; S3:3599
+AAX,M4S314  ; S3:3600
+ATI,S . AДPEC B REACAT  ; S3:3601
+UTC,CRCAT . сравнение/переход  ; S3:3602
+14,XTA, . считывание в аккумулятор  ; S3:3603
+ASN,EDC055+EDC066  ; S3:3604
+AAX,M11325  ; S3:3605
+ATI,GR . KOЛ-BO  ; S3:3606
+UZA,ESC240 . переход при =0  ; S3:3607
+LTA238: BSS . зарезервированная область  ; (POLN: LTAKERA) ; S3:3608
+ITA,S . взятие из стека в индексный регистр  ; S3:3609
+13,VJM,UNP167 . вызов через индексный регистр  ; S3:3610
+AEX,LOC365  ; S3:3611
+U1A,ELT239  ; S3:3612
+A,UTC,ORD003 . сравнение/переход  ; S3:3613
+XTA . считывание в аккумулятор  ; S3:3614
+UTC,BUF009 . сравнение/переход  ; S3:3615
+F,ATX, . запись с модификатором  ; S3:3616
+F,UTM,EDC047 . переход при >0  ; S3:3617
+UJ,ESC240 . переход/возврат  ; S3:3618
+ELT239: S,UTM,EDC047 . переход при >0  ; (POLN: ELTAK) ; S3:3619
+GR,UTM,-EDC047 . переход при >0  ; S3:3620
+GR,V1M,LTA238  ; S3:3621
+ESC240: A,UTM,EDC047 . переход при >0  ; (POLN: ESCHRA) ; S3:3622
+ITA,A . взятие из стека в индексный регистр  ; S3:3623
+AEX,LCA382  ; S3:3624
+U1A,SCH237  ; S3:3625
+13,VTM,EPR242 . установка индексного регистра  ; S3:3626
+F,VZM,PRS265 . переход при <0  ; S3:3627
+С      ПEЧATЬ CCЫЛOK HA OДИH AДPEC
+A,VTM, . установка индексного регистра  ; S3:3629
+LPR241: A,WTC,BUF009  ; (POLN: LPR5) ; S3:3630
+XTA . считывание в аккумулятор  ; S3:3631
+12,VTM,EDC048 . установка индексного регистра  ; S3:3632
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:3633
+A,UTM,EDC047 . переход при >0  ; S3:3634
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3635
+F,UTM,-EDC047 . переход при >0  ; S3:3636
+F,V1M,LPR241  ; S3:3637
+EPR242: NP,UTM,EDC047 . переход при >0  ; (POLN: EPR5) ; S3:3638
+ITA,NP . взятие из стека в индексный регистр  ; S3:3639
+AEX,N63232  ; S3:3640
+U1A,LPR235  ; S3:3641
+13,VTM,RET023 . установка индексного регистра  ; S3:3642
+XTA,FPL383 . считывание в аккумулятор  ; S3:3643
+UZA,END272 . переход при =0  ; S3:3644
+NP,VTM, . установка индексного регистра  ; S3:3645
+С      ПEЧATЬ ИCTИHHЫX MAT. AДPECOB.
+PRM243: BSS . зарезервированная область  ; (POLN: PRMATR) ; S3:3647
+13,VTM,RET023 . установка индексного регистра  ; S3:3648
+XTA,NMA233 . считывание в аккумулятор  ; S3:3649
+UZA,END272 . переход при =0  ; S3:3650
+XTA,N63232 . считывание в аккумулятор  ; S3:3651
+UZA,SET244 . переход при =0  ; S3:3652
+R,VJM,NEW189 . вызов через индексный регистр  ; S3:3653
+SET244: 10,VTM,COM209 . установка индексного регистра  ; (POLN: SETCNTS) ; S3:3654
+ITA,EDC064 . взятие из стека в индексный регистр  ; S3:3655
+ATX,ADR390 . запись с модификатором  ; S3:3656
+XTA,NMA233 . считывание в аккумулятор  ; S3:3657
+ATX,N63232 . запись с модификатором  ; S3:3658
+ATI,EDC054 . запись в индексный регистр  ; S3:3659
+13,VJM,SOR246 . вызов через индексный регистр  ; S3:3660
+R,VTM,CNO348 . установка индексного регистра  ; S3:3661
+A,VJM,PRS176 . вызов через индексный регистр  ; S3:3662
+XTA . считывание в аккумулятор  ; S3:3663
+ATX,FPL383 . запись с модификатором  ; S3:3664
+UJ,PR5234 . переход/возврат  ; S3:3665
+NO6245: ITA,EDC050 . взятие из стека в индексный регистр  ; (POLN: NO*63) ; S3:3666
+UTC,COM209 . сравнение/переход  ; S3:3667
+11,ATX, . запись с модификатором  ; S3:3668
+11,UTM,EDC047 . переход при >0  ; S3:3669
+UJ,ESC231 . переход/возврат  ; S3:3670
+С
+С      YПOPЯДOЧИBAHИE ИCTИHHЫX AДPECOB
+SOR246: BSS . зарезервированная область  ; (POLN: SORT) ; S3:3673
+NTR,EDC058  ; S3:3674
+Y247: 9,MTJ,EDC044  ; (POLN: YПП) ; S3:3675
+12,UTM,-EDC047 . переход при >0  ; S3:3676
+13,UTC, . сравнение/переход  ; S3:3677
+12,VZM, . переход при <0  ; S3:3678
+10,J+M,EDC044 . AДPEC  ; S3:3679
+ITA,EDC044 . ПPEДПOCЛEДHEГO  ; S3:3680
+ATX,N9366 . ЭЛEMEHTA.  ; S3:3681
+10,MTJ,EDC077  ; S3:3682
+LY248: 11,WTC,  ; (POLN: LYПП) ; S3:3683
+XTA . считывание в аккумулятор  ; S3:3684
+11,WTC,EDC047  ; S3:3685
+A-X  ; S3:3686
+U1A,EY249  ; S3:3687
+11,XTA, . считывание в аккумулятор  ; S3:3688
+11,XTS,EDC047 . считывание с модификатором  ; S3:3689
+11,STX,  ; S3:3690
+11,ATX,EDC047 . запись с модификатором  ; S3:3691
+EY249: 11,UTM,EDC047 . переход при >0  ; (POLN: EYПП) ; S3:3692
+ITA,EDC077 . взятие из стека в индексный регистр  ; S3:3693
+AEX,N9366  ; S3:3694
+U1A,LY248  ; S3:3695
+9,UTM,-EDC047 . переход при >0  ; S3:3696
+UJ,Y247 . переход/возврат  ; S3:3697
+PRC250: 12,VTM,-EDC049 . установка индексного регистра  ; (POLN: PRCOMNT) ; S3:3698
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3699
+LPR251: R,UTC, . сравнение/переход  ; (POLN: LPRCMNT) ; S3:3700
+12,XTA,EDC049 . считывание в аккумулятор  ; S3:3701
+UTC,BUF158 . сравнение/переход  ; S3:3702
+12,ATX,EDC049 . запись с модификатором  ; S3:3703
+12,VLM,LPR251 . цикл: переход при <0  ; S3:3704
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3705
+R,UTM,EDC065 . переход при >0  ; S3:3706
+12,VTM,-EDC049 . установка индексного регистра  ; S3:3707
+C,UTM,-EDC047 . переход при >0  ; S3:3708
+C,V1M,LPR251  ; S3:3709
+GR,MTJ,EDC046  ; S3:3710
+UJ,PRS265 . переход/возврат  ; S3:3711
+С
+С       ПEЧATЬ 6-OЙTAБЛИЦЫ.
+С---------------------------------
+С
+BEG252: BSS . зарезервированная область  ; (POLN: BEGPR6TB) ; S3:3716
+XTA,MAC386 . считывание в аккумулятор  ; S3:3717
+UZA,RET023 . переход при =0  ; S3:3718
+R,VTM,REF344 . установка индексного регистра  ; S3:3719
+GR,VJM,PRH162 . вызов через индексный регистр  ; S3:3720
+PR6253: BSS . зарезервированная область  ; (POLN: PR6TB1) ; S3:3721
+XTA . считывание в аккумулятор  ; S3:3722
+ATX,INS389 . запись с модификатором  ; S3:3723
+NP,WTC,ORD003  ; S3:3724
+C,VTM, . установка индексного регистра  ; S3:3725
+12,VTM, . установка индексного регистра  ; S3:3726
+C,XTA, . считывание в аккумулятор  ; S3:3727
+13,VJM,TOI166 . вызов через индексный регистр  ; S3:3728
+C,XTA,EDC047 . считывание в аккумулятор  ; S3:3729
+AAX,ETX066  ; S3:3730
+ATX,RA1371 . запись с модификатором  ; S3:3731
+U1A,MEN254  ; S3:3732
+C,MTJ,EDC046  ; S3:3733
+C,UTM,-EDC048 . переход при >0  ; S3:3734
+C,XTA,EDC047 . считывание в аккумулятор  ; S3:3735
+AAX,ETX066  ; S3:3736
+UZA,*-1 . переход при =0  ; S3:3737
+MEN254: C,UTC, . сравнение/переход  ; (POLN: MENTFM) ; S3:3738
+14,VTM,-CTL002-EDC048 . установка индексного регистра  ; S3:3739
+ITA,EDC050 . взятие из стека в индексный регистр  ; S3:3740
+ASN,EDC055+EDC047  ; S3:3741
+ATI,EDC050 . запись в индексный регистр  ; S3:3742
+14,UTM,RMA012 . переход при >0  ; S3:3743
+14,XTA, . считывание в аккумулятор  ; S3:3744
+UZA,EPR259 . HET CCЫЛKИ  ; S3:3745
+XTA,RA1371 . считывание в аккумулятор  ; S3:3746
+U1A,PRM255  ; S3:3747
+GR,VTM,EPR259 . установка индексного регистра  ; S3:3748
+13,MTJ,C  ; S3:3749
+UJ,ENT163 . переход/возврат  ; S3:3750
+PRM255: BSS . зарезервированная область  ; (POLN: PRMENT6) ; S3:3751
+14,XTA, . считывание в аккумулятор  ; S3:3752
+ATI,A . AДPEC  ; S3:3753
+ASN,EDC055+EDC081  ; S3:3754
+ATI,F . KOЛ-BO  ; S3:3755
+A,UTM,MAC013 . переход при >0  ; S3:3756
+F,MTJ,EDC050  ; S3:3757
+13,VTM,COM011 . установка индексного регистра  ; S3:3758
+SET256: ITA,A . взятие из стека в индексный регистр  ; (POLN: SETMADR) ; S3:3759
+13,ATX, . запись с модификатором  ; S3:3760
+A,UTM,EDC047 . переход при >0  ; S3:3761
+13,UTM,EDC047 . переход при >0  ; S3:3762
+14,UTM,-EDC047 . переход при >0  ; S3:3763
+14,V1M,SET256  ; S3:3764
+10,VTM,COM011 . установка индексного регистра  ; S3:3765
+F,MTJ,EDC054  ; S3:3766
+13,VJM,SOR246 . вызов через индексный регистр  ; S3:3767
+A,VTM, . установка индексного регистра  ; S3:3768
+LPR257: BSS . зарезервированная область  ; (POLN: LPR6TB) ; S3:3769
+A,WTC,COM011  ; S3:3770
+14,VTM, . установка индексного регистра  ; S3:3771
+14,XTA, . считывание в аккумулятор  ; S3:3772
+ASN,EDC055-EDC057  ; S3:3773
+AUX,ETX129  ; S3:3774
+AOX,ETX130  ; S3:3775
+ATX,BUF158+EDC048 . AДPEC ЭKCTP.  ; S3:3776
+14,XTA, . считывание в аккумулятор  ; S3:3777
+AEX,INS389  ; S3:3778
+AAX,ETX131  ; S3:3779
+UZA,NPR258 . переход при =0  ; S3:3780
+14,XTA, . считывание в аккумулятор  ; S3:3781
+ATX,INS389 . запись с модификатором  ; S3:3782
+ASN,EDC055-EDC062  ; S3:3783
+AUX,MU1316  ; S3:3784
+AOX,MO317  ; S3:3785
+ATX,BUF158+EDC058 . ЭKCTPAKOД  ; S3:3786
+NPR258: BSS . зарезервированная область  ; (POLN: NPRINST) ; S3:3787
+A,UTM,EDC047 . переход при >0  ; S3:3788
+13,VJM,PRS265 . вызов через индексный регистр  ; S3:3789
+F,UTM,-EDC047 . переход при >0  ; S3:3790
+F,V1M,LPR257  ; S3:3791
+EPR259: BSS . зарезервированная область  ; (POLN: EPR6TB1) ; S3:3792
+NP,UTM,EDC047 . переход при >0  ; S3:3793
+ITA,NP . взятие из стека в индексный регистр  ; S3:3794
+AEX,LCA382  ; S3:3795
+U1A,PR6253  ; S3:3796
+13,VTM,RET023 . установка индексного регистра  ; S3:3797
+UJ,END272 . переход/возврат  ; S3:3798
+С      CCЫЛ EMЫE ПPOГP. B  BUFFER
+TOT260: BSS . зарезервированная область  ; (POLN: TOTAB) ; S3:3800
+A,UTC,ORD003 . сравнение/переход  ; S3:3801
+XTA . считывание в аккумулятор  ; S3:3802
+AOX,FLU391  ; S3:3803
+UTC,BUF009 . сравнение/переход  ; S3:3804
+F,ATX, . запись с модификатором  ; S3:3805
+F,UTM,EDC047 . переход при >0  ; S3:3806
+UJ,CHN201 . переход/возврат  ; S3:3807
+С       ЗAHECEHИE CCЫЛOK HA COMMON'Ы
+FIX261: C,XTA, . считывание в аккумулятор  ; (POLN: FIX) ; S3:3809
+UTC,BUF009 . сравнение/переход  ; S3:3810
+F,ATX, . запись с модификатором  ; S3:3811
+S,XTA, . считывание в аккумулятор  ; S3:3812
+ASN,EDC055+EDC081  ; S3:3813
+S,XTS, . считывание с модификатором  ; S3:3814
+AAX,ETX117  ; S3:3815
+ASN,EDC055-EDC066  ; S3:3816
+15,AOX,  ; S3:3817
+UTC,BUF009 . сравнение/переход  ; S3:3818
+F,ATX,EDC047 . запись с модификатором  ; S3:3819
+AAX,ETX132  ; S3:3820
+ATX,WOR381 . запись с модификатором  ; S3:3821
+NTR,EDC058  ; S3:3822
+С       OПPДEЛЯEM MAX. ДЛИHY COMMON'A
+A-X,LON364  ; S3:3824
+UIA,LES262 . переход  ; S3:3825
+XTA,WOR381 . считывание в аккумулятор  ; S3:3826
+ATX,LON364 . запись с модификатором  ; S3:3827
+LES262: F,UTM,EDC048 . переход при >0  ; (POLN: LEST) ; S3:3828
+UJ,ECH219 . переход/возврат  ; S3:3829
+С      HAЧAЛЬHAЯ YCTAHOBKA ДЛЯ ПEЧATИ
+BEG263: ITA,EDC046 . взятие из стека в индексный регистр  ; (POLN: BEGPR) ; S3:3831
+ATX,I13370 . запись с модификатором  ; S3:3832
+TWO264: 14,VTM,SPA357 . установка индексного регистра  ; (POLN: TWOSTR) ; S3:3833
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:3834
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:3835
+XTS . считывание с модификатором  ; S3:3836
+CALL,PRINT8// . вызов подпрограммы  ; S3:3837
+XTA,PLT299 . 63 CTPOKИ  ; S3:3838
+ATX,MXL374 . запись с модификатором  ; S3:3839
+ATX,WC1408 . запись с модификатором  ; S3:3840
+XTA . считывание в аккумулятор  ; S3:3841
+ATX,ALE375 . запись с модификатором  ; S3:3842
+UJ,RET267 . переход/возврат  ; S3:3843
+C'       ПEЧATЬ OДHOЙ CTPOKИ,,  ; S3:3844
+PRS265: ITA,EDC046 . взятие из стека в индексный регистр  ; (POLN: PRSTR) ; S3:3845
+ATX,I13370 . запись с модификатором  ; S3:3846
+XTA,WC1408 . считывание в аккумулятор  ; S3:3847
+UZA,REA268 . переход при =0  ; S3:3848
+14,VTM,-EDC049 . установка индексного регистра  ; S3:3849
+LTR266: UTC,BUF158 . сравнение/переход  ; (POLN: LTRNF) ; S3:3850
+14,XTA,EDC049 . считывание в аккумулятор  ; S3:3851
+WTC,ALE375  ; S3:3852
+UTC,PRB014 . сравнение/переход  ; S3:3853
+14,ATX,EDC049 . запись с модификатором  ; S3:3854
+14,VLM,LTR266 . цикл: переход при <0  ; S3:3855
+XTA,ALE375 . считывание в аккумулятор  ; S3:3856
+ARX,ETX133  ; S3:3857
+ATX,ALE375 . запись с модификатором  ; S3:3858
+AEX,MXL374  ; S3:3859
+UIA,RET267 . переход  ; S3:3860
+ATX,ALE375 . запись с модификатором  ; S3:3861
+ATX,WC1408 . запись с модификатором  ; S3:3862
+RET267: 14,VTM,-EDC049 . установка индексного регистра  ; (POLN: RETPR) ; S3:3863
+XTA,SPA357 . считывание в аккумулятор  ; S3:3864
+UTC,BUF158 . сравнение/переход  ; S3:3865
+14,ATX,EDC049 . запись с модификатором  ; S3:3866
+14,VLM,*-1 . цикл: переход при <0  ; S3:3867
+WTC,I13370  ; S3:3868
+UJ, . переход/возврат  ; S3:3869
+REA268: 14,VTM,-EDC049 . установка индексного регистра  ; (POLN: REALPR) ; S3:3870
+BTR269: WTC,ALE375  ; (POLN: BTRN) ; S3:3871
+UTC,PRB014 . сравнение/переход  ; S3:3872
+14,XTA,EDC049 . считывание в аккумулятор  ; S3:3873
+UTC,PRI410 . сравнение/переход  ; S3:3874
+14,ATX,EDC049 . запись с модификатором  ; S3:3875
+14,VLM,BTR269 . цикл: переход при <0  ; S3:3876
+14,VTM,PRI410 . установка индексного регистра  ; S3:3877
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:3878
+14,UTM,EDC064 . переход при >0  ; S3:3879
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:3880
+14,VTM,EDC058 . установка индексного регистра  ; S3:3881
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:3882
+CALL,PRINT8// . вызов подпрограммы  ; S3:3883
+XTA,ALE375 . считывание в аккумулятор  ; S3:3884
+ARX,ETX133  ; S3:3885
+ATX,ALE375 . запись с модификатором  ; S3:3886
+AEX,MXL374  ; S3:3887
+UIA,RET267 . переход  ; S3:3888
+ATX,ALE375 . запись с модификатором  ; S3:3889
+XTA,MXL374 . считывание в аккумулятор  ; S3:3890
+ATX,WC1408 . запись с модификатором  ; S3:3891
+AEX,PLT297 . 66 CTPOK  ; S3:3892
+UZA,RET267 . переход при =0  ; S3:3893
+XTA,MXL374 . считывание в аккумулятор  ; S3:3894
+AEX,PLT298 . 65 CTPOK  ; S3:3895
+UIA,CH6271 . переход  ; S3:3896
+XTA,PLT297 . считывание в аккумулятор  ; S3:3897
+CHN270: ATX,MXL374 . запись с модификатором  ; (POLN: CHNMXL) ; S3:3898
+UJ,RET267 . переход/возврат  ; S3:3899
+CH6271: XTA,PLT298 . считывание в аккумулятор  ; (POLN: CH63) ; S3:3900
+UJ,CHN270 . переход/возврат  ; S3:3901
+С       ДOПEЧATЫBAHИE БYФEPA
+END272: ITA,EDC046 . взятие из стека в индексный регистр  ; (POLN: ENDPR) ; S3:3903
+XTS,WC1408 . считывание с модификатором  ; S3:3904
+UZA,PRP274 . переход при =0  ; S3:3905
+XTA,ALE375 . считывание в аккумулятор  ; S3:3906
+UIA,RWC275 . переход  ; S3:3907
+С       БYФEP ПYCT
+RET273: UTC,EDC047 . сравнение/переход  ; (POLN: RETEPR) ; S3:3909
+CALL,PRINT8// . вызов подпрограммы  ; S3:3910
+15,WTC,  ; S3:3911
+UJ, . переход/возврат  ; S3:3912
+PRP274: WTC,ALE375  ; (POLN: PRPRBUF) ; S3:3913
+UTC,PRB014 . сравнение/переход  ; S3:3914
+14,VTM, . установка индексного регистра  ; S3:3915
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:3916
+14,UTM,EDC049 . переход при >0  ; S3:3917
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:3918
+14,VTM,EDC058 . установка индексного регистра  ; S3:3919
+ITS,EDC050 . сохранение индексного регистра в стек  ; S3:3920
+CALL,PRINT8// . вызов подпрограммы  ; S3:3921
+XTA,ALE375 . считывание в аккумулятор  ; S3:3922
+ARX,ETX133  ; S3:3923
+ATX,ALE375 . запись с модификатором  ; S3:3924
+AEX,MXL374  ; S3:3925
+UIA,PRP274 . переход  ; S3:3926
+UJ,RET273 . переход/возврат  ; S3:3927
+RWC275: XTA,ALE375 . считывание в аккумулятор  ; (POLN: RWCNT) ; S3:3928
+ATX,MXL374 . запись с модификатором  ; S3:3929
+XTA . считывание в аккумулятор  ; S3:3930
+ATX,ALE375 . запись с модификатором  ; S3:3931
+UJ,PRP274 . переход/возврат  ; S3:3932
+С ЧTEHИE И ПEPEДЧA CЛOB CM
+RDS276: BSS . зарезервированная область  ; (POLN: RDSTAR) ; S3:3934
+XTA,WBE379 . считывание в аккумулятор  ; S3:3935
+UZA,REA279 . ПPOДOЛЖEHИE  ; S3:3936
+С       ПEPBOE OБPAЩEHИE ЗA П/П
+ITA . взятие из стека в индексный регистр  ; S3:3938
+ATX,WBE379 . запись с модификатором  ; S3:3939
+XTA,MUN074 . считывание в аккумулятор  ; S3:3940
+AEX,ETX085  ; S3:3941
+ATX,FLT403 . 0 - C MЛ  ; S3:3942
+XTA,WBE379+EDC047 . считывание в аккумулятор  ; S3:3943
+AEX,DUB404  ; S3:3944
+AOX,FLT403  ; S3:3945
+ATX,FLD402 . запись с модификатором  ; S3:3946
+XTA,WBE379+EDC047 . считывание в аккумулятор  ; S3:3947
+ATX,DUB404 . запись с модификатором  ; S3:3948
+XTA,FLD402 . считывание в аккумулятор  ; S3:3949
+UZA,RDR281 . переход при =0  ; S3:3950
+XTA,WBE379+EDC047 . считывание в аккумулятор  ; S3:3951
+AAX,MES331  ; S3:3952
+AEX,LIB329  ; S3:3953
+UZA,RSV283 . переход при =0  ; S3:3954
+AEX,LIB329  ; S3:3955
+ATX,LIB329 . запись с модификатором  ; S3:3956
+12,VJM,LIB287 . вызов через индексный регистр  ; S3:3957
+RET277: BSS . зарезервированная область  ; (POLN: RETLIBR) ; S3:3958
+XTA,WBE379+EDC047 . считывание в аккумулятор  ; S3:3959
+AAX,MSE330  ; S3:3960
+ASN,EDC055+EDC066  ; S3:3961
+NEW278: ARX,ABU303  ; (POLN: NEWZON) ; S3:3962
+ATX,ADR334 . запись с модификатором  ; S3:3963
+REA279: XTA,ADR334 . считывание в аккумулятор  ; (POLN: READWORD) ; S3:3964
+AEX,ABU303  ; S3:3965
+UZA,EXI280 . переход при =0  ; S3:3966
+AAX,ETX134  ; S3:3967
+UZA,REA284 . переход при =0  ; S3:3968
+EXI280: XTA,ADR334 . считывание в аккумулятор  ; (POLN: EXIT) ; S3:3969
+ARX,ETX079  ; S3:3970
+ATX,ADR334 . запись с модификатором  ; S3:3971
+WTC,ADR334  ; S3:3972
+XTA,-EDC047 . считывание в аккумулятор  ; S3:3973
+13,UJ, . переход/возврат  ; S3:3974
+RDR281: XTA,NTR401 . считывание в аккумулятор  ; (POLN: RDR) ; S3:3975
+ATX,NTR400 . запись с модификатором  ; S3:3976
+UZA,RET277 . переход при =0  ; S3:3977
+AOX,NM328  ; S3:3978
+12,VJM,N70288 . вызов через индексный регистр  ; S3:3979
+XTA . считывание в аккумулятор  ; S3:3980
+ATX,NTR401 . запись с модификатором  ; S3:3981
+RDR282: AOX,CRE332  ; (POLN: RDR1) ; S3:3982
+AOX,NM328  ; S3:3983
+12,VTM,RET277 . установка индексного регистра  ; S3:3984
+UJ,N70288 . переход/возврат  ; S3:3985
+RSV283: BSS . зарезервированная область  ; (POLN: RSVP) ; S3:3986
+XTA,NTR400 . считывание в аккумулятор  ; S3:3987
+UZA,RET277 . переход при =0  ; S3:3988
+AEX,NTR401  ; S3:3989
+XTS . считывание с модификатором  ; S3:3990
+STX,NTR401  ; S3:3991
+UZA,RET277 . переход при =0  ; S3:3992
+XTA,NTR400 . считывание в аккумулятор  ; S3:3993
+UJ,RDR282 . переход/возврат  ; S3:3994
+REA284: BSS . зарезервированная область  ; (POLN: READ1) ; S3:3995
+XTA,FLD402 . считывание в аккумулятор  ; S3:3996
+UZA,REA285 . переход при =0  ; S3:3997
+XTA,LIB329 . считывание в аккумулятор  ; S3:3998
+ARX,ETX135  ; S3:3999
+12,VJM,LIB286 . вызов через индексный регистр  ; S3:4000
+XTA . считывание в аккумулятор  ; S3:4001
+UJ,NEW278 . переход/возврат  ; S3:4002
+REA285: XTA,NTR401 . считывание в аккумулятор  ; (POLN: READ1D) ; S3:4003
+ARX,ETX079  ; S3:4004
+ATX,NTR401 . запись с модификатором  ; S3:4005
+AOX,NM328  ; S3:4006
+AOX,CRE332  ; S3:4007
+12,VJM,N70288 . вызов через индексный регистр  ; S3:4008
+XTA . считывание в аккумулятор  ; S3:4009
+UJ,NEW278 . переход/возврат  ; S3:4010
+LIB286: ATX,LIB329 . запись с модификатором  ; (POLN: LIBR) ; S3:4011
+XTA,FLT403 . считывание в аккумулятор  ; S3:4012
+U1A,LIB287  ; S3:4013
+XTA,NTR401 . считывание в аккумулятор  ; S3:4014
+15,ATX, . запись с модификатором  ; S3:4015
+ARX,ETX079  ; S3:4016
+STX,NTR401  ; S3:4017
+AOX,NM328  ; S3:4018
+12,MTJ,EDC077  ; S3:4019
+12,VJM,N70288 . вызов через индексный регистр  ; S3:4020
+11,MTJ,EDC044  ; S3:4021
+LIB287: BSS . зарезервированная область  ; (POLN: LIBR1) ; S3:4022
+XTA,LIB329 . считывание в аккумулятор  ; S3:4023
+AUX,MUN074  ; S3:4024
+AOX,CRE332  ; S3:4025
+ARX,DEL075  ; S3:4026
+N70288: BSS . зарезервированная область  ; (POLN: *70) ; S3:4027
+XTS,ABU303 . считывание с модификатором  ; S3:4028
+ASN,EDC055-EDC135  ; S3:4029
+15,AOX,  ; S3:4030
+ATX,AEX333 . запись с модификатором  ; S3:4031
+*70,AEX333  ; S3:4032 . Э70 AEX333 = НЕ НАЙДЕНО в rukava.be
+12,UJ, . переход/возврат  ; S3:4033
+T289: 00,LOG,ETX136 . BLANK  ; (POLN: T) ; S3:4034
+01,LOG,ETX137 . константа-слово  ; S3:4035
+02,LOG,ETX138 . Б  ; S3:4036
+03,LOG,ETX139 . Ц  ; S3:4037
+04,LOG,ETX140 . Д  ; S3:4038
+05,LOG,ETX141 . Ф  ; S3:4039
+06,LOG,ETX142 . Г  ; S3:4040
+07,LOG,ETX143 . И  ; S3:4041
+10,LOG,ETX137 . константа-слово  ; S3:4042
+11,LOG,ETX137 . константа-слово  ; S3:4043
+12,LOG,ETX136 . *  ; S3:4044
+13,LOG,ETX144 . И  ; S3:4045
+14,LOG,ETX145 . Л  ; S3:4046
+15,LOG,ETX146 . Я  ; S3:4047
+16,LOG,ETX147 . Ж  ; S3:4048
+17,LOG,ETX148 . /  ; S3:4049
+20,LOG,ETX149 . 0  ; S3:4050
+21,LOG,ETX150 . 1  ; S3:4051
+22,LOG,ETX151 . 2  ; S3:4052
+23,LOG,ETX152 . 3  ; S3:4053
+24,LOG,ETX153 . 4  ; S3:4054
+25,LOG,ETX154 . 5  ; S3:4055
+26,LOG,ETX155 . 6  ; S3:4056
+27,LOG,ETX156 . 7  ; S3:4057
+30,LOG,ETX157 . 8  ; S3:4058
+31,LOG,ETX158 . 9  ; S3:4059
+32,LOG,ETX159 . Ь  ; S3:4060
+33,LOG,ETX137 . константа-слово  ; S3:4061
+34,LOG,ETX160 . П  ; S3:4062
+35,LOG,ETX137 . -  ; S3:4063
+36,LOG,ETX137 . +  ; S3:4064
+37,LOG,ETX161 . Ы  ; S3:4065
+40,LOG,ETX162 . З  ; S3:4066
+41,LOG,ETX163 . A  ; S3:4067
+42,LOG,ETX164 . B  ; S3:4068
+43,LOG,ETX165 . C  ; S3:4069
+44,LOG,ETX166 . D  ; S3:4070
+45,LOG,ETX167 . E  ; S3:4071
+46,LOG,ETX168 . F  ; S3:4072
+47,LOG,ETX169 . G  ; S3:4073
+50,LOG,ETX170 . H  ; S3:4074
+51,LOG,ETX171 . I  ; S3:4075
+52,LOG,ETX172 . J  ; S3:4076
+53,LOG,ETX173 . K  ; S3:4077
+54,LOG,ETX174 . L  ; S3:4078
+55,LOG,ETX175 . M  ; S3:4079
+56,LOG,ETX176 . N  ; S3:4080
+57,LOG,ETX177 . 0  ; S3:4081
+60,LOG,ETX178 . P  ; S3:4082
+61,LOG,ETX179 . Q  ; S3:4083
+62,LOG,ETX180 . R  ; S3:4084
+63,LOG,ETX181 . S  ; S3:4085
+64,LOG,ETX182 . T  ; S3:4086
+65,LOG,ETX183 . U  ; S3:4087
+66,LOG,ETX184 . V  ; S3:4088
+67,LOG,ETX185 . W  ; S3:4089
+70,LOG,ETX186 . X  ; S3:4090
+71,LOG,ETX187 . Y  ; S3:4091
+72,LOG,ETX188 . Z  ; S3:4092
+73,LOG,ETX189 . Ш  ; S3:4093
+74,LOG,ETX190 . Э  ; S3:4094
+75,LOG,ETX191 . Щ  ; S3:4095
+76,LOG,ETX192 . Ц  ; S3:4096
+77,LOG,ETX193 . Ю  ; S3:4097
+TAB290: ISO,ETX194 . ISO-константа  ; (POLN: TAB) ; S3:4098
+ISO,ETX195 . ISO-константа  ; S3:4099
+ISO,ETX196 . ISO-константа  ; S3:4100
+ISO,ETX197 . ISO-константа  ; S3:4101
+ISO,ETX198 . ISO-константа  ; S3:4102
+ISO,ETX199 . ISO-константа  ; S3:4103
+ISO,ETX200 . ISO-константа  ; S3:4104
+ISO,ETX201 . ISO-константа  ; S3:4105
+ISO,ETX202 . ISO-константа  ; S3:4106
+ISO,ETX203 . ISO-константа  ; S3:4107
+ISO,ETX204 . ISO-константа  ; S3:4108
+ISO,ETX205 . ISO-константа  ; S3:4109
+ISO,ETX206 . ISO-константа  ; S3:4110
+ISO,ETX207 . ISO-константа  ; S3:4111
+ISO,ETX208 . ISO-константа  ; S3:4112
+ISO,ETX209 . ISO-константа  ; S3:4113
+С
+С--- ЧИCЛO CTPOK B CTPAHИЦE ---
+С
+PLX294: P*P,(PL291)EDC065  ; (POLN: PLX5) ; S3:4120
+PLT295: P*P,(PL1292)EDC065  ; (POLN: TCAT_TABLE_0295) ; S3:4121
+PLT296: P*P,(PL3293)EDC065  ; (POLN: TCAT_TABLE_0296) ; S3:4122
+PLT297:   ; (POLN: TCAT_TABLE_0297) ; S3:4123
+Z00,PLX294  ; S3:4124
+PLT298:   ; (POLN: TCAT_TABLE_0298) ; S3:4125
+Z00,PLT295  ; S3:4126
+PLT299:   ; (POLN: TCAT_TABLE_0299) ; S3:4127
+Z00,PLT296  ; S3:4128
+MXL300:   ; (POLN: MXL) ; S3:4129
+Z00,EDC049-PL291  ; S3:4130
+AII301: Z00,ESC302  ; (POLN: AIII) ; S3:4131
+Z00,PL291-EDC049  ; S3:4132
+ESC302: Z00,ESC302+EDC047  ; (POLN: ESC) ; S3:4133
+Z00,PL1292  ; S3:4134
+Z00,ESC302+EDC047  ; S3:4135
+Z00,PL291  ; S3:4136
+ABU303:   ; (POLN: ABUF) ; S3:4137
+Z00,BUF009  ; S3:4138
+MAS304: LOG,ETX210 . константа-слово  ; (POLN: MASK) ; S3:4139
+TR305: LOG,ETX211 . константа-слово  ; (POLN: TR) ; S3:4140
+TR8306: TEXT,ETX212 . текстовая константа  ; (POLN: TR8) ; S3:4141
+TR8307: TEXT,ETX213 . текстовая константа  ; (POLN: TR8CBT) ; S3:4142
+TR8308: LOG,ETX214 . константа-слово  ; (POLN: TR8CB) ; S3:4143
+MAS309: OCT,ETX215 . восьмеричная константа  ; (POLN: MASK81) ; S3:4144
+MAS310: LOG,ETX216 . константа-слово  ; (POLN: MASK82) ; S3:4145
+MAS311: LOG,ETX217 . константа-слово  ; (POLN: MASK8) ; S3:4146
+TR8312: OCT,ETX218 . восьмеричная константа  ; (POLN: TR8M) ; S3:4147
+C7A313: LOG,ETX219 . константа-слово  ; (POLN: C7ALL) ; S3:4148
+M4S314: LOG,ETX220 . константа-слово  ; (POLN: M4S) ; S3:4149
+M3L315: LOG,ETX221 . константа-слово  ; (POLN: M3L) ; S3:4150
+MU1316: ISO,ETX222 . ISO-константа  ; (POLN: MU1) ; S3:4151
+ISO,ETX223 . ISO-константа  ; S3:4152
+MO317: ISO,ETX224 . ISO-константа  ; (POLN: MO) ; S3:4153
+ISO,ETX225 . ISO-константа  ; S3:4154
+MU2318: LOG,ETX137 . константа-слово  ; (POLN: MU2) ; S3:4155
+LOG,ETX226 . константа-слово  ; S3:4156
+MP1319: LOG,ETX227 . константа-слово  ; (POLN: MP1) ; S3:4157
+LOG,ETX228 . константа-слово  ; S3:4158
+MAX320: LOG,ETX229 . константа-слово  ; (POLN: MAXADR) ; S3:4159
+LOG,ETX230 . константа-слово  ; S3:4160
+MAX321: LOG,ETX229 . константа-слово  ; (POLN: MAXRADR) ; S3:4161
+LOG,ETX231 . константа-слово  ; S3:4162
+BIT322: OCT,ETX232 . восьмеричная константа  ; (POLN: BIT48) ; S3:4163
+BIT323: LOG,ETX233 . константа-слово  ; (POLN: BIT16) ; S3:4164
+B24324: LOG,ETX234 . константа-слово  ; (POLN: B24/13) ; S3:4165
+M11325: LOG,ETX235 . константа-слово  ; (POLN: M11B) ; S3:4166
+M10326: LOG,ETX236 . константа-слово  ; (POLN: M10B) ; S3:4167
+MEM327: BSS . зарезервированная область  ; (POLN: MEMREFTB) ; S3:4168
+LOG,ETX237 . константа-слово  ; S3:4169
+LOG,ETX238 . константа-слово  ; S3:4170
+LOG,ETX239 . константа-слово  ; S3:4171
+NM328: LOG,ETX240 . константа-слово  ; (POLN: NMБ) ; S3:4172
+LIB329: OCT . восьмеричная константа  ; (POLN: LIBCODE) ; S3:4173
+MSE330: OCT,ETX241 . восьмеричная константа  ; (POLN: MSEC) ; S3:4174
+MES331: OCT,ETX242 . восьмеричная константа  ; (POLN: MESD) ; S3:4175
+CRE332: OCT,ETX243 . восьмеричная константа  ; (POLN: CRED) ; S3:4176
+AEX333: OCT . восьмеричная константа  ; (POLN: AEX) ; S3:4177
+ADR334: OCT . восьмеричная константа  ; (POLN: ADRWORD) ; S3:4178
+TW335: 010,NLC016  ; (POLN: TW) ; S3:4179
+  ; S3:4180
+TAP336: ISO,ETX244 . ISO-константа  ; (POLN: TAPLIB) ; S3:4181
+TEM337: ISO,ETX245 . ISO-константа  ; (POLN: TEMPLIB) ; S3:4182
+PER338: ISO,ETX246 . ISO-константа  ; (POLN: PERLIB) ; S3:4183
+REF339: ISO,ETX247 . ISO-константа  ; (POLN: REF1) ; S3:4184
+REF340: ISO,ETX248 . ISO-константа  ; (POLN: REF2) ; S3:4185
+REF341: ISO,ETX249 . ISO-константа  ; (POLN: REF3) ; S3:4186
+REF342: ISO,ETX250 . ISO-константа  ; (POLN: REF4) ; S3:4187
+REF343: ISO,ETX251 . ISO-константа  ; (POLN: REF5) ; S3:4188
+REF344: ISO,ETX252 . ISO-константа  ; (POLN: REF6) ; S3:4189
+HEC345: ISO,ETX253 . ISO-константа  ; (POLN: HEИCП) ; S3:4190
+C346: ISO,ETX254 . ISO-константа  ; (POLN: ИCП) ; S3:4191
+C63347: ISO,ETX255 . ISO-константа  ; (POLN: ИCП*63) ; S3:4192
+CNO348: ISO,ETX256 . ISO-константа  ; (POLN: ИCПNO*63) ; S3:4193
+COM349: ISO,ETX257 . ISO-константа  ; (POLN: COMNT1) ; S3:4194
+COM350: ISO,ETX258 . ISO-константа  ; (POLN: COMNT2) ; S3:4195
+ISO,ETX259 . ISO-константа  ; S3:4196
+ISO,ETX260 . ISO-константа  ; S3:4197
+COM351: ISO,ETX261 . ISO-константа  ; (POLN: COMNT4) ; S3:4198
+COM352: ISO,ETX257 . ISO-константа  ; (POLN: COMNT3) ; S3:4199
+ISO,ETX262 . ISO-константа  ; S3:4200
+ISO,ETX263 . ISO-константа  ; S3:4201
+ISO,ETX264 . ISO-константа  ; S3:4202
+ISO,ETX265 . ISO-константа  ; S3:4203
+ISO,ETX266 . ISO-константа  ; S3:4204
+ERR353: ISO,ETX267 . ISO-константа  ; (POLN: ERRCAT) ; S3:4205
+ERR354: ISO,ETX268 . ISO-константа  ; (POLN: ERRPAR) ; S3:4206
+NLI355: ISO,ETX269 . ISO-константа  ; (POLN: NLIB) ; S3:4207
+CONT,6HTEMP  ; S3:4208
+CONT,6HTAPE  ; S3:4209
+TYP356: BSS . зарезервированная область  ; (POLN: TYPJOB) ; S3:4210
+ISO,ETX270 . ISO-константа  ; S3:4211
+ISO,ETX271 . ISO-константа  ; S3:4212
+ISO,ETX272 . ISO-константа  ; S3:4213
+SPA357: BSS . зарезервированная область  ; (POLN: SPACE) ; S3:4214
+ISO,ETX273 . ISO-константа  ; S3:4215
+CBH358: ISO,ETX274 . ISO-константа  ; (POLN: CBHO) ; S3:4216
+BSS,ETX275 . зарезервированная область  ; S3:4217
+HO359: ISO,ETX276 . ISO-константа  ; (POLN: HO) ; S3:4218
+DIF360: BSS,ETX277 . зарезервированная область  ; (POLN: DIFT) ; S3:4219
+ATA361: BSS,ETX277 . зарезервированная область  ; (POLN: ATAP) ; S3:4220
+FTA362: BSS,ETX277 . зарезервированная область  ; (POLN: FTAP) ; S3:4221
+ATA363: BSS,ETX277 . зарезервированная область  ; (POLN: ATAPE) ; S3:4222
+LON364: BSS,ETX277 . зарезервированная область  ; (POLN: LONG) ; S3:4223
+LOC365: BSS,ETX277 . зарезервированная область  ; (POLN: LOC) ; S3:4224
+N9366: BSS,ETX277 . зарезервированная область  ; (POLN: N9) ; S3:4225
+XX367: BSS,ETX277 . зарезервированная область  ; (POLN: XX) ; S3:4226
+RA368: BSS,ETX277 . зарезервированная область  ; (POLN: RA) ; S3:4227
+RB369: BSS,ETX277 . зарезервированная область  ; (POLN: RB) ; S3:4228
+I13370: BSS,ETX277 . зарезервированная область  ; (POLN: I13) ; S3:4229
+RA1371: BSS,ETX277 . зарезервированная область  ; (POLN: RA1) ; S3:4230
+RB1372: BSS,ETX277 . зарезервированная область  ; (POLN: RB1) ; S3:4231
+CAT373: BSS,ETX277 . зарезервированная область  ; (POLN: CATLENG) ; S3:4232
+MXL374: BSS,ETX277 . зарезервированная область  ; (POLN: MXLENG) ; S3:4233
+ALE375: BSS,ETX277 . зарезервированная область  ; (POLN: ALE) ; S3:4234
+WC376: BSS,ETX277 . зарезервированная область  ; (POLN: WC) ; S3:4235
+BSS,ETX277 . зарезервированная область  ; S3:4236
+CMC377: BSS,ETX277 . зарезервированная область  ; (POLN: CMCNT) ; S3:4237
+SBC378: BSS,ETX277 . зарезервированная область  ; (POLN: SBCNT) ; S3:4238
+WBE379: BSS,ETX275 . зарезервированная область  ; (POLN: WBEGFLAG) ; S3:4239
+STR380: BSS,ETX278 . зарезервированная область  ; (POLN: STR) ; S3:4240
+WOR381: BSS,ETX277 . зарезервированная область  ; (POLN: WORD) ; S3:4241
+LCA382: BSS,ETX277 . зарезервированная область  ; (POLN: LCAT) ; S3:4242
+FPL383: BSS,ETX277 . зарезервированная область  ; (POLN: FPLE) ; S3:4243
+FLM384: BSS,ETX277 . зарезервированная область  ; (POLN: FLMACRO) ; S3:4244
+FLA385: BSS,ETX277 . зарезервированная область  ; (POLN: FLADR) ; S3:4245
+MAC386: BSS,ETX277 . зарезервированная область  ; (POLN: MACROCNT) ; S3:4246
+MAC387: BSS,ETX277 . зарезервированная область  ; (POLN: MACRCNT1) ; S3:4247
+SET388: BSS,ETX277 . зарезервированная область  ; (POLN: SET) ; S3:4248
+INS389: BSS,ETX277 . зарезервированная область  ; (POLN: INSTR) ; S3:4249
+ADR390: BSS,ETX277 . зарезервированная область  ; (POLN: ADR) ; S3:4250
+FLU391: BSS,ETX277 . зарезервированная область  ; (POLN: FLUSED) ; S3:4251
+RAC392: BSS,ETX277 . зарезервированная область  ; (POLN: RACNT) ; S3:4252
+RAD393: BSS,ETX277 . зарезервированная область  ; (POLN: RADSHIFT) ; S3:4253
+RFP394: BSS,ETX277 . зарезервированная область  ; (POLN: RFPLE) ; S3:4254
+RFP395: BSS,ETX277 . зарезервированная область  ; (POLN: RFPLE1) ; S3:4255
+RAD396: BSS,ETX277 . зарезервированная область  ; (POLN: RADR) ; S3:4256
+B19397: BSS,ETX277 . зарезервированная область  ; (POLN: B19/22) ; S3:4257
+CCM398: BSS,ETX277 . зарезервированная область  ; (POLN: CЛCM) ; S3:4258
+PEK399: BSS,ETX277 . зарезервированная область  ; (POLN: ПPEДKOM) ; S3:4259
+NTR400: BSS,ETX277 . зарезервированная область  ; (POLN: NTRAK1) ; S3:4260
+NTR401: BSS,ETX277 . зарезервированная область  ; (POLN: NTRAK) ; S3:4261
+FLD402: BSS,ETX277 . зарезервированная область  ; (POLN: FLDBL) ; S3:4262
+FLT403: BSS,ETX277 . зарезервированная область  ; (POLN: FLTAPE) ; S3:4263
+DUB404: BSS,ETX277 . зарезервированная область  ; (POLN: DUBLE) ; S3:4264
+INF405: BSS,ETX277 . зарезервированная область  ; (POLN: INFW) ; S3:4265
+DAT406: BSS,ETX277 . зарезервированная область  ; (POLN: DATACONS) ; S3:4266
+USE407: BSS,ETX161 . зарезервированная область  ; (POLN: USEDECL) ; S3:4267
+WC1408: BSS,ETX277 . зарезервированная область  ; (POLN: WC1) ; S3:4268
+FLB409: BSS,ETX277 . зарезервированная область  ; (POLN: FLBACK) ; S3:4269
+PRI410: BSS,ETX155 . зарезервированная область  ; (POLN: PRINT) ; S3:4270
+END . конец модуля  ; S3:4271
+С ---- конец модуля TCATALOG ----

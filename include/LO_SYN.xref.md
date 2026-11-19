@@ -402,3 +402,196 @@ SHA256 дампа: `83a7e962a9db89e62b856b7461ce2aba91239957931a03e1520fb4d22845
 ### 7.4 Литералы операндов
 
 Все числовые литералы операндов заменены на EQU-константы (715 штук): role-префикс + значение. Список «Оставшиеся литералы» (префиксы индексных регистров, Метки слов, COMMON-директивы) приведён в `include/LO_SYN.labels.md` §4. Мнемоники, адреса и машинные слова в строках `С--- слово …` не изменены.
+
+## Экстракоды
+
+Расшифровки по `rukava.be` (раздел 1.4). Подробности — `docs/lib21/04-extract-codes.md`.
+
+| Код | Информационное слово | Расшифровка | Стр. | Применений | Места |
+|-----|----------------------|-------------|------|------------|-------|
+| Э20 | 20040 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:1244`, `src/LO_SYN.mad:2180`, `src/LO_SYN.mad:2512` |
+| Э20 | 20102 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2189`, `src/LO_SYN.mad:3034` |
+| Э20 | 20103 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2314`, `src/LO_SYN.mad:2870` |
+| Э20 | 20110 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2857` |
+| Э20 | 20113 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3061` |
+| Э20 | 20115 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1166`, `src/LO_SYN.mad:2534` |
+| Э20 | 20117 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2278`, `src/LO_SYN.mad:3118` |
+| Э20 | 20124 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2332` |
+| Э20 | 20142 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3019` |
+| Э20 | 20143 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:2126`, `src/LO_SYN.mad:2362`, `src/LO_SYN.mad:2386` |
+| Э20 | 20151 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1756` |
+| Э20 | 20160 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1532` |
+| Э20 | 40440 | не найдено в rukava.be | — | 5 | `src/LO_SYN.mad:2275`, `src/LO_SYN.mad:2311`, `src/LO_SYN.mad:2329`, `src/LO_SYN.mad:2452`, `src/LO_SYN.mad:2867` |
+| Э20 | 40513 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:856` |
+| Э20 | 40520 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3280` |
+| Э20 | 40561 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1727`, `src/LO_SYN.mad:2405` |
+| Э20 | 41524 | не найдено в rukava.be | — | 4 | `src/LO_SYN.mad:952`, `src/LO_SYN.mad:1730`, `src/LO_SYN.mad:2815`, `src/LO_SYN.mad:3047` |
+| Э20 | 42440 | не найдено в rukava.be | — | 19 | `src/LO_SYN.mad:1585`, `src/LO_SYN.mad:1865`, `src/LO_SYN.mad:2002`, `src/LO_SYN.mad:2183`, `src/LO_SYN.mad:2240`, `src/LO_SYN.mad:2264`, `src/LO_SYN.mad:2287`, `src/LO_SYN.mad:2411` … (ещё 11) |
+| Э20 | 42502 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:3181`, `src/LO_SYN.mad:3202`, `src/LO_SYN.mad:3235` |
+| Э20 | 42503 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:904`, `src/LO_SYN.mad:964`, `src/LO_SYN.mad:2542` |
+| Э20 | 42544 | не найдено в rukava.be | — | 18 | `src/LO_SYN.mad:880`, `src/LO_SYN.mad:1234`, `src/LO_SYN.mad:1246`, `src/LO_SYN.mad:1297`, `src/LO_SYN.mad:1330`, `src/LO_SYN.mad:1375`, `src/LO_SYN.mad:1402`, `src/LO_SYN.mad:1444` … (ещё 10) |
+| Э20 | 42546 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1036` |
+| Э20 | 42560 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1552` |
+| Э20 | 4323 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3795` |
+| Э20 | 44040 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:1228`, `src/LO_SYN.mad:1276`, `src/LO_SYN.mad:1340` |
+| Э20 | 4405 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3819` |
+| Э20 | 44117 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3287` |
+| Э20 | 44144 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1780` |
+| Э20 | 45543 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2026` |
+| Э20 | 47440 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1556` |
+| Э20 | 47505 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1735` |
+| Э20 | 47515 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2713` |
+| Э20 | 47547 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2860` |
+| Э20 | 52040 | не найдено в rukava.be | — | 4 | `src/LO_SYN.mad:878`, `src/LO_SYN.mad:1207`, `src/LO_SYN.mad:1211`, `src/LO_SYN.mad:1796` |
+| Э20 | 62101 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3193` |
+| Э20 | 62113 | не найдено в rukava.be | — | 5 | `src/LO_SYN.mad:1577`, `src/LO_SYN.mad:1757`, `src/LO_SYN.mad:1862`, `src/LO_SYN.mad:1972`, `src/LO_SYN.mad:2836` |
+| Э20 | 64440 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3125` |
+| Э20 | 64505 | не найдено в rukava.be | — | 4 | `src/LO_SYN.mad:1739`, `src/LO_SYN.mad:3188`, `src/LO_SYN.mad:3242`, `src/LO_SYN.mad:3283` |
+| Э20 | 64543 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2135`, `src/LO_SYN.mad:2828` |
+| Э20 | 64551 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2920` |
+| Э20 | 64561 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:862` |
+| Э20 | 64566 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2284` |
+| Э20 | 74440 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3094` |
+| Э20 | 75505 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2177` |
+| Э20 | 77101 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3241` |
+| Э21 | 1016 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3423` |
+| Э21 | 1302 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3495` |
+| Э21 | 326 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3354` |
+| Э21 | 4043 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3732` |
+| Э36 | 1310 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3504` |
+| Э36 | 20040 | не найдено в rukava.be | — | 4 | `src/LO_SYN.mad:901`, `src/LO_SYN.mad:2233`, `src/LO_SYN.mad:2257`, `src/LO_SYN.mad:2965` |
+| Э36 | 20102 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1934` |
+| Э36 | 20142 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1318` |
+| Э36 | 20143 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1721`, `src/LO_SYN.mad:2861` |
+| Э36 | 20151 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1591`, `src/LO_SYN.mad:2351` |
+| Э36 | 317 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3339` |
+| Э36 | 4037 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3720` |
+| Э36 | 4054 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3741` |
+| Э36 | 41117 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:889`, `src/LO_SYN.mad:1603` |
+| Э36 | 41124 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1931`, `src/LO_SYN.mad:2348` |
+| Э36 | 41524 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2011`, `src/LO_SYN.mad:3059` |
+| Э36 | 41554 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1424`, `src/LO_SYN.mad:1699` |
+| Э36 | 42440 | не найдено в rukava.be | — | 5 | `src/LO_SYN.mad:1679`, `src/LO_SYN.mad:2458`, `src/LO_SYN.mad:2887`, `src/LO_SYN.mad:3184`, `src/LO_SYN.mad:3238` |
+| Э36 | 44040 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1633` |
+| Э36 | 44101 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1870` |
+| Э36 | 44103 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:3062`, `src/LO_SYN.mad:3269` |
+| Э36 | 45440 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2174` |
+| Э36 | 45501 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1387` |
+| Э36 | 45517 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3239` |
+| Э36 | 46440 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:1643`, `src/LO_SYN.mad:2254`, `src/LO_SYN.mad:2704` |
+| Э36 | 47524 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:905`, `src/LO_SYN.mad:965`, `src/LO_SYN.mad:2543` |
+| Э36 | 501 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3363` |
+| Э36 | 50101 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2687` |
+| Э36 | 50110 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1933`, `src/LO_SYN.mad:2350` |
+| Э36 | 50115 | не найдено в rukava.be | — | 4 | `src/LO_SYN.mad:1037`, `src/LO_SYN.mad:1079`, `src/LO_SYN.mad:1154`, `src/LO_SYN.mad:1529` |
+| Э36 | 51105 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1943` |
+| Э36 | 52102 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:1352`, `src/LO_SYN.mad:1834`, `src/LO_SYN.mad:2075` |
+| Э36 | 52103 | не найдено в rukava.be | — | 17 | `src/LO_SYN.mad:892`, `src/LO_SYN.mad:913`, `src/LO_SYN.mad:1009`, `src/LO_SYN.mad:1042`, `src/LO_SYN.mad:1102`, `src/LO_SYN.mad:1192`, `src/LO_SYN.mad:1201`, `src/LO_SYN.mad:1264` … (ещё 9) |
+| Э36 | 52113 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1046`, `src/LO_SYN.mad:1612` |
+| Э36 | 52120 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1883` |
+| Э36 | 61113 | не найдено в rukava.be | — | 7 | `src/LO_SYN.mad:1051`, `src/LO_SYN.mad:1139`, `src/LO_SYN.mad:1187`, `src/LO_SYN.mad:1486`, `src/LO_SYN.mad:1520`, `src/LO_SYN.mad:1616`, `src/LO_SYN.mad:1667` |
+| Э36 | 61117 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:910`, `src/LO_SYN.mad:2548` |
+| Э36 | 61120 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3185` |
+| Э36 | 61154 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2674` |
+| Э36 | 62101 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1312` |
+| Э36 | 62117 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:859` |
+| Э36 | 63517 | не найдено в rukava.be | — | 4 | `src/LO_SYN.mad:2378`, `src/LO_SYN.mad:2924`, `src/LO_SYN.mad:3001`, `src/LO_SYN.mad:3011` |
+| Э36 | 63551 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:922` |
+| Э36 | 65040 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:1889`, `src/LO_SYN.mad:2435`, `src/LO_SYN.mad:3196` |
+| Э36 | 66040 | не найдено в rukava.be | — | 3 | `src/LO_SYN.mad:1712`, `src/LO_SYN.mad:2060`, `src/LO_SYN.mad:2090` |
+| Э36 | 66110 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3106` |
+| Э36 | 66117 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2398` |
+| Э36 | 66151 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2944` |
+| Э36 | 66166 | не найдено в rukava.be | — | 5 | `src/LO_SYN.mad:2273`, `src/LO_SYN.mad:2309`, `src/LO_SYN.mad:2327`, `src/LO_SYN.mad:2866`, `src/LO_SYN.mad:3092` |
+| Э36 | 66170 | не найдено в rukava.be | — | 5 | `src/LO_SYN.mad:932`, `src/LO_SYN.mad:1031`, `src/LO_SYN.mad:1063`, `src/LO_SYN.mad:3053`, `src/LO_SYN.mad:3149` |
+| Э36 | 70055 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2983` |
+| Э36 | 70105 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2021`, `src/LO_SYN.mad:2078` |
+| Э36 | 70120 | не найдено в rukava.be | — | 4 | `src/LO_SYN.mad:1435`, `src/LO_SYN.mad:1798`, `src/LO_SYN.mad:2288`, `src/LO_SYN.mad:2960` |
+| Э36 | 70131 | не найдено в rukava.be | — | 18 | `src/LO_SYN.mad:881`, `src/LO_SYN.mad:1235`, `src/LO_SYN.mad:1247`, `src/LO_SYN.mad:1298`, `src/LO_SYN.mad:1331`, `src/LO_SYN.mad:1376`, `src/LO_SYN.mad:1403`, `src/LO_SYN.mad:1445` … (ещё 10) |
+| Э36 | 70151 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1417`, `src/LO_SYN.mad:1690` |
+| Э36 | 73105 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2216`, `src/LO_SYN.mad:3286` |
+| Э36 | 75551 | не найдено в rukava.be | — | 24 | `src/LO_SYN.mad:838`, `src/LO_SYN.mad:865`, `src/LO_SYN.mad:940`, `src/LO_SYN.mad:1069`, `src/LO_SYN.mad:1144`, `src/LO_SYN.mad:1978`, `src/LO_SYN.mad:2017`, `src/LO_SYN.mad:2104` … (ещё 16) |
+| Э46 | 4510 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1055` |
+| Э46 | 74513 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1075`, `src/LO_SYN.mad:1150` |
+| Э47 | 4520 | не найдено в rukava.be | — | 8 | `src/LO_SYN.mad:1958`, `src/LO_SYN.mad:1999`, `src/LO_SYN.mad:2140`, `src/LO_SYN.mad:2204`, `src/LO_SYN.mad:2372`, `src/LO_SYN.mad:2591`, `src/LO_SYN.mad:2626`, `src/LO_SYN.mad:2977` |
+| Э47 | 4524 | не найдено в rukava.be | — | 5 | `src/LO_SYN.mad:2188`, `src/LO_SYN.mad:2276`, `src/LO_SYN.mad:2312`, `src/LO_SYN.mad:2330`, `src/LO_SYN.mad:2869` |
+| Э47 | 4573 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3040` |
+| Э47 | 4576 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:970`, `src/LO_SYN.mad:2249` |
+| Э50 | 1202 | ГРАФОПОСТРОИТЕЛЬ: ... | ? | 1 | `src/LO_SYN.mad:3474` |
+| Э50 | 1311 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3507` |
+| Э50 | 1323 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3531` |
+| Э50 | 1324 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3534` |
+| Э50 | 323 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3345` |
+| Э50 | 4016 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3672` |
+| Э50 | 70325 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3351` |
+| Э50 | 70504 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3372` |
+| Э50 | 73010 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3621` |
+| Э50 | 73111 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3642` |
+| Э56 | 70000 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:770` |
+| Э57 | 1263 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:769` |
+| Э60 | 4002 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3648` |
+| Э60 | 4041 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3726` |
+| Э60 | 4423 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3843` |
+| Э60 | 512 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3390` |
+| Э60 | 514 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3396` |
+| Э60 | 70312 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3324` |
+| Э60 | 70313 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3327` |
+| Э60 | 71015 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3420` |
+| Э60 | 71105 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3453` |
+| Э60 | 71215 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3486` |
+| Э60 | 71313 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3513` |
+| Э60 | 74030 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3699` |
+| Э60 | 74035 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3714` |
+| Э60 | 74040 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3723` |
+| Э62 | 102 | ОТМЕНА РЕЖИМА ПРИЕМА С ТЕРМИНАЛА И ПЕРЕХОД В РЕЖИМ ВЫВОДА | ? | 2 | `src/LO_SYN.mad:1864`, `src/LO_SYN.mad:1973` |
+| Э62 | 110 | УСТАНОВКА (ВОССТАНОВЛЕНИЕ) ПАРОЛЯ НА ДОСТУП К МД ИЛИ МЛ | ? | 1 | `src/LO_SYN.mad:1579` |
+| Э62 | 115 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2432` |
+| Э62 | 160 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2837` |
+| Э62 | 40 | ЗАПРОС СОСТОЯНИЯ ЗАДАЧИ ПО ШИФРУ | 265 | 1 | `src/LO_SYN.mad:1759` |
+| Э62 | 6466 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1007` |
+| Э62 | 6552 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2164` |
+| Э62 | 70040 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2449` |
+| Э63 | 274 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:788` |
+| Э64 | 1101 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2099`, `src/LO_SYN.mad:2120` |
+| Э64 | 1551 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1370`, `src/LO_SYN.mad:1742` |
+| Э64 | 1571 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2735` |
+| Э64 | 2554 | не найдено в rukava.be | — | 4 | `src/LO_SYN.mad:994`, `src/LO_SYN.mad:1573`, `src/LO_SYN.mad:1678`, `src/LO_SYN.mad:2999` |
+| Э64 | 510 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1418`, `src/LO_SYN.mad:1691` |
+| Э64 | 5501 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2561` |
+| Э64 | 5505 | не найдено в rukava.be | — | 5 | `src/LO_SYN.mad:1984`, `src/LO_SYN.mad:2446`, `src/LO_SYN.mad:2581`, `src/LO_SYN.mad:2800`, `src/LO_SYN.mad:2812` |
+| Э64 | 5517 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1549`, `src/LO_SYN.mad:2720` |
+| Э64 | 7504 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2756`, `src/LO_SYN.mad:2777` |
+| Э64 | 7515 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1382`, `src/LO_SYN.mad:1940` |
+| Э64 | 7517 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2003` |
+| Э64 | 7522 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1945` |
+| Э64 | 77440 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2878`, `src/LO_SYN.mad:3224` |
+| Э64 | 77524 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2231`, `src/LO_SYN.mad:2255` |
+| Э65 | 2040 | не найдено в rukava.be | — | 9 | `src/LO_SYN.mad:946`, `src/LO_SYN.mad:974`, `src/LO_SYN.mad:998`, `src/LO_SYN.mad:1453`, `src/LO_SYN.mad:1463`, `src/LO_SYN.mad:1964`, `src/LO_SYN.mad:2666`, `src/LO_SYN.mad:2933` … (ещё 1) |
+| Э65 | 2101 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3191` |
+| Э65 | 2110 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2849` |
+| Э65 | 2117 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1922` |
+| Э65 | 2120 | не найдено в rukava.be | — | 6 | `src/LO_SYN.mad:2095`, `src/LO_SYN.mad:2408`, `src/LO_SYN.mad:2524`, `src/LO_SYN.mad:3208`, `src/LO_SYN.mad:3245`, `src/LO_SYN.mad:3308` |
+| Э65 | 2151 | не найдено в rukava.be | — | 19 | `src/LO_SYN.mad:883`, `src/LO_SYN.mad:1237`, `src/LO_SYN.mad:1249`, `src/LO_SYN.mad:1300`, `src/LO_SYN.mad:1333`, `src/LO_SYN.mad:1378`, `src/LO_SYN.mad:1405`, `src/LO_SYN.mad:1447` … (ещё 11) |
+| Э65 | 70101 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2134`, `src/LO_SYN.mad:2827` |
+| Э66 | 4502 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1696`, `src/LO_SYN.mad:1763` |
+| Э66 | 4513 | не найдено в rukava.be | — | 5 | `src/LO_SYN.mad:2297`, `src/LO_SYN.mad:2305`, `src/LO_SYN.mad:2323`, `src/LO_SYN.mad:2647`, `src/LO_SYN.mad:3254` |
+| Э66 | 4515 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:1123`, `src/LO_SYN.mad:1171` |
+| Э66 | 4546 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1099` |
+| Э66 | 6151 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:3049`, `src/LO_SYN.mad:3145` |
+| Э66 | 74576 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:2192` |
+| Э66 | 76131 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:1054` |
+| Э67 | 117 | не найдено в rukava.be | — | 2 | `src/LO_SYN.mad:2036`, `src/LO_SYN.mad:2353` |
+| Э67 | 151 | не найдено в rukava.be | — | 6 | `src/LO_SYN.mad:1982`, `src/LO_SYN.mad:2444`, `src/LO_SYN.mad:2560`, `src/LO_SYN.mad:2579`, `src/LO_SYN.mad:2798`, `src/LO_SYN.mad:2810` |
+| Э67 | 440 | не найдено в rukava.be | — | 5 | `src/LO_SYN.mad:1130`, `src/LO_SYN.mad:1178`, `src/LO_SYN.mad:1219`, `src/LO_SYN.mad:3079`, `src/LO_SYN.mad:3100` |
+| Э70 | 14 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:803` |
+| Э70 | 3110 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3639` |
+| Э70 | 4026 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3696` |
+| Э70 | 4072 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3750` |
+| Э70 | 4311 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3771` |
+| Э70 | 71000 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3399` |
+| Э70 | 71101 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3447` |
+| Э70 | 71326 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3540` |
+| Э70 | 71405 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3567` |
+| Э70 | 74021 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3681` |
+| Э70 | 74075 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3756` |
+| Э70 | 74312 | не найдено в rukava.be | — | 1 | `src/LO_SYN.mad:3774` |

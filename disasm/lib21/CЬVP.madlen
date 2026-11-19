@@ -1,0 +1,7 @@
+CЬVP    :,NAME, NEW DTRAN
+ BЬVP    :,SUBP,
+ 15,XTS,dunno
+ ,ASN,64-3
+ 15,STX,dunno
+ ,UJ,BЬVP    
+ ,END,

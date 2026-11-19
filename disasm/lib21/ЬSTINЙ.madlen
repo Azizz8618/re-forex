@@ -1,0 +1,9 @@
+ЬSTINЙ  :,NAME, NEW DTRAN
+ ЬINTFЙ  :,SUBP,
+ ЬEXECЙ  :,SUBP,
+ 8,VTM,ЬINTFЙ  
+ ,ITA,8
+ ,UTC,
+ ,ATX,
+ ,LOG,6700000002200000
+ ,END,

@@ -1,0 +1,373 @@
+Дизассемблирование lib21.bin — 2026-11-19T12:14:02
+библиотека: /home/azizz/Yandex.Disk/besm6-new/DUBNA/BUILD/elements/lib21.bin
+dtran: /home/azizz/Yandex.Disk/dtran/dtran
+выход: /tmp/.private/azizz/opencode/re-forex/disasm/lib21
+модулей выбрано: 358 (в библиотеке 358)
+
+[  1/358] *DISPAR1     -> _DISPAR1.madlen            554 строк
+[  2/358] *DRIVER*     -> _DRIVER_.madlen            436 строк
+[  3/358] *ICHECK*     -> _ICHECK_.madlen              7 строк
+[  4/358] *NEWTEX*     -> _NEWTEX_.madlen            244 строк
+[  5/358] *SPEC        -> _SPEC.madlen                25 строк
+[  6/358] *ПEPФOPA     -> _ПEPФOPA.madlen             35 строк
+[  7/358] *ЬDP10Й*     -> _ЬDP10Й_.madlen            158 строк
+[  8/358] *ЬIOCBЙ*     -> _ЬIOCBЙ_.madlen            266 строк
+[  9/358] /NOOPT       -> #NOOPT.madlen               21 строк
+[ 10/358] A/OCTDEC     -> A#OCTDEC.madlen             48 строк
+[ 11/358] AHAЛИTИK     -> AHAЛИTИK.madlen             60 строк
+[ 12/358] ALGOL//      -> ALGOL##.madlen             188 строк
+[ 13/358] ALGOL/SI     -> ALGOL#SI.madlen             10 строк
+[ 14/358] ALPHA*       -> ALPHA_.madlen               44 строк
+[ 15/358] ANL          -> ANL.madlen                 288 строк
+[ 16/358] AVTOLOAD     -> AVTOLOAD.madlen            148 строк
+[ 17/358] B6TOPC       -> B6TOPC.madlen               92 строк
+[ 18/358] BBOДA0       -> BBOДA0.madlen              192 строк
+[ 19/358] BEGBATCH     -> BEGBATCH.madlen            291 строк
+[ 20/358] BEGCHEC*     -> BEGCHEC_.madlen            793 строк
+[ 21/358] BEGTPR       -> BEGTPR.madlen               11 строк
+[ 22/358] BEMSH*       -> BEMSH_.madlen              108 строк
+[ 23/358] BEMTOMON     -> BEMTOMON.madlen            502 строк
+[ 24/358] BIB          -> BIB.madlen                  37 строк
+[ 25/358] BIGTITLE     -> BIGTITLE.madlen            244 строк
+[ 26/358] BЬAN         -> BЬAN.madlen                 10 строк
+[ 27/358] BЬBIT        -> BЬBIT.madlen                44 строк
+[ 28/358] BЬCPAB       -> BЬCPAB.madlen                5 строк
+[ 29/358] BЬGE         -> BЬGE.madlen                  5 строк
+[ 30/358] BЬGT         -> BЬGT.madlen                  5 строк
+[ 31/358] BЬIN         -> BЬIN.madlen                  5 строк
+[ 32/358] BЬLE         -> BЬLE.madlen                  5 строк
+[ 33/358] BЬLT         -> BЬLT.madlen                  5 строк
+[ 34/358] BЬMV         -> BЬMV.madlen                  5 строк
+[ 35/358] BЬNA         -> BЬNA.madlen                 11 строк
+[ 36/358] BЬNE         -> BЬNE.madlen                  5 строк
+[ 37/358] BЬNO         -> BЬNO.madlen                 11 строк
+[ 38/358] BЬNT         -> BЬNT.madlen                 11 строк
+[ 39/358] BЬNX         -> BЬNX.madlen                 11 строк
+[ 40/358] BЬOR         -> BЬOR.madlen                 10 строк
+[ 41/358] BЬVP         -> BЬVP.madlen                 13 строк
+[ 42/358] BЬXR         -> BЬXR.madlen                 10 строк
+[ 43/358] BЬZB         -> BЬZB.madlen                  8 строк
+[ 44/358] CAT          -> CAT.madlen                  74 строк
+[ 45/358] CHE*NAM      -> CHE_NAM.madlen             899 строк
+[ 46/358] CHEKJOB*     -> CHEKJOB_.madlen            484 строк
+[ 47/358] CM*002       -> CM_002.madlen                7 строк
+[ 48/358] CM/COSY      -> CM#COSY.madlen             281 строк
+[ 49/358] CO*BATCH     -> CO_BATCH.madlen            444 строк
+[ 50/358] COLLECT      -> COLLECT.madlen             892 строк
+[ 51/358] COMTODRU     -> COMTODRU.madlen            259 строк
+[ 52/358] CRELIB       -> CRELIB.madlen              850 строк
+[ 53/358] CSF          -> CSF.madlen                 107 строк
+[ 54/358] CTIME        -> CTIME.madlen                40 строк
+[ 55/358] CUTCAT*      -> CUTCAT_.madlen              64 строк
+[ 56/358] CVARAC       -> CVARAC.madlen              720 строк
+[ 57/358] CЬCPAB       -> CЬCPAB.madlen                9 строк
+[ 58/358] CЬGE         -> CЬGE.madlen                  5 строк
+[ 59/358] CЬGT         -> CЬGT.madlen                  5 строк
+[ 60/358] CЬIN         -> CЬIN.madlen                  5 строк
+[ 61/358] CЬLE         -> CЬLE.madlen                  5 строк
+[ 62/358] CЬLT         -> CЬLT.madlen                  5 строк
+[ 63/358] CЬMV         -> CЬMV.madlen                  5 строк
+[ 64/358] CЬNE         -> CЬNE.madlen                  5 строк
+[ 65/358] CЬVP         -> CЬVP.madlen                  7 строк
+[ 66/358] CЬZB         -> CЬZB.madlen                  8 строк
+[ 67/358] DECODER      -> DECODER.madlen             308 строк
+[ 68/358] DIPOL*       -> DIPOL_.madlen               86 строк
+[ 69/358] DIR          -> DIR.madlen                 147 строк
+[ 70/358] DISPAC       -> DISPAC.madlen              294 строк
+[ 71/358] DISPACER     -> DISPACER.madlen             26 строк
+[ 72/358] DM*002       -> DM_002.madlen                7 строк
+[ 73/358] DMS/80       -> DMS#80.madlen              325 строк
+[ 74/358] DOS/IAE      -> DOS#IAE.madlen            2608 строк
+[ 75/358] DUMP         -> DUMP.madlen                 76 строк
+[ 76/358] DUMP1        -> DUMP1.madlen                34 строк
+[ 77/358] EDI          -> EDI.madlen                 147 строк
+[ 78/358] ENCODO       -> ENCODO.madlen               75 строк
+[ 79/358] EQUCRDL*     -> EQUCRDL_.madlen             67 строк
+[ 80/358] ERROR*P      -> ERROR_P.madlen               3 строк
+[ 81/358] EXCLUDE      -> EXCLUDE.madlen              10 строк
+[ 82/358] EXECUTE      -> EXECUTE.madlen             380 строк
+[ 83/358] F/LOOP       -> F#LOOP.madlen               30 строк
+[ 84/358] F/PT6        -> F#PT6.madlen                62 строк
+[ 85/358] F/TRACE      -> F#TRACE.madlen             320 строк
+[ 86/358] FINISHER     -> FINISHER.madlen            163 строк
+[ 87/358] FM*000       -> FM_000.madlen              154 строк
+[ 88/358] FM*002       -> FM_002.madlen                7 строк
+[ 89/358] FM*722       -> FM_722.madlen               37 строк
+[ 90/358] FOR          -> FOR.madlen                  50 строк
+[ 91/358] FOREWORD     -> FOREWORD.madlen            459 строк
+[ 92/358] FOREX*       -> FOREX_.madlen               88 строк
+[ 93/358] FORMAT       -> FORMAT.madlen               58 строк
+[ 94/358] FORTLIBR     -> FORTLIBR.madlen            118 строк
+[ 95/358] FT*REGIM     -> FT_REGIM.madlen            139 строк
+[ 96/358] FTNPRT       -> FTNPRT.madlen              351 строк
+[ 97/358] FTNPRT*      -> FTNPRT_.madlen             401 строк
+[ 98/358] GIV/MT       -> GIV#MT.madlen               79 строк
+[ 99/358] GIV/PG       -> GIV#PG.madlen               57 строк
+[100/358] GIVE100      -> GIVE100.madlen              29 строк
+[101/358] GIVETIME     -> GIVETIME.madlen            287 строк
+[102/358] GOST/ISO     -> GOST#ISO.madlen             26 строк
+[103/358] HAЗMЛ        -> HAЗMЛ.madlen                50 строк
+[104/358] IFIX         -> IFIX.madlen                 71 строк
+[105/358] IFZ          -> IFZ.madlen                  27 строк
+[106/358] INITMM       -> INITMM.madlen              376 строк
+[107/358] INPUT*       -> INPUT_.madlen               97 строк
+[108/358] INPUTCAL     -> INPUTCAL.madlen            159 строк
+[109/358] INTPRT2*     -> INTPRT2_.madlen             24 строк
+[110/358] IPCINI       -> IPCINI.madlen               54 строк
+[111/358] IPCSND       -> IPCSND.madlen              212 строк
+[112/358] ISOTOA0      -> ISOTOA0.madlen              67 строк
+[113/358] ITCONB       -> ITCONB.madlen               16 строк
+[114/358] ITM/ASS      -> ITM#ASS.madlen              70 строк
+[115/358] IЬANY        -> IЬANY.madlen                10 строк
+[116/358] IЬBIT        -> IЬBIT.madlen                46 строк
+[117/358] IЬCHAR       -> IЬCHAR.madlen                9 строк
+[118/358] KILLBLAN     -> KILLBLAN.madlen             11 строк
+[119/358] LDSHIFT      -> LDSHIFT.madlen              29 строк
+[120/358] LFSCAN       -> LFSCAN.madlen              597 строк
+[121/358] LFSYST       -> LFSYST.madlen              101 строк
+[122/358] LIBDRU*      -> LIBDRU_.madlen             522 строк
+[123/358] LIBLIST      -> LIBLIST.madlen               3 строк
+[124/358] LIBRARY/     -> LIBRARY#.madlen            130 строк
+[125/358] LIBTAP*      -> LIBTAP_.madlen             588 строк
+[126/358] LINE         -> LINE.madlen                112 строк
+[127/358] LINK/IPM     -> LINK#IPM.madlen            189 строк
+[128/358] LISP         -> LISP.madlen                 21 строк
+[129/358] LOADI*0      -> LOADI_0.madlen              38 строк
+[130/358] LOADLIBR     -> LOADLIBR.madlen            752 строк
+[131/358] LOADSTL      -> LOADSTL.madlen             116 строк
+[132/358] LTX          -> LTX.madlen                 536 строк
+[133/358] LUN          -> LUN.madlen                 363 строк
+[134/358] LUNTYP       -> LUNTYP.madlen               56 строк
+[135/358] LЬBIT        -> LЬBIT.madlen                 9 строк
+[136/358] M220         -> M220.madlen                304 строк
+[137/358] MAK/FILE     -> MAK#FILE.madlen             63 строк
+[138/358] MAKELIBT     -> MAKELIBT.madlen            836 строк
+[139/358] MAKFIL/      -> MAKFIL#.madlen              63 строк
+[140/358] MIXLOAD      -> MIXLOAD.madlen             781 строк
+[141/358] MT*BATCH     -> MT_BATCH.madlen            173 строк
+[142/358] MT*OБMEH     -> MT_OБMEH.madlen            181 строк
+[143/358] MT*PUNCH     -> MT_PUNCH.madlen            118 строк
+[144/358] MT/RED       -> MT#RED.madlen              191 строк
+[145/358] MT/БИБ       -> MT#БИБ.madlen              201 строк
+[146/358] N8T10S       -> N8T10S.madlen               70 строк
+[147/358] NTAPDISC     -> NTAPDISC.madlen            170 строк
+[148/358] NЬANY        -> NЬANY.madlen                10 строк
+[149/358] NЬUN         -> NЬUN.madlen                 16 строк
+[150/358] OC/БЭCM6     -> OC#БЭCM6.madlen            205 строк
+[151/358] OCATALOG     -> OCATALOG.madlen            235 строк
+[152/358] OLDMEMOR     -> OLDMEMOR.madlen            143 строк
+[153/358] ORDERS*      -> ORDERS_.madlen             124 строк
+[154/358] OVERLOAD     -> OVERLOAD.madlen            711 строк
+[155/358] PAGOFF       -> PAGOFF.madlen                6 строк
+[156/358] PANNO        -> PANNO.madlen                65 строк
+[157/358] PAS          -> PAS.madlen                  71 строк
+[158/358] PASCAL*      -> PASCAL_.madlen              12 строк
+[159/358] PCBEG        -> PCBEG.madlen               356 строк
+[160/358] PCPLOT       -> PCPLOT.madlen              699 строк
+[161/358] PECYPC       -> PECYPC.madlen               91 строк
+[162/358] PERCOSY      -> PERCOSY.madlen             202 строк
+[163/358] PERSTAND     -> PERSTAND.madlen             55 строк
+[164/358] POWER1       -> POWER1.madlen                8 строк
+[165/358] PRI*NEWS     -> PRI_NEWS.madlen            173 строк
+[166/358] PRINPART     -> PRINPART.madlen            246 строк
+[167/358] PRINT80      -> PRINT80.madlen             169 строк
+[168/358] PRINTA       -> PRINTA.madlen               39 строк
+[169/358] PRINTAM      -> PRINTAM.madlen              41 строк
+[170/358] PRINTFIL     -> PRINTFIL.madlen            540 строк
+[171/358] PRINTLIS     -> PRINTLIS.madlen             45 строк
+[172/358] PRINTR       -> PRINTR.madlen               90 строк
+[173/358] PRO          -> PRO.madlen                  79 строк
+[174/358] PRTLINE*     -> PRTLINE_.madlen             12 строк
+[175/358] PRTLOC*      -> PRTLOC_.madlen              49 строк
+[176/358] PT6          -> PT6.madlen                 119 строк
+[177/358] PTG          -> PTG.madlen                   4 строк
+[178/358] PUNCHA       -> PUNCHA.madlen               96 строк
+[179/358] PUNCHICT     -> PUNCHICT.madlen             83 строк
+[180/358] PUNM220      -> PUNM220.madlen             171 строк
+[181/358] PUNTEX/      -> PUNTEX#.madlen              86 строк
+[182/358] PUNTITLE     -> PUNTITLE.madlen             32 строк
+[183/358] PUNUPP       -> PUNUPP.madlen              139 строк
+[184/358] PUTFLAG*     -> PUTFLAG_.madlen             33 строк
+[185/358] READ1        -> READ1.madlen               103 строк
+[186/358] READ2        -> READ2.madlen               103 строк
+[187/358] RECATA*      -> RECATA_.madlen             210 строк
+[188/358] RECO         -> RECO.madlen                 52 строк
+[189/358] REDACT1      -> REDACT1.madlen             913 строк
+[190/358] REDACT2      -> REDACT2.madlen             198 строк
+[191/358] REDACTRM     -> REDACTRM.madlen            284 строк
+[192/358] SAVE*        -> SAVE_.madlen                58 строк
+[193/358] SAVELIST     -> SAVELIST.madlen             76 строк
+[194/358] SCHEND       -> SCHEND.madlen               48 строк
+[195/358] SDEC         -> SDEC.madlen                 60 строк
+[196/358] SE*10/US     -> SE_10#US.madlen             29 строк
+[197/358] SERWISM      -> SERWISM.madlen             150 строк
+[198/358] SETTRC       -> SETTRC.madlen               20 строк
+[199/358] STA*R        -> STA_R.madlen                38 строк
+[200/358] START/ЧK     -> START#ЧK.madlen             33 строк
+[201/358] STATICLO     -> STATICLO.madlen            461 строк
+[202/358] STATSUM      -> STATSUM.madlen              68 строк
+[203/358] SUMOVER      -> SUMOVER.madlen             542 строк
+[204/358] SWRITE       -> SWRITE.madlen               59 строк
+[205/358] SYS/BCB      -> SYS#BCB.madlen              24 строк
+[206/358] SYSLDL       -> SYSLDL.madlen               23 строк
+[207/358] T*CALL       -> T_CALL.madlen               44 строк
+[208/358] T*GOTO       -> T_GOTO.madlen               66 строк
+[209/358] T*INDX       -> T_INDX.madlen               78 строк
+[210/358] T*PARR       -> T_PARR.madlen               93 строк
+[211/358] T*RPL        -> T_RPL.madlen               225 строк
+[212/358] T1           -> T1.madlen                   48 строк
+[213/358] T2           -> T2.madlen                   26 строк
+[214/358] TAB/ITG*     -> TAB#ITG_.madlen            130 строк
+[215/358] TABLE2*      -> TABLE2_.madlen              98 строк
+[216/358] TAKECRD*     -> TAKECRD_.madlen             93 строк
+[217/358] TAKTAP       -> TAKTAP.madlen               33 строк
+[218/358] TCATALOG     -> TCATALOG.madlen           2666 строк
+[219/358] TELOUT*      -> TELOUT_.madlen               8 строк
+[220/358] TEMFILE      -> TEMFILE.madlen             335 строк
+[221/358] TEMP//       -> TEMP##.madlen               39 строк
+[222/358] TEMP/SI      -> TEMP#SI.madlen               7 строк
+[223/358] TEXISO       -> TEXISO.madlen               59 строк
+[224/358] TR*ON        -> TR_ON.madlen                 8 строк
+[225/358] TRANSFIO     -> TRANSFIO.madlen             37 строк
+[226/358] TRNS10T8     -> TRNS10T8.madlen             22 строк
+[227/358] TXTGST       -> TXTGST.madlen               75 строк
+[228/358] TYDA*        -> TYDA_.madlen                42 строк
+[229/358] TЬCALL       -> TЬCALL.madlen               56 строк
+[230/358] TЬGOTO       -> TЬGOTO.madlen               83 строк
+[231/358] TЬINDX       -> TЬINDX.madlen               91 строк
+[232/358] TЬPARR       -> TЬPARR.madlen              130 строк
+[233/358] TЬRPL        -> TЬRPL.madlen               167 строк
+[234/358] UPPFILE      -> UPPFILE.madlen             276 строк
+[235/358] VOБФOP       -> VOБФOP.madlen             1121 строк
+[236/358] VVERPR       -> VVERPR.madlen              789 строк
+[237/358] WAIT         -> WAIT.madlen                  7 строк
+[238/358] WRITE1       -> WRITE1.madlen               91 строк
+[239/358] XREF         -> XREF.madlen                944 строк
+[240/358] XTRANS       -> XTRANS.madlen               74 строк
+[241/358] YESLIS       -> YESLIS.madlen               15 строк
+[242/358] ZONE         -> ZONE.madlen                 63 строк
+[243/358] БEMШ/ПAP     -> БEMШ#ПAP.madlen              4 строк
+[244/358] ПEP6B81C     -> ПEP6B81C.madlen             39 строк
+[245/358] ПYЛЬC        -> ПYЛЬC.madlen               364 строк
+[246/358] Ь8Ь          -> Ь8Ь.madlen                   6 строк
+[247/358] ЬANYЬ        -> ЬANYЬ.madlen                43 строк
+[248/358] ЬBBЬ         -> ЬBBЬ.madlen                  4 строк
+[249/358] ЬBFLDЙ       -> ЬBFLDЙ.madlen              102 строк
+[250/358] ЬCLOSЙ       -> ЬCLOSЙ.madlen               50 строк
+[251/358] ЬCN48Ь       -> ЬCN48Ь.madlen                7 строк
+[252/358] ЬCPABЬ       -> ЬCPABЬ.madlen               80 строк
+[253/358] ЬCPARЙ       -> ЬCPARЙ.madlen              156 строк
+[254/358] ЬCRDЙ        -> ЬCRDЙ.madlen                20 строк
+[255/358] ЬCRЬ         -> ЬCRЬ.madlen                 66 строк
+[256/358] ЬDELSЙ       -> ЬDELSЙ.madlen               66 строк
+[257/358] ЬDESTЙ       -> ЬDESTЙ.madlen               12 строк
+[258/358] ЬDMU3Й       -> ЬDMU3Й.madlen              142 строк
+[259/358] ЬEXECЙ       -> ЬEXECЙ.madlen                6 строк
+[260/358] ЬGEЬ         -> ЬGEЬ.madlen                 13 строк
+[261/358] ЬGTЬ         -> ЬGTЬ.madlen                 13 строк
+[262/358] ЬIF2AЙ       -> ЬIF2AЙ.madlen              141 строк
+[263/358] ЬIF2BЙ       -> ЬIF2BЙ.madlen              114 строк
+[264/358] ЬIF2DЙ       -> ЬIF2DЙ.madlen               86 строк
+[265/358] ЬIF2IЙ       -> ЬIF2IЙ.madlen               88 строк
+[266/358] ЬIF2LЙ       -> ЬIF2LЙ.madlen               71 строк
+[267/358] ЬIF2RЙ       -> ЬIF2RЙ.madlen               83 строк
+[268/358] ЬIF4AЙ       -> ЬIF4AЙ.madlen              274 строк
+[269/358] ЬIF4BЙ       -> ЬIF4BЙ.madlen              163 строк
+[270/358] ЬIF4CЙ       -> ЬIF4CЙ.madlen              185 строк
+[271/358] ЬIF4DЙ       -> ЬIF4DЙ.madlen              119 строк
+[272/358] ЬIF4IЙ       -> ЬIF4IЙ.madlen               82 строк
+[273/358] ЬIF4LЙ       -> ЬIF4LЙ.madlen               81 строк
+[274/358] ЬIF4RЙ       -> ЬIF4RЙ.madlen               93 строк
+[275/358] ЬIFAЙ        -> ЬIFAЙ.madlen                85 строк
+[276/358] ЬIFBЙ        -> ЬIFBЙ.madlen               185 строк
+[277/358] ЬIFDЙ        -> ЬIFDЙ.madlen               366 строк
+[278/358] ЬIFIЙ        -> ЬIFIЙ.madlen               162 строк
+[279/358] ЬIFLЙ        -> ЬIFLЙ.madlen               175 строк
+[280/358] ЬIFRЙ        -> ЬIFRЙ.madlen               374 строк
+[281/358] ЬINERЙ       -> ЬINERЙ.madlen               65 строк
+[282/358] ЬINI1Й       -> ЬINI1Й.madlen              138 строк
+[283/358] ЬINI2Й       -> ЬINI2Й.madlen              101 строк
+[284/358] ЬINIFЙ       -> ЬINIFЙ.madlen               91 строк
+[285/358] ЬINLDЙ       -> ЬINLDЙ.madlen               29 строк
+[286/358] ЬINO2Й       -> ЬINO2Й.madlen               95 строк
+[287/358] ЬINOFЙ       -> ЬINOFЙ.madlen              137 строк
+[288/358] ЬINQFЙ       -> ЬINQFЙ.madlen              144 строк
+[289/358] ЬINQUЙ       -> ЬINQUЙ.madlen               83 строк
+[290/358] ЬINRЙ        -> ЬINRЙ.madlen               142 строк
+[291/358] ЬINЬ         -> ЬINЬ.madlen                 82 строк
+[292/358] ЬIUBЙ        -> ЬIUBЙ.madlen               161 строк
+[293/358] ЬIUCЙ        -> ЬIUCЙ.madlen               169 строк
+[294/358] ЬIUWЙ        -> ЬIUWЙ.madlen               134 строк
+[295/358] ЬLDPRЙ       -> ЬLDPRЙ.madlen              355 строк
+[296/358] ЬLEЬ         -> ЬLEЬ.madlen                 13 строк
+[297/358] ЬLIBCЬ       -> ЬLIBCЬ.madlen                6 строк
+[298/358] ЬLTЬ         -> ЬLTЬ.madlen                 13 строк
+[299/358] ЬMP10Й       -> ЬMP10Й.madlen               85 строк
+[300/358] ЬMV8Ь        -> ЬMV8Ь.madlen                 7 строк
+[301/358] ЬMVЬ         -> ЬMVЬ.madlen                  6 строк
+[302/358] ЬNEXTЙ       -> ЬNEXTЙ.madlen               88 строк
+[303/358] ЬNEЬ         -> ЬNEЬ.madlen                 12 строк
+[304/358] ЬOBITЙ       -> ЬOBITЙ.madlen               57 строк
+[305/358] ЬOF2AЙ       -> ЬOF2AЙ.madlen               89 строк
+[306/358] ЬOF2BЙ       -> ЬOF2BЙ.madlen              123 строк
+[307/358] ЬOF2DЙ       -> ЬOF2DЙ.madlen              100 строк
+[308/358] ЬOF2IЙ       -> ЬOF2IЙ.madlen              115 строк
+[309/358] ЬOF2LЙ       -> ЬOF2LЙ.madlen              113 строк
+[310/358] ЬOF2RЙ       -> ЬOF2RЙ.madlen              135 строк
+[311/358] ЬOF4AЙ       -> ЬOF4AЙ.madlen              104 строк
+[312/358] ЬOF4BЙ       -> ЬOF4BЙ.madlen              210 строк
+[313/358] ЬOF4CЙ       -> ЬOF4CЙ.madlen              146 строк
+[314/358] ЬOFAЙ        -> ЬOFAЙ.madlen                88 строк
+[315/358] ЬOFBЙ        -> ЬOFBЙ.madlen               129 строк
+[316/358] ЬOFDЙ        -> ЬOFDЙ.madlen               322 строк
+[317/358] ЬOFGЙ        -> ЬOFGЙ.madlen               136 строк
+[318/358] ЬOFIЙ        -> ЬOFIЙ.madlen               297 строк
+[319/358] ЬONRЙ        -> ЬONRЙ.madlen               132 строк
+[320/358] ЬOPNDЙ       -> ЬOPNDЙ.madlen               86 строк
+[321/358] ЬOPNЙ        -> ЬOPNЙ.madlen               311 строк
+[322/358] ЬOSTAЙ       -> ЬOSTAЙ.madlen              422 строк
+[323/358] ЬOUBЙ        -> ЬOUBЙ.madlen               121 строк
+[324/358] ЬOUCЙ        -> ЬOUCЙ.madlen               127 строк
+[325/358] ЬOUWЙ        -> ЬOUWЙ.madlen               190 строк
+[326/358] ЬPRINЙ       -> ЬPRINЙ.madlen               28 строк
+[327/358] ЬPUNCЙ       -> ЬPUNCЙ.madlen               29 строк
+[328/358] ЬPUNЙ        -> ЬPUNЙ.madlen                 4 строк
+[329/358] ЬQACCЙ       -> ЬQACCЙ.madlen               53 строк
+[330/358] ЬQBLNЙ       -> ЬQBLNЙ.madlen               73 строк
+[331/358] ЬQDIRЙ       -> ЬQDIRЙ.madlen               91 строк
+[332/358] ЬQEXЙ        -> ЬQEXЙ.madlen                23 строк
+[333/358] ЬQFMTЙ       -> ЬQFMTЙ.madlen              153 строк
+[334/358] ЬQFMЙ        -> ЬQFMЙ.madlen                75 строк
+[335/358] ЬQFNЙ        -> ЬQFNЙ.madlen               186 строк
+[336/358] ЬQNMDЙ       -> ЬQNMDЙ.madlen               23 строк
+[337/358] ЬQNRЙ        -> ЬQNRЙ.madlen                17 строк
+[338/358] ЬQNUMЙ       -> ЬQNUMЙ.madlen               23 строк
+[339/358] ЬQODЙ        -> ЬQODЙ.madlen                23 строк
+[340/358] ЬQRCLЙ       -> ЬQRCLЙ.madlen               31 строк
+[341/358] ЬQSEQЙ       -> ЬQSEQЙ.madlen              125 строк
+[342/358] ЬREADЙ       -> ЬREADЙ.madlen               33 строк
+[343/358] ЬRWENЙ       -> ЬRWENЙ.madlen                4 строк
+[344/358] ЬRWNDЙ       -> ЬRWNDЙ.madlen               32 строк
+[345/358] ЬSTINЙ       -> ЬSTINЙ.madlen                9 строк
+[346/358] ЬTRFMЙ       -> ЬTRFMЙ.madlen               63 строк
+[347/358] ЬTRMFЙ       -> ЬTRMFЙ.madlen              491 строк
+[348/358] ЬTRMЙ        -> ЬTRMЙ.madlen                67 строк
+[349/358] ЬTRUЬ        -> ЬTRUЬ.madlen                 3 строк
+[350/358] ЬTSLNЙ       -> ЬTSLNЙ.madlen               59 строк
+[351/358] ЬUNITЙ       -> ЬUNITЙ.madlen               83 строк
+[352/358] ЬUPREЙ       -> ЬUPREЙ.madlen              101 строк
+[353/358] ЬVTODЙ       -> ЬVTODЙ.madlen              116 строк
+[354/358] ЬVTOПЙ       -> ЬVTOПЙ.madlen               38 строк
+[355/358] ЬZZЬ         -> ЬZZЬ.madlen                  4 строк
+[356/358] ЬЗПЬ         -> ЬЗПЬ.madlen                  8 строк
+[357/358] ЬЦ0Ь         -> ЬЦ0Ь.madlen                  3 строк
+[358/358] ЭKCTPA/1     -> ЭKCTPA#1.madlen             41 строк
+
+=== СВОДКА ===
+обработано модулей:        358
+с непустым листингом:      358
+с пустым выводом / ошибкой:0
+средний размер листинга:   154.1 строк
+мин / макс строк:          3 / 2666
+
+Модулей с пустым выводом или ошибкой dtran: нет

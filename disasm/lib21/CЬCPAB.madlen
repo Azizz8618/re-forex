@@ -1,0 +1,9 @@
+CЬCPAB  :,NAME, NEW DTRAN
+ ЬCPABЬ  :,SUBP,
+ ,ASN,64-3
+ 15,XTS,dunno
+ ,ASN,64-3
+ 15,STX,dunno
+ 14,VTM,1
+ ,UJ,ЬCPABЬ  
+ ,END,

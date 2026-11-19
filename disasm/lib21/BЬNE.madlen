@@ -1,0 +1,5 @@
+BЬNE    :,NAME, NEW DTRAN
+ BЬCPAB  :,SUBP,
+ 12,VJM,BЬCPAB  
+ 6,UJ,
+ ,END,

@@ -1,0 +1,12 @@
+ЬNEЬ    :,NAME, NEW DTRAN
+ ЬCMЬ    :,SUBP,
+ ЬCPABЬ  :,SUBP,
+ *0000B:8,VTM,ЬCMЬ    
+ 14,VJM,ЬCPABЬ  
+ ,ATX,
+ ,ATX,2
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ ,END,

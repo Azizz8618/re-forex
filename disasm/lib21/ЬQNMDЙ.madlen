@@ -1,0 +1,23 @@
+ЬQNMDЙ  :,NAME, NEW DTRAN
+ *ЬIOCBЙ*:,LC,34
+ 7,MTJ,8
+ 9,VJM,*0006B
+ 7,XTA,dunno
+ ,WTC,*0012B
+ ,ATX,
+ ,ATX,
+ ,STI,
+ ,STI,13
+ ,STI,7
+ ,NTR,6
+ 13,UJ,
+ ,ATX,
+ *0006B:7,VTM,50010B
+ 7,STX,dunno
+ ,ITS,8
+ ,ITS,13
+ ,ITS,
+ 9,UJ,
+ ,LOG,20000000000000
+ *0012B:,BSS,1
+ ,END,

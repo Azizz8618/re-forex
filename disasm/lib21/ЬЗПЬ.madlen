@@ -1,0 +1,8 @@
+ЬЗПЬ    :,NAME, NEW DTRAN
+ *0000B:10,ATX,
+ 13,UJ,
+ 10,AEX,
+ 15,AAX,dunno
+ 10,AEX,
+ ,UJ,*0000B
+ ,END,

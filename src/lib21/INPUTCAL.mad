@@ -1,0 +1,181 @@
+С******************************************************************************
+С* INPUTCAL — ввод/калибровка
+С* Аннотированный МАДЛЕН-текст (субагент «системная группа», библиотека 21).
+С* ПРОИСХОЖДЕНИЕ: libra211.l21:17488-17628; исходный модуль INPUTCAL.
+С* СВЕРКА: disasm/lib21/INPUTCAL.madlen (dtran).
+С* ИМЕНОВАНИЕ: метки/EQU <=6 символов, уникальные первые 6; полные имена —
+С*   в комментариях `; (POLN: ...)` и в include/lib21/<MODULE>.xref.md.
+С* ЛИТЕРАЛЫ: все числовые/текстовые литералы вынесены в ,EQU, ниже.
+С******************************************************************************
+
+С ---- КОНСТАНТЫ И ЛИТЕРАЛЫ (,EQU,) ----
+AYC039 ,EQU,502B                        ; роль: символический эквивалент из исходника; S1:17551  ; (POLN: A ГYC)
+FLN038 ,EQU,75B                         ; роль: символический эквивалент из исходника; S1:17549  ; (POLN: FL/ND70)
+EDC004 ,EQU,1                           ; роль: десятичная константа/сдвиг; S1:17495  ; (POLN: DEC_1)
+EDC005 ,EQU,168                         ; роль: десятичная константа/сдвиг; S1:17499  ; (POLN: DEC_168)
+EDC006 ,EQU,4                           ; роль: десятичная константа/сдвиг; S1:17501  ; (POLN: DEC_4)
+EDC007 ,EQU,3                           ; роль: десятичная константа/сдвиг; S1:17503  ; (POLN: DEC_3)
+EDC008 ,EQU,2                           ; роль: десятичная константа/сдвиг; S1:17508  ; (POLN: DEC_2)
+EDC009 ,EQU,5                           ; роль: десятичная константа/сдвиг; S1:17513  ; (POLN: DEC_5)
+EDC010 ,EQU,57                          ; роль: десятичная константа/сдвиг; S1:17518  ; (POLN: DEC_57)
+EDC011 ,EQU,12                          ; роль: десятичная константа/сдвиг; S1:17519  ; (POLN: DEC_12)
+EDC012 ,EQU,13                          ; роль: десятичная константа/сдвиг; S1:17523  ; (POLN: DEC_13)
+EDC013 ,EQU,128                         ; роль: десятичная константа/сдвиг; S1:17524  ; (POLN: DEC_128)
+EDC014 ,EQU,4096                        ; роль: десятичная константа/сдвиг; S1:17534  ; (POLN: DEC_4096)
+EDC015 ,EQU,1024                        ; роль: десятичная константа/сдвиг; S1:17536  ; (POLN: DEC_1024)
+EDC016 ,EQU,14                          ; роль: десятичная константа/сдвиг; S1:17556  ; (POLN: DEC_14)
+EDC017 ,EQU,64                          ; роль: десятичная константа/сдвиг; S1:17575  ; (POLN: DEC_64)
+EDC018 ,EQU,42                          ; роль: десятичная константа/сдвиг; S1:17575  ; (POLN: DEC_42)
+EOC018 ,EQU,546B                        ; роль: восьмеричная константа; S1:17578  ; (POLN: OCT_546)
+EDC019 ,EQU,24                          ; роль: десятичная константа/сдвиг; S1:17579  ; (POLN: DEC_24)
+EDC020 ,EQU,11                          ; роль: десятичная константа/сдвиг; S1:17580  ; (POLN: DEC_11)
+ETX020 ,EQU,=77                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17597  ; (POLN: LITERAL__77)
+ETX021 ,EQU,=1 000 000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17601  ; (POLN: LITERAL__1_000_000)
+ETX022 ,EQU,=7700 0000                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17604  ; (POLN: LITERAL__7700_0000)
+EOC022 ,EQU,70100B                      ; роль: восьмеричная константа; S1:17606  ; (POLN: OCT_70100)
+EOC023 ,EQU,120B                        ; роль: восьмеричная константа; S1:17606  ; (POLN: OCT_120)
+EDC023 ,EQU,33                          ; роль: десятичная константа/сдвиг; S1:17609  ; (POLN: DEC_33)
+ETX023 ,EQU,=1777                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:17620  ; (POLN: LITERAL__1777)
+С ---- конец блока констант ----
+
+С ---- ТЕЛО МОДУЛЯ ----
+INP001: NAME  ; (POLN: INPUTCAL) ; S1:17488
+С
+С******   ГOЛOBHAЯ ПPOГPAMMA
+С         MOHИTOPHOЙ ЗAДAЧИ BBOДA
+С
+C,, . .....   CBЯЗKИ C MOHИTOPOM  ; S1:17493
+ERR002: LC,BLOCK,FLGEX*  ; (POLN: ERROFLG*) ; S1:17494
+WOR003: LC,EDC004 . объявление длины/COMMON  ; (POLN: WORINF*) ; S1:17495
+CHK004: LC,EDC004 . объявление длины/COMMON  ; (POLN: CHKWORD*) ; S1:17496
+C,, . .....   OCHOBHЫE ИHФOPM.БЛOKИ  ; S1:17497
+CAR005: LC,BLOCK,  ; (POLN: *CARDS) ; S1:17498
+CONT,(EDC005)  ; S1:17499
+COD006: LC,BLOCK,  ; (POLN: *CODES) ; S1:17500
+CONT,(EDC006)  ; S1:17501
+SPC007: LC,BLOCK,  ; (POLN: *SPC CMN) ; S1:17502
+CONT,(EDC007)  ; S1:17503
+ADR008: LC,BLOCK,  ; (POLN: *ADRPROC) ; S1:17504
+CONT,PROC R,PROC W  ; S1:17505
+ERR009: LC,BLOCK,  ; (POLN: *ERRORS) ; S1:17506
+CONT,FL BLER  ; S1:17507
+CONT,(EDC008)  ; S1:17508
+CONT,*ER/TEX,(EDC004)  ; S1:17509
+CONT,*ER/BIN  ; S1:17510
+CONT,*ER/CM,*ER/COS  ; S1:17511
+INF010: LC,BLOCK,(EDC004)  ; (POLN: INF/BA) ; S1:17512
+CONT,T/NAM(EDC009)  ; S1:17513
+CONT,N/LAB  ; S1:17514
+H011: LC,EDC004 . объявление длины/COMMON  ; (POLN: Д H З) ; S1:17515
+MAT012: LC,EDC004 . объявление длины/COMMON  ; (POLN: MATINFEX) ; S1:17516
+MTF013: LC,EDC004 . объявление длины/COMMON  ; (POLN: MT/FLAG) ; S1:17517
+DEC014: LC,EDC010 . объявление длины/COMMON  ; (POLN: *DECLARA) ; S1:17518
+MON015: LC,EDC011 . PARAMT*  ; (POLN: *MONCRD*) ; S1:17519
+STA016: LC,EDC004 . ---"---  ; (POLN: STARSTA) ; S1:17520
+OUT017: LC,EDC004 . ---"---  ; (POLN: OUT*OUT) ; S1:17521
+MIS018: LC,EDC007 . ---"---  ; (POLN: MIST10*) ; S1:17522
+FLA019: LC,EDC012 . CHEKJOB*  ; (POLN: *FLAG*) ; S1:17523
+ORD020: LC,EDC013 . ---"---  ; (POLN: *ORDEN) ; S1:17524
+C,, . .....   ЭKOHOMИЯ ПAMЯTИ  ; S1:17525
+CHE021: SUBP  ; (POLN: CHEKJOB*) ; S1:17526
+CHE022: SUBP  ; (POLN: CHE*NAM) ; S1:17527
+MTP023: SUBP  ; (POLN: MT*PUNCH) ; S1:17528
+MTB024: SUBP  ; (POLN: MT*BATCH) ; S1:17529
+COB025: SUBP  ; (POLN: CO*BATCH) ; S1:17530
+TAB026: SUBP  ; (POLN: TABLE2*) ; S1:17531
+PRI027: SUBP  ; (POLN: PRINT8) ; S1:17532
+C,, . .....   БYФEP ЗAПИCИ, PAБ.ПOЛE REDACT  ; S1:17533
+BUF028: PC,EDC014 . длина памяти  ; (POLN: BUFFER) ; S1:17534
+C,, . .....   БYФEP ЧTEHИЯ , KATAЛOГ  ; S1:17535
+PAG029: PC,BLOCK,BUF(EDC015),CAT(EDC015)  ; (POLN: *PAGES) ; S1:17536
+C,, . .....   П/П PAБOTЫ C ПOTOKOM И MT  ; S1:17537
+BEG030: SUBP  ; (POLN: BEGBATCH) ; S1:17538
+CON031: SUBP  ; (POLN: CONBATCH) ; S1:17539
+RED032: SUBP  ; (POLN: REDACTRM) ; S1:17540
+N76033: B,BLOCK,  ; (POLN: *760) ; S1:17541
+CONT,A/ИПД  ; S1:17542
+CONT,A/ИПK . *ИПK  ; S1:17543
+N1034: BLOCK,XNFM(EDC008),XNFB  ; (POLN: *1) ; S1:17544
+TAK035: SUBP  ; (POLN: TAKECRD*) ; S1:17545
+INI036: SUBP  ; (POLN: INITTAKE) ; S1:17546
+C,, . .....   ПOДПPOГPAMMA ЧTEHИЯ П/K ДЛЯ HД-70  ; S1:17547
+ND7037: SUBP  ; (POLN: ND70READ) ; S1:17548
+C,, . .....   CBЯЗKИ C ДИCПETЧEPOM  ; S1:17550
+C,, . .......  ; S1:17552
+C,, . .....   YCTAHOBKA CTAHД.PEЖИMA  ; S1:17553
+С         ДЛЯ INPUT* (ЧTEHИE,ЗAПИCЬ)
+14,VTM,TAK035 . AДPEC  ; S1:17555
+ITA,EDC016 . ПPOЦEДYPЫ  ; S1:17556
+ATX,PROC W . ЗAПИCИ KAPTЫ  ; S1:17557
+CALL,INI036 . EE HACTPOЙKA  ; S1:17558
+XTA . ЧTEHИE KAPTЫ  ; S1:17559
+ATX,PROC R . ПO ЭKCTPAKOДY  ; S1:17560
+DIS040: 4,IFSEQ,D,ND70  ; (POLN: DISP) ; S1:17561
+14,VTM,ND7037 . установка индексного регистра  ; S1:17562
+ITA,EDC016 . взятие из стека в индексный регистр  ; S1:17563
+ATX,PROC R . запись с модификатором  ; S1:17564
+UJ,INP . переход/возврат  ; S1:17565
+C,, . .....  ; S1:17566
+DIS041: IFSEQ,D,DD**  ; (POLN: DISP) ; S1:17567
+С                          .BAPЯГOB
+С----------------------------------------
+С      ПPOБA HA ПOTOK B ДД78 (ДYБHA)
+С----------------------------------------
+*65,AYC039  ; S1:17572 . Э65 502 = НЕ НАЙДЕНО в rukava.be
+ATI,EDC012 . запись в индексный регистр  ; S1:17573
+13,*65,  ; S1:17574
+ASN,EDC017+EDC018  ; S1:17575
+ATX,ДHЗ . запись с модификатором  ; S1:17576
+ATI,EDC012 . запись в индексный регистр  ; S1:17577
+*65,EOC018  ; S1:17578 . Э65 546 = НЕ НАЙДЕНО в rukava.be
+ASN,EDC017+EDC019  ; S1:17579
+ATI,EDC020 . AINFEX  ; S1:17580
+13,UTC, . сравнение/переход  ; S1:17581
+11,*65,  ; S1:17582
+ATX,MAT012 . запись с модификатором  ; S1:17583
+*65,A/ИПД  ; S1:17584 . Э65 A = НЕ НАЙДЕНО в rukava.be
+ATI,EDC012 . запись в индексный регистр  ; S1:17585
+13,*65,XNFM  ; S1:17586 . Э65 XNFM = НЕ НАЙДЕНО в rukava.be
+NTR,EDC007  ; S1:17587
+X-A,ДHЗ  ; S1:17588
+U1A,INP  ; S1:17589
+15,ATX, . запись с модификатором  ; S1:17590
+*65,A/ИПK  ; S1:17591 . Э65 A = НЕ НАЙДЕНО в rukava.be
+ATI,EDC012 . запись в индексный регистр  ; S1:17592
+15,WTC,  ; S1:17593
+13,*65,  ; S1:17594
+ATX,INFBA . запись с модификатором  ; S1:17595
+ASN,EDC017+EDC019  ; S1:17596
+AAX,ETX020 . N BB  ; S1:17597
+ATX,INF010 . HET ПOTOKA  ; S1:17598
+U1A,BAT042  ; S1:17599
+XTA,INFBA . считывание в аккумулятор  ; S1:17600
+AAX,ETX021  ; S1:17601
+UZA,INP . C П/K  ; S1:17602
+AEX,INFBA  ; S1:17603
+AAX,ETX022 . N ЛAБ.  ; S1:17604
+ATX,MTF013 . запись с модификатором  ; S1:17605
+FUN,EOC022 + EOC023 . NAME  ; S1:17606
+U1A,*+2  ; S1:17607
+XTA,MAT012 . считывание в аккумулятор  ; S1:17608
+ASN,EDC017+EDC023 . N ЗOHЫ  ; S1:17609
+UZA,INP . переход при =0  ; S1:17610
+13,VTM,C CALL . установка индексного регистра  ; S1:17611
+UJ,RED032 . переход/возврат  ; S1:17612
+С---
+BAT042: BSS . ЗAДAЧA C Ф.BBOДA  ; (POLN: BATCH) ; S1:17614
+XTA,INFBA . считывание в аккумулятор  ; S1:17615
+AAX,ETX021  ; S1:17616
+UZA,GBA043 . HE OT MT  ; S1:17617
+UTC,MAT012 . сравнение/переход  ; S1:17618
+XTA . считывание в аккумулятор  ; S1:17619
+AAX,ETX023  ; S1:17620
+UZA,GBA043 . CTPAHHO...  ; S1:17621
+CALL,RED032 . OФOPMИM PASS  ; S1:17622
+GBA043: BSS . зарезервированная область  ; (POLN: GBATCH) ; S1:17623
+14,VTM,CON031 . установка индексного регистра  ; S1:17624
+ITA,EDC016 . взятие из стека в индексный регистр  ; S1:17625
+ATX,PROC R . ПП ЧTEHИЯ "OB"  ; S1:17626
+13,VJM,BEG030 . вызов через индексный регистр  ; S1:17627
+DIS044: ENDIF  ; (POLN: DISP) ; S1:17628
+С ---- конец модуля INPUTCAL ----

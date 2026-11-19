@@ -1,0 +1,10 @@
+ЛИБИОТЕКА 21: /home/azizz/Yandex.Disk/besm6-new/DUBNA/BUILD/elements/lib21.bin
+  слов: 211968; каталог: 601; объектов: 358
+  sha256: fa34cac9b4a96660ca9babf02f7a2231ca9209581882c343d6afd5a3a94b1161
+  dtran-листингов: 358
+  аннотированных файлов: 90; имён: 3072
+  modules.csv: 358 строк
+ЗАПИСАНО: /tmp/.private/azizz/opencode/re-forex/docs/lib21/03-crossrefs.md (657 строк)
+
+ВНЕШНИХ СИМВОЛОВ: 401
+НАРУШЕНИЙ 6-СИМВОЛЬНОГО ПРАВИЛА: 0 long / 0 collisions

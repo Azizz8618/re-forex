@@ -1,5 +1,5 @@
 === glissade / reconstructed FOREX from PERSO 0o2300 ===
-date      : 2026-11-19T09:09:36Z
+date      : 2026-11-19T09:46:38Z
 dispak    : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
 image     : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
 etalon    : /usr/local/share/besm6/2348
@@ -23,8 +23,8 @@ raw bytes : 30910 (gold 31920)
   4   -1.30818495
   5   -1.50960208
 --- full normalized diff (gold / fact) ---
---- /tmp/.private/azizz/glissade-forex.OnR4Uy/gold.norm	2026-11-19 12:09:36.577954118 +0300
-+++ /tmp/.private/azizz/glissade-forex.OnR4Uy/output.norm	2026-11-19 12:09:36.575954096 +0300
+--- /tmp/.private/azizz/glissade-forex.KTkkDP/gold.norm	2026-11-19 12:46:38.176715783 +0300
++++ /tmp/.private/azizz/glissade-forex.KTkkDP/output.norm	2026-11-19 12:46:38.175715771 +0300
 @@ -8,13 +8,13 @@
  
  

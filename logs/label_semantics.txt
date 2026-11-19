@@ -1,0 +1,427 @@
+ПРОВЕРКА СЕМАНТИКИ ИМЁН: src/*.mad + src/lib21/*.mad
+ФАЙЛ                         |  АВТО |  TEXT | ОКТАЛ+ | ДЛИННЫХ | КОЛЛИЗИЙ
+----------------------------------------------------------------------------
+src/FOREX_CORE.mad           |     0 |     0 |      0 |       0 |        0
+src/FOREX_DECODER_DISASM.mad |     0 |     0 |      0 |       0 |        0
+src/FOREX_RUNTIME.mad        |     6 |     0 |      0 |       0 |        0
+src/FOREX_RUNTIME_DISASM.mad |     0 |     0 |      0 |       0 |        0
+src/LO_GEN.mad               |     0 |     0 |      0 |       0 |        0
+src/LO_SYN.mad               |     0 |     0 |      0 |       0 |        0
+src/lib21/BEMSH_.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/CAT.mad            |     0 |     0 |      0 |       0 |        0
+src/lib21/CHEKJOB_.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/CRELIB.mad         |     0 |     0 |      1 |       0 |        0
+src/lib21/DECODER.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/DISPAC.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/EXECUTE.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/F#PT6.mad          |     7 |     0 |      0 |       0 |        0
+src/lib21/FOR.mad            |     6 |     0 |      0 |       0 |        0
+src/lib21/FOREX_.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/FORMAT.mad         |     6 |     0 |      0 |       0 |        0
+src/lib21/FORTLIBR.mad       |    26 |     0 |      0 |       0 |        0
+src/lib21/FTNPRT.mad         |    38 |     0 |      0 |       0 |        0
+src/lib21/FTNPRT_.mad        |    46 |     0 |      0 |       0 |        0
+src/lib21/FT_REGIM.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/GIV#PG.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/INPUTCAL.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/INPUT_.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/LFSCAN.mad         |    85 |     0 |      0 |       0 |        0
+src/lib21/LIBDRU_.mad        |     3 |     0 |      0 |       0 |        0
+src/lib21/LIBRARY_.mad       |     2 |     0 |      0 |       0 |        0
+src/lib21/LIBTAP_.mad        |     3 |     0 |      0 |       0 |        0
+src/lib21/LINK#IPM.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/LOADLIBR.mad       |     1 |     0 |      0 |       0 |        0
+src/lib21/LUNTYP.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/MAKELIBT.mad       |     8 |     0 |      0 |       0 |        0
+src/lib21/OCATALOG.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/OVERLOAD.mad       |     2 |     0 |      0 |       0 |        0
+src/lib21/PRINT80.mad        |     1 |     0 |      0 |       0 |        0
+src/lib21/PRINTA.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/PRINTLIS.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/PRINTR.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/PT6.mad            |    21 |     0 |      0 |       0 |        0
+src/lib21/PUNCHA.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/PUNCHICT.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/READ1.mad          |     0 |     0 |      0 |       0 |        0
+src/lib21/READ2.mad          |     0 |     0 |      0 |       0 |        0
+src/lib21/SWRITE.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/TCATALOG.mad       |     9 |     0 |      0 |       0 |        0
+src/lib21/TEMFILE.mad        |     2 |     0 |      0 |       0 |        0
+src/lib21/TEMP##.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/TEMP#SI.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/WRITE1.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/XREF.mad           |    90 |     0 |      0 |       0 |        0
+src/lib21/ZONE.mad           |     0 |     0 |      0 |       0 |        0
+----------------------------------------------------------------------------
+ИТОГО                        |   362 |     0 |      1 |       0 |        0
+
+FAIL [AUTO]: 362
+  src/FOREX_RUNTIME.mad:239:L00023
+  src/FOREX_RUNTIME.mad:248:L00027
+  src/FOREX_RUNTIME.mad:270:L00042
+  src/FOREX_RUNTIME.mad:276:L00045
+  src/FOREX_RUNTIME.mad:282:L00050
+  src/FOREX_RUNTIME.mad:288:L00053
+  src/lib21/F#PT6.mad:71:W0000
+  src/lib21/F#PT6.mad:73:W0001
+  src/lib21/F#PT6.mad:85:W0007
+  src/lib21/F#PT6.mad:105:W0021
+  src/lib21/F#PT6.mad:111:W0024
+  src/lib21/F#PT6.mad:117:W0027
+  src/lib21/F#PT6.mad:121:W0033
+  src/lib21/FOR.mad:48:W0000
+  src/lib21/FOR.mad:62:W0007
+  src/lib21/FOR.mad:76:W0016
+  src/lib21/FOR.mad:78:W0017
+  src/lib21/FOR.mad:82:W0021
+  src/lib21/FOR.mad:86:W0023
+  src/lib21/FORMAT.mad:66:W0004
+  src/lib21/FORMAT.mad:68:W0005
+  src/lib21/FORMAT.mad:74:W0010
+  src/lib21/FORMAT.mad:78:W0012
+  src/lib21/FORMAT.mad:102:W0026
+  src/lib21/FORMAT.mad:104:W0027
+  src/lib21/FORTLIBR.mad:56:W0010
+  src/lib21/FORTLIBR.mad:63:W0014
+  src/lib21/FORTLIBR.mad:77:L00023
+  src/lib21/FORTLIBR.mad:85:L00027
+  src/lib21/FORTLIBR.mad:91:W0032
+  src/lib21/FORTLIBR.mad:99:W0036
+  src/lib21/FORTLIBR.mad:107:L00042
+  src/lib21/FORTLIBR.mad:113:L00045
+  src/lib21/FORTLIBR.mad:119:L00050
+  src/lib21/FORTLIBR.mad:125:L00053
+  src/lib21/FORTLIBR.mad:137:W0061
+  src/lib21/FORTLIBR.mad:138:W0062
+  src/lib21/FORTLIBR.mad:139:W0063
+  src/lib21/FORTLIBR.mad:140:W0064
+  src/lib21/FORTLIBR.mad:141:W0065
+  src/lib21/FORTLIBR.mad:142:W0066
+  src/lib21/FORTLIBR.mad:143:W0067
+  src/lib21/FORTLIBR.mad:144:W0070
+  src/lib21/FORTLIBR.mad:145:W0071
+  src/lib21/FORTLIBR.mad:146:W0072
+  src/lib21/FORTLIBR.mad:147:W0073
+  src/lib21/FORTLIBR.mad:148:W0074
+  src/lib21/FORTLIBR.mad:149:W0075
+  src/lib21/FORTLIBR.mad:151:W0077
+  src/lib21/FORTLIBR.mad:152:W0100
+  src/lib21/FORTLIBR.mad:153:W0101
+  src/lib21/FTNPRT.mad:123:W0001
+  src/lib21/FTNPRT.mad:133:W0006
+  src/lib21/FTNPRT.mad:140:W0011
+  src/lib21/FTNPRT.mad:142:W0012
+  src/lib21/FTNPRT.mad:151:W0017
+  src/lib21/FTNPRT.mad:161:W0023
+  src/lib21/FTNPRT.mad:167:W0026
+  src/lib21/FTNPRT.mad:177:W0033
+  src/lib21/FTNPRT.mad:189:W0041
+  src/lib21/FTNPRT.mad:222:W0060
+  src/lib21/FTNPRT.mad:236:W0066
+  src/lib21/FTNPRT.mad:246:W0072
+  src/lib21/FTNPRT.mad:254:W0076
+  src/lib21/FTNPRT.mad:270:W0106
+  src/lib21/FTNPRT.mad:276:W0111
+  src/lib21/FTNPRT.mad:289:W0120
+  src/lib21/FTNPRT.mad:295:W0123
+  src/lib21/FTNPRT.mad:315:W0135
+  src/lib21/FTNPRT.mad:323:W0140
+  src/lib21/FTNPRT.mad:341:W0151
+  src/lib21/FTNPRT.mad:355:W0160
+  src/lib21/FTNPRT.mad:368:W0167
+  src/lib21/FTNPRT.mad:372:W0171
+  src/lib21/FTNPRT.mad:376:W0173
+  src/lib21/FTNPRT.mad:382:W0176
+  src/lib21/FTNPRT.mad:390:W0202
+  src/lib21/FTNPRT.mad:396:W0205
+  src/lib21/FTNPRT.mad:402:W0210
+  src/lib21/FTNPRT.mad:416:W0217
+  src/lib21/FTNPRT.mad:420:W0221
+  src/lib21/FTNPRT.mad:422:W0222
+  src/lib21/FTNPRT.mad:432:W0227
+  src/lib21/FTNPRT.mad:438:W0232
+  src/lib21/FTNPRT.mad:446:W0236
+  src/lib21/FTNPRT.mad:456:W0243
+  src/lib21/FTNPRT.mad:458:W0245
+  src/lib21/FTNPRT.mad:459:W0246
+  src/lib21/FTNPRT.mad:462:W0251
+  src/lib21/FTNPRT_.mad:119:W0000
+  src/lib21/FTNPRT_.mad:121:W0001
+  src/lib21/FTNPRT_.mad:129:W0005
+  src/lib21/FTNPRT_.mad:143:W0013
+  src/lib21/FTNPRT_.mad:145:W0014
+  src/lib21/FTNPRT_.mad:147:W0015
+  src/lib21/FTNPRT_.mad:159:W0023
+  src/lib21/FTNPRT_.mad:166:W0026
+  src/lib21/FTNPRT_.mad:172:W0031
+  src/lib21/FTNPRT_.mad:183:W0037
+  src/lib21/FTNPRT_.mad:185:W0040
+  src/lib21/FTNPRT_.mad:197:W0046
+  src/lib21/FTNPRT_.mad:224:W0063
+  src/lib21/FTNPRT_.mad:238:W0072
+  src/lib21/FTNPRT_.mad:240:W0073
+  src/lib21/FTNPRT_.mad:242:W0074
+  src/lib21/FTNPRT_.mad:259:W0104
+  src/lib21/FTNPRT_.mad:283:W0116
+  src/lib21/FTNPRT_.mad:289:W0121
+  src/lib21/FTNPRT_.mad:326:W0140
+  src/lib21/FTNPRT_.mad:336:W0145
+  src/lib21/FTNPRT_.mad:340:W0147
+  src/lib21/FTNPRT_.mad:346:W0152
+  src/lib21/FTNPRT_.mad:380:W0173
+  src/lib21/FTNPRT_.mad:388:W0177
+  src/lib21/FTNPRT_.mad:394:W0202
+  src/lib21/FTNPRT_.mad:414:W0214
+  src/lib21/FTNPRT_.mad:424:W0221
+  src/lib21/FTNPRT_.mad:430:W0224
+  src/lib21/FTNPRT_.mad:434:W0226
+  src/lib21/FTNPRT_.mad:438:W0230
+  src/lib21/FTNPRT_.mad:450:W0234
+  src/lib21/FTNPRT_.mad:474:W0250
+  src/lib21/FTNPRT_.mad:488:W0257
+  src/lib21/FTNPRT_.mad:508:W0266
+  src/lib21/FTNPRT_.mad:520:W0274
+  src/lib21/FTNPRT_.mad:524:W0276
+  src/lib21/FTNPRT_.mad:530:W0301
+  src/lib21/FTNPRT_.mad:546:W0311
+  src/lib21/FTNPRT_.mad:549:W0314
+  src/lib21/FTNPRT_.mad:551:W0316
+  src/lib21/FTNPRT_.mad:553:W0320
+  src/lib21/FTNPRT_.mad:558:W0325
+  src/lib21/FTNPRT_.mad:560:W0327
+  src/lib21/FTNPRT_.mad:562:W0331
+  src/lib21/FTNPRT_.mad:576:W0344
+  src/lib21/LFSCAN.mad:116:W0003
+  src/lib21/LFSCAN.mad:138:W0016
+  src/lib21/LFSCAN.mad:140:W0017
+  src/lib21/LFSCAN.mad:149:W0024
+  src/lib21/LFSCAN.mad:151:W0025
+  src/lib21/LFSCAN.mad:153:W0026
+  src/lib21/LFSCAN.mad:162:W0033
+  src/lib21/LFSCAN.mad:174:W0041
+  src/lib21/LFSCAN.mad:181:W0045
+  src/lib21/LFSCAN.mad:183:W0046
+  src/lib21/LFSCAN.mad:200:W0057
+  src/lib21/LFSCAN.mad:202:W0060
+  src/lib21/LFSCAN.mad:204:W0061
+  src/lib21/LFSCAN.mad:239:W0103
+  src/lib21/LFSCAN.mad:251:W0112
+  src/lib21/LFSCAN.mad:323:W0157
+  src/lib21/LFSCAN.mad:335:W0165
+  src/lib21/LFSCAN.mad:343:W0174
+  src/lib21/LFSCAN.mad:349:W0177
+  src/lib21/LFSCAN.mad:357:W0203
+  src/lib21/LFSCAN.mad:370:W0212
+  src/lib21/LFSCAN.mad:380:W0223
+  src/lib21/LFSCAN.mad:391:W0231
+  src/lib21/LFSCAN.mad:408:W0242
+  src/lib21/LFSCAN.mad:419:W0250
+  src/lib21/LFSCAN.mad:429:W0255
+  src/lib21/LFSCAN.mad:430:W0256
+  src/lib21/LFSCAN.mad:440:W0267
+  src/lib21/LFSCAN.mad:455:W0277
+  src/lib21/LFSCAN.mad:475:W0311
+  src/lib21/LFSCAN.mad:477:W0312
+  src/lib21/LFSCAN.mad:512:W0334
+  src/lib21/LFSCAN.mad:519:W0342
+  src/lib21/LFSCAN.mad:530:W0350
+  src/lib21/LFSCAN.mad:541:W0356
+  src/lib21/LFSCAN.mad:546:W0361
+  src/lib21/LFSCAN.mad:553:W0365
+  src/lib21/LFSCAN.mad:563:W0373
+  src/lib21/LFSCAN.mad:577:W0403
+  src/lib21/LFSCAN.mad:578:W0404
+  src/lib21/LFSCAN.mad:581:W0407
+  src/lib21/LFSCAN.mad:590:W0420
+  src/lib21/LFSCAN.mad:591:W0421
+  src/lib21/LFSCAN.mad:599:W0430
+  src/lib21/LFSCAN.mad:600:W0431
+  src/lib21/LFSCAN.mad:604:W0435
+  src/lib21/LFSCAN.mad:605:W0436
+  src/lib21/LFSCAN.mad:606:W0437
+  src/lib21/LFSCAN.mad:610:W0527
+  src/lib21/LFSCAN.mad:612:W0532
+  src/lib21/LFSCAN.mad:614:W0533
+  src/lib21/LFSCAN.mad:616:W0546
+  src/lib21/LFSCAN.mad:618:W0553
+  src/lib21/LFSCAN.mad:620:W0577
+  src/lib21/LFSCAN.mad:622:W0440
+  src/lib21/LFSCAN.mad:623:W0441
+  src/lib21/LFSCAN.mad:624:W0442
+  src/lib21/LFSCAN.mad:625:W0443
+  src/lib21/LFSCAN.mad:626:W0444
+  src/lib21/LFSCAN.mad:627:W0445
+  src/lib21/LFSCAN.mad:628:W0446
+  src/lib21/LFSCAN.mad:629:W0447
+  src/lib21/LFSCAN.mad:630:W0450
+  src/lib21/LFSCAN.mad:631:W0451
+  src/lib21/LFSCAN.mad:632:W0452
+  src/lib21/LFSCAN.mad:633:W0453
+  src/lib21/LFSCAN.mad:635:W0455
+  src/lib21/LFSCAN.mad:636:W0456
+  src/lib21/LFSCAN.mad:637:W0457
+  src/lib21/LFSCAN.mad:638:W0460
+  src/lib21/LFSCAN.mad:639:W0461
+  src/lib21/LFSCAN.mad:640:W0462
+  src/lib21/LFSCAN.mad:641:W0463
+  src/lib21/LFSCAN.mad:657:W0503
+  src/lib21/LFSCAN.mad:659:W0505
+  src/lib21/LFSCAN.mad:660:W0506
+  src/lib21/LFSCAN.mad:667:W0515
+  src/lib21/LFSCAN.mad:669:W0517
+  src/lib21/LFSCAN.mad:670:W0520
+  src/lib21/LFSCAN.mad:671:W0521
+  src/lib21/LFSCAN.mad:672:W0522
+  src/lib21/LFSCAN.mad:673:W0523
+  src/lib21/LFSCAN.mad:674:W0524
+  src/lib21/LFSCAN.mad:675:W0525
+  src/lib21/LFSCAN.mad:676:W0526
+  src/lib21/LIBDRU_.mad:567:W00075
+  src/lib21/LIBDRU_.mad:568:W00076
+  src/lib21/LIBDRU_.mad:569:W00077
+  src/lib21/LIBRARY_.mad:170:W00023
+  src/lib21/LIBRARY_.mad:171:W00024
+  src/lib21/LIBTAP_.mad:642:W00083
+  src/lib21/LIBTAP_.mad:643:W00084
+  src/lib21/LIBTAP_.mad:644:W00085
+  src/lib21/LOADLIBR.mad:204:W6000
+  src/lib21/MAKELIBT.mad:746:L00076
+  src/lib21/MAKELIBT.mad:939:W00094
+  src/lib21/MAKELIBT.mad:941:W00095
+  src/lib21/MAKELIBT.mad:984:W00132
+  src/lib21/MAKELIBT.mad:985:W00133
+  src/lib21/MAKELIBT.mad:986:W00134
+  src/lib21/MAKELIBT.mad:987:W00135
+  src/lib21/MAKELIBT.mad:988:W00136
+  src/lib21/OVERLOAD.mad:541:TL1070
+  src/lib21/OVERLOAD.mad:570:TL6072
+  src/lib21/PRINT80.mad:249:W025
+  src/lib21/PT6.mad:77:W0007
+  src/lib21/PT6.mad:87:W0014
+  src/lib21/PT6.mad:101:W0023
+  src/lib21/PT6.mad:115:W0032
+  src/lib21/PT6.mad:123:W0036
+  src/lib21/PT6.mad:127:W0040
+  src/lib21/PT6.mad:131:W0042
+  src/lib21/PT6.mad:135:L00044
+  src/lib21/PT6.mad:149:W0053
+  src/lib21/PT6.mad:157:W0057
+  src/lib21/PT6.mad:161:L00061
+  src/lib21/PT6.mad:169:W0065
+  src/lib21/PT6.mad:170:W0066
+  src/lib21/PT6.mad:171:W0067
+  src/lib21/PT6.mad:172:W0070
+  src/lib21/PT6.mad:173:W0071
+  src/lib21/PT6.mad:174:W0072
+  src/lib21/PT6.mad:175:W0073
+  src/lib21/PT6.mad:186:W0106
+  src/lib21/PT6.mad:187:W0107
+  src/lib21/PT6.mad:188:W0110
+  src/lib21/TCATALOG.mad:793:AL3066
+  src/lib21/TCATALOG.mad:799:AL2067
+  src/lib21/TCATALOG.mad:1463:D2149
+  src/lib21/TCATALOG.mad:1465:D1150
+  src/lib21/TCATALOG.mad:2827:PL1295
+  src/lib21/TCATALOG.mad:2828:PL3296
+  src/lib21/TCATALOG.mad:2829:PL5297
+  src/lib21/TCATALOG.mad:2831:PL1298
+  src/lib21/TCATALOG.mad:2833:PL3299
+  src/lib21/TEMFILE.mad:190:L72010
+  src/lib21/TEMFILE.mad:443:W060
+  src/lib21/XREF.mad:220:W0001
+  src/lib21/XREF.mad:239:W0013
+  src/lib21/XREF.mad:247:W0020
+  src/lib21/XREF.mad:252:W0023
+  src/lib21/XREF.mad:269:W0034
+  src/lib21/XREF.mad:278:W0041
+  src/lib21/XREF.mad:285:W0045
+  src/lib21/XREF.mad:292:W0051
+  src/lib21/XREF.mad:293:W0052
+  src/lib21/XREF.mad:296:W0054
+  src/lib21/XREF.mad:299:W0056
+  src/lib21/XREF.mad:304:W0061
+  src/lib21/XREF.mad:316:W0067
+  src/lib21/XREF.mad:330:W0077
+  src/lib21/XREF.mad:351:W0113
+  src/lib21/XREF.mad:358:W0117
+  src/lib21/XREF.mad:363:W0122
+  src/lib21/XREF.mad:367:W0124
+  src/lib21/XREF.mad:407:W0154
+  src/lib21/XREF.mad:421:W0165
+  src/lib21/XREF.mad:454:W0207
+  src/lib21/XREF.mad:466:W0215
+  src/lib21/XREF.mad:481:W0226
+  src/lib21/XREF.mad:487:W0231
+  src/lib21/XREF.mad:488:W0232
+  src/lib21/XREF.mad:510:W0246
+  src/lib21/XREF.mad:543:W0270
+  src/lib21/XREF.mad:562:W0303
+  src/lib21/XREF.mad:563:W0304
+  src/lib21/XREF.mad:582:W0317
+  src/lib21/XREF.mad:583:W0320
+  src/lib21/XREF.mad:605:W0335
+  src/lib21/XREF.mad:612:W0341
+  src/lib21/XREF.mad:615:W0343
+  src/lib21/XREF.mad:619:W0345
+  src/lib21/XREF.mad:665:W0401
+  src/lib21/XREF.mad:670:W0404
+  src/lib21/XREF.mad:675:W0407
+  src/lib21/XREF.mad:680:W0412
+  src/lib21/XREF.mad:685:W0415
+  src/lib21/XREF.mad:696:W0423
+  src/lib21/XREF.mad:700:W0425
+  src/lib21/XREF.mad:710:W0433
+  src/lib21/XREF.mad:724:W0443
+  src/lib21/XREF.mad:728:W0446
+  src/lib21/XREF.mad:735:W0453
+  src/lib21/XREF.mad:747:W0463
+  src/lib21/XREF.mad:751:W0466
+  src/lib21/XREF.mad:757:W0471
+  src/lib21/XREF.mad:759:W0472
+  src/lib21/XREF.mad:761:W0473
+  src/lib21/XREF.mad:771:W0501
+  src/lib21/XREF.mad:784:W0510
+  src/lib21/XREF.mad:788:W0513
+  src/lib21/XREF.mad:789:W0514
+  src/lib21/XREF.mad:792:W0516
+  src/lib21/XREF.mad:795:W0520
+  src/lib21/XREF.mad:804:W0525
+  src/lib21/XREF.mad:806:W0527
+  src/lib21/XREF.mad:807:W0530
+  src/lib21/XREF.mad:810:W0532
+  src/lib21/XREF.mad:828:W0544
+  src/lib21/XREF.mad:830:W0546
+  src/lib21/XREF.mad:831:W0547
+  src/lib21/XREF.mad:833:W0550
+  src/lib21/XREF.mad:842:W0555
+  src/lib21/XREF.mad:852:W0563
+  src/lib21/XREF.mad:857:W0566
+  src/lib21/XREF.mad:870:W0575
+  src/lib21/XREF.mad:871:W0576
+  src/lib21/XREF.mad:879:W0602
+  src/lib21/XREF.mad:885:W0610
+  src/lib21/XREF.mad:886:W0611
+  src/lib21/XREF.mad:887:W0612
+  src/lib21/XREF.mad:898:W0621
+  src/lib21/XREF.mad:929:W0642
+  src/lib21/XREF.mad:933:W0645
+  src/lib21/XREF.mad:953:W0660
+  src/lib21/XREF.mad:958:W0663
+  src/lib21/XREF.mad:966:W0667
+  src/lib21/XREF.mad:981:W0677
+  src/lib21/XREF.mad:989:W0704
+  src/lib21/XREF.mad:993:W0706
+  src/lib21/XREF.mad:1003:W0713
+  src/lib21/XREF.mad:1006:W0715
+  src/lib21/XREF.mad:1012:W0720
+  src/lib21/XREF.mad:1024:W0726
+  src/lib21/XREF.mad:1025:W0727
+  src/lib21/XREF.mad:1039:W0737
+  src/lib21/XREF.mad:1050:W0746
+OK   [TEXT]: 0
+FAIL [ОКТАЛ+]: 1
+  src/lib21/CRELIB.mad:14:+21B
+OK   [ДЛИННЫХ]: 0
+OK   [КОЛЛИЗИЙ]: 0
+
+FAIL: нарушения семантики имён найдены (см. перечисления выше)

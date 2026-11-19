@@ -1,0 +1,7 @@
+CM*002  :,NAME, NEW DTRAN
+ FM*000  :,SUBP,
+ FC*002  :,SUBP,
+ 8,VTM,FC*002  
+ 9,VTM,1
+ ,UJ,FM*000  
+ ,END,

@@ -1,0 +1,461 @@
+================================================================================
+ СЕМАНТИЧЕСКОЕ ИМЕНОВАНИЕ МЕТОК И КОНСТАНТ: БИБЛИОТЕКА 21, FOREX-ГРУППА
+================================================================================
+
+Дата: 19.11.2026. Ветка: main.
+ОБЛАСТЬ: 18 модулей FOREX-группы библиотеки 21 (src/lib21/*.mad) + EXECUTE
+          (TEXT-константы по списку находок) — всего обработано 19 модулей.
+ПРАВИЛО: короткое имя <= 6 символов, первые 6 уникальны в файле;
+          полное имя (роль) вынесено в `; POLN:`; содержимое TEXT — в комментарий.
+СХЕМА КОРОТКОГО ИМЕНИ: семантический префикс по мнемонике/комментарию +
+          3 цифры исходного номера слова (документ docs/10-naming-conventions.md §6.2).
+
+ИТОГО: 323 авто-метки, 10 TEXT-констант, 1 восьмеричное смещение массива.
+  (321 метка W/L/D + 2 метки TL##### в OVERLOAD, выявленные строгой проверкой
+   tests/check-label-semantics.sh: TL1070 -> BF1070, TL6072 -> RD6072.)
+
+--------------------------------------------------------------------------------
+1. АВТО-МЕТКИ: БЫЛО -> СТАЛО (полное имя — в POLN)
+--------------------------------------------------------------------------------
+
+## FORMAT — 6 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W0004     IDX004   FMT_IDX_REG_LOAD_0004              W0004:12 ,  VTM,  VT7776 ; POLN: _STAR00004 S:21 . загрузить индексный регистр [
+  W0005     IRE005   FMT_IDX_READ_0005                  W0005:     ,ATI,  AI14 ; POLN: _STAR00005 S:23 . считать индексный регистр в акк
+  W0010     ADR010   FMT_ADDR_MOD_0010                  W0010:     ,UTC,   W0027 ; POLN: _STAR00010 S:29 . модификация адреса (индексная
+  W0012     WRA012   FMT_INDEXED_WRITE_0012             W0012:     ,STX, ; POLN: _STAR00012 S:33 . запись с индексацией [зпи]
+  W0026     JMP026   FMT_JUMP_0026                      W0026:     , UJ,  FT*003 ; POLN: _STAR00026 S:57 . безусловный переход [п]
+  W0027     CON027   FMT_CONST_0027                     W0027:,     LOG,  LG1000 LG0000. ; POLN: _STAR00027 S:59 . двоичная (LOG) конста
+
+## FORTLIBR — 26 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W0010     IDX010   FTL_IDX_REG_LOAD_0010              W0010:14 ,  VTM,   W0101 ; POLN: _STAR00010 S:21 . загрузить индексный регистр [
+  W0014     IDX014   FTL_IDX_REG_LOAD_0014              W0014:     ,ITS,  IT7 ; POLN: _STAR00014 S:28 . установка индексного регистра [у
+  L00023    IRE023   FTL_IDX_READ_0023                  L00023: 7 ,  XTA,   W0062    - W0061 ; POLN: L_STAR00023 S:42 . считать из памят
+  L00027    IRE027   FTL_IDX_READ_0027                  L00027: 7 ,  XTS,   W0063    - W0061 ; POLN: L_STAR00027 S:50 . считать адрес TE
+  W0032     MOD032   FTL_MOD_WRITE_0032                 W0032:     ,WTC,   W0077 ; POLN: _STAR00032 S:56 . записать модификатор [зм]
+  W0036     MOD036   FTL_MOD_WRITE_0036                 W0036:     ,WTC,   W0077 ; POLN: _STAR00036 S:64 . записать модификатор [зм]
+  L00042    ARI042   FTL_ARITH_0042                     L00042: 7 ,  ARX,   W0071    - W0061 ; POLN: L_STAR00042 S:72 . сдвиг/арифметиче
+  L00045    IRE045   FTL_IDX_READ_0045                  L00045: 7 ,  XTA,   W0072    - W0061 ; POLN: L_STAR00045 S:78 . считать из памят
+  L00050    IRE050   FTL_IDX_READ_0050                  L00050: 7 ,  XTA,   W0072    - W0061 ; POLN: L_STAR00050 S:84 . считать из памят
+  L00053    IRE053   FTL_IDX_READ_0053                  L00053: 7 ,  XTA,   W0065    - W0061 ; POLN: L_STAR00053 S:90 . считать из памят
+  W0061     CON061   FTL_CONST_0061                     W0061:,     LOG,  LG0000 LG0000. ; POLN: _STAR00061 S:102 . двоичная (LOG) конст
+  W0062     CON062   FTL_CONST_0062                     W0062:,     LOG,  LG0000 LG0000. ; POLN: _STAR00062 S:103 . двоичная (LOG) конст
+  W0063     CON063   FTL_CONST_0063                     W0063:,     LOG,  LG0000 LG0000. ; POLN: _STAR00063 S:104 . двоичная (LOG) конст
+  W0064     CON064   FTL_CONST_0064                     W0064:,     LOG,  LG0000 LG0000. ; POLN: _STAR00064 S:105 . двоичная (LOG) конст
+  W0065     CON065   FTL_CONST_0065                     W0065:,     LOG,  LG0000 LG0000. ; POLN: _STAR00065 S:106 . двоичная (LOG) конст
+  W0066     CON066   FTL_CONST_0066                     W0066:,     LOG,  LG0000 LG0000. ; POLN: _STAR00066 S:107 . двоичная (LOG) конст
+  W0067     CON067   FTL_CONST_0067                     W0067:,     LOG,  LG0010 LG0000. ; POLN: _STAR00067 S:108 . двоичная (LOG) конст
+  W0070     CON070   FTL_CONST_0070                     W0070:,     LOG,  LG0000 LG0000. ; POLN: _STAR00070 S:109 . двоичная (LOG) конст
+  W0071     CON071   FTL_CONST_0071                     W0071:,     LOG,  LG0000 LG0000. ; POLN: _STAR00071 S:110 . двоичная (LOG) конст
+  W0072     CON072   FTL_CONST_0072                     W0072:,     LOG,  LG0000 LG0000. ; POLN: _STAR00072 S:111 . двоичная (LOG) конст
+  W0073     CON073   FTL_CONST_0073                     W0073:,     LOG,  LG3777 LG7777. ; POLN: _STAR00073 S:112 . двоичная (LOG) конст
+  W0074     CON074   FTL_CONST_0074                     W0074:,     LOG,  LG0000 LG0000. ; POLN: _STAR00074 S:113 . двоичная (LOG) конст
+  W0075     CON075   FTL_CONST_0075                     W0075:,     LOG,  LG0000 LG0000. ; POLN: _STAR00075 S:114 . двоичная (LOG) конст
+  W0077     CON077   FTL_CONST_0077                     W0077:,     LOG,  LG0000 LG0000. ; POLN: _STAR00077 S:116 . двоичная (LOG) конст
+  W0100     CON100   FTL_CONST_0100                     W0100:,     LOG,  LG0000 LG0000. ; POLN: _STAR00100 S:117 . двоичная (LOG) конст
+  W0101     DAT101   FTL_WORD_0101                      W0101:, ISO    ,6HERROR ; POLN: _STAR00101 S:118 . ISO-константа
+
+## F#PT6 — 7 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W0000     REG000   PT6_MODE_0000                      W0000:     ,NTR,  NT3 ; POLN: _STAR00000 S:2 . установка режима/нормализация [нт
+  W0001     IDX001   PT6_IDX_REG_LOAD_0001              W0001:14 ,  ITS,  IS12 ; POLN: _STAR00001 S:4 . установка индексного регистра [у
+  W0007     CMP007   PT6_COMPARE_0007                   W0007:     ,ASN,  AS72 ; POLN: _STAR00007 S:16 . сравнение с константой [ср]
+  W0021     IRE021   PT6_IDX_READ_0021                  W0021:15 ,  XTA, ; POLN: _STAR00021 S:36 . считать из памяти в аккумулятор [сч]
+  W0024     INC024   PT6_IDX_INC_0024                   W0024:14 ,  UTM,  UT7777 ; POLN: _STAR00024 S:42 . увеличить индексный регистр [
+  W0027     CON027   PT6_CONST_0027                     W0027:,     LOG,  LG0000 LG0000. ; POLN: _STAR00027 S:48 . двоичная (LOG) конста
+  W0033     CON033   PT6_CONST_0033                     W0033:,     LOG,  LG1002 LG3066. ; POLN: _STAR00033 S:52 . двоичная (LOG) конста
+
+## FOR — 6 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W0000     IDX000   FOR_IDX_REG_LOAD_0000              W0000:11 ,  VTM,   W0000 ; POLN: _STAR00000 S:5 . загрузить индексный регистр [у
+  W0007     MOD007   FOR_MOD_WRITE_0007                 W0007:     ,WTC,   BSSA+ WC0001 ; POLN: _STAR00007 S:19 . записать модификатор [
+  W0016     IRE016   FOR_IDX_READ_0016                  W0016:11 ,  XTA,  XT23 ; POLN: _STAR00016 S:33 . считать из памяти в аккумулятор
+  W0017     IRE017   FOR_IDX_READ_0017                  W0017:     ,XTA, ; POLN: _STAR00017 S:35 . считать из памяти в аккумулятор [сч]
+  W0021     IRE021   FOR_IDX_READ_0021                  W0021:     ,XTA, ; POLN: _STAR00021 S:39 . считать из памяти в аккумулятор [сч]
+  W0023     CON023   FOR_CONST_0023                     W0023:,     LOG,  LG1002 LG3143. ; POLN: _STAR00023 S:43 . двоичная (LOG) конста
+
+## FTNPRT — 38 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W0001     ARI001   FTP_ARITH_0001                     W0001: 8 ,  ARX,  AR103 ; POLN: _STAR00001 S:6 . сдвиг/арифметическая операция с
+  W0006     JMP006   FTP_JUMP_0006                      W0006:     , UJ,   W0011 ; POLN: _STAR00006 S:16 . безусловный переход [п]
+  W0011     IDX011   FTP_IDX_REG_LOAD_0011              W0011:12 ,  VTM,  VT60 ; POLN: _STAR00011 S:22 . загрузить индексный регистр [уи
+  W0012     IRE012   FTP_IDX_READ_0012                  W0012:11 ,  XTA, ; POLN: _STAR00012 S:24 . считать из памяти в аккумулятор [сч]
+  W0017     WRA017   FTP_MEM_WRITE_0017                 W0017: 8 ,  ATX,  AT51 ; POLN: _STAR00017 S:33 . записать аккумулятор в память [
+  W0023     ARI023   FTP_ARITH_0023                     W0023: 8 ,  ARX,  AR106 ; POLN: _STAR00023 S:42 . сдвиг/арифметическая операция 
+  W0026     IRE026   FTP_IDX_READ_0026                  W0026:15 ,  XTA,  XT7777 ; POLN: _STAR00026 S:48 . считать из памяти в аккумулят
+  W0033     CMP033   FTP_COMPARE_0033                   W0033: 9 ,  ASN,  AS110 ; POLN: _STAR00033 S:58 . сравнение с константой [ср]
+  W0041     IRE041   FTP_IDX_READ_0041                  W0041:     ,ITA,  IT13 ; POLN: _STAR00041 S:70 . считать индексный регистр в акк
+  W0060     ARI060   FTP_ARITH_0060                     W0060: 8 ,  ARX,  AR104 ; POLN: _STAR00060 S:100 . сдвиг/арифметическая операция
+  W0066     ARI066   FTP_ARITH_0066                     W0066: 8 ,  ARX,  AR104 ; POLN: _STAR00066 S:113 . сдвиг/арифметическая операция
+  W0072     ARI072   FTP_ARITH_0072                     W0072: 8 ,  ARX,  AR103 ; POLN: _STAR00072 S:122 . сдвиг/арифметическая операция
+  W0076     WRA076   FTP_MEM_WRITE_0076                 W0076:15 ,  ATX, ; POLN: _STAR00076 S:130 . записать аккумулятор в память [зп]
+  W0106     ARI106   FTP_ARITH_0106                     W0106: 8 ,  ARX,  AR105 ; POLN: _STAR00106 S:145 . сдвиг/арифметическая операция
+  W0111     WRA111   FTP_MEM_WRITE_0111                 W0111: 8 ,  ATX,  AT46 ; POLN: _STAR00111 S:151 . записать аккумулятор в память 
+  W0120     IRE120   FTP_IDX_READ_0120                  W0120:15 ,  XTA,  XT7777 ; POLN: _STAR00120 S:164 . считать из памяти в аккумуля
+  W0123     IRE123   FTP_IDX_READ_0123                  W0123: 8 ,  XTA,  AT45 ; POLN: _STAR00123 S:170 . считать из памяти в аккумулято
+  W0135     IRE135   FTP_IDX_READ_0135                  W0135: 8 ,  XTA,  XT107 ; POLN: _STAR00135 S:190 . считать из памяти в аккумулят
+  W0140     ARI140   FTP_ARITH_0140                     W0140: 8 ,  ARX,  AR106 ; POLN: _STAR00140 S:197 . сдвиг/арифметическая операция
+  W0151     IDX151   FTP_IDX_REG_LOAD_0151              W0151:14 ,  VTM,  UT1 ; POLN: _STAR00151 S:215 . загрузить индексный регистр [уи
+  W0160     ARI160   FTP_ARITH_0160                     W0160: 8 ,  AOX,  AP116 ; POLN: _STAR00160 S:229 . арифметическая операция [ариф
+  W0167     IRE167   FTP_IDX_READ_0167                  W0167:     ,XTA, ; POLN: _STAR00167 S:242 . считать из памяти в аккумулятор [сч]
+  W0171     INC171   FTP_IDX_INC_0171                   W0171:11 ,  UTM,  UT1 ; POLN: _STAR00171 S:246 . увеличить индексный регистр [уи
+  W0173     IDX173   FTP_IDX_REG_LOAD_0173              W0173:     ,ITS,  UT8 ; POLN: _STAR00173 S:250 . установка индексного регистра [
+  W0176     IDX176   FTP_IDX_REG_LOAD_0176              W0176: 8 ,  VTM,   W0176 ; POLN: _STAR00176 S:256 . загрузить индексный регистр 
+  W0202     IRE202   FTP_IDX_READ_0202                  W0202:     ,ITA,  IS10 ; POLN: _STAR00202 S:264 . считать индексный регистр в ак
+  W0205     DAT205   FTP_WORD_0205                      W0205:14 ,  STI,  UT8 ; POLN: _STAR00205 S:270
+  W0210     IRE210   FTP_IDX_READ_0210                  W0210: 8 ,  XTA,  AT45 ; POLN: _STAR00210 S:276 . считать из памяти в аккумулято
+  W0217     REG217   FTP_MODE_0217                      W0217:     ,NTR,  VT22 ; POLN: _STAR00217 S:290 . установка режима/нормализация 
+  W0221     IRE221   FTP_IDX_READ_0221                  W0221: 8 ,  XTA,  AS110 ; POLN: _STAR00221 S:294 . считать из памяти в аккумулят
+  W0222     IRE222   FTP_IDX_READ_0222                  W0222: 8 ,  XTA,  AT45 ; POLN: _STAR00222 S:296 . считать из памяти в аккумулято
+  W0227     IRE227   FTP_IDX_READ_0227                  W0227: 8 ,  XTA,  XT107 ; POLN: _STAR00227 S:306 . считать из памяти в аккумулят
+  W0232     WRA232   FTP_MEM_WRITE_0232                 W0232: 8 ,  ATX,  AT46 ; POLN: _STAR00232 S:312 . записать аккумулятор в память 
+  W0236     IRE236   FTP_IDX_READ_0236                  W0236: 8 ,  XTA,  AT45 ; POLN: _STAR00236 S:320 . считать из памяти в аккумулято
+  W0243     CON243   FTP_CONST_0243                     W0243:,     LOG,  LG0000 LG0000. ; POLN: _STAR00243 S:330 . двоичная (LOG) конст
+  W0245     CON245   FTP_CONST_0245                     W0245:,     LOG,  LG1002 LG1002. ; POLN: _STAR00245 S:332 . двоичная (LOG) конст
+  W0246     CON246   FTP_CONST_0246                     W0246:,     LOG,  LG1002 LG1002. ; POLN: _STAR00246 S:333 . двоичная (LOG) конст
+  W0251     CON251   FTP_CONST_0251                     W0251:,     LOG,  LG1000 LG0000. ; POLN: _STAR00251 S:336 . двоичная (LOG) конст
+
+## FTNPRT_ — 46 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W0000     ADR000   FTQ_ADDR_MOD_0000                  W0000:     ,UTC,   W0331 ; POLN: _STAR00000 S:6 . модификация адреса (индексная 
+  W0001     IDX001   FTQ_IDX_REG_LOAD_0001              W0001:     ,ITS,  IS12 ; POLN: _STAR00001 S:8 . установка индексного регистра [у
+  W0005     IDX005   FTQ_IDX_REG_LOAD_0005              W0005: 7 ,  VTM,   W0005 ; POLN: _STAR00005 S:16 . загрузить индексный регистр [
+  W0013     IRE013   FTQ_IDX_READ_0013                  W0013:15 ,  XTA,  XT7777 ; POLN: _STAR00013 S:29 . считать из памяти в аккумулят
+  W0014     IDX014   FTQ_IDX_REG_LOAD_0014              W0014:12 ,  VTM,  VT60 ; POLN: _STAR00014 S:31 . загрузить индексный регистр [уи
+  W0015     IRE015   FTQ_IDX_READ_0015                  W0015:14 ,  XTA, ; POLN: _STAR00015 S:33 . считать из памяти в аккумулятор [сч]
+  W0023     IRE023   FTQ_IDX_READ_0023                  W0023:     ,XTA, ; POLN: _STAR00023 S:44 . считать из памяти в аккумулятор [сч]
+  W0026     WRA026   FTQ_MEM_WRITE_0026                 W0026: 7 ,  ATX,  AT306 ; POLN: _STAR00026 S:50 . записать аккумулятор в память 
+  W0031     IRE031   FTQ_IDX_READ_0031                  W0031:15 ,  XTA,  XT7777 ; POLN: _STAR00031 S:56 . считать из памяти в аккумулят
+  W0037     IDX037   FTQ_IDX_REG_LOAD_0037              W0037:12 ,  VTM,  VT60 ; POLN: _STAR00037 S:67 . загрузить индексный регистр [уи
+  W0040     IRE040   FTQ_IDX_READ_0040                  W0040:14 ,  XTA, ; POLN: _STAR00040 S:69 . считать из памяти в аккумулятор [сч]
+  W0046     IRE046   FTQ_IDX_READ_0046                  W0046:15 ,  XTA,  XT7777 ; POLN: _STAR00046 S:81 . считать из памяти в аккумулят
+  W0063     IRE063   FTQ_IDX_READ_0063                  W0063:15 ,  XTA,  XT7777 ; POLN: _STAR00063 S:107 . считать из памяти в аккумуля
+  W0072     ARI072   FTQ_ARITH_0072                     W0072: 7 ,  ARX,  AE311 ; POLN: _STAR00072 S:121 . сдвиг/арифметическая операция
+  W0073     SID073   FTQ_IDX_STORE_0073                 W0073:12 ,  VLM,   W0063 ; POLN: _STAR00073 S:123 . записать индексный регистр в
+  W0074     IRE074   FTQ_IDX_READ_0074                  W0074:15 ,  XTA, ; POLN: _STAR00074 S:125 . считать из памяти в аккумулятор [сч]
+  W0104     IRE104   FTQ_IDX_READ_0104                  W0104:15 ,  XTA,  XT7777 ; POLN: _STAR00104 S:141 . считать из памяти в аккумуля
+  W0116     INC116   FTQ_IDX_INC_0116                   W0116: 9 ,  UTM,  IS8 ; POLN: _STAR00116 S:163 . увеличить индексный регистр [уи
+  W0121     SID121   FTQ_IDX_STORE_0121                 W0121:14 ,  VLM,   W0116 ; POLN: _STAR00121 S:169 . записать индексный регистр в
+  W0140     WRA140   FTQ_MEM_WRITE_0140                 W0140: 7 ,  ATX,  AT305 ; POLN: _STAR00140 S:201 . записать аккумулятор в память
+  W0145     IRE145   FTQ_IDX_READ_0145                  W0145: 7 ,  XTA,  AT305 ; POLN: _STAR00145 S:211 . считать из памяти в аккумулят
+  W0147     IRE147   FTQ_IDX_READ_0147                  W0147:15 ,  XTA,  XT7777 ; POLN: _STAR00147 S:215 . считать из памяти в аккумуля
+  W0152     IRE152   FTQ_IDX_READ_0152                  W0152: 7 ,  XTA,  AT304 ; POLN: _STAR00152 S:221 . считать из памяти в аккумулят
+  W0173     WRA173   FTQ_MEM_WRITE_0173                 W0173: 7 ,  ATX,  AT305 ; POLN: _STAR00173 S:254 . записать аккумулятор в память
+  W0177     IRE177   FTQ_IDX_READ_0177                  W0177: 7 ,  XTA,  AT304 ; POLN: _STAR00177 S:262 . считать из памяти в аккумулят
+  W0202     IRE202   FTQ_IDX_READ_0202                  W0202: 7 ,  XTA,  XT335 ; POLN: _STAR00202 S:268 . считать из памяти в аккумулят
+  W0214     IRE214   FTQ_IDX_READ_0214                  W0214:     ,ITA,  IT14 ; POLN: _STAR00214 S:288 . считать индексный регистр в ак
+  W0221     IRE221   FTQ_IDX_READ_0221                  W0221:     ,ITA,  IT14 ; POLN: _STAR00221 S:298 . считать индексный регистр в ак
+  W0224     IDX224   FTQ_IDX_REG_LOAD_0224              W0224:14 ,  VTM,  VT60 ; POLN: _STAR00224 S:304 . загрузить индексный регистр [у
+  W0226     IDX226   FTQ_IDX_REG_LOAD_0226              W0226:12 ,  VTM, ; POLN: _STAR00226 S:308 . загрузить индексный регистр [уир]
+  W0230     INC230   FTQ_IDX_INC_0230                   W0230:12 ,  UTM,  NT2 ; POLN: _STAR00230 S:312 . увеличить индексный регистр [уи
+  W0234     IRE234   FTQ_IDX_READ_0234                  W0234:     ,ITA,  IT14 ; POLN: _STAR00234 S:322 . считать индексный регистр в ак
+  W0250     IRE250   FTQ_IDX_READ_0250                  W0250:14 ,  XTA, ; POLN: _STAR00250 S:346 . считать из памяти в аккумулятор [сч]
+  W0257     ADR257   FTQ_ADDR_MOD_0257                  W0257:     ,UTC,  *LINE ; POLN: _STAR00257 S:360 . модификация адреса (индексная
+  W0266     LOG266   FTQ_LOGIC_0266                     W0266: 7 ,  AEX,  AE311 ; POLN: _STAR00266 S:377 . логическая операция с памятью
+  W0274     REG274   FTQ_MODE_0274                      W0274:     ,NTR,  CN22 ; POLN: _STAR00274 S:389 . установка режима/нормализация 
+  W0276     INC276   FTQ_IDX_INC_0276                   W0276:14 ,  UTM,  UT7777 ; POLN: _STAR00276 S:393 . увеличить индексный регистр 
+  W0301     IRE301   FTQ_IDX_READ_0301                  W0301:     ,ITA,  IS8 ; POLN: _STAR00301 S:399 . считать индексный регистр в акк
+  W0311     CON311   FTQ_CONST_0311                     W0311:,     LOG,  LG0000 LG0000. ; POLN: _STAR00311 S:415 . двоичная (LOG) конст
+  W0314     CON314   FTQ_CONST_0314                     W0314:,     LOG,  LG0000 LG0000. ; POLN: _STAR00314 S:418 . двоичная (LOG) конст
+  W0316     CON316   FTQ_CONST_0316                     W0316:,     LOG,  LG0000 LG0000. ; POLN: _STAR00316 S:420 . двоичная (LOG) конст
+  W0320     CON320   FTQ_CONST_0320                     W0320:,     LOG,  LG0000 LG0000. ; POLN: _STAR00320 S:422 . двоичная (LOG) конст
+  W0325     CON325   FTQ_CONST_0325                     W0325:,     LOG,  LG1002 LG1002. ; POLN: _STAR00325 S:427 . двоичная (LOG) конст
+  W0327     CON327   FTQ_CONST_0327                     W0327:,     LOG,  LG1422 LG1002. ; POLN: _STAR00327 S:429 . двоичная (LOG) конст
+  W0331     CON331   FTQ_CONST_0331                     W0331:,     LOG,  LG6400 LG0000. ; POLN: _STAR00331 S:431 . двоичная (LOG) конст
+  W0344     CON344   FTQ_CONST_0344                     W0344:,     LOG,  LG1002 LG1002. ; POLN: _STAR00344 S:444 . двоичная (LOG) конст
+
+## LFSCAN — 85 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W0003     IDX003   LFS_IDX_REG_LOAD_0003              W0003:14,VTM,W0441 ; POLN: _STAR0003B S:24 . загрузить индексный регистр [уир]
+  W0016     IRE016   LFS_IDX_READ_0016                  W0016:7,XTA,XT12 ; POLN: _STAR0016B S:46 . считать из памяти в аккумулятор [сч]
+  W0017     WRA017   LFS_MEM_WRITE_0017                 W0017:7,ATX,XT12 ; POLN: _STAR0017B S:48 . записать аккумулятор в память [зп]
+  W0024     IRE024   LFS_IDX_READ_0024                  W0024:7,XTA,-LC3 ; POLN: _STAR0024B S:57 . считать из памяти в аккумулятор [сч]
+  W0025     IRE025   LFS_IDX_READ_0025                  W0025:7,XTA,XT12 ; POLN: _STAR0025B S:59 . считать из памяти в аккумулятор [сч]
+  W0026     WRA026   LFS_MEM_WRITE_0026                 W0026:7,ATX,XT12 ; POLN: _STAR0026B S:61 . записать аккумулятор в память [зп]
+  W0033     IRE033   LFS_IDX_READ_0033                  W0033:7,XTA,-CN8 ; POLN: _STAR0033B S:70 . считать из памяти в аккумулятор [сч]
+  W0041     IRE041   LFS_IDX_READ_0041                  W0041:7,XTA,XTN10 ; POLN: _STAR0041B S:82 . считать из памяти в аккумулятор [сч]
+  W0045     IRE045   LFS_IDX_READ_0045                  W0045:7,XTA,XT12 ; POLN: _STAR0045B S:89 . считать из памяти в аккумулятор [сч]
+  W0046     WRA046   LFS_MEM_WRITE_0046                 W0046:7,ATX,XT12 ; POLN: _STAR0046B S:91 . записать аккумулятор в память [зп]
+  W0057     IRE057   LFS_IDX_READ_0057                  W0057:7,XTA,-LC3 ; POLN: _STAR0057B S:108 . считать из памяти в аккумулятор [сч]
+  W0060     IRE060   LFS_IDX_READ_0060                  W0060:7,XTA,XT12 ; POLN: _STAR0060B S:110 . считать из памяти в аккумулятор [сч]
+  W0061     WRA061   LFS_MEM_WRITE_0061                 W0061:7,ATX,XT12 ; POLN: _STAR0061B S:112 . записать аккумулятор в память [зп]
+  W0103     IDX103   LFS_IDX_REG_LOAD_0103              W0103:14,VTM,W0420 ; POLN: _STAR0103B S:147 . загрузить индексный регистр [уир]
+  W0112     IDX112   LFS_IDX_REG_LOAD_0112              W0112:14,VTM,W0430 ; POLN: _STAR0112B S:159 . загрузить индексный регистр [уир]
+  W0157     IRE157   LFS_IDX_READ_0157                  W0157:7,XTA,-LC3 ; POLN: _STAR0157B S:231 . считать из памяти в аккумулятор [сч]
+  W0165     MOD165   LFS_MOD_WRITE_0165                 W0165:,WTC,W0447 ; POLN: _STAR0165B S:243 . записать модификатор [зм]
+  W0174     IRE174   LFS_IDX_READ_0174                  W0174:7,XTA,AT20 ; POLN: _STAR0174B S:251 . считать из памяти в аккумулятор [сч]
+  W0177     MOD177   LFS_MOD_WRITE_0177                 W0177:,WTC,W0460 ; POLN: _STAR0177B S:257 . записать модификатор [зм]
+  W0203     MOD203   LFS_MOD_WRITE_0203                 W0203:,WTC,W0460 ; POLN: _STAR0203B S:265 . записать модификатор [зм]
+  W0212     MOD212   LFS_MOD_WRITE_0212                 W0212:,WTC,W0460 ; POLN: _STAR0212B S:278 . записать модификатор [зм]
+  W0223     MOD223   LFS_MOD_WRITE_0223                 W0223:,WTC,W0460 ; POLN: _STAR0223B S:288 . записать модификатор [зм]
+  W0231     MOD231   LFS_MOD_WRITE_0231                 W0231:,WTC,W0460 ; POLN: _STAR0231B S:299 . записать модификатор [зм]
+  W0242     MOD242   LFS_MOD_WRITE_0242                 W0242:,WTC,W0460 ; POLN: _STAR0242B S:316 . записать модификатор [зм]
+  W0250     MOD250   LFS_MOD_WRITE_0250                 W0250:,WTC,W0460 ; POLN: _STAR0250B S:327 . записать модификатор [зм]
+  W0255     JMP255   LFS_JUMP_0255                      W0255:,UJ,W0277 ; POLN: _STAR0255B S:337 . безусловный переход [п]
+  W0256     MOD256   LFS_MOD_WRITE_0256                 W0256:,WTC,W0460 ; POLN: _STAR0256B S:338 . записать модификатор [зм]
+  W0267     MOD267   LFS_MOD_WRITE_0267                 W0267:,WTC,W0460 ; POLN: _STAR0267B S:348 . записать модификатор [зм]
+  W0277     IRE277   LFS_IDX_READ_0277                  W0277:7,XTA,XT10 ; POLN: _STAR0277B S:363 . считать из памяти в аккумулятор [сч]
+  W0311     IRE311   LFS_IDX_READ_0311                  W0311:7,XTA,XT12 ; POLN: _STAR0311B S:383 . считать из памяти в аккумулятор [сч]
+  W0312     WRA312   LFS_MEM_WRITE_0312                 W0312:7,ATX,XT12 ; POLN: _STAR0312B S:385 . записать аккумулятор в память [зп]
+  W0334     MOD334   LFS_MOD_WRITE_0334                 W0334:,WTC,W0453 ; POLN: _STAR0334B S:420 . записать модификатор [зм]
+  W0342     IDX342   LFS_IDX_REG_LOAD_0342              W0342:14,VTM,W0517 ; POLN: _STAR0342B S:427 . загрузить индексный регистр [уир]
+  W0350     IDX350   LFS_IDX_REG_LOAD_0350              W0350:14,VTM,W0517 ; POLN: _STAR0350B S:438 . загрузить индексный регистр [уир]
+  W0356     IDX356   LFS_IDX_REG_LOAD_0356              W0356:14,VTM,W0523 ; POLN: _STAR0356B S:449 . загрузить индексный регистр [уир]
+  W0361     IDX361   LFS_IDX_REG_LOAD_0361              W0361:14,VTM,W0517 ; POLN: _STAR0361B S:454 . загрузить индексный регистр [уир]
+  W0365     IDX365   LFS_IDX_REG_LOAD_0365              W0365:14,VTM,W0517 ; POLN: _STAR0365B S:461 . загрузить индексный регистр [уир]
+  W0373     IRE373   LFS_IDX_READ_0373                  W0373:7,XTA,AT21 ; POLN: _STAR0373B S:471 . считать из памяти в аккумулятор [сч]
+  W0403     JMP403   LFS_JUMP_0403                      W0403:,UJ,FSRET ; POLN: _STAR0403B S:485 . безусловный переход [п]
+  W0404     DAT404   LFS_WORD_0404                      W0404:,ISO, 6H('47'  ** . 050 047 040 040 052 052 ; POLN: _STAR0404B S:486 . ISO
+  W0407     DAT407   LFS_WORD_0407                      W0407:,ISO, 6H(1X,CN20 . 050 061 130 054 062 060 ; POLN: _STAR0407B S:489 . ISO-
+  W0420     CON420   LFS_CONST_0420                     W0420:,INT,CN51 ; POLN: _STAR0420B S:498 . целая константа
+  W0421     CON421   LFS_CONST_0421                     W0421:,INT,CN5 ; POLN: _STAR0421B S:499 . целая константа
+  W0430     CON430   LFS_CONST_0430                     W0430:,INT,CN0 ; POLN: _STAR0430B S:506 . целая константа
+  W0431     CON431   LFS_CONST_0431                     W0431:,INT,CN8 ; POLN: _STAR0431B S:507 . целая константа
+  W0435     CON435   LFS_CONST_0435                     W0435:,INT,VT1 ; POLN: _STAR0435B S:511 . целая константа
+  W0436     CON436   LFS_CONST_0436                     W0436:,INT,NT2 ; POLN: _STAR0436B S:512 . целая константа
+  W0437     CON437   LFS_CONST_0437                     W0437:,INT,CN72 ; POLN: _STAR0437B S:513 . целая константа
+  W0527     BUF527   LFS_BUFFER_0527                    W0527:,BSS,LC3 ; POLN: _STAR0527B S:515 . зарезервировать слово (BSS)
+  W0532     BUF532   LFS_BUFFER_0532                    W0532:,BSS,VT1 ; POLN: _STAR0532B S:516 . зарезервировать слово (BSS)
+  W0533     BUF533   LFS_BUFFER_0533                    W0533:,BSS,BS11 ; POLN: _STAR0533B S:517 . зарезервировать слово (BSS)
+  W0546     BUF546   LFS_BUFFER_0546                    W0546:,BSS,CN5 ; POLN: _STAR0546B S:518 . зарезервировать слово (BSS)
+  W0553     BUF553   LFS_BUFFER_0553                    W0553:,BSS,CN20 ; POLN: _STAR0553B S:519 . зарезервировать слово (BSS)
+  W0577     BUF577   LFS_BUFFER_0577                    W0577:,BSS,VT1 ; POLN: _STAR0577B S:520 . зарезервировать слово (BSS)
+  W0440     DAT440   LFS_WORD_0440                      W0440:,ISO, 6HJOB    . 112 117 102 040 040 040 ; POLN: _STAR0440B S:522 . ISO-ко
+  W0441     DAT441   LFS_WORD_0441                      W0441:,ISO, 6HMASTER . 115 101 123 124 105 122 ; POLN: _STAR0441B S:523 . ISO-ко
+  W0442     DAT442   LFS_WORD_0442                      W0442:,ISO, 6HLIMIT  . 114 111 115 111 124 040 ; POLN: _STAR0442B S:524 . ISO-ко
+  W0443     DAT443   LFS_WORD_0443                      W0443:,ISO, 6HFILE   . 106 111 114 105 040 040 ; POLN: _STAR0443B S:525 . ISO-ко
+  W0444     DAT444   LFS_WORD_0444                      W0444:,ISO, 6HDATE   . 104 101 124 105 040 040 ; POLN: _STAR0444B S:526 . ISO-ко
+  W0445     DAT445   LFS_WORD_0445                      W0445:,ISO, 6HUNIT   . 125 116 111 124 040 040 ; POLN: _STAR0445B S:527 . ISO-ко
+  W0446     DAT446   LFS_WORD_0446                      W0446:,ISO, 6HREGIM  . 122 105 107 111 115 040 ; POLN: _STAR0446B S:528 . ISO-ко
+  W0447     DAT447   LFS_WORD_0447                      W0447:,ISO, 6HNAMFR  . 116 101 115 106 122 040 ; POLN: _STAR0447B S:529 . ISO-ко
+  W0450     DAT450   LFS_WORD_0450                      W0450:,ISO, 6HMAKEF  . 115 101 113 105 106 040 ; POLN: _STAR0450B S:530 . ISO-ко
+  W0451     DAT451   LFS_WORD_0451                      W0451:,ISO, 6HOPENF  . 117 120 105 116 106 040 ; POLN: _STAR0451B S:531 . ISO-ко
+  W0452     DAT452   LFS_WORD_0452                      W0452:,ISO, 6HCLOSEF . 103 114 117 123 105 106 ; POLN: _STAR0452B S:532 . ISO-ко
+  W0453     DAT453   LFS_WORD_0453                      W0453:,ISO, 6HDELETF . 104 105 114 105 124 106 ; POLN: _STAR0453B S:533 . ISO-ко
+  W0455     CON455   LFS_CONST_0455                     W0455:,INT,CN10 ; POLN: _STAR0455B S:535 . целая константа
+  W0456     CON456   LFS_CONST_0456                     W0456:,INT,CN58 ; POLN: _STAR0456B S:536 . целая константа
+  W0457     CON457   LFS_CONST_0457                     W0457:,INT,CN44 ; POLN: _STAR0457B S:537 . целая константа
+  W0460     CON460   LFS_CONST_0460                     W0460:,INT,CN61 ; POLN: _STAR0460B S:538 . целая константа
+  W0461     CON461   LFS_CONST_0461                     W0461:,INT,CN42 ; POLN: _STAR0461B S:539 . целая константа
+  W0462     CON462   LFS_CONST_0462                     W0462:,INT,CN32 ; POLN: _STAR0462B S:540 . целая константа
+  W0463     DAT463   LFS_WORD_0463                      W0463:,ISO, 6HHEBEPH . 110 105 102 105 120 110 ; POLN: _STAR0463B S:541 . ISO-ко
+  W0503     CON503   LFS_CONST_0503                     W0503:,INT,NT2 ; POLN: _STAR0503B S:557 . целая константа
+  W0505     CON505   LFS_CONST_0505                     W0505:,INT,AE4 ; POLN: _STAR0505B S:559 . целая константа
+  W0506     CON506   LFS_CONST_0506                     W0506:,INT,CN0 ; POLN: _STAR0506B S:560 . целая константа
+  W0515     CON515   LFS_CONST_0515                     W0515:,INT,CN0 ; POLN: _STAR0515B S:567 . целая константа
+  W0517     CON517   LFS_CONST_0517                     W0517:,INT,NT2 ; POLN: _STAR0517B S:569 . целая константа
+  W0520     CON520   LFS_CONST_0520                     W0520:,INT,AE4 ; POLN: _STAR0520B S:570 . целая константа
+  W0521     CON521   LFS_CONST_0521                     W0521:,INT,CN0 ; POLN: _STAR0521B S:571 . целая константа
+  W0522     CON522   LFS_CONST_0522                     W0522:,INT,CN0 ; POLN: _STAR0522B S:572 . целая константа
+  W0523     CON523   LFS_CONST_0523                     W0523:,INT,NT2 ; POLN: _STAR0523B S:573 . целая константа
+  W0524     CON524   LFS_CONST_0524                     W0524:,INT,AE4 ; POLN: _STAR0524B S:574 . целая константа
+  W0525     CON525   LFS_CONST_0525                     W0525:,INT,AP7 ; POLN: _STAR0525B S:575 . целая константа
+  W0526     CON526   LFS_CONST_0526                     W0526:,INT,CN8 ; POLN: _STAR0526B S:576 . целая константа
+
+## XREF — 90 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W0001     IDX001   XRF_IDX_REG_LOAD_0001              W0001:,ITS,IS13 ; POLN: _STAR0001B S:46 . установка индексного регистра [уир]
+  W0013     CAL013   XRF_CALL_0013                      W0013:14,VJM,P/VT2 ; POLN: _STAR0013B S:65 . вызов подпрограммы с возвратом [пв]
+  W0020     IRE020   XRF_IDX_READ_0020                  W0020:8,XTA,XT12 ; POLN: _STAR0020B S:73 . считать из памяти в аккумулятор [сч]
+  W0023     WRA023   XRF_MEM_WRITE_0023                 W0023:1,ATX,WC50 ; POLN: _STAR0023B S:78 . записать аккумулятор в память [зп]
+  W0034     IRE034   XRF_IDX_READ_0034                  W0034:1,XTA,WC50 ; POLN: _STAR0034B S:95 . считать из памяти в аккумулятор [сч]
+  W0041     IRE041   XRF_IDX_READ_0041                  W0041:1,XTA,WC50 ; POLN: _STAR0041B S:104 . считать из памяти в аккумулятор [сч]
+  W0045     IRE045   XRF_IDX_READ_0045                  W0045:1,XTA,WC50 ; POLN: _STAR0045B S:111 . считать из памяти в аккумулятор [сч]
+  W0051     JMP051   XRF_JUMP_0051                      W0051:,UJ,W0054 ; POLN: _STAR0051B S:118 . безусловный переход [п]
+  W0052     IRE052   XRF_IDX_READ_0052                  W0052:8,XTA,XT17 ; POLN: _STAR0052B S:119 . считать из памяти в аккумулятор [сч]
+  W0054     IRE054   XRF_IDX_READ_0054                  W0054:8,XTA,XT25 ; POLN: _STAR0054B S:122 . считать из памяти в аккумулятор [сч]
+  W0056     IRE056   XRF_IDX_READ_0056                  W0056:2,XTA,XT3 ; POLN: _STAR0056B S:125 . считать из памяти в аккумулятор [сч]
+  W0061     WRA061   XRF_MEM_WRITE_0061                 W0061:1,ATX,WC50 ; POLN: _STAR0061B S:130 . записать аккумулятор в память [зп]
+  W0067     REG067   XRF_MODE_0067                      W0067:,NTR,XT7 ; POLN: _STAR0067B S:142 . установка режима/нормализация [нтр]
+  W0077     IDX077   XRF_IDX_REG_LOAD_0077              W0077:,ITS,IS13 ; POLN: _STAR0077B S:156 . установка индексного регистра [уир]
+  W0113     WRA113   XRF_MEM_WRITE_0113                 W0113:15,ATX,XT3 ; POLN: _STAR0113B S:177 . записать аккумулятор в память [зп]
+  W0117     IRE117   XRF_IDX_READ_0117                  W0117:8,XTA,XT33 ; POLN: _STAR0117B S:184 . считать из памяти в аккумулятор [сч]
+  W0122     WRA122   XRF_MEM_WRITE_0122                 W0122:4,ATX,XT4 ; POLN: _STAR0122B S:189 . записать аккумулятор в память [зп]
+  W0124     CAL124   XRF_CALL_0124                      W0124:14,VJM,P/XT3 ; POLN: _STAR0124B S:193 . вызов подпрограммы с возвратом [пв
+  W0154     CAL154   XRF_CALL_0154                      W0154:14,VJM,P/XT3 ; POLN: _STAR0154B S:233 . вызов подпрограммы с возвратом [пв
+  W0165     ADR165   XRF_ADDR_MOD_0165                  W0165:2,UTC,VT10 ; POLN: _STAR0165B S:247 . модификация адреса (индексная приста
+  W0207     WRA207   XRF_MEM_WRITE_0207                 W0207:1,ATX,XT72 ; POLN: _STAR0207B S:280 . записать аккумулятор в память [зп]
+  W0215     CAL215   XRF_CALL_0215                      W0215:14,VJM,P/XT3 ; POLN: _STAR0215B S:292 . вызов подпрограммы с возвратом [пв
+  W0226     IRE226   XRF_IDX_READ_0226                  W0226:2,XTA,XT3 ; POLN: _STAR0226B S:307 . считать из памяти в аккумулятор [сч]
+  W0231     JMP231   XRF_JUMP_0231                      W0231:,UJ,P/E ; POLN: _STAR0231B S:313 . безусловный переход [п]
+  W0232     WRA232   XRF_MEM_WRITE_0232                 W0232:15,ATX,XT3 ; POLN: _STAR0232B S:314 . записать аккумулятор в память [зп]
+  W0246     IRE246   XRF_IDX_READ_0246                  W0246:8,XTA,XT42 ; POLN: _STAR0246B S:336 . считать из памяти в аккумулятор [сч]
+  W0270     IRE270   XRF_IDX_READ_0270                  W0270:3,XTA,XT4 ; POLN: _STAR0270B S:369 . считать из памяти в аккумулятор [сч]
+  W0303     JMP303   XRF_JUMP_0303                      W0303:,UJ,P/E ; POLN: _STAR0303B S:388 . безусловный переход [п]
+  W0304     WRA304   XRF_MEM_WRITE_0304                 W0304:15,ATX,XT3 ; POLN: _STAR0304B S:389 . записать аккумулятор в память [зп]
+  W0317     JMP317   XRF_JUMP_0317                      W0317:,UJ,P/E ; POLN: _STAR0317B S:408 . безусловный переход [п]
+  W0320     REG320   XRF_MODE_0320                      W0320:,NTR,XT7 ; POLN: _STAR0320B S:409 . установка режима/нормализация [нтр]
+  W0335     WRA335   XRF_MEM_WRITE_0335                 W0335:15,ATX,XT3 ; POLN: _STAR0335B S:431 . записать аккумулятор в память [зп]
+  W0341     CAL341   XRF_CALL_0341                      W0341:13,VJM,P/WOLN ; POLN: _STAR0341B S:438 . вызов подпрограммы с возвратом [п
+  W0343     WRA343   XRF_MEM_WRITE_0343                 W0343:1,ATX,XT73 ; POLN: _STAR0343B S:441 . записать аккумулятор в память [зп]
+  W0345     CAL345   XRF_CALL_0345                      W0345:14,VJM,P/VT2 ; POLN: _STAR0345B S:445 . вызов подпрограммы с возвратом [пв
+  W0401     MOD401   XRF_MOD_WRITE_0401                 W0401:2,WTC,XT5 ; POLN: _STAR0401B S:491 . записать модификатор [зм]
+  W0404     WRA404   XRF_MEM_WRITE_0404                 W0404:2,ATX,XT5 ; POLN: _STAR0404B S:496 . записать аккумулятор в память [зп]
+  W0407     IRE407   XRF_IDX_READ_0407                  W0407:8,XTA,XT15 ; POLN: _STAR0407B S:501 . считать из памяти в аккумулятор [сч]
+  W0412     WRA412   XRF_MEM_WRITE_0412                 W0412:1,ATX,XT72 ; POLN: _STAR0412B S:506 . записать аккумулятор в память [зп]
+  W0415     IRE415   XRF_IDX_READ_0415                  W0415:8,XTA,XT41 ; POLN: _STAR0415B S:511 . считать из памяти в аккумулятор [сч]
+  W0423     WRA423   XRF_MEM_WRITE_0423                 W0423:1,ATX,XT72 ; POLN: _STAR0423B S:522 . записать аккумулятор в память [зп]
+  W0425     CAL425   XRF_CALL_0425                      W0425:14,VJM,P/VT2 ; POLN: _STAR0425B S:526 . вызов подпрограммы с возвратом [пв
+  W0433     IDX433   XRF_IDX_REG_LOAD_0433              W0433:9,VTM,GAO/VT2 ; POLN: _STAR0433B S:536 . загрузить индексный регистр [уир]
+  W0443     CAL443   XRF_CALL_0443                      W0443:14,VJM,P/XT3 ; POLN: _STAR0443B S:550 . вызов подпрограммы с возвратом [пв
+  W0446     CAL446   XRF_CALL_0446                      W0446:13,VJM,W0067 ; POLN: _STAR0446B S:554 . вызов подпрограммы с возвратом [пв
+  W0453     IRE453   XRF_IDX_READ_0453                  W0453:1,XTA,AT53 ; POLN: _STAR0453B S:561 . считать из памяти в аккумулятор [сч]
+  W0463     CAL463   XRF_CALL_0463                      W0463:14,VJM,P/VT2 ; POLN: _STAR0463B S:573 . вызов подпрограммы с возвратом [пв
+  W0466     IRE466   XRF_IDX_READ_0466                  W0466:1,XTA,AT53 ; POLN: _STAR0466B S:577 . считать из памяти в аккумулятор [сч]
+  W0471     IRE471   XRF_IDX_READ_0471                  W0471:1,XTA,AT53 ; POLN: _STAR0471B S:583 . считать из памяти в аккумулятор [сч]
+  W0472     IRE472   XRF_IDX_READ_0472                  W0472:8,XTA,XT17 ; POLN: _STAR0472B S:585 . считать из памяти в аккумулятор [сч]
+  W0473     CAL473   XRF_CALL_0473                      W0473:13,VJM,W0067 ; POLN: _STAR0473B S:587 . вызов подпрограммы с возвратом [пв
+  W0501     IRE501   XRF_IDX_READ_0501                  W0501:1,XTA,AT53 ; POLN: _STAR0501B S:597 . считать из памяти в аккумулятор [сч]
+  W0510     IRE510   XRF_IDX_READ_0510                  W0510:8,XTA,XT22 ; POLN: _STAR0510B S:610 . считать из памяти в аккумулятор [сч]
+  W0513     JMP513   XRF_JUMP_0513                      W0513:,UJ,W0514 ; POLN: _STAR0513B S:614 . безусловный переход [п]
+  W0514     IRE514   XRF_IDX_READ_0514                  W0514:2,XTA,XT3 ; POLN: _STAR0514B S:615 . считать из памяти в аккумулятор [сч]
+  W0516     CAL516   XRF_CALL_0516                      W0516:13,VJM,W0067 ; POLN: _STAR0516B S:618 . вызов подпрограммы с возвратом [пв
+  W0520     MOD520   XRF_MOD_WRITE_0520                 W0520:1,WTC,WC77 ; POLN: _STAR0520B S:621 . записать модификатор [зм]
+  W0525     CAL525   XRF_CALL_0525                      W0525:13,VJM,W0067 ; POLN: _STAR0525B S:630 . вызов подпрограммы с возвратом [пв
+  W0527     JMP527   XRF_JUMP_0527                      W0527:,UJ,W0610 ; POLN: _STAR0527B S:632 . безусловный переход [п]
+  W0530     CAL530   XRF_CALL_0530                      W0530:13,VJM,W0425 ; POLN: _STAR0530B S:633 . вызов подпрограммы с возвратом [пв
+  W0532     CAL532   XRF_CALL_0532                      W0532:13,VJM,W0067 ; POLN: _STAR0532B S:636 . вызов подпрограммы с возвратом [пв
+  W0544     CAL544   XRF_CALL_0544                      W0544:13,VJM,W0067 ; POLN: _STAR0544B S:654 . вызов подпрограммы с возвратом [пв
+  W0546     JMP546   XRF_JUMP_0546                      W0546:,UJ,W0610 ; POLN: _STAR0546B S:656 . безусловный переход [п]
+  W0547     IRE547   XRF_IDX_READ_0547                  W0547:8,XTA,XT14 ; POLN: _STAR0547B S:657 . считать из памяти в аккумулятор [сч]
+  W0550     IRE550   XRF_IDX_READ_0550                  W0550:2,XTA,XT4 ; POLN: _STAR0550B S:659 . считать из памяти в аккумулятор [сч]
+  W0555     CAL555   XRF_CALL_0555                      W0555:13,VJM,W0067 ; POLN: _STAR0555B S:668 . вызов подпрограммы с возвратом [пв
+  W0563     IRE563   XRF_IDX_READ_0563                  W0563:8,XTA,XT15 ; POLN: _STAR0563B S:678 . считать из памяти в аккумулятор [сч]
+  W0566     WRA566   XRF_MEM_WRITE_0566                 W0566:2,ATX,XT5 ; POLN: _STAR0566B S:683 . записать аккумулятор в память [зп]
+  W0575     JMP575   XRF_JUMP_0575                      W0575:,UJ,W0610 ; POLN: _STAR0575B S:696 . безусловный переход [п]
+  W0576     WRA576   XRF_MEM_WRITE_0576                 W0576:15,ATX,VT1 ; POLN: _STAR0576B S:697 . записать аккумулятор в память [зп]
+  W0602     JMP602   XRF_JUMP_0602                      W0602:,UJ,W0547 ; POLN: _STAR0602B S:705 . безусловный переход [п]
+  W0610     JMP610   XRF_JUMP_0610                      W0610:,UJ,W0466 ; POLN: _STAR0610B S:711 . безусловный переход [п]
+  W0611     JMP611   XRF_JUMP_0611                      W0611:,UJ,P/E ; POLN: _STAR0611B S:712 . безусловный переход [п]
+  W0612     REG612   XRF_MODE_0612                      W0612:,NTR,XT7 ; POLN: _STAR0612B S:713 . установка режима/нормализация [нтр]
+  W0621     REG621   XRF_MODE_0621                      W0621:,NTR,XT7 ; POLN: _STAR0621B S:724 . установка режима/нормализация [нтр]
+  W0642     CAL642   XRF_CALL_0642                      W0642:14,VJM,P/VT2 ; POLN: _STAR0642B S:755 . вызов подпрограммы с возвратом [пв
+  W0645     CAL645   XRF_CALL_0645                      W0645:13,VJM,W0463 ; POLN: _STAR0645B S:759 . вызов подпрограммы с возвратом [пв
+  W0660     ADR660   XRF_ADDR_MOD_0660                  W0660:14,UTC,VT1 ; POLN: _STAR0660B S:779 . модификация адреса (индексная приста
+  W0663     IRE663   XRF_IDX_READ_0663                  W0663:2,XTA,XT4 ; POLN: _STAR0663B S:784 . считать из памяти в аккумулятор [сч]
+  W0667     IRE667   XRF_IDX_READ_0667                  W0667:2,XTA,XT4 ; POLN: _STAR0667B S:792 . считать из памяти в аккумулятор [сч]
+  W0677     IDX677   XRF_IDX_REG_LOAD_0677              W0677:12,VTM,GAO/XT6 ; POLN: _STAR0677B S:807 . загрузить индексный регистр [уир
+  W0704     MOD704   XRF_MOD_WRITE_0704                 W0704:2,WTC,XT4 ; POLN: _STAR0704B S:815 . записать модификатор [зм]
+  W0706     IRE706   XRF_IDX_READ_0706                  W0706:2,XTA,XT4 ; POLN: _STAR0706B S:819 . считать из памяти в аккумулятор [сч]
+  W0713     IRE713   XRF_IDX_READ_0713                  W0713:2,XTA,XT4 ; POLN: _STAR0713B S:829 . считать из памяти в аккумулятор [сч]
+  W0715     MOD715   XRF_MOD_WRITE_0715                 W0715:2,WTC,XT4 ; POLN: _STAR0715B S:832 . записать модификатор [зм]
+  W0720     ADR720   XRF_ADDR_MOD_0720                  W0720:14,UTC,VT1 ; POLN: _STAR0720B S:838 . модификация адреса (индексная приста
+  W0726     JMP726   XRF_JUMP_0726                      W0726:,UJ,W0645 ; POLN: _STAR0726B S:850 . безусловный переход [п]
+  W0727     IDX727   XRF_IDX_REG_LOAD_0727              W0727:14,VTM,VT330 ; POLN: _STAR0727B S:851 . загрузить индексный регистр [уир]
+  W0737     CAL737   XRF_CALL_0737                      W0737:14,VJM,P/VT1 ; POLN: _STAR0737B S:865 . вызов подпрограммы с возвратом [пв
+  W0746     CON746   XRF_CONST_0746                     W0746:,LOG,LG4000 ; POLN: _STAR0746B S:876 . двоичная (LOG) константа
+
+## LOADLIBR — 1 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W6000     BU6000   LDR_BUFFER_6000                    W6000:B,BLOCK,WRBUF(CN1023).БYФEP ; POLN: _STAR76000 S:103 ; БYФEP
+
+## LIBRARY_ — 2 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W00023    BUF023   LBR_BUFFER_0023                    W00023: BSS,ETX016 . зарезервированная область  ; (POLN: W0001) ; S2:1627
+  W00024    BUF024   LBR_BUFFER_0024                    W00024: BSS,ETX017 . зарезервированная область  ; (POLN: W0002) ; S2:1628
+
+## LIBDRU_ — 3 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W00075    BUF075   LBD_BUFFER_0075                    W00075: BSS,ETX056 . зарезервированная область  ; (POLN: W0001) ; S2:1485
+  W00076    BUF076   LBD_BUFFER_0076                    W00076: BSS,ETX056 . зарезервированная область  ; (POLN: W0002) ; S2:1486
+  W00077    BUF077   LBD_BUFFER_0077                    W00077: BSS,ETX056 . зарезервированная область  ; (POLN: W0003) ; S2:1487
+
+## LIBTAP_ — 3 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W00083    BUF083   LBT_BUFFER_0083                    W00083: BSS,ETX069 . зарезервированная область  ; (POLN: W0001) ; S2:2180
+  W00084    BUF084   LBT_BUFFER_0084                    W00084: BSS,ETX069 . зарезервированная область  ; (POLN: W0002) ; S2:2181
+  W00085    BUF085   LBT_BUFFER_0085                    W00085: BSS,ETX069 . зарезервированная область  ; (POLN: W0003) ; S2:2182
+
+## MAKELIBT — 8 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  L00076    ADR076   MKL_ADDR_MOD_0076                  L00076: UTC,CПPABKИ . сравнение/переход  ; (POLN: L/0001) ; S2:5866
+  W00094    DAT094   MKL_WORD_0094                      W00094: ,RBP013+EOC078  ; (POLN: W0004*) ; S2:6059
+  W00095    DAT095   MKL_WORD_0095                      W00095: 010,WBP014  ; (POLN: W0005*) ; S2:6061
+  W00132    BUF132   MKL_BUFFER_0132                    W00132: BSS,ETX090 . зарезервированная область  ; (POLN: W0001) ; S2:6104
+  W00133    BUF133   MKL_BUFFER_0133                    W00133: BSS,ETX090 . зарезервированная область  ; (POLN: W0002) ; S2:6105
+  W00134    BUF134   MKL_BUFFER_0134                    W00134: BSS,ETX090 . зарезервированная область  ; (POLN: W0003) ; S2:6106
+  W00135    BUF135   MKL_BUFFER_0135                    W00135: BSS,ETX090 . зарезервированная область  ; (POLN: W0004) ; S2:6107
+  W00136    BUF136   MKL_BUFFER_0136                    W00136: BSS,ETX090 . зарезервированная область  ; (POLN: W0005) ; S2:6108
+
+## OVERLOAD — 2 метки (шаблон TL#####, строгая проверка)
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  TL1070    BF1070   OVL_BUFFER_1070                    TL1070: BSS . зарезервированная область
+  TL6072    RD6072   OVL_MEM_READ_6072                  TL6072: L,XTA,ELO144 . считывание в аккумулятор
+
+--------------------------------------------------------------------------------
+2. TEXT-КОНСТАНТЫ: имя по содержимому (6-бит / GOST / ISO)
+--------------------------------------------------------------------------------
+  ФАЙЛ      БЫЛО          СТАЛО   POLN                 СОДЕРЖИМОЕ (-> комментарий)
+  FOREX_    LO*SYN        TSYN    TEXT_OVERLAY_SYN      "LO*SYN" — оверлей синтаксиса
+  FOREX_    LO*GEN        TGEN    TEXT_OVERLAY_GEN      "LO*GEN" — оверлей генерации
+  EXECUTE   FRAG TPП      TFRAG   TEXT_FRAG_TPP         "FRAG ТРП" — фрагмент программы ТРП
+  LFSCAN    (без метки)   TAN     TEXT_AN               "АН" (6-бит/GOST, 8H AH)
+  LOADLIBR  ERROR4        TERR4   TEXT_ERROR_4          " ERROR '4'" — сообщение об ошибке 4
+  XREF      (без метки)   TINPMK  TEXT_INPUT_MARK       "*INPUT*" — маркер секции INPUT в deck
+  XREF      (без метки)   TINPNM  TEXT_INPUT_NAME       "   INPUT" — имя секции INPUT
+  XREF      (без метки)   TOUTMK  TEXT_OUTPUT_MARK      "*OUTPUT*" — маркер секции OUTPUT в deck
+  XREF      (без метки)   TOUTNM  TEXT_OUTPUT_NAME      "  OUTPUT" — имя секции OUTPUT
+  EXECUTE   (строка 107, внутри комментария) — содержимое "FRAG ТРП" сохранено;
+            объявление в строке 417 получило имя TFRAG.
+
+--------------------------------------------------------------------------------
+3. СМЕЩЕНИЯ МАССИВА: LABEL+NNNB -> LABEL+DECI
+--------------------------------------------------------------------------------
+  LOADLIBR, S:677:  XT42.=3+37B  ->  XT42.=3+31
+    37B (восьмеричное) = 31 (десятичное); исходное значение сохранено в комментарии
+    `; было =3+37B (37B=31 десятическое)`.
+  Примечание: остальные `LABEL+NNN` в FOREX-группе уже десятичные (например W0746+45
+  в XREF после переименования -> CON746+45) и численного значения не меняли.
+
+--------------------------------------------------------------------------------
+4. ОБНОВЛЁННАЯ ДОКУМЕНТАЦИЯ
+--------------------------------------------------------------------------------
+  include/lib21/FORMAT.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/FORMAT.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/FORTLIBR.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/FORTLIBR.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/F#PT6.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/F#PT6.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/FOR.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/FOR.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/FTNPRT.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/FTNPRT.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/FTNPRT_.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/FTNPRT_.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/LFSCAN.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/LFSCAN.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/XREF.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/XREF.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/LOADLIBR.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/LOADLIBR.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/LIBRARY_.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/LIBRARY_.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/LIBDRU_.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/LIBDRU_.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/LIBTAP_.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/LIBTAP_.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/MAKELIBT.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/MAKELIBT.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/FOREX_.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/FOREX_.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/EXECUTE.xref.md       — короткие имена в таблицах + раздел 4
+  include/lib21/EXECUTE.registers.md  — раздел «Обновление имён (этап 12)»
+  OVERLOAD — 2 авто-метки TL##### по строгой проверке:
+    `TL1070` -> `BF1070` (POLN: OVL_BUFFER_1070), `TL6072` -> `RD6072` (POLN: OVL_MEM_READ_6072).
+  DISPAC, BEMSH_, LINK#IPM — в области, но авто-меток и TEXT-констант не обнаружено;
+    файлы не изменялись.
+
+--------------------------------------------------------------------------------
+5. ПРОВЕРКИ (rc=0)
+--------------------------------------------------------------------------------
+  python3 tests/check-source-words.py  -> rc=0  (1024/1024 слов LO*SYN и LO*GEN)
+  bash tests/check-label-length.sh     -> rc=0  (741 символ, все <=6, коллизий нет)
+  bash tests/check-constants.sh        -> rc=0  (все файлы OK, уник <= 20)
+  bash tests/check-lib21.sh            -> rc=0  (358 листингов, 45 аннотаций)
+  Дополнительно: строгая проверка tests/check-label-semantics.sh по 19 модулям
+  области: AUTO=0, TEXT=0, ОКТАЛ+=0, ДЛИННЫХ=0, КОЛЛИЗИЙ=0
+  (остатки в общерепозиторском прогоне — за пределами области: FOREX_RUNTIME,
+  PRINT80, CRELIB и др.; обрабатываются другими задачами).
+
+================================================================================

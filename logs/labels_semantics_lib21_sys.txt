@@ -1,0 +1,130 @@
+================================================================================
+ СЕМАНТИЧЕСКОЕ ИМЕНОВАНИЕ МЕТОК И КОНСТАНТ: БИБЛИОТЕКА 21, СИСТЕМНАЯ ГРУППА
+================================================================================
+
+Дата: 19.11.2026. Ветка: main. Репозиторий: re-forex.
+ОБЛАСТЬ: системная группа lib21 + PT6 (src/lib21/*.mad).
+ПРАВИЛО: короткое имя <= 6 символов, первые 6 уникальны в файле;
+          полное имя (роль) вынесено в `; POLN:` / `; (POLN: ...)`;
+          содержимое TEXT/ISO/GOST-констант отражено в имени и в POLN.
+СХЕМА КОРОТКОГО ИМЕНИ: семантический префикс по мнемонике/комментарию +
+          3 цифры исходного номера слова (docs/10-naming-conventions.md §6.2,
+          та же схема, что применена в labels_semantics_lib21_core.txt).
+
+ИТОГО: 33 авто-метки, 9 TEXT-констант, 6 восьмеричных смещений массивов.
+       Проверено ещё 20 модулей lib21 — авто-меток/TEXT/октальных смещений нет.
+
+--------------------------------------------------------------------------------
+1. АВТО-МЕТКИ: БЫЛО -> СТАЛО (полное имя — в POLN)
+--------------------------------------------------------------------------------
+
+## PT6 — 21 метка
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W0007     CMP007   PT6_COMPARE_0007                   W0007:     ,ASN,  AS34 ; POLN: _STAR00007 S:16
+  W0014     ADR014   PT6_ADDR_MOD_0014                  W0014:     ,UTC,   W0070 ; POLN: _STAR00014 S:26
+  W0023     ADR023   PT6_ADDR_MOD_0023                  W0023:     ,UTC,   W0071 ; POLN: _STAR00023 S:40
+  W0032     CMP032   PT6_COMPARE_0032                   W0032:     ,ASN,  AS72 ; POLN: _STAR00032 S:54
+  W0036     IDX036   PT6_IDX_REG_LOAD_0036               W0036: 5 ,  VTM,  VT7777 ; POLN: _STAR00036 S:62
+  W0040     CMP040   PT6_COMPARE_0040                   W0040:     ,ASN,  AS70 ; POLN: _STAR00040 S:66
+  W0042     SID042   PT6_IDX_STORE_0042                  W0042: 5 ,  VLM,   W0040 ; POLN: _STAR00042 S:70
+  L00044    IRE044   PT6_IDX_READ_0044                  L00044: 7 ,  XTS,   W0107-W0007 ; POLN: L_STAR00044 S:74
+  W0053     IRE053   PT6_IDX_READ_0053                  W0053:     ,XTA, ; POLN: _STAR00053 S:88
+  W0057     ADR057   PT6_ADDR_MOD_0057                  W0057:     ,UTC,   W0106 ; POLN: _STAR00057 S:96
+  L00061    IRE061   PT6_IDX_READ_0061                  L00061: 7 ,  XTA,   W0106-W0007 ; POLN: L_STAR00061 S:100
+  W0065     CON065   PT6_CONST_0065                     W0065:,     LOG,  LG0000 LG0000. ; POLN: _STAR00065 S:108
+  W0066     CON066   PT6_CONST_0066                     W0066:,     LOG,  LG0000 LG0000. ; POLN: _STAR00066 S:109
+  W0067     CON067   PT6_CONST_0067                     W0067:,     LOG,  LG7400 LG7777. ; POLN: _STAR00067 S:110
+  W0070     CON070   PT6_CONST_0070                     W0070:,     LOG,  LG0360 LG0360. ; POLN: _STAR00070 S:111
+  W0071     CON071   PT6_CONST_0071                     W0071:,     LOG,  LG0000 LG0000. ; POLN: _STAR00071 S:112
+  W0072     CON072   PT6_CONST_0072                     W0072:,     LOG,  LG0160 LG0160. ; POLN: _STAR00072 S:113
+  W0073     CON073   PT6_CONST_0073                     W0073:,     LOG,  LG0365 LG1542. ; POLN: _STAR00073 S:114
+  W0106     CON106   PT6_CONST_0106                     W0106:,     LOG,  LG0000 LG0000. ; POLN: _STAR00106 S:125
+  W0107     CON107   PT6_CONST_0107                     W0107:,     LOG,  LG0000 LG0000. ; POLN: _STAR00107 S:126
+  W0110     CON110   PT6_CONST_0110                     W0110:,     LOG,  LG0000 LG0000. ; POLN: _STAR00110 S:127
+
+## TCATALOG — 9 меток
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  AL3066    WRA066   TCAT_INDEXED_WRITE_0066            AL3066: STX  ; (POLN: AL3) ; S3:2060
+  AL2067    WRA067   TCAT_INDEXED_WRITE_0067            AL2067: STX  ; (POLN: AL2) ; S3:2066
+  D2149     WRA149   TCAT_MEM_WRITE_0149                D2149: ATX,WOR381 ; (POLN: D2) ; S3:2747
+  D1150     IRE150   TCAT_IDX_READ_0150                 D1150: 9,XTA, ; (POLN: D1) ; S3:2749
+  PL1295    PLT295   TCAT_TABLE_0295                    PL1295: P*P,(PL1292)EDC065 ; (POLN: PL1X5) ; S3:4121
+  PL3296    PLT296   TCAT_TABLE_0296                    PL3296: P*P,(PL3293)EDC065 ; (POLN: PL3X5) ; S3:4122
+  PL5297    PLT297   TCAT_TABLE_0297                    PL5297:   ; (POLN: PL*5) ; S3:4123
+  PL1298    PLT298   TCAT_TABLE_0298                    PL1298:   ; (POLN: PL1*5) ; S3:4125
+  PL3299    PLT299   TCAT_TABLE_0299                    PL3299:   ; (POLN: PL3*5) ; S3:4127
+
+## TEMFILE — 2 метки
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  L72010    POS072   TEM_POS_0072                       L72010: BSS ; (POLN: L72) ; S3:4389
+  W060      WRKWRD   TEM_WRK_WORD                       W060: BSS,ETX062 ; (POLN: W) ; S3:4642
+
+## PRINT80 — 1 метка
+  БЫЛО      СТАЛО    POLN (полное имя)                  ИСХОДНАЯ СТРОКА
+  W025      ACCSAV   PRINT_ACC_SAVE                     W025: BSS,ETX015 ; (POLN: W) ; S2:10824
+
+ПРИМЕЧАНИЕ: TEMP##, CHEKJOB_, CRELIB — авто-меток вида W/L/D+NNNN не содержали
+            (проверено tests/check-label-semantics.sh: AUTO=0).
+
+--------------------------------------------------------------------------------
+2. TEXT-КОНСТАНТЫ: имя по содержимому (6-бит / GOST / ISO)
+--------------------------------------------------------------------------------
+  ФАЙЛ       БЫЛО          СТАЛО   POLN                  СОДЕРЖИМОЕ (-> комментарий)
+  CHEKJOB_   DAT100        TDATE   TEXT_DATE_FIELD      «DATE» — поле даты (BSS, 2 слова)
+  CHEKJOB_   TER111        TERROR  TEXT_ERROR_NO_ENTRY  «ОТСУТСТВУЕТ П/К *NAME» — нет Entry
+  CHEKJOB_   TOA112        TERRCD  TEXT_ERROR_CARD      «ОШИБКА В КАРТЕ-» — ошибка в карте
+  CHEKJOB_   TPA113        TEARLY  TEXT_CHECK_EARLY     «CHECK PAHOBATO» — проверка раньше времени
+  CHEKJOB_   TOB114        TREDEF  TEXT_REDEFINED       «ПОВТОРНО ОПРЕДЕЛЕНО» — повторное определение
+  CHEKJOB_   TOC115        TBADLN  TEXT_BAD_LINK        «НЕПРАВИЛЬНАЯ CCЫЛKA» — неверная ссылка
+  CHEKJOB_   THC116        TNODSK  TEXT_DISK_UNDECLARED «НЕ ОБ'ЯВЛЕН ДИСК» — диск не объявлен
+  CHEKJOB_   TO117         TVYZOV  TEXT_CALL_ERRORS     «БЫЛИ OШИБKИ B YK PAБOTЫ» (ТВЫЗОВ) — вызов/ошибки
+  CHEKJOB_   TPR118        TEXPRS  TEXT_EXPRESS_TASK    «<ЭKCПPECC-ЗAДAЧA>» — express-задача
+
+Итого: 9 констант. Все остальные TEXT/ISO/GOST-константы системной группы уже
+имеют осмысленные имена по POLN (MONITOR*, PROGRAM, LIBLIST, BADmes, DElmes,
+HEADPR, ERRCAT и др.) и не переименовывались.
+
+--------------------------------------------------------------------------------
+3. СМЕЩЕНИЯ МАССИВА: LABEL+NNNB -> LABEL+DECI
+--------------------------------------------------------------------------------
+  CRELIB,   S1:8716:  LOA003+21B           -> LOA003+17
+                      21B (восьмеричное) = 17 (десятичное); в EQU добавлено
+                      «; было +21B (21B=17 десятичное)».
+  PRINTLIS, S2:11494: LIS002 + 00001B      -> LIS002+1
+  PRINTLIS, S2:11495: LIS002 + 00002B      -> LIS002+2
+  PRINTR,   S2:11540: P002   + 00001B      -> P002+1
+  PRINTR,   S2:11541: P002   + 00002B      -> P002+2
+  PRINTR,   S2:11542: P002   + 00020B      -> P002+16
+    00020B (восьмеричное) = 16 (десятичное); все значения сохранены.
+  TCATALOG: USE407+32 и RMA012+1024 — уже десятичные, не менялись.
+
+--------------------------------------------------------------------------------
+4. ОБНОВЛЁННАЯ ДОКУМЕНТАЦИЯ
+--------------------------------------------------------------------------------
+  include/lib21/PT6.xref.md            — короткие имена в таблицах + раздел 4
+  include/lib21/PT6.registers.md       — раздел «Обновление имён (этап 12)»
+  include/lib21/TCATALOG.xref.md       — то же
+  include/lib21/TCATALOG.registers.md  — то же
+  include/lib21/TEMFILE.xref.md        — то же
+  include/lib21/TEMFILE.registers.md   — то же
+  include/lib21/PRINT80.xref.md        — то же
+  include/lib21/PRINT80.registers.md   — то же
+  include/lib21/CHEKJOB_.xref.md       — то же
+  include/lib21/CHEKJOB_.registers.md  — то же
+  include/lib21/CRELIB.xref.md         — LGO004 = LOA003+17 + раздел 4
+  include/lib21/CRELIB.registers.md    — раздел «Обновление имён (этап 12)»
+  include/lib21/PRINTLIS.xref.md       — LIS002+1 / +2 + раздел 4
+  include/lib21/PRINTLIS.registers.md  — раздел «Обновление имён (этап 12)»
+  include/lib21/PRINTR.xref.md         — P002+1 / +2 / +16 + раздел 4
+  include/lib21/PRINTR.registers.md    — раздел «Обновление имён (этап 12)»
+
+--------------------------------------------------------------------------------
+5. ПРОВЕРКИ (rc=0)
+--------------------------------------------------------------------------------
+  bash tests/check-label-length.sh      -> rc=0
+  bash tests/check-constants.sh         -> rc=0 (5/5 файлов, уник <= 20)
+  bash tests/check-lib21.sh             -> rc=0 (358 листингов, 45 аннотаций)
+  python3 tests/check-source-words.py   -> rc=0 (1024/1024 слов LO*SYN и LO*GEN)
+  bash tests/check-label-semantics.sh   -> rc=0
+       ИТОГО: AUTO=0, TEXT=0, ОКТАЛ+=0, ДЛИННЫХ=0, КОЛЛИЗИЙ=0
+--------------------------------------------------------------------------------

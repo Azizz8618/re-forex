@@ -1,0 +1,16 @@
+NЬUN    :,NAME, NEW DTRAN
+ ЬЦ0Ь    :,SUBP,
+ ЬCRЬ    :,SUBP,
+ 15,UTM,1
+ 15,XTS,dunno
+ ,UTC,ЬЦ0Ь    
+ ,XTS,
+ 15,STX,dunno
+ 14,VTM,1
+ 15,ATX,dunno
+ 8,VJM,ЬCRЬ    
+ 15,ACX,dunno
+ ,UJ,*0006B
+ ,LOG,7511777575227766
+ *0006B:,LOG,7500776667000000
+ ,END,

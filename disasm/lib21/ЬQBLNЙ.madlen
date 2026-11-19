@@ -1,0 +1,73 @@
+ЬQBLNЙ  :,NAME, NEW DTRAN
+ *ЬIOCBЙ*:,LC,34
+ CЬMV    :,SUBP,
+ CЬVP    :,SUBP,
+ CЬZB    :,SUBP,
+ GAK/5:,EQU,*ЬIOCBЙ*+28
+ 7,MTJ,8
+ 9,VJM,*0026B
+ 7,XTA,dunno
+ ,NTR,7
+ 7,A-X,dunno
+ ,UZA,*0004B
+ 7,XTA,dunno
+ ,UJ,*0005B
+ *0004B:7,XTA,dunno
+ ,ATX,
+ *0005B:7,ATX,dunno
+ ,WTC,GAK/5
+ 6,VTM,
+ 6,XTA,
+ ,ASN,64+24
+ 7,AAX,dunno
+ 7,AOX,dunno
+ 7,ATX,dunno
+ ,ATI,6
+ 6,UTM,*0043B
+ 7,XTS,dunno
+ 7,XTS,dunno
+ ,ITS,6
+ 7,ARX,dunno
+ 13,VJM,CЬMV    
+ ,ATX,
+ 7,XTA,dunno
+ 7,XTS,dunno
+ 13,VJM,CЬVP    
+ ,ATX,
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,A-X,dunno
+ 7,ATX,dunno
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 13,VJM,CЬZB    
+ ,ATX,
+ ,STI,
+ ,STI,13
+ ,STI,6
+ ,STI,7
+ ,NTR,6
+ 13,UJ,
+ *0026B:7,VTM,50031B
+ 7,STX,dunno
+ 7,STX,dunno
+ ,ITS,8
+ ,ITS,6
+ ,ITS,13
+ ,ITS,
+ 9,UJ,
+ ,LOG,1
+ ,LOG,4000000000000000
+ ,INT,6
+ ,INT,0
+ ,BSS,5
+ *0043B:,BSS,1
+ *0044B:,BSS,1
+ ,DATA,
+ *0036B:,ISO, 6HNULL   . 116 125 114 114 040 040 
+ *0037B:,ISO, 6HZERO   . 132 105 122 117 040 040 
+ 1,SET,*0036B
+ 1,   ,*0043B
+ 1,SET,*0037B
+ 1,   ,*0044B
+ ,END,

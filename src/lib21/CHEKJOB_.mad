@@ -1,0 +1,583 @@
+С******************************************************************************
+С* CHEKJOB_ — проверка задания (01.07.74)
+С* Аннотированный МАДЛЕН-текст (субагент «системная группа», библиотека 21).
+С* ПРОИСХОЖДЕНИЕ: libra211.l21:6019-6497; исходный модуль CHEKJOB*.
+С* СВЕРКА: disasm/lib21/CHEKJOB_.madlen (dtran).
+С* ИМЕНОВАНИЕ: метки/EQU <=6 символов, уникальные первые 6; полные имена —
+С*   в комментариях `; (POLN: ...)` и в include/lib21/<MODULE>.xref.md.
+С* ЛИТЕРАЛЫ: все числовые/текстовые литералы вынесены в ,EQU, ниже.
+С******************************************************************************
+
+С ---- КОНСТАНТЫ И ЛИТЕРАЛЫ (,EQU,) ----
+SCC046 ,EQU,1                           ; роль: символический эквивалент из исходника; S1:6077  ; (POLN: SC/CONC)
+ALI045 ,EQU,560B                        ; роль: символический эквивалент из исходника; S1:6076  ; (POLN: A/LINKP)
+XNF044 ,EQU,1                           ; роль: символический эквивалент из исходника; S1:6075  ; (POLN: XNFM)
+A043   ,EQU,760B                        ; роль: символический эквивалент из исходника; S1:6074  ; (POLN: A/ИПД)
+AK042  ,EQU,761B                        ; роль: символический эквивалент из исходника; S1:6073  ; (POLN: A/ИПK)
+AYC041 ,EQU,502B                        ; роль: символический эквивалент из исходника; S1:6072  ; (POLN: A/ГYC)
+TWO040 ,EQU,72B                         ; роль: символический эквивалент из исходника; S1:6071  ; (POLN: TWOPOINT)
+AD039  ,EQU,12                          ; роль: символический эквивалент из исходника; S1:6069  ; (POLN: AD)
+C038   ,EQU,10                          ; роль: символический эквивалент из исходника; S1:6068  ; (POLN: C)
+LEN018 ,EQU,CON017-1                    ; роль: символический эквивалент из исходника; S1:6046  ; (POLN: LEN)
+LIB011 ,EQU,73B                         ; роль: символический эквивалент из исходника; S1:6035  ; (POLN: LIB)
+DAT010 ,EQU,1776B                       ; роль: символический эквивалент из исходника; S1:6034  ; (POLN: DAT)
+MON004 ,EQU,MON002+1                    ; роль: символический эквивалент из исходника; S1:6028  ; (POLN: MONIT)
+EDC012 ,EQU,1                           ; роль: десятичная константа/сдвиг; S1:6030  ; (POLN: DEC_1)
+EDC013 ,EQU,2                           ; роль: десятичная константа/сдвиг; S1:6037  ; (POLN: DEC_2)
+EDC014 ,EQU,5                           ; роль: десятичная константа/сдвиг; S1:6037  ; (POLN: DEC_5)
+EDC015 ,EQU,128                         ; роль: десятичная константа/сдвиг; S1:6041  ; (POLN: DEC_128)
+EDC016 ,EQU,14                          ; роль: десятичная константа/сдвиг; S1:6053  ; (POLN: DEC_14)
+EDC017 ,EQU,12                          ; роль: десятичная константа/сдвиг; S1:6054  ; (POLN: DEC_12)
+EOC017 ,EQU,43B                         ; роль: восьмеричная константа; S1:6081  ; (POLN: OCT_43)
+EDC018 ,EQU,64                          ; роль: десятичная константа/сдвиг; S1:6083  ; (POLN: DEC_64)
+EDC019 ,EQU,20                          ; роль: десятичная константа/сдвиг; S1:6083  ; (POLN: DEC_20)
+EOC019 ,EQU,1400B                       ; роль: восьмеричная константа; S1:6087  ; (POLN: OCT_1400)
+EDC020 ,EQU,33                          ; роль: десятичная константа/сдвиг; S1:6091  ; (POLN: DEC_33)
+ETX020 ,EQU,=:0000 3703                 ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6092  ; (POLN: LITERAL___0000_3703)
+ETX021 ,EQU,=4014 0000 0021 0101        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6093  ; (POLN: LITERAL__4014_0000_0021_0101)
+EOC021 ,EQU,765B                        ; роль: восьмеричная константа; S1:6102  ; (POLN: OCT_765)
+EDC021 ,EQU,7                           ; роль: десятичная константа/сдвиг; S1:6107  ; (POLN: DEC_7)
+ETX022 ,EQU,=7                          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6109  ; (POLN: LITERAL__7)
+EDC022 ,EQU,32                          ; роль: десятичная константа/сдвиг; S1:6110  ; (POLN: DEC_32)
+EOC022 ,EQU,502B                        ; роль: восьмеричная константа; S1:6116  ; (POLN: OCT_502)
+EDC023 ,EQU,27                          ; роль: десятичная константа/сдвиг; S1:6119  ; (POLN: DEC_27)
+ETX023 ,EQU,=6H'7''7'''''''''           ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6120  ; (POLN: LITERAL__6H_7__7_________)
+EDC024 ,EQU,13                          ; роль: десятичная константа/сдвиг; S1:6147  ; (POLN: DEC_13)
+EOC024 ,EQU,76B                         ; роль: восьмеричная константа; S1:6148  ; (POLN: OCT_76)
+EOC025 ,EQU,64B                         ; роль: восьмеричная константа; S1:6151  ; (POLN: OCT_64)
+EDC025 ,EQU,3                           ; роль: десятичная константа/сдвиг; S1:6155  ; (POLN: DEC_3)
+EOC026 ,EQU,166B                        ; роль: восьмеричная константа; S1:6158  ; (POLN: OCT_166)
+ETX026 ,EQU,=100 00000 00000            ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6163  ; (POLN: LITERAL__100_00000_00000)
+ETX027 ,EQU,=6H'360'''''''''''          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6166  ; (POLN: LITERAL__6H_360___________)
+ETX028 ,EQU,=6H'060'''''''''''          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6167  ; (POLN: LITERAL__6H_060___________)
+EDC028 ,EQU,8                           ; роль: десятичная константа/сдвиг; S1:6172  ; (POLN: DEC_8)
+EDC029 ,EQU,17                          ; роль: десятичная константа/сдвиг; S1:6175  ; (POLN: DEC_17)
+EOC029 ,EQU,21B                         ; роль: восьмеричная константа; S1:6189  ; (POLN: OCT_21)
+EDC030 ,EQU,0                           ; роль: десятичная константа/сдвиг; S1:6193  ; (POLN: DEC_0)
+ETX030 ,EQU,=6H*CHE081                  ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6205  ; (POLN: LITERAL__6H_CHE081)
+ETX031 ,EQU,=6H(                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6208  ; (POLN: LITERAL__6H_)
+EDC031 ,EQU,40                          ; роль: десятичная константа/сдвиг; S1:6209  ; (POLN: DEC_40)
+EDC032 ,EQU,24                          ; роль: десятичная константа/сдвиг; S1:6215  ; (POLN: DEC_24)
+ETX032 ,EQU,=6H                         ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6246  ; (POLN: LITERAL__6H)
+EDC033 ,EQU,42                          ; роль: десятичная константа/сдвиг; S1:6257  ; (POLN: DEC_42)
+EDC034 ,EQU,16                          ; роль: десятичная константа/сдвиг; S1:6273  ; (POLN: DEC_16)
+ETX034 ,EQU,=17 7777                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6278  ; (POLN: LITERAL__17_7777)
+ETX035 ,EQU,=6H-MU''''''                ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6283  ; (POLN: LITERAL__6H_MU______)
+ETX036 ,EQU,=6H     =                   ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6287  ; (POLN: LITERAL__6H______)
+ETX037 ,EQU,=377                        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6288  ; (POLN: LITERAL__377)
+ETX038 ,EQU,=6H'''''''''1''7'           ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6291  ; (POLN: LITERAL__6H_________1__7_)
+ETX039 ,EQU,=20 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6293  ; (POLN: LITERAL__20_0000)
+ETX040 ,EQU,=6H'''''1''7'''''           ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6296  ; (POLN: LITERAL__6H_____1__7_____)
+ETX041 ,EQU,=40 0000                    ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6298  ; (POLN: LITERAL__40_0000)
+ETX042 ,EQU,1                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6319  ; (POLN: LIT_1)
+EOC042 ,EQU,74100B                      ; роль: восьмеричная константа; S1:6334  ; (POLN: OCT_74100)
+EOC043 ,EQU,571B                        ; роль: восьмеричная константа; S1:6334  ; (POLN: OCT_571)
+EOC044 ,EQU,70100B                      ; роль: восьмеричная константа; S1:6350  ; (POLN: OCT_70100)
+EOC045 ,EQU,114B                        ; роль: восьмеричная константа; S1:6350  ; (POLN: OCT_114)
+EOC046 ,EQU,117B                        ; роль: восьмеричная константа; S1:6352  ; (POLN: OCT_117)
+ETX046 ,EQU,=1777                       ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6353  ; (POLN: LITERAL__1777)
+EDC046 ,EQU,4                           ; роль: десятичная константа/сдвиг; S1:6355  ; (POLN: DEC_4)
+EDC047 ,EQU,6                           ; роль: десятичная константа/сдвиг; S1:6362  ; (POLN: DEC_6)
+EOC047 ,EQU,760B                        ; роль: восьмеричная константа; S1:6365  ; (POLN: OCT_760)
+EOC048 ,EQU,762B                        ; роль: восьмеричная константа; S1:6369  ; (POLN: OCT_762)
+ETX048 ,EQU,=77777                      ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6370  ; (POLN: LITERAL__77777)
+ETX049 ,EQU,=4                          ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6373  ; (POLN: LITERAL__4)
+ETX050 ,EQU,=7770 0000 7760 0000        ; роль: литерал (TEXT/OCT/GOST/ISO) из исходника; S1:6390  ; (POLN: LITERAL__7770_0000_7760_0000)
+ETX051 ,EQU,2H '231'                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6457  ; (POLN: LIT_2H__231_)
+ETX052 ,EQU,8HMONITOR*                  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6458  ; (POLN: LIT_8HMONITOR_)
+ETX053 ,EQU,12H                         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6460  ; (POLN: LIT_12H)
+ETX054 ,EQU,6HБЭCM-6                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6461  ; (POLN: LIT_6H__CM_6)
+ETX055 ,EQU,6H/0                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6462  ; (POLN: LIT_6H_0)
+ETX056 ,EQU,6H ШИФP-                    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6463  ; (POLN: LIT_6H____P_)
+ETX057 ,EQU,6H00                        ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6464  ; (POLN: LIT_6H00)
+ETX058 ,EQU,36HMOHИTOPHAЯ C038ИCTEMA  '47'Д Y Б H A'47'  -; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6466  ; (POLN: LIT_36HMOH_TOPHA__C038_CTEMA___47_)
+ETX059 ,EQU,2                           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6467  ; (POLN: LIT_2)
+ETX060 ,EQU,14 0000 0021 0001           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6468  ; (POLN: LIT_14_0000_0021_0001)
+ETX061 ,EQU,4014 0003 0021 0101         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6469  ; (POLN: LIT_4014_0003_0021_0101)
+ETX062 ,EQU,0000 37                     ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6470  ; (POLN: LIT_0000_37)
+ETX063 ,EQU,4000 0000                   ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6472  ; (POLN: LIT_4000_0000)
+ETX064 ,EQU,04                          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6473  ; (POLN: LIT_04)
+ETX065 ,EQU,6H*DOS                      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6474  ; (POLN: LIT_6H_DOS)
+ETX066 ,EQU,6H'377'00000                ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6475  ; (POLN: LIT_6H_377_00000)
+ETX067 ,EQU,6H'377''377'0000            ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6476  ; (POLN: LIT_6H_377__377_0000)
+ETX068 ,EQU,6H0000'377''377'            ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6477  ; (POLN: LIT_6H0000_377__377_)
+ETX069 ,EQU,21HOTCYTCTBYET П/K *NAME    ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6483  ; (POLN: LIT_21HOTCYTCTBYET___K__NAME)
+ETX070 ,EQU,15HOШИБKA B KAPTE-          ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6484  ; (POLN: LIT_15HO___KA_B_KAPTE_)
+ETX071 ,EQU,15HCHECK PAHOBATO           ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6486  ; (POLN: LIT_15HCHECK_PAHOBATO)
+EDC071 ,EQU,47                          ; роль: десятичная константа/сдвиг; S1:6487  ; (POLN: DEC_47)
+ETX072 ,EQU,19HПOBTOPHO OПPEДEЛEHO      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6488  ; (POLN: LIT_19H_OBTOPHO_O_PE_E_EHO)
+ETX073 ,EQU,20HHEПPABИЛЬHAЯ CCЫЛKA      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6489  ; (POLN: LIT_20HHE_PAB___HA__CC__KA)
+ETX074 ,EQU,18HHE OБ'47'ЯBЛEH ДИCK      ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6491  ; (POLN: LIT_18HHE_O__47__B_EH___CK)
+ETX075 ,EQU,23HБЫЛИ OШИБKИ B YK PAБOTЫ  ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6492  ; (POLN: LIT_23H_____O___K__B_YK_PA_OT_)
+ETX076 ,EQU,18H <ЭKCПPECC-ЗAДAЧA>       ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6493  ; (POLN: LIT_18H___KC_PECC__A_A_A_)
+ETX077 ,EQU,144                         ; роль: константа-слово (LOG/OCT/TEXT/GOST/ISO); S1:6494  ; (POLN: LIT_144)
+С ---- конец блока констант ----
+
+С ---- ТЕЛО МОДУЛЯ ----
+CHE001: NAME . 01.07.74  ; (POLN: CHEKJOB*) ; S1:6019
+С
+С--------  '06.12.73' - (BEPETEHOB)
+С
+С---------   ,01.07.74, - (ШAПИPO)
+С
+C,, . .......   OБ'EKTЫ PEЗИДEHTA MOHИTOPA  ; S1:6025
+MON002: SUBP  ; (POLN: MONITOR*) ; S1:6026
+RM003: LC,BLOCK,RM  ; (POLN: RM*) ; S1:6027
+LOA005: SUBP  ; (POLN: LOADGO) ; S1:6029
+MON006: LC,EDC012 . объявление длины/COMMON  ; (POLN: MONCARD*) ; S1:6030
+KCO007: LC,EDC012 . объявление длины/COMMON  ; (POLN: KCOUNT*) ; S1:6031
+STA008: LC,EDC012 . объявление длины/COMMON  ; (POLN: STATIC*) ; S1:6032
+INF009: LC,BLOCK,(EDC012),INFLOA,INFMD,(EDC012)  ; (POLN: INFLOAD*) ; S1:6033
+C,, . .......   PACПPEДEЛEHИE  CBOEГO PAЗДEЛA  ; S1:6036
+FLA012: LC,BLOCK,MER,TIM(EDC013),PAS,NACA(EDC014)  ; (POLN: *FLAG*) ; S1:6037
+CONT,NATEX,PAGE  ; S1:6038
+CONT,ШИФP  ; S1:6039
+CONT,TERM  ; S1:6040
+ORD013: LC,BLOCK,TAPES(EDC015)  ; (POLN: *ORDEN) ; S1:6041
+BIG014: SUBP  ; (POLN: BIGTITLE) ; S1:6042
+CHE015: SUBP  ; (POLN: CHE*NAM) ; S1:6043
+TAK016: SUBP  ; (POLN: TAK*COCA) ; S1:6044
+CON017: SUBP  ; (POLN: CONCAR) ; S1:6045
+END019: SUBP  ; (POLN: END*CJOB) ; S1:6047
+GIV020: SUBP  ; (POLN: GIVETIME) ; S1:6048
+ISO021: SUBP  ; (POLN: ISO*TEX*) ; S1:6049
+PUN022: SUBP  ; (POLN: PUNTEX/) ; S1:6050
+PRE023: SUBP  ; (POLN: PREPDAT) ; S1:6051
+NTA024: SUBP . ИMЯ MЛ/ДП  ; (POLN: NTAPDISC) ; S1:6052
+MON025: LC,EDC016 . ИCX. ИHФ.  ; (POLN: MONCARD/) ; S1:6053
+MON026: LC,EDC017 . OTBET  ; (POLN: *MONCRD*) ; S1:6054
+MIS027: LC,BLOCK,MIS,CODE,NUMBER  ; (POLN: MIST10*) ; S1:6055
+STA028: LC,EDC012 . YПP. ЗAБИBKOЙ  ; (POLN: STARSTA) ; S1:6056
+OUT029: LC,EDC012 . YПP. ПEЧATЬЮ  ; (POLN: OUT*OUT) ; S1:6057
+DIS030: SUBP  ; (POLN: *DISPAR1) ; S1:6058
+TRA031: SUBP  ; (POLN: TRANSFIO) ; S1:6059
+GOS032: SUBP  ; (POLN: GOST/ISO) ; S1:6060
+TAB033: SUBP  ; (POLN: TABSIMIS) ; S1:6061
+GIV034: SUBP  ; (POLN: GIVETAP*) ; S1:6062
+C,, . .......   CEPBИCHЫE П/П MOHИTOPA  ; S1:6063
+MON035: SUBP  ; (POLN: MONREAD*) ; S1:6064
+PRI036: SUBP  ; (POLN: PRINT8) ; S1:6065
+C,, . .......   OБOЗHAЧEHИЯ ИHДEKC-PEГИCTPOB  ; S1:6066
+N1037: BLOCK,IT,T,E,PI,DF  ; (POLN: *1) ; S1:6067
+C,, . .......  ; S1:6070
+С
+CALL,PRE023 . вызов подпрограммы  ; S1:6079
+CPO047: COMMON CO CTATИKOЙ,,  ; (POLN: C......   ПPOBEPKA) ; S1:6080
+XTA,EOC017 . считывание в аккумулятор  ; S1:6081
+ATI,EDC017 . запись в индексный регистр  ; S1:6082
+ASN,EDC018-EDC019  ; S1:6083
+AOX,DR1101  ; S1:6084
+ATX,LIB011 . запись с модификатором  ; S1:6085
+DRUM,LIB011  ; S1:6086
+12,XTA,EOC019 . считывание в аккумулятор  ; S1:6087
+AEX,MON095  ; S1:6088
+U1A,NOS048  ; S1:6089
+XTA,RM+EDC013 . MAГAЗИH  ; S1:6090
+ASN,EDC018-EDC020  ; S1:6091
+AUX,ETX020  ; S1:6092
+AOX,ETX021  ; S1:6093
+ATX,STA008 . запись с модификатором  ; S1:6094
+ATX,INFLOA . запись с модификатором  ; S1:6095
+NOS048: BSS . зарезервированная область  ; (POLN: NO/STAT) ; S1:6096
+12,XTA,DAT010 . считывание в аккумулятор  ; S1:6097
+ATX,TDATE . запись с модификатором  ; S1:6098
+12,XTA,DAT010+EDC012 . считывание в аккумулятор  ; S1:6099
+ATX,TDATE+EDC012 . запись с модификатором  ; S1:6100
+С  ---  ДЛЯ ФИPMЫ:
+*63,EOC021 . ЛИБO 763B  ; S1:6102 . Э63 765 = НЕ НАЙДЕНО в rukava.be
+UZA,MA049 . переход при =0  ; S1:6103
+ATX,BES096 . =ISO  ; S1:6104
+MA049: BSS . зарезервированная область  ; (POLN: MAШ) ; S1:6105
+С---   ДЛЯ HOMEPA MAШИHЫ
+*63,EDC021  ; S1:6107 . Э63 7 = ЗАПРОС СВЕДЕНИЙ ОБ ОБЛАСТИ, стр.? [rukava.be:3155]
+ASN,EDC018+EDC020  ; S1:6108
+AAX,ETX022  ; S1:6109
+ASN,EDC018-EDC022  ; S1:6110
+AOX,BES097  ; S1:6111
+ATX,BES097 . запись с модификатором  ; S1:6112
+С   -- И ДЛЯ ШИФPA ЗAДAЧИ
+XTA . считывание в аккумулятор  ; S1:6114
+DIS050: IFSEQ,D,DD**  ; (POLN: DISP) ; S1:6115
+*63,EOC022  ; S1:6116 . Э63 502 = НЕ НАЙДЕНО в rukava.be
+ATI,EDC016 . запись в индексный регистр  ; S1:6117
+14,*63,  ; S1:6118
+ASN,EDC018-EDC023  ; S1:6119
+AUX,ETX023  ; S1:6120
+AOX,SHI098  ; S1:6121
+ATX,SHI098 . запись с модификатором  ; S1:6122
+DIS051: ENDIF  ; (POLN: DISP) ; S1:6123
+ATX,ШИФP . запись с модификатором  ; S1:6124
+14,VTM,BES096 . установка индексного регистра  ; S1:6125
+ITS,EDC016 . сохранение индексного регистра в стек  ; S1:6126
+14,UTM,EDC014 . переход при >0  ; S1:6127
+ITS,EDC016 . сохранение индексного регистра в стек  ; S1:6128
+XTS,B1104 . считывание с модификатором  ; S1:6129
+CALL,PRI036 . вызов подпрограммы  ; S1:6130
+14,VTM,HEA099 . установка индексного регистра  ; S1:6131
+ITS,EDC016 . сохранение индексного регистра в стек  ; S1:6132
+14,VTM,TDATE+EDC012 . установка индексного регистра  ; S1:6133
+ITS,EDC016 . сохранение индексного регистра в стек  ; S1:6134
+XTS,B1104 . считывание с модификатором  ; S1:6135
+CALL,PRI036 . вызов подпрограммы  ; S1:6136
+PRINT,I8B093 . печать строки  ; S1:6137
+XTA,B1104 . ДЛЯ BOCCTAH.  ; S1:6138
+ATX,KCO007+EDC013 . OБM.ЛИCTA  ; S1:6139
+C,, . .....   OБPAБOTKA KAPTЫ '*NAME ...'  ; S1:6140
+CALL,MON035 . вызов подпрограммы  ; S1:6141
+12,VTM,MON006 . установка индексного регистра  ; S1:6142
+CALL,CHE015 . вызов подпрограммы  ; S1:6143
+E,VIM,ERN085 . переход  ; S1:6144
+DIS052: 6,IFSEQ,D,DD**  ; (POLN: DISP) ; S1:6145
+13,VTM,NACA . NAME  ; S1:6146
+ITA,EDC024 . взятие из стека в индексный регистр  ; S1:6147
+FUN,EOC024 . HA TT  ; S1:6148
+13,UTM,EDC012 . переход при >0  ; S1:6149
+ITA,EDC024 . взятие из стека в индексный регистр  ; S1:6150
+FUN,EOC025 . B ИПЗ  ; S1:6151
+C,, . .....   ПEЧATЬ *NAME 'БOЛЬШИMИ' БYKBAMИ  ; S1:6152
+XTS,MON006+EDC012 . считывание с модификатором  ; S1:6153
+XTS,MON006+EDC013 . считывание с модификатором  ; S1:6154
+XTS,MON006+EDC025 . считывание с модификатором  ; S1:6155
+14,VTM,SBU119 . установка индексного регистра  ; S1:6156
+ITS,EDC016 . сохранение индексного регистра в стек  ; S1:6157
+14,VTM,EOC026 . ПEЧATЬ  ; S1:6158
+ITS,EDC016 . БYKBOЙ 'Ж'  ; S1:6159
+CALL,BIG014 . BECЬ TEKCT  ; S1:6160
+С---   ДЛЯ HOMEPA MAШИHЫ
+*63,EDC021  ; S1:6162 . Э63 7 = ЗАПРОС СВЕДЕНИЙ ОБ ОБЛАСТИ, стр.? [rukava.be:3155]
+AAX,ETX026  ; S1:6163
+UZA,CNT053 . переход при =0  ; S1:6164
+XTA,MON006+EDC012 . считывание в аккумулятор  ; S1:6165
+AAX,ETX027  ; S1:6166
+AEX,ETX028  ; S1:6167
+UZA,CNT053 . переход при =0  ; S1:6168
+E,VTM,EDC012 . установка индексного регистра  ; S1:6169
+UJ,ERNAM . переход/возврат  ; S1:6170
+CNT053: BSS . зарезервированная область  ; (POLN: CNT) ; S1:6171
+11,VTM,EDC012-EDC028 . установка индексного регистра  ; S1:6172
+12,VTM,SBU119 . установка индексного регистра  ; S1:6173
+BPR054: ITS,EDC017 . ЦИKЛ ПEЧATИ  ; (POLN: B PRI) ; S1:6174
+12,UTM,EDC029 . переход при >0  ; S1:6175
+ITS,EDC017 . сохранение индексного регистра в стек  ; S1:6176
+14,VTM,EDC017 . N ПOЗИЦИИ  ; S1:6177
+ITS,EDC016 . ПEЧATЬ  ; S1:6178
+CALL,PRI036 . OДHOЙ CTPOKИ  ; S1:6179
+12,UTM,EDC012 . переход при >0  ; S1:6180
+11,VLM,BPR054 . цикл: переход при <0  ; S1:6181
+IT,VTM,TAPES . установка индексного регистра  ; S1:6182
+PRINT,I8B093 . 8 ПPOTЯЖEK  ; S1:6183
+XTA . считывание в аккумулятор  ; S1:6184
+ATX,MER . ПPИЗH.OШИБKИ  ; S1:6185
+ATX,TIM . ЛИMИT BPEMEHИ  ; S1:6186
+ATX,PAS . ШИФP ПOЛЬЗOBAT.  ; S1:6187
+ATX,PAGE . ЛИMИT БYMAГИ  ; S1:6188
+14,VTM,EOC029 . SYSTEM  ; S1:6189
+ITA,EDC016 . LIBRARY  ; S1:6190
+ATX,LIB011 . запись с модификатором  ; S1:6191
+AD,VTM,MON006 . установка индексного регистра  ; S1:6192
+DF,VTM,EDC030 . установка индексного регистра  ; S1:6193
+13,VJM,PRI079 . вызов через индексный регистр  ; S1:6194
+LOO055: BSS . OCHOBHOЙ ЦИKЛ  ; (POLN: LOOP) ; S1:6195
+PI,VTM,EDC030 . OLD CARD  ; S1:6196
+AD,VTM,MON006 . установка индексного регистра  ; S1:6197
+T,VTM,EDC012-EDC016 . установка индексного регистра  ; S1:6198
+CALL,MON035 . вызов подпрограммы  ; S1:6199
+XTA,MON006 . считывание в аккумулятор  ; S1:6200
+AAX,M B1104  ; S1:6201
+UZA,OUT058 . NONTEXT  ; S1:6202
+9,VTM,EDC030 . ДЛЯ PARAMT*.  ; S1:6203
+XTA,MON006 . считывание в аккумулятор  ; S1:6204
+AEX,ETX030  ; S1:6205
+UIA,LO0056 . HE *CHECK  ; S1:6206
+XTA,MON006+EDC012 . считывание в аккумулятор  ; S1:6207
+AEX,ETX031  ; S1:6208
+ASN,EDC018+EDC031  ; S1:6209
+U1A,OUT058 . *CHECK,<ПAPAMETPЫ>  ; S1:6210
+LO0056: T,XTA,MON006+EDC024 . считывание в аккумулятор  ; (POLN: LO 0) ; S1:6211
+T,ATX,MON025+EDC024 . запись с модификатором  ; S1:6212
+T,VLM,LO0056 . цикл: переход при <0  ; S1:6213
+XTA,LEN018 . считывание в аккумулятор  ; S1:6214
+ASN,EDC018+EDC032  ; S1:6215
+ATI,T . запись в индексный регистр  ; S1:6216
+XTA,B EDC012 . БЛOKИP. ПEЧ  ; S1:6217
+ATX,OUT029 . ДИAГHOCTИKИ  ; S1:6218
+C,VTM,EDC030 . HAЧ. PAБOTA  ; S1:6219
+ITA,AD039 . BOЛKOB EГO  ; S1:6220
+ATX,SAV120 . ПOPTИT  ; S1:6221
+CALL,PARAMT* . вызов подпрограммы  ; S1:6222
+XTA,SAV120 . HO TAK HE  ; S1:6223
+ATI,AD039 . ДOГOBAPИBAЛИCЬ  ; S1:6224
+11,UTM,-TWO040 . AHAЛИЗ  ; S1:6225
+11,VIM,LO1057 . OГPAHИЧИTEЛЯ  ; S1:6226
+PI,VTM,EDC012 . KAPTA  ; S1:6227
+AD,VTM,MON026 . HOBOГO TИПA  ; S1:6228
+LO1057: AD,XTA, . PACПOЗHABAHИE  ; (POLN: LO 1) ; S1:6229
+WTC,LEN018 . YK PAБOTЫ  ; S1:6230
+T,AEX,  ; S1:6231
+UZA,TAK067 . переход при =0  ; S1:6232
+T,VLM,LO1057 . цикл: переход при <0  ; S1:6233
+C,, . .....   ПOШЛA HE HAШA KAPTA  ; S1:6234
+OUT058: BSS . зарезервированная область  ; (POLN: OUT) ; S1:6235
+CALL,GIV020 . KOHTPOЛЬ ЛИMИTOB  ; S1:6236
+XTA,PAS . считывание в аккумулятор  ; S1:6237
+CALL,PRI*NEWS . вызов подпрограммы  ; S1:6238
+XTA,MER . считывание в аккумулятор  ; S1:6239
+UIA,STO088 . БЫЛИ OШИБKИ  ; S1:6240
+12,VTM,EDC030 . OT CHEKJOB  ; S1:6241
+CALL,END019 . HA ДOOБPAБOTKY  ; S1:6242
+E,VIM,STO088 . БЫЛИ OШИБKИ  ; S1:6243
+XTA,TERM . считывание в аккумулятор  ; S1:6244
+UZA,GIV061 . HE БЫЛO  ; S1:6245
+AEX,ETX032  ; S1:6246
+UZA,N71059 . БEЗ 'DEBUG'  ; S1:6247
+XTA,B1104 . .БЫЛ 'DEBUG'  ; S1:6248
+N71059: BSS . зарезервированная область  ; (POLN: *71) ; S1:6249
+DIS060: 1,IFSEQ,D,DD**  ; (POLN: DISP) ; S1:6250
+*71  ; S1:6251
+GIV061: BSS . зарезервированная область  ; (POLN: GIVTAP) ; S1:6252
+DIS062: IFSEQ,D,DD**  ; (POLN: DISP) ; S1:6253
+*65,AYC041  ; S1:6254 . Э65 502 = НЕ НАЙДЕНО в rukava.be
+ATI,EDC024 . запись в индексный регистр  ; S1:6255
+13,*65,  ; S1:6256
+ASN,EDC018+EDC033  ; S1:6257
+15,ATX, . запись с модификатором  ; S1:6258
+NTR,EDC025  ; S1:6259
+*65,A043  ; S1:6260 . Э65 760 = НЕ НАЙДЕНО в rukava.be
+ATI,EDC016 . запись в индексный регистр  ; S1:6261
+14,*65,XNF044  ; S1:6262 . Э65 1 = НЕ НАЙДЕНО в rukava.be
+15,X-A,  ; S1:6263
+ATI,EDC024 . запись в индексный регистр  ; S1:6264
+*65,AK042  ; S1:6265 . Э65 761 = НЕ НАЙДЕНО в rukava.be
+ATI,EDC017 . запись в индексный регистр  ; S1:6266
+12,J+M,EDC024  ; S1:6267
+13,*65,  ; S1:6268
+ATX,INF121 . запись с модификатором  ; S1:6269
+*65,ALI045  ; S1:6270 . Э65 560 = НЕ НАЙДЕНО в rukava.be
+ATI,EDC017 . запись в индексный регистр  ; S1:6271
+12,*65,SCC046  ; S1:6272 . Э65 1 = НЕ НАЙДЕНО в rukava.be
+ASN,EDC018-EDC034  ; S1:6273
+AAX,INF121  ; S1:6274
+UZA,GIV065 . переход при =0  ; S1:6275
+XTA,NACA+EDC012 . считывание в аккумулятор  ; S1:6276
+ASN,EDC018+EDC032  ; S1:6277
+AAX,ETX034  ; S1:6278
+AOX,INF121  ; S1:6279
+ATX,INF121 . запись с модификатором  ; S1:6280
+XTA,NACA+EDC012 . считывание в аккумулятор  ; S1:6281
+ASN,EDC018-EDC032  ; S1:6282
+AEX,ETX035  ; S1:6283
+UZA,MUJ063 . переход при =0  ; S1:6284
+XTA,NACA+EDC012 . считывание в аккумулятор  ; S1:6285
+ASN,EDC018+EDC034  ; S1:6286
+AEX,ETX036  ; S1:6287
+AAX,ETX037  ; S1:6288
+UIA,GIV065 . переход  ; S1:6289
+XTA,NACA+EDC012 . RUN JOB  ; S1:6290
+APX,ETX038  ; S1:6291
+ASN,EDC018+EDC028  ; S1:6292
+AOX,ETX039 . BIT17  ; S1:6293
+UJ,TOI064 . переход/возврат  ; S1:6294
+MUJ063: XTA,NACA+EDC013 . считывание в аккумулятор  ; (POLN: MUJ) ; S1:6295
+APX,ETX040  ; S1:6296
+ASN,EDC018+EDC028  ; S1:6297
+AOX,ETX041 . BIT18  ; S1:6298
+TOI064: AOX,INF121  ; (POLN: TOINFBA) ; S1:6299
+13,*52,  ; S1:6300
+GIV065: BSS . зарезервированная область  ; (POLN: GIVTAP1) ; S1:6301
+DIS066: ENDIF  ; (POLN: DISP) ; S1:6302
+IT,UTM,-TAPES . ЗAKAЗA ЛEHT  ; S1:6303
+IT,VZM,MON004 . - HE БЫЛO  ; S1:6304
+13,VTM,MON004 . установка индексного регистра  ; S1:6305
+UJ,GIV034 . ЗAKAЗ HOBЫX  ; S1:6306
+С------   OKOHЧEHA PAБOTA PAЗДEЛA * * *
+TAK067: AD,VTM,MON006 . HA PEAЛИЗATOP  ; (POLN: TAKE) ; S1:6308
+PI,VZM,CAL068 . переход при <0  ; S1:6309
+AD,VTM,MON025 . установка индексного регистра  ; S1:6310
+CAL068: BSS . зарезервированная область  ; (POLN: CALL) ; S1:6311
+CALL,TAK016 . вызов подпрограммы  ; S1:6312
+T,VZM,ERC089 . HE PACПOЗHAHA  ; S1:6313
+T,UJ,SW2069-EDC012 . переход/возврат  ; S1:6314
+SW2069: BSS . зарезервированная область  ; (POLN: SW2) ; S1:6315
+C,, . .....   ПEPEKЛЮЧATEЛЬ TИПOB YK PAБOTЫ  ; S1:6316
+XTA,C038 ST1 . *PASS ...  ; S1:6317
+UJ,PRI073 . переход/возврат  ; S1:6318
+BSS,ETX042 . *ASSIGN TIME  ; S1:6319
+TOP070: 13,VTM,LOO055 . *ASSIGN LIBRARY  ; (POLN: TO PRI) ; S1:6320
+UJ,PRI079 . переход/возврат  ; S1:6321
+13,VTM,PUN084 . *ASSIGN PUNCH  ; S1:6322
+UJ,PRI079 . переход/возврат  ; S1:6323
+E,VZM,TOP070 . *ASSIGN .TAPE  ; S1:6324
+UJ,ERR091 . переход/возврат  ; S1:6325
+13,VTM,CHE081 . *CHECK(N) ...  ; S1:6326
+UJ,PRI078 . переход/возврат  ; S1:6327
+UJ,PRI074 . 7  ; S1:6328
+13,VTM,LOO055 . 8  ; S1:6329
+UJ,TAK071 . переход/возврат  ; S1:6330
+TAK071: BSS . зарезервированная область  ; (POLN: TAK LIST) ; S1:6331
+DIS072: 2,IFSEQ,D,DD**  ; (POLN: DISP) ; S1:6332
+XTA,B45106 . считывание в аккумулятор  ; S1:6333
+*50,EOC042+EOC043  ; S1:6334 . Э50 EOC042+EOC043 = НЕ НАЙДЕНО в rukava.be
+AD,VTM,MON006 . установка индексного регистра  ; S1:6335
+UJ,PRI079 . переход/возврат  ; S1:6336
+PRI073: BSS . зарезервированная область  ; (POLN: PRI PASS) ; S1:6337
+AD,VTM,MON006 . установка индексного регистра  ; S1:6338
+AD,ATX,EDC012 . запись с модификатором  ; S1:6339
+UJ,TOP070 . переход/возврат  ; S1:6340
+PRI074: AD,VTM,MON006 . установка индексного регистра  ; (POLN: PRI PRIOR) ; S1:6341
+T,VTM,EDC012-EDC025 . установка индексного регистра  ; S1:6342
+LPR075: T,XTA,TPRIOR+EDC013 . считывание в аккумулятор  ; (POLN: LPRIO) ; S1:6343
+AD,UTC, . сравнение/переход  ; S1:6344
+T,ATX,EDC013 . запись с модификатором  ; S1:6345
+T,VLM,L PRIO . цикл: переход при <0  ; S1:6346
+13,VTM,LOO055 . установка индексного регистра  ; S1:6347
+XTA,PAS . считывание в аккумулятор  ; S1:6348
+U1A,*+1  ; S1:6349
+FUN,EOC044+EOC045  ; S1:6350
+ATX,PAS . запись с модификатором  ; S1:6351
+FUN,EOC044+EOC046 . A US  ; S1:6352
+AAX,ETX046  ; S1:6353
+UZA,PRI079 . переход при =0  ; S1:6354
+ASN,EDC018+EDC046  ; S1:6355
+U1A,PRI079 . > 15 !!!  ; S1:6356
+DIS076: IFSEQ,D,DD**  ; (POLN: DISP) ; S1:6357
+NTR,EDC025  ; S1:6358
+*65,EOC022  ; S1:6359 . Э65 502 = НЕ НАЙДЕНО в rukava.be
+ATI,EDC016 . запись в индексный регистр  ; S1:6360
+14,*65,  ; S1:6361
+ASN,EDC018-EDC047  ; S1:6362
+YTA  ; S1:6363
+ATI,EDC024 . запись в индексный регистр  ; S1:6364
+*65,EOC047  ; S1:6365 . Э65 760 = НЕ НАЙДЕНО в rukava.be
+ATI,EDC016 . запись в индексный регистр  ; S1:6366
+14,*65,  ; S1:6367
+15,ATX, . запись с модификатором  ; S1:6368
+*65,EOC048 . ДHЗ CЛYЖ  ; S1:6369 . Э65 762 = НЕ НАЙДЕНО в rukava.be
+AAX,ETX048 . AДP PRTSTAT  ; S1:6370
+15,A-X,  ; S1:6371
+ATI,EDC016 . запись в индексный регистр  ; S1:6372
+XTA,ETX049 . KBAHT  ; S1:6373
+14,UTC, . сравнение/переход  ; S1:6374
+13,*52,  ; S1:6375
+DIS077: ENDIF  ; (POLN: DISP) ; S1:6376
+13,VTM,LOO055 . установка индексного регистра  ; S1:6377
+UJ,PRI079 . переход/возврат  ; S1:6378
+PRI078: XTA,MON006+EDC013 . ЗAMEHA  ; (POLN: PRI CHE) ; S1:6379
+AAX,MB1109 . ИMEHИ MЛ  ; S1:6380
+AOX,C038 ST2 . HA *  ; S1:6381
+ATX,MON006+EDC013 . запись с модификатором  ; S1:6382
+XTA,MON006+EDC025 . считывание в аккумулятор  ; S1:6383
+AAX,MB5110  ; S1:6384
+AOX,C038 ST3  ; S1:6385
+ATX,MON006+EDC025 . запись с модификатором  ; S1:6386
+PRI079: BSS . зарезервированная область  ; (POLN: PRINT) ; S1:6387
+DIS080: 3,IFSEQ,D,DD**  ; (POLN: DISP) ; S1:6388
+ITA,AD039 . взятие из стека в индексный регистр  ; S1:6389
+AOX,ETX050  ; S1:6390
+*72,EDC046 . ЗAПИCЬ B DAYFILE  ; S1:6391 . Э72 4 = НЕ НАЙДЕНО в rukava.be
+ITS,AD039 . сохранение индексного регистра в стек  ; S1:6392
+AD,UTM,EDC024 . TEKYЩEЙ  ; S1:6393
+ITS,AD039 . KAPTЫ  ; S1:6394
+XTS . считывание с модификатором  ; S1:6395
+UJ,PRI036 . переход/возврат  ; S1:6396
+CHE081: E,VZM,LOO055 . HE БЫЛO OШ.  ; (POLN: CHECK) ; S1:6397
+E,UTM,-EDC012 . OШИБKA B YK  ; S1:6398
+E,VZM,ERC090 . 'ЗAПPOC PECYPCA'  ; S1:6399
+14,VTM,TREDEF . установка индексного регистра  ; S1:6400
+E,UTM,-EDC012 . переход при >0  ; S1:6401
+E,VIM,CHE082 . переход  ; S1:6402
+14,VTM,TEARLY . установка индексного регистра  ; S1:6403
+CHE082: ITS,EDC016 . сохранение индексного регистра в стек  ; (POLN: CHE 1) ; S1:6404
+14,UTM,EDC025 . переход при >0  ; S1:6405
+GEN083: ITS,EDC016 . OБЩИЙ БЛOK  ; (POLN: GEN ER) ; S1:6406
+14,VTM,EDC022 . 'ПEЧATЬ OШИБOK'  ; S1:6407
+ITS,EDC016 . сохранение индексного регистра в стек  ; S1:6408
+ATX,MER . запись с модификатором  ; S1:6409
+13,VTM,LOO055 . установка индексного регистра  ; S1:6410
+UJ,PRI036 . переход/возврат  ; S1:6411
+PUN084: 14,VTM,NATEX . ПEPФOPAЦИЯ  ; (POLN: PUNCH) ; S1:6412
+ITS,EDC016 . ИMEHИ C KAPTЫ  ; S1:6413
+13,VTM,LOO055 . - *NAME ...  ; S1:6414
+UJ,PUN022 . ...  ; S1:6415
+ERN085: BSS . OШ. NAME  ; (POLN: ER NAM) ; S1:6416
+E,UTM,-EDC012 . переход при >0  ; S1:6417
+E,VIM,EN1086 . NONTEXT CARD  ; S1:6418
+13,VJM,PRI079 . вызов через индексный регистр  ; S1:6419
+EN1086: BSS . зарезервированная область  ; (POLN: EN 1) ; S1:6420
+12,VTM,TERROR . установка индексного регистра  ; S1:6421
+ITS,EDC017 . сохранение индексного регистра в стек  ; S1:6422
+12,UTM,EDC025 . переход при >0  ; S1:6423
+FAT087: ITS,EDC017 . ФAT.ИCXOД  ; (POLN: FAT) ; S1:6424
+12,VTM,EDC022 . установка индексного регистра  ; S1:6425
+ITS,EDC017 . сохранение индексного регистра в стек  ; S1:6426
+CALL,PRI036 . вызов подпрограммы  ; S1:6427
+SJ  ; S1:6428
+STO088: 12,VTM,TVYZOV . БЫЛИ OШИБKИ  ; (POLN: STOP) ; S1:6429
+ITS,EDC017 . сохранение индексного регистра в стек  ; S1:6430
+12,UTM,EDC025 . переход при >0  ; S1:6431
+UJ,FAT087 . переход/возврат  ; S1:6432
+ERC089: 13,VJM,PRI079 . OШ. YK  ; (POLN: ER CAR) ; S1:6433
+ERC090: 14,VTM,TERRCD . 'ЗAПPOC PECYPCA'  ; (POLN: ERCAR1) ; S1:6434
+ITS,EDC016 . сохранение индексного регистра в стек  ; S1:6435
+14,UTM,EDC046 . переход при >0  ; S1:6436
+UJ,GEN083 . переход/возврат  ; S1:6437
+ERR091: 13,VJM,PRI079 . вызов через индексный регистр  ; (POLN: ER REF) ; S1:6438
+E,UTM,-EDC012 . переход при >0  ; S1:6439
+E,VIM,ERR092 . переход  ; S1:6440
+C,, . .....   OШИБOЧHAЯ CCЫЛKA HA KAPTY *CHECK  ; S1:6441
+14,VTM,TBADLN . установка индексного регистра  ; S1:6442
+ITS,EDC016 . сохранение индексного регистра в стек  ; S1:6443
+14,UTM,EDC047 . переход при >0  ; S1:6444
+UJ,GEN083 . переход/возврат  ; S1:6445
+ERR092: E,UTM,-EDC012 . переход при >0  ; (POLN: ER REF1) ; S1:6446
+E,VIM,ERC089 . переход  ; S1:6447
+C,, . .....   HEOПPEДEЛEH ДИCKOBЫЙ ПAKET  ; S1:6448
+14,VTM,TNODSK . установка индексного регистра  ; S1:6449
+ITS,EDC016 . сохранение индексного регистра в стек  ; S1:6450
+14,UTM,EDC013 . переход при >0  ; S1:6451
+UJ,GEN083 . переход/возврат  ; S1:6452
+I8B093: Z00,DUM094  ; (POLN: I 8BS) ; S1:6453
+Z00,DUM094  ; S1:6454
+  ; S1:6455
+15,,  ; S1:6456
+DUM094: GOST,ETX051 . GOST-константа  ; (POLN: DUM) ; S1:6457
+MON095: TEXT,ETX052 . текстовая константа  ; (POLN: MONAM) ; S1:6458
+С---   ДЛЯ HOMEPA MAШИHЫ
+BES096: ISO,ETX053 . ISO-константа  ; (POLN: BESM6) ; S1:6460
+ISO,ETX054 . ISO-константа  ; S1:6461
+BES097: ISO,ETX055 . ISO-константа  ; (POLN: BESM6/) ; S1:6462
+ISO,ETX056 . ISO-константа  ; S1:6463
+SHI098: ISO,ETX057 . ISO-константа  ; (POLN: SHI) ; S1:6464
+HEA099: BSS . зарезервированная область  ; (POLN: HEAD) ; S1:6465
+ISO,ETX058 . ISO-константа  ; S1:6466
+TDATE: BSS,ETX059 . зарезервированная область  ; (POLN: TEXT_DATE_FIELD) ; S1:6467
+DR1101: LOG,ETX060 . константа-слово  ; (POLN: DR1) ; S1:6468
+DR2102: LOG,ETX061 . константа-слово  ; (POLN: DR2) ; S1:6469
+B35103: OCT,ETX062 . восьмеричная константа  ; (POLN: B35/31) ; S1:6470
+B1104: LOG,ETX042 . константа-слово  ; (POLN: B1) ; S1:6471
+B24105: LOG,ETX063 . константа-слово  ; (POLN: B 24) ; S1:6472
+B45106: OCT,ETX064 . восьмеричная константа  ; (POLN: B45) ; S1:6473
+DOS107: ISO,ETX065 . ISO-константа  ; (POLN: *DOS) ; S1:6474
+MB1108: GOST,ETX066 . GOST-константа  ; (POLN: MB1) ; S1:6475
+MB1109: GOST,ETX067 . GOST-константа  ; (POLN: M B1/2) ; S1:6476
+MB5110: GOST,ETX068 . GOST-константа  ; (POLN: M B5/6) ; S1:6477
+ С ST1:,ISO,6H******
+ С ST2:,ISO,6H''''****
+ С ST3:,ISO,6H****''''
+BSS . зарезервированная область  ; S1:6481
+C,, . .....   ДИAГHOCTИЧECKИE TEKCTЫ  ; S1:6482
+TERROR: ISO,ETX069 . ISO-константа  ; (POLN: TEXT_ERROR_NO_ENTRY) ; S1:6483
+TERRCD: ISO,ETX070 . ISO-константа  ; (POLN: TEXT_ERROR_CARD) ; S1:6484
+CONT,14HЗAПPOC PECYPCA  ; S1:6485
+TEARLY: ISO,ETX071 . ISO-константа  ; (POLN: TEXT_CHECK_EARLY) ; S1:6486
+CONT,8HOБ'EDC071'ЯBЛEH  ; S1:6487
+TREDEF: ISO,ETX072 . ISO-константа  ; (POLN: TEXT_REDEFINED) ; S1:6488
+TBADLN: ISO,ETX073 . ISO-константа  ; (POLN: TEXT_BAD_LINK) ; S1:6489
+CONT,18HHA KAPTY-*CHE081  ; S1:6490
+TNODSK: ISO,ETX074 . ISO-константа  ; (POLN: TEXT_DISK_UNDECLARED) ; S1:6491
+TVYZOV: ISO,ETX075 . ISO-константа  ; (POLN: TEXT_CALL_ERRORS) ; S1:6492
+TEXPRS: ISO,ETX076 . ISO-константа  ; (POLN: TEXT_EXPRESS_TASK) ; S1:6493
+SBU119: BSS,ETX077 . зарезервированная область  ; (POLN: SBUF) ; S1:6494
+SAV120: BSS,ETX042 . зарезервированная область  ; (POLN: SAV AD) ; S1:6495
+INF121: BSS,ETX042 . зарезервированная область  ; (POLN: INFBA) ; S1:6496
+END . конец модуля  ; S1:6497
+С ---- конец модуля CHEKJOB* ----

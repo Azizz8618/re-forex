@@ -200,3 +200,35 @@ python3 tools/xref_scan.py disasm/CORE_ROOT.bemsh.lst --out logs/core_xref.txt
 | оверлей → корень | `LO*SYN` / `LO*GEN` | абсолютные VJM/UJ на `0o77xxx` | цели здесь: `DATAPR`, `OCTTDE`, `PAGEGV`, `PAGETK`, `FOREX`, `CONST`, `COMEQ`, `OPRTR`, `ПP` |
 | корень → потерянные процедуры | **никто** | `FOREX/CONST/COMEQ/OPRTR/ПP` объявлены EN, в корне не вызываются | вызываются только оверлеями; тела не найдены |
 
+## 10. Ячейки *DUMON*: адрес → «начало массива + десятичное смещение»
+
+Четыре `,EQU,` ячейки COMMON `*DUMON*` (база `0o4022`, 5 слов) переписаны с
+голых восьмеричных адресов на символическую запись `МЕТКА+DECI`. Численное
+значение сохранено (проверено скриптом до/после для всех 1536 EQU):
+
+| Константа | Было | Стало | Значение (dec) |
+|---|---|---|---|
+| `DMC04` | `4026B` | `*DUMON+4` | 2070 |
+| `DMC05` | `4027B` | `*DUMON+5` | 2071 |
+| `DMC06` | `4030B` | `*DUMON+6` | 2072 |
+| `DMTIM` | `4025B` | `*DUMON+3` | 2069 |
+
+## Экстракоды
+
+Расшифровки по `rukava.be` (раздел 1.4). Подробности — `docs/lib21/04-extract-codes.md`.
+
+| Код | Информационное слово | Расшифровка | Стр. | Применений | Места |
+|-----|----------------------|-------------|------|------------|-------|
+| Э20 | 7017 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:351` |
+| Э36 | 6264 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:577` |
+| Э36 | 7417 | не найдено в rukava.be | — | 4 | `src/FOREX_CORE.mad:333`, `src/FOREX_CORE.mad:347`, `src/FOREX_CORE.mad:377`, `src/FOREX_CORE.mad:380` |
+| Э56 | 70000 | не найдено в rukava.be | — | 2 | `src/FOREX_CORE.mad:363`, `src/FOREX_CORE.mad:368` |
+| Э56 | 74757 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:583` |
+| Э56 | 76462 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:517` |
+| Э57 | 1247 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:367` |
+| Э57 | 1263 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:362` |
+| Э57 | 4144 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:582` |
+| Э57 | 6 | не найдено в rukava.be | — | 3 | `src/FOREX_CORE.mad:197`, `src/FOREX_CORE.mad:199`, `src/FOREX_CORE.mad:256` |
+| Э62 | 1200 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:543` |
+| Э64 | 4037 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:290` |
+| Э64 | INF | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:292` |

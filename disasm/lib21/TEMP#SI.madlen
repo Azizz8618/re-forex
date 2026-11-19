@@ -1,0 +1,7 @@
+TEMP/SI :,NAME, NEW DTRAN
+ MAKFIL/ :,SUBP,
+ TEMP//  :,SUBP,
+ 13,VJM,MAKFIL/ 
+ 13,VJM,TEMP//  
+ ,*74,
+ ,END,

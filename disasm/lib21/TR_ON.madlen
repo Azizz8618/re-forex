@@ -1,0 +1,8 @@
+TR*ON   :,NAME, NEW DTRAN
+ ,UTC,
+ ,UTC,*0003B
+ ,XTA,
+ 7,ATX,70000B
+ 13,UJ,
+ *0003B:,LOG,1
+ ,END,

@@ -1,0 +1,11 @@
+BЬNT    :,NAME, NEW DTRAN
+ ЬCRЬ    :,SUBP,
+ ЬЗПЬ    :,SUBP,
+ 14,VTM,1
+ 8,VJM,ЬCRЬ    
+ 8,AEX,2
+ ,UJ,ЬЗПЬ    
+ 8,AEX,2
+ ,UJ,
+ ,LOG,7777777777777777
+ ,END,

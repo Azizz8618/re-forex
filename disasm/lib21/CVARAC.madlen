@@ -1,0 +1,720 @@
+CVARAC  :,NAME, NEW DTRAN
+ BЬVP    :,SUBP,
+ LЬBIT   :,SUBP,
+ BЬZB    :,SUBP,
+ BЬMV    :,SUBP,
+ FT*571  :,SUBP,
+ FT*002  :,SUBP,
+ FT*003  :,SUBP,
+ 7,MTJ,8
+ 9,VJM,*0417B
+ 7,XTA,dunno
+ 7,ASX,dunno
+ 7,XTS,dunno
+ 7,ASX,dunno
+ ,WTC,*0635B
+ ,AEX,
+ 15,AAX,
+ ,U1A,*0136B
+ 7,XTA,dunno
+ 7,ATX,dunno
+ *0006B:7,XTA,dunno
+ 7,ARX,dunno
+ ,ATI,6
+ 6,XTA,dunno
+ 7,ATX,dunno
+ ,XTA,
+ 7,ATX,dunno
+ 7,XTA,dunno
+ ,UZA,*0130B
+ 7,XTA,dunno
+ ,ASN,64-7
+ 7,AEX,dunno
+ 7,AAX,dunno
+ 7,AEX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,AAX,dunno
+ ,UZA,*0076B
+ 7,XTA,dunno
+ 7,AEX,dunno
+ 7,AEX,dunno
+ 7,AAX,dunno
+ 7,AEX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,ATX,dunno
+ 6,VTM,-40
+ 7,XTA,dunno
+ 7,XTS,dunno
+ ,NTR,7
+ 13,VJM,BЬVP    
+ ,ATX,
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,A-X,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,A-X,dunno
+ 7,ATX,dunno
+ 7,A+X,dunno
+ 7,A-X,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬVP    
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬVP    
+ 7,ATX,dunno
+ ,NTR,6
+ *0040B:7,XTA,dunno
+ ,NTR,7
+ 13,VJM,LЬBIT   
+ ,ATX,
+ ,U1A,*0050B
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬZB    
+ 7,XTA,dunno
+ 7,ASX,dunno
+ ,WTC,*0634B
+ 5,VTM,
+ 5,AOX,
+ 5,ATX,
+ ,UJ,*0071B
+ ,ATX,
+ *0050B:7,XTA,dunno
+ ,NTR,7
+ ,E+N,64-1
+ 7,ATX,dunno
+ ,UZA,*0054B
+ 7,ARX,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0054B:7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ ,E+N,64-1
+ 7,ATX,dunno
+ ,UZA,*0061B
+ 7,ARX,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0061B:7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ ,E+N,64-1
+ 7,ATX,dunno
+ ,UZA,*0066B
+ 7,ARX,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0066B:,NTR,3
+ 7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ ,NTR,22B
+ 6,VLM,*0040B
+ *0071B:7,XTA,dunno
+ 7,AAX,dunno
+ ,UZA,*0076B
+ 7,XTA,dunno
+ 7,AEX,dunno
+ 7,AAX,dunno
+ 7,AEX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,ATX,dunno
+ *0076B:7,XTA,dunno
+ ,ASN,64+41
+ 7,AOX,dunno
+ ,NTR,7
+ 7,A+X,dunno
+ 7,ATX,dunno
+ ,NTR,22B
+ ,E+N,64+0
+ 7,A+X,dunno
+ ,E+N,64-2
+ 7,ATX,dunno
+ ,NTR,13B
+ 7,AMX,dunno
+ 7,AVX,dunno
+ 7,A+X,dunno
+ ,ASN,64-41
+ 7,ATX,dunno
+ ,ASN,64+1
+ 7,AEX,dunno
+ 7,AAX,dunno
+ 7,AEX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,A-X,dunno
+ ,NTR,22B
+ 7,ATX,dunno
+ 7,A/X,dunno
+ 7,ATX,dunno
+ ,NTR,13B
+ 7,AMX,dunno
+ 7,AVX,dunno
+ ,NTR,22B
+ 7,A*X,dunno
+ 7,X-A,dunno
+ 7,ATX,dunno
+ ,NTR,23B
+ 7,AMX,dunno
+ 7,AVX,dunno
+ 7,ATX,dunno
+ 7,X-A,dunno
+ 7,ATX,dunno
+ 7,A+X,dunno
+ 7,A-X,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬVP    
+ ,ATX,
+ 7,ATX,dunno
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬMV    
+ ,ATX,
+ *0130B:7,XTA,dunno
+ 7,ARX,dunno
+ ,ATI,12
+ 7,XTA,dunno
+ 12,ATX,dunno
+ ,NTR,3
+ 7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,X-A,dunno
+ ,UZA,*0006B
+ ,UJ,*0205B
+ *0136B:7,XTA,dunno
+ 7,ASX,dunno
+ 7,XTS,dunno
+ 7,ASX,dunno
+ ,WTC,*0635B
+ ,AEX,
+ 15,AAX,
+ ,U1A,*0176B
+ 7,XTA,dunno
+ 7,ATX,dunno
+ ,NTR,3
+ 7,XTA,dunno
+ 7,A-X,dunno
+ ,ATI,6
+ ,U1A,*0146B
+ 6,VTM,
+ *0146B:7,XTA,dunno
+ 7,ARX,dunno
+ ,ATI,5
+ 7,XTA,dunno
+ 7,ARX,dunno
+ ,ATI,4
+ ,NTR,12B
+ ,ATX,
+ *0152B:5,XTA,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,AAX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 4,ATX,dunno
+ 7,XTA,dunno
+ 7,AAX,dunno
+ ,UZA,*0171B
+ 7,XTA,dunno
+ 7,AEX,dunno
+ 7,AAX,dunno
+ ,UZA,*0171B
+ 14,VTM,*0505B
+ ,ITS,14
+ 13,VJM,FT*571  
+ ,ATX,
+ 14,VTM,*0641B
+ ,ITS,14
+ 13,VJM,FT*002  
+ ,ATX,
+ 14,VTM,*0646B
+ ,ITS,14
+ 13,VJM,FT*002  
+ ,ATX,
+ 13,VJM,FT*003  
+ ,ATX,
+ *0171B:5,UTM,1
+ 4,UTM,1
+ ,NTR,3
+ 7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ ,NTR,22B
+ 6,VLM,*0152B
+ ,UJ,*0205B
+ ,ATX,
+ *0176B:14,VTM,*0537B
+ ,ITS,14
+ ,NTR,6
+ 13,VJM,FT*571  
+ 6,VTM,
+ ,WTC,*0635B
+ 5,VTM,
+ ,ATX,
+ *0202B:5,MTJ,14
+ 6,J+M,14
+ ,ITS,14
+ 13,VJM,FT*002  
+ 6,VLM,*0202B
+ 13,VJM,FT*003  
+ *0205B:,UJ,*0413B
+ ,ATX,
+ *0206B:7,XTA,dunno
+ 7,ASX,dunno
+ 7,XTS,dunno
+ 7,ASX,dunno
+ ,WTC,*0635B
+ ,AEX,
+ 15,AAX,
+ ,U1A,*0352B
+ 7,XTA,dunno
+ 7,ATX,dunno
+ *0213B:7,XTA,dunno
+ 7,ARX,dunno
+ ,ATI,6
+ 6,XTA,dunno
+ 7,ATX,dunno
+ ,XTA,
+ 7,ATX,dunno
+ 7,XTA,dunno
+ ,UZA,*0344B
+ 7,XTA,dunno
+ ,ASN,64+40
+ 7,AAX,dunno
+ 7,AOX,dunno
+ ,ASN,64-2
+ 7,AAX,dunno
+ 7,AOX,dunno
+ ,NTR,7
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ ,ASN,64-8
+ 7,AAX,dunno
+ 7,ANX,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,AEX,dunno
+ ,U1A,*0232B
+ 7,XTA,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0232B:,NTR,3
+ 7,XTA,dunno
+ 7,A-X,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,A-X,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬVP    
+ 7,ATX,dunno
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬMV    
+ ,ATX,
+ 7,XTA,dunno
+ ,ASN,64+7
+ 7,AAX,dunno
+ ,UZA,*0323B
+ 7,XTA,dunno
+ 7,AEX,dunno
+ 7,AEX,dunno
+ 7,AAX,dunno
+ 7,AEX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,ATX,dunno
+ 6,VTM,-40
+ 7,XTA,dunno
+ 7,XTS,dunno
+ ,NTR,7
+ 13,VJM,BЬVP    
+ ,ATX,
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,A-X,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,A-X,dunno
+ 7,ATX,dunno
+ 7,A+X,dunno
+ 7,A-X,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬVP    
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬVP    
+ 7,ATX,dunno
+ ,NTR,6
+ *0264B:7,XTA,dunno
+ ,NTR,7
+ 13,VJM,LЬBIT   
+ ,ATX,
+ ,U1A,*0274B
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 13,VJM,BЬZB    
+ 7,XTA,dunno
+ 7,ASX,dunno
+ ,WTC,*0634B
+ 5,VTM,
+ 5,AOX,
+ 5,ATX,
+ ,UJ,*0315B
+ ,ATX,
+ *0274B:7,XTA,dunno
+ ,NTR,7
+ ,E+N,64-1
+ 7,ATX,dunno
+ ,UZA,*0300B
+ 7,ARX,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0300B:7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ ,E+N,64-1
+ 7,ATX,dunno
+ ,UZA,*0305B
+ 7,ARX,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0305B:7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ ,E+N,64-1
+ 7,ATX,dunno
+ ,UZA,*0312B
+ 7,ARX,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0312B:,NTR,3
+ 7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ ,NTR,22B
+ 6,VLM,*0264B
+ *0315B:7,XTA,dunno
+ ,ASN,64-1
+ 7,AAX,dunno
+ ,UZA,*0323B
+ 7,XTA,dunno
+ 7,AAX,dunno
+ 7,ATX,dunno
+ ,NTR,7
+ 7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0323B:7,XTA,dunno
+ ,NTR,20B
+ ,U1A,*0327B
+ ,NTR,23B
+ 7,XTA,dunno
+ 7,A-X,dunno
+ ,UZA,*0340B
+ ,ATX,
+ *0327B:14,VTM,*0556B
+ ,ITS,14
+ ,NTR,6
+ 13,VJM,FT*571  
+ 14,VTM,*0641B
+ ,ITS,14
+ 13,VJM,FT*002  
+ ,ATX,
+ 7,XTA,dunno
+ 7,ARX,dunno
+ ,ATI,6
+ 6,UTC,-1
+ 14,VTM,
+ ,ITS,14
+ 13,VJM,FT*002  
+ ,ATX,
+ 13,VJM,FT*003  
+ ,ATX,
+ *0340B:7,XTA,dunno
+ ,ASN,64-41
+ 7,ATX,dunno
+ 7,AEX,dunno
+ 7,AAX,dunno
+ 7,AEX,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0344B:7,XTA,dunno
+ 7,ARX,dunno
+ ,ATI,12
+ 7,XTA,dunno
+ 12,ATX,dunno
+ ,NTR,3
+ 7,XTA,dunno
+ 7,A+X,dunno
+ 7,ATX,dunno
+ 7,X-A,dunno
+ ,UZA,*0213B
+ ,UJ,*0413B
+ *0352B:7,XTA,dunno
+ 7,ASX,dunno
+ 7,XTS,dunno
+ 7,ASX,dunno
+ ,WTC,*0635B
+ ,AEX,
+ 15,AAX,
+ ,U1A,*0404B
+ 7,XTA,dunno
+ 7,ATX,dunno
+ ,NTR,3
+ 7,XTA,dunno
+ 7,A-X,dunno
+ ,ATI,6
+ ,U1A,*0362B
+ 6,VTM,
+ *0362B:7,XTA,dunno
+ 7,ARX,dunno
+ ,ATI,5
+ 7,XTA,dunno
+ 7,ARX,dunno
+ ,ATI,4
+ ,NTR,12B
+ ,ATX,
+ *0366B:5,XTA,dunno
+ 7,ATX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,AEX,dunno
+ 7,AAX,dunno
+ 7,AEX,dunno
+ 7,ATX,dunno
+ 7,XTA,dunno
+ ,ASN,64-17
+ 7,AAX,dunno
+ ,UZA,*0376B
+ 7,XTA,dunno
+ 7,AOX,dunno
+ 7,ATX,dunno
+ ,UJ,*0400B
+ *0376B:7,XTA,dunno
+ 7,AAX,dunno
+ 7,ATX,dunno
+ ,ATX,
+ *0400B:7,XTA,dunno
+ 4,ATX,dunno
+ 5,UTM,1
+ 4,UTM,1
+ ,NTR,6
+ 6,VLM,*0366B
+ ,UJ,*0413B
+ ,ATX,
+ *0404B:14,VTM,*0610B
+ ,ITS,14
+ ,NTR,6
+ 13,VJM,FT*571  
+ 6,VTM,
+ ,WTC,*0635B
+ 5,VTM,
+ ,ATX,
+ *0410B:5,MTJ,14
+ 6,J+M,14
+ ,ITS,14
+ 13,VJM,FT*002  
+ 6,VLM,*0410B
+ 13,VJM,FT*003  
+ *0413B:,STI,
+ ,STI,13
+ ,STI,4
+ ,STI,5
+ ,STI,6
+ ,STI,7
+ ,NTR,22B
+ 13,UJ,
+ *0417B:7,VTM,50440B
+ 7,STX,dunno
+ 7,STX,dunno
+ 7,STX,dunno
+ 7,STX,dunno
+ 7,XTS,dunno
+ 7,AOX,dunno
+ 7,STX,dunno
+ ,WTC,*0636B
+ ,XTS,
+ 7,STX,dunno
+ ,ATX,
+ *0425B:,ITS,8
+ ,ITS,6
+ ,ITS,5
+ ,ITS,4
+ ,ITS,13
+ ,ITS,
+ 9,UJ,
+ ,ATX,
+ 7,MTJ,8
+ 7,VTM,50440B
+ 7,STX,dunno
+ 7,STX,dunno
+ 7,STX,dunno
+ 7,STX,dunno
+ 7,XTS,dunno
+ 7,AOX,dunno
+ 7,STX,dunno
+ ,WTC,*0636B
+ ,XTS,
+ 7,STX,dunno
+ 9,VJM,*0425B
+ ,ATX,
+ ,UJ,*0206B
+ ,ATX,
+ 8,ATX,
+ ,ATX,
+ 13,VZM,
+ ,ATX,
+ 8,ATX,
+ ,ATX,
+ 9,ATX,
+ ,ATX,
+ 9,ATX,
+ ,ATX,
+ 13,VZM,
+ ,ATX,
+ ,LOG,4000000000000000
+ ,LOG,77777777
+ ,LOG,7760000000000000
+ ,LOG,7777777777777777
+ ,LOG,4000000000000000
+ ,LOG,37777777777777
+ ,LOG,2777777777777777
+ ,LOG,10000000000000
+ ,LOG,30000000000000
+ ,LOG,3760000000000000
+ ,LOG,37777740000000
+ ,LOG,177
+ ,LOG,7777777777777400
+ ,LOG,7767777777777777
+ ,LOG,7740000000000000
+ ,INT,0
+ ,LOG,37777700000000
+ ,LOG,7740000077777777
+ ,INT,1
+ ,INT,48
+ ,INT,0
+ ,INT,-1
+ ,INT,40
+ ,INT,128
+ ,INT,-192
+ ,INT,127
+ ,TEXT, 8HAH      
+ ,LOG,4114000000000000
+ ,ISO, 6HR      . 122 040 040 040 040 040 
+ ,ISO, 6HI      . 111 040 040 040 040 040 
+ *0505B:,ISO, 6H('47' COO . 050 047 040 103 117 117 
+ ,ISO, 6HБЩAET  . 142 175 101 105 124 040 
+ ,ISO, 6HCVARAC . 103 126 101 122 101 103 
+ ,ISO, 6H: ЦEЛO . 072 040 143 105 154 117 
+ ,ISO, 6HE ЧИCЛ . 105 040 176 151 103 154 
+ ,ISO, 6HO HOME . 117 040 110 117 115 105 
+ ,ISO, 6HP'47',    . 120 047 054 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H     I . 040 040 040 040 040 111 
+ ,ISO, 6H7,'47' ПP . 067 054 047 040 160 120 
+ ,ISO, 6HEДCTAB . 105 144 103 124 101 102 
+ ,ISO, 6HЛEHHOE . 154 105 110 110 117 105 
+ ,ISO, 6H B БЭC . 040 102 040 142 174 103 
+ ,ISO, 6HM-6 KA . 115 055 066 040 113 101 
+ ,ISO, 6HK  '47',O . 113 040 040 047 054 117 
+ ,ISO, 6H16,    . 061 066 054 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H   '47' H . 040 040 040 047 040 110 
+ ,ISO, 6HE ПPEД . 105 040 160 120 105 144 
+ ,ISO, 6HCTABИM . 103 124 101 102 151 115 
+ ,ISO, 6HO B AC . 117 040 102 040 101 103 
+ ,ISO, 6H-6'47')   . 055 066 047 051 040 040 
+ *0537B:,ISO, 6H('47' COO . 050 047 040 103 117 117 
+ ,ISO, 6HБЩAET  . 142 175 101 105 124 040 
+ ,ISO, 6HCVARAC . 103 126 101 122 101 103 
+ ,ISO, 6H: TИП  . 072 040 124 151 160 040 
+ ,ISO, 6H'47',A6,  . 047 054 101 066 054 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H     '47' . 040 040 040 040 040 047 
+ ,ISO, 6H HE OБ . 040 110 105 040 117 142 
+ ,ISO, 6HPAБATЫ . 120 101 142 101 124 171 
+ ,ISO, 6HBAETCЯ . 102 101 105 124 103 161 
+ ,ISO, 6H'47')     . 047 051 040 040 040 040 
+ *0556B:,ISO, 6H('47' COO . 050 047 040 103 117 117 
+ ,ISO, 6HБЩAET  . 142 175 101 105 124 040 
+ ,ISO, 6HCVARBS . 103 126 101 122 102 123 
+ ,ISO, 6H: BEЩE . 072 040 102 105 175 105 
+ ,ISO, 6HCTBEHH . 103 124 102 105 110 110 
+ ,ISO, 6HOE ЧИC . 117 105 040 176 151 103 
+ ,ISO, 6HЛO HOM . 154 117 040 110 117 115 
+ ,ISO, 6HEP'47',   . 105 120 047 054 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H     I . 040 040 040 040 040 111 
+ ,ISO, 6H7,'47' ПP . 067 054 047 040 160 120 
+ ,ISO, 6HEДCTAB . 105 144 103 124 101 102 
+ ,ISO, 6HЛEHHOE . 154 105 110 110 117 105 
+ ,ISO, 6H B AC- . 040 102 040 101 103 055 
+ ,ISO, 6H6 KAK  . 066 040 113 101 113 040 
+ ,ISO, 6H '47',O16 . 040 047 054 117 061 066 
+ ,ISO, 6H,      . 054 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H   '47' H . 040 040 040 047 040 110 
+ ,ISO, 6HE ПPEД . 105 040 160 120 105 144 
+ ,ISO, 6HCTABИM . 103 124 101 102 151 115 
+ ,ISO, 6HO B БЭ . 117 040 102 040 142 174 
+ ,ISO, 6HCM-6'47') . 103 115 055 066 047 051 
+ *0610B:,ISO, 6H('47' COO . 050 047 040 103 117 117 
+ ,ISO, 6HБЩAET  . 142 175 101 105 124 040 
+ ,ISO, 6HCVARBS . 103 126 101 122 102 123 
+ ,ISO, 6H: TИП  . 072 040 124 151 160 040 
+ ,ISO, 6H'47',A6,  . 047 054 101 066 054 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,ISO, 6H     '47' . 040 040 040 040 040 047 
+ ,ISO, 6H HE OБ . 040 110 105 040 117 142 
+ ,ISO, 6HPAБATЫ . 120 101 142 101 124 171 
+ ,ISO, 6HBAETCЯ . 102 101 105 124 103 161 
+ ,ISO, 6H'47')     . 047 051 040 040 040 040 
+ ,LOG,20000000000000
+ ,BSS,4
+ *0634B:,BSS,1
+ *0635B:,BSS,1
+ *0636B:,BSS,3
+ *0641B:,BSS,3
+ *0644B:,BSS,1
+ *0645B:,BSS,1
+ *0646B:,BSS,1
+ ,END,

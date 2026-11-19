@@ -1,0 +1,15 @@
+YESLIS  :,NAME, NEW DTRAN
+ GAK/4:,EQU,+1
+ ,UTC,GAK/4
+  :,UTC,*0007B
+  :,*64,
+  :13,UJ,
+  :,*63,704B
+  :,*50,74671B
+  :13,UJ,
+ *0007B:,ATX,
+ ,ATX,
+ ,ATX,
+ 8,ATX,
+ *0011B:,LOG,4031441703607417
+ ,END,

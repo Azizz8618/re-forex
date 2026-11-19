@@ -1,0 +1,95 @@
+ЬINO2Й  :,NAME, NEW DTRAN
+ *ЬIOCBЙ*:,LC,34
+ GAK/2:,EQU,*ЬIOCBЙ*+8
+ GAK/3:,EQU,*ЬIOCBЙ*+10
+ *ЬFLCBЙ*:,LC,59
+ GAK/5:,EQU,*ЬFLCBЙ*+6
+ ЬEXECЙ  :,SUBP,
+ ЬINOFЙ  :,SUBP,
+ SWRITE  :,SUBP,
+ ЬVTODЙ  :,SUBP,
+ ЬPUNCЙ  :,SUBP,
+ ЬPRЙ    :,SUBP,
+ ЬERRMЙ  :,SUBP,
+ ЬQVTЙ   :,SUBP,
+ ,ATI,9
+ *0001B:8,VTM,*0001B
+ 8,STX,10B
+ 8,XTA,13B
+ ,UTC,GAK/2
+ ,ATX,
+ 9,UTM,GAK/5
+ 9,XTA,
+ ,ASN,64-1
+ ,ASN,64+44
+ ,ATI,9
+ 8,UTC,10B
+ 9,XTA,
+ ,UTC,
+ ,ATX,
+ 8,XTS,10B
+ ,UJ,ЬINOFЙ  
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ 5,*65,dunno
+ 5,A+X,dunno
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ 13,ATX,
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ *0021B:,ITS,13
+ ,ITS,13
+ ,UTC,
+ 13,VJM,ЬQVTЙ   
+ 8,VTM,*0001B
+ 10,VTM,*ЬIOCBЙ*
+ ,AEX,
+ 8,U1A,31B
+ 10,XTA,14B
+ 8,AEX,44B
+ 8,UZA,27B
+ 8,XTS,45B
+ ,UTC,
+ 13,VJM,ЬERRMЙ  
+ ,STI,13
+ ,STI,13
+ ,UJ,ЬPRЙ    
+  :10,XTS,40B
+ 10,XTS,27B
+ 8,XTS,46B
+ 13,VJM,ЬVTODЙ  
+ ,STI,13
+ ,STI,13
+ 11,VTM,GAK/3
+ 11,XTA,
+ 8,VTM,*0001B
+ 8,AEX,16B
+ 13,UZA,
+ 11,XTS,
+ 8,ARX,47B
+ 13,VJM,ЬERRMЙ  
+ *0041B:10,VTM,*ЬIOCBЙ*
+ ,ITS,10
+ 10,XTS,40B
+ 10,XTS,40B
+ 8,VTM,*0001B
+ 8,ARX,50B
+ ,XTS,
+ ,UJ,SWRITE  
+ 13,ATX,
+ ,ATX,7
+ 13,ATX,
+ ,ATX,15B
+ ,ATX,
+ ,ATX,
+ ,LOG,14
+ ,LOG,27
+ ,END,

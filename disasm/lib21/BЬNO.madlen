@@ -1,0 +1,11 @@
+BЬNO    :,NAME, NEW DTRAN
+ ЬCRЬ    :,SUBP,
+ BЬOR    :,SUBP,
+ 14,VTM,1
+ 8,VJM,ЬCRЬ    
+ 8,AEX,2
+ ,UJ,
+ 8,AEX,2
+ ,UJ,
+ ,LOG,7777777777777777
+ ,END,

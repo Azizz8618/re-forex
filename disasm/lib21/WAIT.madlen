@@ -1,0 +1,7 @@
+WAIT    :,NAME, NEW DTRAN
+ ,ATI,14
+ 14,XTA,
+ ,*57,13B
+  :,STI,
+ 13,UJ,
+ ,END,

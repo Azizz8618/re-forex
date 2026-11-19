@@ -1,0 +1,113 @@
+=== СЕМАНТИКА ИМЁН: ОСНОВНЫЕ ТЕКСТЫ КОМПИЛЯТОРА ===
+Дата: 19.11.2026
+Область: src/FOREX_CORE.mad, src/FOREX_RUNTIME.mad,
+         src/FOREX_DECODER_DISASM.mad, src/FOREX_RUNTIME_DISASM.mad,
+         src/LO_SYN.mad, src/LO_GEN.mad, include/FOREX_ROOT.mad
+(src/lib21/ не входит в область — обработан отдельным агентом)
+
+----------------------------------------------------------------------------
+1. АВТОСГЕНЕРИРОВАННЫЕ МЕТКИ: переименовано 6
+----------------------------------------------------------------------------
+Файл src/FOREX_RUNTIME.mad (все 6 найденных):
+
+  Было        Стало    POLN (полное имя)        S1        Роль
+  L00023      FLSIGC   FL_SIGN_CHECK_62         15631     проверка знака/разряда поля 62 FLCON
+  L00027      FLXORL   FL_XOR_LOOP_63            15639     цикл AEX/сборки выходного слова
+  L00042      FLSHIN   FL_SHIFT_IN_71            15661     сдвиг и подстановка разрядов
+  L00045      FLCMPR   FL_COMPARE_72             15667     сравнение и проверка маски
+  L00050      FLMASK   FL_MASK_ALL_72            15673     ветка маскирования 77777B
+  L00053      FLASMB   FL_ASSEMBLE_65            15679     сборка 8-символьного ISO-слова
+
+Все имена длиной 6, первые 6 уникальны (в т.ч. относительно FLAFT/FLALT/
+FLWTC/FLCON). Полное имя вынесено в `; POLN: ...` строки исходника;
+историческое имя сохранено в include/FOREX.labels.md §1/§4 и
+include/FOREX_RUNTIME.xref.md §10. Ссылок по имени в операндах нет
+(переходы идут по абсолютным *000NN), поэтому ни одно машинное слово
+не изменилось.
+
+Остальные файлы области: авто-меток вида LNNNNN/WNNNN/DNNNN/WTNNNN — 0.
+ИТОГО после правки: 0 (проверено tests/check-labels.sh и
+tests/check-label-semantics.sh).
+
+----------------------------------------------------------------------------
+2. TEXT-КОНСТАНТЫ: переименований 0 (все уже осмысленные)
+----------------------------------------------------------------------------
+Найдено 61 `,TEXT,` константа:
+  include/FOREX_ROOT.mad : 2  — TXLSYN (LO*SYN), TXLGEN (LO*GEN)
+  src/LO_GEN.mad         : 59 — MNTXT (8HLO*GEN), TXPOWE/TXARHO/TXANOT/
+                                TXAAND (POWER, A/RHOCHI, A/NOT, A/AND),
+                                TXF***/TXD***/TXC*** (FT*/FD*/FC*),
+                                TXREWI/TXBACK/TXENDF/TXSTOP и 29 дублей
+                                таблицы имён NT0NNN с POLN-описанием
+                                NAMETAB_TEXT_0NNN.
+  src/FOREX_CORE.mad, src/FOREX_RUNTIME.mad,
+  src/FOREX_DECODER_DISASM.mad, src/FOREX_RUNTIME_DISASM.mad,
+  src/LO_SYN.mad : 0 `,TEXT,`.
+
+Нумерованных TEXT-констант вида T### / WT### / TXT##… (как TXT003 в ТЗ) —
+0. Зафиксировано: переименовывать нечего. Имеющиеся GOST/ISO-литералы
+FOREX_RUNTIME.mad (TL0NNN) — не `,TEXT,`, а `,EQU,` с 6-битным содержимым
+(6HERROR, 6HARRAY и т.д.); полное имя каждого уже дано в `; полное имя:`.
+Аудит занесён в include/LO_GEN.labels.md и include/LO_SYN.labels.md.
+
+----------------------------------------------------------------------------
+3. СМЕЩЕНИЯ МАССИВОВ: переписано 4 (голые восьмеричные адреса)
+----------------------------------------------------------------------------
+src/FOREX_CORE.mad — база COMMON *DUMON* = 0o4022, 5 слов:
+
+  DMC04  4026B  ->  *DUMON+4   (0o4022+4 = 2070)
+  DMC05  4027B  ->  *DUMON+5   (0o4022+5 = 2071)
+  DMC06  4030B  ->  *DUMON+6   (0o4022+6 = 2072)
+  DMTIM  4025B  ->  *DUMON+3   (0o4022+3 = 2069)
+
+Исходное восьмеричное указано в комментарии каждой строки и в
+include/FOREX.labels.md §2 / include/FOREX_CORE.xref.md §10.
+
+Остальные `+`-выражения области (про нумерованных `+NNNB` — 0):
+  src/FOREX_RUNTIME.mad (2):      64+16 (80 dec), 64+35 (99 dec)
+  src/FOREX_DECODER_DISASM.mad (7): 64+16, 64+35, 64+16 (в DS16),
+                                    MARR+1, MARR+2, MARR+3, MARR+4
+  include/FOREX_ROOT.mad (1):     64+12 (76 dec)
+Все они уже записаны в виде «метка/Base + десятичное смещение»: в МАДЛЕН
+суффикс B означает восьмеричное, число без B — десятичное (подтверждено
+эталонным листингом disasm/RUNTIME_DATAPR.dtran_compiler.lst). Для 5 EQU
+добавлено пояснение «64+N = M dec, без B — десятичное»; MARR+N не менялось
+(уже требуемый вид «начало массива + decimal»).
+
+----------------------------------------------------------------------------
+4. ПРОВЕРКА ЧИСЛЕННОГО ЗНАЧЕНИЯ ВСЕХ EQU (до/после)
+----------------------------------------------------------------------------
+Скрипт: /tmp/.private/azizz/equ_snapshot.py (вне репозитория)
+  EQU всего: before=1536, after=1536
+  изменённых значений: 0
+  новых/исчезнувших имён: 0 / 0
+Список снимков: /tmp/.private/azizz/equ_before.txt, equ_after.txt.
+
+----------------------------------------------------------------------------
+5. РЕГРЕССИОННЫЕ ПРОВЕРКИ (все rc=0)
+----------------------------------------------------------------------------
+python3 tests/check-source-words.py   rc=0  OK LO*SYN/LO*GEN 1024/1024
+bash tests/check-word-coverage.sh     rc=0  OK 1024/1024 в каждом оверлее
+bash tests/check-labels.sh            rc=0  авто-меток 0 во всех 5 парах
+bash tests/check-constants.sh         rc=0  уник<=20 во всех 5 файлах
+bash tests/check-label-length.sh      rc=0  741 символ, <=6, коллизий 0
+bash tests/check-annotations.sh       rc=0  19/19 символов, комментарии OK
+bash tests/check-label-semantics.sh   rc=0  AUTO=0 TEXT=0 ОКТАЛ+=0
+                                            ДЛИННЫХ=0 КОЛЛИЗИЙ=0
+
+----------------------------------------------------------------------------
+6. ИЗМЕНЁННЫЕ ФАЙЛЫ
+----------------------------------------------------------------------------
+src/FOREX_RUNTIME.mad     — 6 меток + 2 комментария к сдвигам
+src/FOREX_CORE.mad        — 4 EQU (*DUMON+N)
+src/FOREX_DECODER_DISASM.mad — 3 комментария к сдвигам
+include/FOREX.labels.md   — §1 (6 строк), §2 (4 строки), §4 (6 строк)
+include/FOREX_RUNTIME.xref.md — новый §10 (6 переименований)
+include/FOREX_CORE.xref.md — новый §10 (4 адреса)
+include/LO_SYN.labels.md  — аудит (0 TEXT, 0 авто, 0 октал+)
+include/LO_GEN.labels.md  — аудит 59 TEXT, 0 нумерованных
+logs/labels_semantics_main.txt — настоящий лог
+
+Примечание: в src/FOREX_CORE.mad и src/FOREX_DECODER_DISASM.mad
+параллельно другим агентом добавлены комментарии «ЭNN … НЕ НАЙДЕНО в
+rukava.be»; они сохранены и не затрагивают правки этого задания.

@@ -1,0 +1,10 @@
+BЬOR    :,NAME, NEW DTRAN
+ ЬCRЬ    :,SUBP,
+ ЬЗПЬ    :,SUBP,
+ 14,VTM,1
+ 8,VJM,ЬCRЬ    
+ 10,AOX,
+ ,UJ,ЬЗПЬ    
+ 10,AOX,
+ ,UJ,
+ ,END,

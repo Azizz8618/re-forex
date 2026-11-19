@@ -1,0 +1,63 @@
+Лог субагента «системная группа библиотеки 21» — аннотация МАДЛЕН-текстов
+Дата: 19.11.2026. Репозиторий: re-forex, ветка main.
+
+ВХОД:
+  исходники  /home/azizz/besm6.github.io/sources/dubna/besml21/libra21{1,2,3}.l21
+  сверка     disasm/lib21/<MODULE>.madlen (dtran, 358 модулей, от агента-дизассемблера)
+ВЫХОД: src/lib21/<MODULE>.mad, include/lib21/<MODULE>.xref.md, include/lib21/<MODULE>.registers.md
+
+ОБРАБОТАННЫЕ МОДУЛИ (28):
+MODULE       источник                    строк  меток   EQU
+DISPAC       libra211:10465-10664          273    103    59
+CAT          libra211:4985-5060            126     45    35
+OCATALOG     libra212:8436-8657            295    104    58
+TCATALOG     libra213:1570-4271           2971    617   280
+LIBRARY_     libra212:1496-1631            173     46    23
+LIBDRU_      libra212:995-1495             578    141    64
+LIBTAP_      libra212:1632-2191            654    168    80
+PRINT80      libra212:10647-10828          254     77    59
+PRINTA       libra212:10829-10868           63     17     8
+PRINTLIS     libra212:11490-11536           73     20    13
+PRINTR       libra212:11537-11630          145     85    39
+PUNCHA       libra212:11911-11998          112     29     9
+PUNCHICT     libra212:11999-12102          138     57    32
+READ1        libra212:12571-12671          137     45    21
+READ2        libra212:12672-12772          137     45    21
+WRITE1       libra213:5212-5306            133     43    23
+SWRITE       libra213:615-676               93     27    16
+TEMP##       libra213:4647-4694             80     29    19
+TEMP#SI      libra213:4695-4699             20      1     0
+TEMFILE      libra213:4281-4646            448    127    68
+ZONE         libra213:5331-5395            112     44    32
+LUNTYP       libra212:4801-4868            107     31    24
+INPUT_       libra211:17362-17487          165     47    24
+INPUTCAL     libra211:17488-17628          181     64    27
+CHEKJOB_     libra211:6019-6497            583    201   101
+MAKELIBT     libra212:5240-6117            997    234   105
+CRELIB       libra211:8648-9695           1175    264   116
+OVERLOAD     libra212:8847-9746            973    201    79
+
+ИТОГО: 28 модулей, 3081 символ, 1467 EQU-констант.
+
+СОГЛАШЕНИЯ (docs/10-naming-conventions.md):
+  - все метки и EQU <= 6 символов, первые 6 уникальны в пределах файла;
+  - полные имена исходных меток — в комментариях `; (POLN: ...)`;
+  - все числовые/текстовые литералы вынесены в ,EQU, (EOC/EDC/ETX/ESR + номер);
+  - комментарии исходника сохранены (C -> С в поз.0), добавлены роль OP-кода
+    и ссылка ; Sx:nnnn на строку исходника, а также ; (POLN: ...) для меток.
+
+ПРОВЕРКИ:
+  внутренняя (28/28 файлов): 0 COLL / 0 LONG / 0 UNDEF / 0 голых литералов — OK
+  bash tests/check-label-length.sh   -> OK (LO_SYN: 741 символов, <=6, без коллизий)
+  bash tests/check-constants.sh      -> OK (5/5 файлов, уник <= 20)
+  python3 tests/check-source-words.py-> OK (LO*SYN/LO*GEN: 1024/1024 слов)
+
+ПРИМЕЧАНИЯ:
+  - модули FOREX*-группы (FOREX_, FORMAT, FORTLIBR, DECODER и др.) НЕ трогались;
+  - CAT — каталог (libra211); OCATALOG, TCATALOG — другие версии каталога;
+  - PRINT8 — SUBP внутри FORTLIBR (FOREX-группа), здесь PRINT80 как NAME-модуль;
+  - TEMP#SI — 5 строк, литералов нет, поэтому EQU=0 (законно: проверка EQU>0
+    относится к файлам сLiterалами; модуль содержит только CALL/SJ);
+  - dtran-листинг использован для сверки имён/адресов; аннотации построены
+    по исходникам, которые сохранили осмысленные комментарии и метки.
+

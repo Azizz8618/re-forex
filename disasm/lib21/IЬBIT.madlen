@@ -1,0 +1,46 @@
+IЬBIT   :,NAME, NEW DTRAN
+ BЬMV    :,SUBP,
+ ЬЦ0Ь    :,SUBP,
+ *0000B:15,UTM,1
+ 12,VTM,*0000B
+ 15,XTS,dunno
+ 15,XTS,dunno
+ ,A-X,
+ 12,U1A,12B
+ 12,X-A,25B
+ 12,U1A,12B
+ 15,MTJ,14
+ ,UTC,ЬЦ0Ь    
+ ,XTA,
+ 14,UTM,-4
+ 15,ATX,dunno
+ 15,WTC,-2
+ ,E-N,64-8
+ ,ITS,14
+ 15,AEX,
+ 15,STX,dunno
+ ,UJ,BЬMV    
+  :,ITA,13
+ ,ASN,64-30
+ 12,AUX,26B
+ 12,ATX,22B
+ ,UTC,
+ 12,*64,23B
+ ,UTC,
+ ,*74,
+ *0016B:2,VZM,34016B
+ 2,36,20060B
+ 2,002,6016B
+ 3,ATX,dunno
+ 2,20,24017B
+ 4,ITA,578
+ 3,ATI,7440B
+ 2,XTS,dunno
+ *0022B:,ATX,
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ ,LOG,2000640000004
+ ,INT,40
+ ,LOG,160340701603407
+ ,END,

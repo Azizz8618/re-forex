@@ -1,0 +1,48 @@
+SCHEND  :,NAME, NEW DTRAN
+ *ЬIOCBЙ*:,LC,34
+ ЬUNITЙ  :,SUBP,
+ ЬERRMЙ  :,SUBP,
+ SCHEOF  :,SUBP,
+ GAK/5:,EQU,*ЬIOCBЙ*+4095
+ GAK/6:,EQU,*ЬIOCBЙ*+0
+ 7,MTJ,8
+ 9,VJM,*0015B
+ 7,XTA,dunno
+ 6,VTM,GAK/5
+ 6,ATX,dunno
+ ,WTC,*0025B
+ ,XTS,
+ ,NTR,6
+ 14,VTM,1
+ 13,VJM,ЬUNITЙ  
+ 6,XTA,dunno
+ 7,AEX,dunno
+ ,U1A,*0010B
+ 7,XTS,dunno
+ 14,VTM,1
+ 13,VJM,ЬERRMЙ  
+ *0010B:7,XTS,dunno
+ ,NTR,6
+ 14,VTM,1
+ 13,VJM,SCHEOF  
+ ,STI,
+ ,STI,13
+ ,STI,6
+ ,STI,7
+ 13,UJ,
+ ,ATX,
+ *0015B:7,VTM,50020B
+ 7,STX,dunno
+ ,ITS,8
+ ,ITS,6
+ ,ITS,13
+ ,ITS,
+ 9,UJ,
+ ,ATX,
+ ,ATX,
+ ,ATX,
+ ,INT,9
+ ,INT,0
+ ,INT,22
+ *0025B:,BSS,1
+ ,END,

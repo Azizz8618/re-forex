@@ -1,0 +1,27 @@
+IFZ     :,NAME, NEW DTRAN
+ CAT     :,SUBP,
+ PRO     :,SUBP,
+ FOR     :,SUBP,
+ LTX     :,SUBP,
+ DIR     :,SUBP,
+ *0000B:11,VTM,*0000B
+ ,ATI,10
+ 11,XTA,15B
+ 10,ATX,
+ 11,XTA,14B
+ 10,STX,1
+ ,ATI,12
+ 12,XTA,
+ ,ATI,12
+ ,ITA,10
+ *0005B:12,UJ,*0005B
+  :12,VJM,CAT     
+ 12,VJM,PRO     
+ 12,VJM,FOR     
+ 12,VJM,LTX     
+ 12,VJM,DIR     
+ ,XTA,
+ 13,UJ,
+ ,LOG,1002004010000000
+ ,ISO, 6H       . 040 040 040 040 040 040 
+ ,END,

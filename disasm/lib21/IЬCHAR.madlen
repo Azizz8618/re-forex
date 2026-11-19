@@ -1,0 +1,9 @@
+IЬCHAR  :,NAME, NEW DTRAN
+ ЬLIBCЬ  :,SUBP,
+ ЬЦ0Ь    :,SUBP,
+ 13,MTJ,12
+ 13,VJM,ЬLIBCЬ  
+ ,ASN,64+40
+ ,UTC,ЬЦ0Ь    
+ ,LOG,12000063000000
+ ,END,

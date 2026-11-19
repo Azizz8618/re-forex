@@ -1,0 +1,59 @@
+ЬTSLNЙ  :,NAME, NEW DTRAN
+ *ЬIOCBЙ*:,LC,34
+ ЬERRMЙ  :,SUBP,
+ ЬOF1NЙ  :,SUBP,
+ CЬVP    :,SUBP,
+ ЬBFLDЙ  :,SUBP,
+ GAK/6:,EQU,*ЬIOCBЙ*+4095
+ 7,MTJ,8
+ 9,VJM,*0025B
+ ,NTR,3
+ 6,VTM,GAK/6
+ 6,XTA,dunno
+ 6,A+X,dunno
+ 6,X-A,dunno
+ ,UZA,*0011B
+ 6,XTA,dunno
+ ,U1A,*0007B
+ 7,XTS,dunno
+ ,NTR,6
+ 14,VTM,1
+ 13,VJM,ЬERRMЙ  
+ *0007B:,NTR,2
+ 14,VTM,
+ 13,VJM,ЬOF1NЙ  
+ ,ATX,
+ *0011B:6,XTA,dunno
+ ,NTR,7
+ 7,A+X,dunno
+ 6,XTS,dunno
+ 13,VJM,CЬVP    
+ ,ATX,
+ 7,ATX,dunno
+ 7,XTS,dunno
+ 6,XTS,dunno
+ 6,A+X,dunno
+ 7,A+X,dunno
+ 6,XTS,dunno
+ 13,VJM,CЬVP    
+ ,ATX,
+ 7,ATX,dunno
+ ,NTR,6
+ 14,VTM,2
+ 13,VJM,ЬBFLDЙ  
+ ,STI,
+ ,STI,13
+ ,STI,6
+ ,STI,7
+ 13,UJ,
+ ,ATX,
+ *0025B:7,VTM,50027B
+ ,ITS,8
+ ,ITS,6
+ ,ITS,13
+ ,ITS,
+ 9,UJ,
+ ,INT,6
+ ,INT,-2
+ ,BSS,1
+ ,END,

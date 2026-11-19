@@ -1,0 +1,53 @@
+ЬQACCЙ  :,NAME, NEW DTRAN
+ CЬMV    :,SUBP,
+ CЬVP    :,SUBP,
+ CЬZB    :,SUBP,
+ 7,MTJ,8
+ 9,VJM,*0021B
+ 7,XTA,dunno
+ ,NTR,7
+ 7,A-X,dunno
+ ,UZA,*0004B
+ 7,XTA,dunno
+ ,UJ,*0005B
+ *0004B:7,XTA,dunno
+ ,ATX,
+ *0005B:7,ATX,dunno
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 13,VJM,CЬMV    
+ ,ATX,
+ 7,XTA,dunno
+ 7,XTS,dunno
+ 13,VJM,CЬVP    
+ ,ATX,
+ 7,ATX,dunno
+ 7,XTA,dunno
+ 7,A-X,dunno
+ 7,ATX,dunno
+ 7,XTS,dunno
+ 7,XTS,dunno
+ 13,VJM,CЬZB    
+ ,ATX,
+ ,STI,
+ ,STI,13
+ ,STI,7
+ ,NTR,6
+ 13,UJ,
+ ,ATX,
+ *0021B:7,VTM,50024B
+ 7,STX,dunno
+ 7,STX,dunno
+ ,ITS,8
+ ,ITS,13
+ ,ITS,
+ 9,UJ,
+ ,ATX,
+ 8,ATX,
+ ,ATX,
+ ,INT,10
+ *0027B:,ISO, 6HSEQUEN . 123 105 121 125 105 116 
+ ,ISO, 6HTIAL   . 124 111 101 114 040 040 
+ ,BSS,4
+ ,END,
