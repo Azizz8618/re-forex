@@ -87,8 +87,10 @@ def send(session, text, enter=True):
             tmux("send-keys", "-t", session, "Enter")
 
 
-def make_ini(work: Path, prn_path: Path, vu_path: Path) -> Path:
-    text = BASE_INI.read_text(encoding="utf-8")
+def make_ini(work: Path, prn_path: Path, vu_path: Path, base=None, extra=None) -> Path:
+    text = (Path(base) if base else BASE_INI).read_text(encoding="utf-8")
+    if extra:
+        text += "\n" + "\n".join(extra) + "\n"
     out = []
     for line in text.splitlines():
         if re.search(r"^\s*attach\s+-n\s+vu0\b", line):
@@ -144,6 +146,9 @@ def main():
     ap.add_argument("--acpu", type=int, default=64, help="метры бумаги АЦПУ")
     ap.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT)
     ap.add_argument("--session", default="besm6-deck", help="имя tmux-сессии")
+    ap.add_argument("--ini", help="базовый ini вместо OSZAGR/dispak.ini")
+    ap.add_argument("--md", action="append", default=[],
+                    help="доп. строка attach для SIMH (можно повторять)")
     ap.add_argument("--keep", action="store_true", help="не убивать сессию после прогона")
     args = ap.parse_args()
 
