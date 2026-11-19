@@ -1,0 +1,17 @@
+шифр 419999 зс5^
+лен 41(2048)^
+eeв1а3
+*name PUNCHBIN
+*call yesmemory
+*no list
+*forex
+      X=1.0
+      PRINT 10,X
+   10 FORMAT(1X,F8.2)
+      STOP
+      END
+*execute
+`3
+*end file
+``````
+еконец

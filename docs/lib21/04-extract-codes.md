@@ -2,87 +2,66 @@
 
 Источники расшифровок: **rukava.be**, раздел 1.4 «ПЕРЕЧЕНЬ СИСТЕМНЫХ ВЫЗВОВ (ЭКСТРАКОДОВ)» (`/home/azizz/Yandex.Disk/re-dispak/rukava.be`, строки 2967–3198) — первичный; и **Тюрин В. Ф., «Операционная система ДИСПАК», 1985** (`docs/tyurin1985/extract-codes.json`, OCR Приложения П и §2.4) — вторичный. Приоритет: `rukava.be`, затем Тюрин. Оба источника параметризованы в `tools/extract_codes.py` (`--source rukava|tyurin|all`).
 
-Просканировано 51 аннотированный файл (`src/*.mad`, `src/lib21/*.mad`). Найдено **612 вхождений** экстракодов с информационным словом, **297 уникальных пар**: **5 пар расшифровано по rukava.be** (7 применений), **73 пар расшифровано по Тюрину-1985** (113 применений), **219 пар остались нерасшифрованными** (492 применений).
+Просканировано 51 аннотированный файл (`src/*.mad`, `src/lib21/*.mad`). Найдено **612 вхождений** кодов с информационным словом, из них **298 — настоящие экстракоды (050..077, 177 уникальных пар)** и **314 — команды БЭСМ-6 (020..047), ошибочно названные экстракодами** (см. отдельный раздел ниже). Среди настоящих экстракодов: **5 пар расшифровано по rukava.be** (7 применений), **73 пары расшифровано по Тюрину-1985** (113 применений), **99 пар остались нерасшифрованными** (178 применений — у всех пометка «информационное слово — адрес/данные» либо явная пометка ОБОИХ справочников).
 
 Всего в таблице rukava.be: 185 строк, 173 уникальных ключа (дублирующиеся строки `Э71 А`, `Э72 А`, `Э73 А` объединены описаниями). В таблице Тюрина-1985: 74 записи (PDF-страницы 264–335); для кодов, у которых конкретное информационное слово в книге отсутствует, используется описание класса экстракодов по номеру кода (fallback).
+
+### Формулировка для нерасшифрованных кодов
+
+Если экстракод (050..077) отсутствует в обоих справочниках, встроенный комментарий в `.mad` явно указывает **оба** источника и причину, например:
+
+```
+. Э65 502 = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э65 отсутствует в обоих справочниках; информационное слово — адрес/данные)
+```
+
+Для кодов Э65/Э70 (и других экстракодов без записей в справочниках) конкретное информационное слово проверено по контексту: оно является **адресом/данными** (метка либо октальное смещение), а не селектором функции, поэтому расшифровка из rukava.be/Тюрина невозможна и не требуется. Прежняя формулировка `НЕ НАЙДЕНО в rukava.be` устарела (игнорировала второй источник) и проверкой `tests/check-extract-codes.sh` считается FAIL.
+
+## Команды, ошибочно принятые за экстракоды
+
+**КРИТИЧЕСКОЕ ПРАВИЛО:** в ДИСПАКе экстракоды — только коды **050..077**. Коды **020..047** — обычные **команды БЭСМ-6** по таблицам `besm6tape.py` (`SHORT`/`SHORT_BEMSH`, `LONG`/`LONG_BEMSH`) и `disbesm6.c:83–84`. Они **НЕ** требуют расшифровки из rukava.be или книги Тюрина.
+
+| Опкод (восьм.) | Мнемоника МАДЛЕН / БЭМШ | Число применений | Таблица-источник |
+|---|---|---|---|
+| 020 | `*20` / `э20` | 117 | `besm6tape.py:44,48` |
+| 021 | `*21` / `э21` | 5 | `besm6tape.py:44,48` |
+| 033 | `*33` / `счп` (в LONG-формате `stop` / `стоп`) | 1 | `besm6tape.py:25,36` и `45,49` |
+| 036 | `*36` / `втбрз` | 172 | `besm6tape.py:45,49` |
+| 046 | `*46` / `соп` | 3 | `besm6tape.py:26,37`; `disbesm6.c:83` |
+| 047 | `*47` / `э47` | 16 | `besm6tape.py:26,37`; `disbesm6.c:84` |
+| **ИТОГО команд** | | **314** | |
+
+Каноническая форма комментария для таких команд:
+
+```
+. опк 36 (втбрз) 7417 = КОМАНДА БЭСМ-6 «втбрз», не экстракод [besm6tape.py:45,49]
+```
+
+Все 314 комментария исправлены; мнемоники, метки, `EQU` и адреса в исходниках не изменялись.
 
 ## Коды, встречающиеся в аннотациях
 
 | Код | Информационное слово | Расшифровка (rukava.be) | Стр. | Применений | Путь:строка |
 |-----|----------------------|--------------------------|------|------------|-------------|
-| Э36 | 75551 | **не найдено в rukava.be** | — | 24 | `src/LO_SYN.mad:838`, `src/LO_SYN.mad:865`, `src/LO_SYN.mad:940`, `src/LO_SYN.mad:1069`, `src/LO_SYN.mad:1144`, `src/LO_SYN.mad:1978`, `src/LO_SYN.mad:2017`, `src/LO_SYN.mad:2104`, `src/LO_SYN.mad:2197`, `src/LO_SYN.mad:2227` … (ещё 14) |
-| Э20 | 42440 | **не найдено в rukava.be** | — | 19 | `src/LO_SYN.mad:1585`, `src/LO_SYN.mad:1865`, `src/LO_SYN.mad:2002`, `src/LO_SYN.mad:2183`, `src/LO_SYN.mad:2240`, `src/LO_SYN.mad:2264`, `src/LO_SYN.mad:2287`, `src/LO_SYN.mad:2411`, `src/LO_SYN.mad:2425`, `src/LO_SYN.mad:2476` … (ещё 9) |
-| Э65 | 2151 | **не найдено в rukava.be** | — | 19 | `src/LO_SYN.mad:883`, `src/LO_SYN.mad:1237`, `src/LO_SYN.mad:1249`, `src/LO_SYN.mad:1300`, `src/LO_SYN.mad:1333`, `src/LO_SYN.mad:1378`, `src/LO_SYN.mad:1405`, `src/LO_SYN.mad:1447`, `src/LO_SYN.mad:1597`, `src/LO_SYN.mad:1684` … (ещё 9) |
-| Э20 | 42544 | **не найдено в rukava.be** | — | 18 | `src/LO_SYN.mad:880`, `src/LO_SYN.mad:1234`, `src/LO_SYN.mad:1246`, `src/LO_SYN.mad:1297`, `src/LO_SYN.mad:1330`, `src/LO_SYN.mad:1375`, `src/LO_SYN.mad:1402`, `src/LO_SYN.mad:1444`, `src/LO_SYN.mad:1594`, `src/LO_SYN.mad:1681` … (ещё 8) |
-| Э36 | 70131 | **не найдено в rukava.be** | — | 18 | `src/LO_SYN.mad:881`, `src/LO_SYN.mad:1235`, `src/LO_SYN.mad:1247`, `src/LO_SYN.mad:1298`, `src/LO_SYN.mad:1331`, `src/LO_SYN.mad:1376`, `src/LO_SYN.mad:1403`, `src/LO_SYN.mad:1445`, `src/LO_SYN.mad:1595`, `src/LO_SYN.mad:1682` … (ещё 8) |
-| Э36 | 52103 | **не найдено в rukava.be** | — | 17 | `src/LO_SYN.mad:892`, `src/LO_SYN.mad:913`, `src/LO_SYN.mad:1009`, `src/LO_SYN.mad:1042`, `src/LO_SYN.mad:1102`, `src/LO_SYN.mad:1192`, `src/LO_SYN.mad:1201`, `src/LO_SYN.mad:1264`, `src/LO_SYN.mad:1363`, `src/LO_SYN.mad:1390` … (ещё 7) |
-| Э65 | 2040 | **не найдено в rukava.be** | — | 9 | `src/LO_SYN.mad:946`, `src/LO_SYN.mad:974`, `src/LO_SYN.mad:998`, `src/LO_SYN.mad:1453`, `src/LO_SYN.mad:1463`, `src/LO_SYN.mad:1964`, `src/LO_SYN.mad:2666`, `src/LO_SYN.mad:2933`, `src/LO_SYN.mad:3068` |
-| Э47 | 4520 | **не найдено в rukava.be** | — | 8 | `src/LO_SYN.mad:1958`, `src/LO_SYN.mad:1999`, `src/LO_SYN.mad:2140`, `src/LO_SYN.mad:2204`, `src/LO_SYN.mad:2372`, `src/LO_SYN.mad:2591`, `src/LO_SYN.mad:2626`, `src/LO_SYN.mad:2977` |
-| Э36 | 61113 | **не найдено в rukava.be** | — | 7 | `src/LO_SYN.mad:1051`, `src/LO_SYN.mad:1139`, `src/LO_SYN.mad:1187`, `src/LO_SYN.mad:1486`, `src/LO_SYN.mad:1520`, `src/LO_SYN.mad:1616`, `src/LO_SYN.mad:1667` |
+| Э65 | 2151 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 19 | `src/LO_SYN.mad:883`, `src/LO_SYN.mad:1237`, `src/LO_SYN.mad:1249`, `src/LO_SYN.mad:1300`, `src/LO_SYN.mad:1333`, `src/LO_SYN.mad:1378`, `src/LO_SYN.mad:1405`, `src/LO_SYN.mad:1447`, `src/LO_SYN.mad:1597`, `src/LO_SYN.mad:1684` … (ещё 9) |
+| Э65 | 2040 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 9 | `src/LO_SYN.mad:946`, `src/LO_SYN.mad:974`, `src/LO_SYN.mad:998`, `src/LO_SYN.mad:1453`, `src/LO_SYN.mad:1463`, `src/LO_SYN.mad:1964`, `src/LO_SYN.mad:2666`, `src/LO_SYN.mad:2933`, `src/LO_SYN.mad:3068` |
 | Э64 | IP028 | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 7 | `src/lib21/OCATALOG.mad:113`, `src/lib21/OCATALOG.mad:128`, `src/lib21/OCATALOG.mad:172`, `src/lib21/OCATALOG.mad:184`, `src/lib21/OCATALOG.mad:187`, `src/lib21/OCATALOG.mad:197`, `src/lib21/OCATALOG.mad:233` |
-| Э65 | 2120 | **не найдено в rukava.be** | — | 6 | `src/LO_SYN.mad:2095`, `src/LO_SYN.mad:2408`, `src/LO_SYN.mad:2524`, `src/LO_SYN.mad:3208`, `src/LO_SYN.mad:3245`, `src/LO_SYN.mad:3308` |
-| Э67 | 151 | **не найдено в rukava.be** | — | 6 | `src/LO_SYN.mad:1982`, `src/LO_SYN.mad:2444`, `src/LO_SYN.mad:2560`, `src/LO_SYN.mad:2579`, `src/LO_SYN.mad:2798`, `src/LO_SYN.mad:2810` |
-| Э70 | BUF075 | **не найдено в rukava.be** | — | 6 | `src/lib21/LIBDRU_.mad:137`, `src/lib21/LIBDRU_.mad:167`, `src/lib21/LIBDRU_.mad:196`, `src/lib21/LIBDRU_.mad:222`, `src/lib21/LIBDRU_.mad:419`, `src/lib21/LIBDRU_.mad:521` |
-| Э20 | 40440 | **не найдено в rukava.be** | — | 5 | `src/LO_SYN.mad:2275`, `src/LO_SYN.mad:2311`, `src/LO_SYN.mad:2329`, `src/LO_SYN.mad:2452`, `src/LO_SYN.mad:2867` |
-| Э20 | 62113 | **не найдено в rukava.be** | — | 5 | `src/LO_SYN.mad:1577`, `src/LO_SYN.mad:1757`, `src/LO_SYN.mad:1862`, `src/LO_SYN.mad:1972`, `src/LO_SYN.mad:2836` |
-| Э36 | 42440 | **не найдено в rukava.be** | — | 5 | `src/LO_SYN.mad:1679`, `src/LO_SYN.mad:2458`, `src/LO_SYN.mad:2887`, `src/LO_SYN.mad:3184`, `src/LO_SYN.mad:3238` |
-| Э36 | 66166 | **не найдено в rukava.be** | — | 5 | `src/LO_SYN.mad:2273`, `src/LO_SYN.mad:2309`, `src/LO_SYN.mad:2327`, `src/LO_SYN.mad:2866`, `src/LO_SYN.mad:3092` |
-| Э36 | 66170 | **не найдено в rukava.be** | — | 5 | `src/LO_SYN.mad:932`, `src/LO_SYN.mad:1031`, `src/LO_SYN.mad:1063`, `src/LO_SYN.mad:3053`, `src/LO_SYN.mad:3149` |
-| Э47 | 4524 | **не найдено в rukava.be** | — | 5 | `src/LO_SYN.mad:2188`, `src/LO_SYN.mad:2276`, `src/LO_SYN.mad:2312`, `src/LO_SYN.mad:2330`, `src/LO_SYN.mad:2869` |
+| Э65 | 2120 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 6 | `src/LO_SYN.mad:2095`, `src/LO_SYN.mad:2408`, `src/LO_SYN.mad:2524`, `src/LO_SYN.mad:3208`, `src/LO_SYN.mad:3245`, `src/LO_SYN.mad:3308` |
+| Э67 | 151 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 6 | `src/LO_SYN.mad:1982`, `src/LO_SYN.mad:2444`, `src/LO_SYN.mad:2560`, `src/LO_SYN.mad:2579`, `src/LO_SYN.mad:2798`, `src/LO_SYN.mad:2810` |
+| Э70 | BUF075 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 6 | `src/lib21/LIBDRU_.mad:137`, `src/lib21/LIBDRU_.mad:167`, `src/lib21/LIBDRU_.mad:196`, `src/lib21/LIBDRU_.mad:222`, `src/lib21/LIBDRU_.mad:419`, `src/lib21/LIBDRU_.mad:521` |
 | Э57 | 6 | ВЫДЕЛЕНИЕ ЦЕЛОЙ ЧАСТИ (ENTIER) / СИСТЕМНАЯ ОПЕРАЦИЯ (ИР 057 A) [tyurin1985] | 264 | 5 | `src/FOREX_CORE.mad:197`, `src/FOREX_CORE.mad:199`, `src/FOREX_CORE.mad:256`, `src/lib21/FOREX_.mad:58`, `src/lib21/FOREX_.mad:83` |
 | Э64 | 5505 | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 5 | `src/LO_SYN.mad:1984`, `src/LO_SYN.mad:2446`, `src/LO_SYN.mad:2581`, `src/LO_SYN.mad:2800`, `src/LO_SYN.mad:2812` |
 | Э64 | INF093 | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 5 | `src/lib21/MAKELIBT.mad:372`, `src/lib21/MAKELIBT.mad:743`, `src/lib21/MAKELIBT.mad:853`, `src/lib21/MAKELIBT.mad:857`, `src/lib21/MAKELIBT.mad:863` |
-| Э66 | 4513 | **не найдено в rukava.be** | — | 5 | `src/LO_SYN.mad:2297`, `src/LO_SYN.mad:2305`, `src/LO_SYN.mad:2323`, `src/LO_SYN.mad:2647`, `src/LO_SYN.mad:3254` |
-| Э67 | 440 | **не найдено в rukava.be** | — | 5 | `src/LO_SYN.mad:1130`, `src/LO_SYN.mad:1178`, `src/LO_SYN.mad:1219`, `src/LO_SYN.mad:3079`, `src/LO_SYN.mad:3100` |
-| Э20 | 41524 | **не найдено в rukava.be** | — | 4 | `src/LO_SYN.mad:952`, `src/LO_SYN.mad:1730`, `src/LO_SYN.mad:2815`, `src/LO_SYN.mad:3047` |
-| Э20 | 52040 | **не найдено в rukava.be** | — | 4 | `src/LO_SYN.mad:878`, `src/LO_SYN.mad:1207`, `src/LO_SYN.mad:1211`, `src/LO_SYN.mad:1796` |
-| Э20 | 64505 | **не найдено в rukava.be** | — | 4 | `src/LO_SYN.mad:1739`, `src/LO_SYN.mad:3188`, `src/LO_SYN.mad:3242`, `src/LO_SYN.mad:3283` |
-| Э36 | 20040 | **не найдено в rukava.be** | — | 4 | `src/LO_SYN.mad:901`, `src/LO_SYN.mad:2233`, `src/LO_SYN.mad:2257`, `src/LO_SYN.mad:2965` |
-| Э36 | 50115 | **не найдено в rukava.be** | — | 4 | `src/LO_SYN.mad:1037`, `src/LO_SYN.mad:1079`, `src/LO_SYN.mad:1154`, `src/LO_SYN.mad:1529` |
-| Э36 | 63517 | **не найдено в rukava.be** | — | 4 | `src/LO_SYN.mad:2378`, `src/LO_SYN.mad:2924`, `src/LO_SYN.mad:3001`, `src/LO_SYN.mad:3011` |
-| Э36 | 70120 | **не найдено в rukava.be** | — | 4 | `src/LO_SYN.mad:1435`, `src/LO_SYN.mad:1798`, `src/LO_SYN.mad:2288`, `src/LO_SYN.mad:2960` |
-| Э36 | 7417 | **не найдено в rukava.be** | — | 4 | `src/FOREX_CORE.mad:333`, `src/FOREX_CORE.mad:347`, `src/FOREX_CORE.mad:377`, `src/FOREX_CORE.mad:380` |
+| Э66 | 4513 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 5 | `src/LO_SYN.mad:2297`, `src/LO_SYN.mad:2305`, `src/LO_SYN.mad:2323`, `src/LO_SYN.mad:2647`, `src/LO_SYN.mad:3254` |
+| Э67 | 440 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 5 | `src/LO_SYN.mad:1130`, `src/LO_SYN.mad:1178`, `src/LO_SYN.mad:1219`, `src/LO_SYN.mad:3079`, `src/LO_SYN.mad:3100` |
 | Э64 | 2554 | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 4 | `src/LO_SYN.mad:994`, `src/LO_SYN.mad:1573`, `src/LO_SYN.mad:1678`, `src/LO_SYN.mad:2999` |
-| Э72 | ICC104 | **не найдено в rukava.be** | — | 4 | `src/lib21/OVERLOAD.mad:708`, `src/lib21/OVERLOAD.mad:772`, `src/lib21/OVERLOAD.mad:866`, `src/lib21/OVERLOAD.mad:874` |
-| Э20 | 20040 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:1244`, `src/LO_SYN.mad:2180`, `src/LO_SYN.mad:2512` |
-| Э20 | 20143 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:2126`, `src/LO_SYN.mad:2362`, `src/LO_SYN.mad:2386` |
-| Э20 | 42502 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:3181`, `src/LO_SYN.mad:3202`, `src/LO_SYN.mad:3235` |
-| Э20 | 42503 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:904`, `src/LO_SYN.mad:964`, `src/LO_SYN.mad:2542` |
-| Э20 | 44040 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:1228`, `src/LO_SYN.mad:1276`, `src/LO_SYN.mad:1340` |
-| Э36 | 46440 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:1643`, `src/LO_SYN.mad:2254`, `src/LO_SYN.mad:2704` |
-| Э36 | 47524 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:905`, `src/LO_SYN.mad:965`, `src/LO_SYN.mad:2543` |
-| Э36 | 52102 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:1352`, `src/LO_SYN.mad:1834`, `src/LO_SYN.mad:2075` |
-| Э36 | 65040 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:1889`, `src/LO_SYN.mad:2435`, `src/LO_SYN.mad:3196` |
-| Э36 | 66040 | **не найдено в rukava.be** | — | 3 | `src/LO_SYN.mad:1712`, `src/LO_SYN.mad:2060`, `src/LO_SYN.mad:2090` |
+| Э72 | ICC104 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 4 | `src/lib21/OVERLOAD.mad:708`, `src/lib21/OVERLOAD.mad:772`, `src/lib21/OVERLOAD.mad:866`, `src/lib21/OVERLOAD.mad:874` |
 | Э56 | 70000 | EXP (ИР 056 A) [tyurin1985] | 264 | 3 | `src/FOREX_CORE.mad:363`, `src/FOREX_CORE.mad:368`, `src/LO_SYN.mad:770` |
 | Э63 | CN677 | ЭКСТРАКОДЫ ВРЕМЕНИ РЕШЕНИЯ ЗАДАЧИ (ИР 063 A) [tyurin1985] | 334 | 3 | `src/lib21/FT_REGIM.mad:90`, `src/lib21/FT_REGIM.mad:149`, `src/lib21/FT_REGIM.mad:161` |
-| Э65 | 502 | **не найдено в rukava.be** | — | 3 | `src/lib21/CHEKJOB_.mad:339`, `src/lib21/CHEKJOB_.mad:444`, `src/lib21/INPUTCAL.mad:124` |
-| Э70 | BUF077 | **не найдено в rukava.be** | — | 3 | `src/lib21/LIBDRU_.mad:250`, `src/lib21/LIBDRU_.mad:432`, `src/lib21/LIBDRU_.mad:465` |
-| Э70 | BUF083 | **не найдено в rukava.be** | — | 3 | `src/lib21/LIBTAP_.mad:163`, `src/lib21/LIBTAP_.mad:195`, `src/lib21/LIBTAP_.mad:560` |
-| Э70 | BUF132 | **не найдено в rukava.be** | — | 3 | `src/lib21/MAKELIBT.mad:285`, `src/lib21/MAKELIBT.mad:289`, `src/lib21/MAKELIBT.mad:616` |
-| Э70 | PLA078 | **не найдено в rukava.be** | — | 3 | `src/lib21/LIBTAP_.mad:508`, `src/lib21/LIBTAP_.mad:569`, `src/lib21/LIBTAP_.mad:576` |
-| Э20 | 20102 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:2189`, `src/LO_SYN.mad:3034` |
-| Э20 | 20103 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:2314`, `src/LO_SYN.mad:2870` |
-| Э20 | 20115 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1166`, `src/LO_SYN.mad:2534` |
-| Э20 | 20117 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:2278`, `src/LO_SYN.mad:3118` |
-| Э20 | 40561 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1727`, `src/LO_SYN.mad:2405` |
-| Э20 | 64543 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:2135`, `src/LO_SYN.mad:2828` |
-| Э36 | 20143 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1721`, `src/LO_SYN.mad:2861` |
-| Э36 | 20151 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1591`, `src/LO_SYN.mad:2351` |
-| Э36 | 41117 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:889`, `src/LO_SYN.mad:1603` |
-| Э36 | 41124 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1931`, `src/LO_SYN.mad:2348` |
-| Э36 | 41524 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:2011`, `src/LO_SYN.mad:3059` |
-| Э36 | 41554 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1424`, `src/LO_SYN.mad:1699` |
-| Э36 | 44103 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:3062`, `src/LO_SYN.mad:3269` |
-| Э36 | 50110 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1933`, `src/LO_SYN.mad:2350` |
-| Э36 | 50530 | **не найдено в rukava.be** | — | 2 | `src/LO_GEN.mad:635`, `src/LO_GEN.mad:670` |
-| Э36 | 52113 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1046`, `src/LO_SYN.mad:1612` |
-| Э36 | 61117 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:910`, `src/LO_SYN.mad:2548` |
-| Э36 | 70105 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:2021`, `src/LO_SYN.mad:2078` |
-| Э36 | 70151 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1417`, `src/LO_SYN.mad:1690` |
-| Э36 | 73105 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:2216`, `src/LO_SYN.mad:3286` |
-| Э46 | 74513 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1075`, `src/LO_SYN.mad:1150` |
-| Э47 | 4576 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:970`, `src/LO_SYN.mad:2249` |
+| Э65 | 502 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 3 | `src/lib21/CHEKJOB_.mad:339`, `src/lib21/CHEKJOB_.mad:444`, `src/lib21/INPUTCAL.mad:124` |
+| Э70 | BUF077 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 3 | `src/lib21/LIBDRU_.mad:250`, `src/lib21/LIBDRU_.mad:432`, `src/lib21/LIBDRU_.mad:465` |
+| Э70 | BUF083 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 3 | `src/lib21/LIBTAP_.mad:163`, `src/lib21/LIBTAP_.mad:195`, `src/lib21/LIBTAP_.mad:560` |
+| Э70 | BUF132 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 3 | `src/lib21/MAKELIBT.mad:285`, `src/lib21/MAKELIBT.mad:289`, `src/lib21/MAKELIBT.mad:616` |
+| Э70 | PLA078 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 3 | `src/lib21/LIBTAP_.mad:508`, `src/lib21/LIBTAP_.mad:569`, `src/lib21/LIBTAP_.mad:576` |
 | Э50 | 67 | СЕРВИСНЫЕ ЭКСТРАКОДЫ И ЭЛЕМЕНТАРНЫЕ ФУНКЦИИ (ИР 050 A) [tyurin1985] | 264 | 2 | `src/FOREX_DECODER_DISASM.mad:156`, `src/lib21/LIBTAP_.mad:395` |
 | Э57 | 1263 | ВЫДЕЛЕНИЕ ЦЕЛОЙ ЧАСТИ (ENTIER) / СИСТЕМНАЯ ОПЕРАЦИЯ (ИР 057 A) [tyurin1985] | 264 | 2 | `src/FOREX_CORE.mad:362`, `src/LO_SYN.mad:769` |
 | Э57 | 4000 | ВЫДЕЛЕНИЕ ЦЕЛОЙ ЧАСТИ (ENTIER) / СИСТЕМНАЯ ОПЕРАЦИЯ (ИР 057 A) [tyurin1985] | 264 | 2 | `src/lib21/BEMSH_.mad:201`, `src/lib21/LINK#IPM.mad:244` |
@@ -100,90 +79,23 @@
 | Э64 | 77524 | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 2 | `src/LO_SYN.mad:2231`, `src/LO_SYN.mad:2255` |
 | Э64 | INF | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 2 | `src/FOREX_CORE.mad:292`, `src/lib21/FOREX_.mad:95` |
 | Э64 | INF015-C | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 2 | `src/lib21/READ1.mad:114`, `src/lib21/READ2.mad:114` |
-| Э65 | 1 | **не найдено в rukava.be** | — | 2 | `src/lib21/CHEKJOB_.mad:347`, `src/lib21/CHEKJOB_.mad:357` |
-| Э65 | 70101 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:2134`, `src/LO_SYN.mad:2827` |
-| Э65 | 760 | **не найдено в rukava.be** | — | 2 | `src/lib21/CHEKJOB_.mad:345`, `src/lib21/CHEKJOB_.mad:450` |
-| Э65 | A | **не найдено в rukava.be** | — | 2 | `src/lib21/INPUTCAL.mad:136`, `src/lib21/INPUTCAL.mad:143` |
-| Э66 | 4502 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1696`, `src/LO_SYN.mad:1763` |
-| Э66 | 4515 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:1123`, `src/LO_SYN.mad:1171` |
-| Э66 | 6151 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:3049`, `src/LO_SYN.mad:3145` |
-| Э67 | 117 | **не найдено в rukava.be** | — | 2 | `src/LO_SYN.mad:2036`, `src/LO_SYN.mad:2353` |
-| Э70 | BUF084 | **не найдено в rukava.be** | — | 2 | `src/lib21/LIBTAP_.mad:242`, `src/lib21/LIBTAP_.mad:542` |
-| Э70 | BUF134 | **не найдено в rukava.be** | — | 2 | `src/lib21/MAKELIBT.mad:629`, `src/lib21/MAKELIBT.mad:737` |
-| Э70 | BUF135 | **не найдено в rukava.be** | — | 2 | `src/lib21/MAKELIBT.mad:700`, `src/lib21/MAKELIBT.mad:739` |
-| Э70 | BUF136 | **не найдено в rukava.be** | — | 2 | `src/lib21/MAKELIBT.mad:752`, `src/lib21/MAKELIBT.mad:836` |
-| Э70 | INF023-C | **не найдено в rukava.be** | — | 2 | `src/lib21/READ1.mad:87`, `src/lib21/READ2.mad:87` |
-| Э70 | XX367 | **не найдено в rukava.be** | — | 2 | `src/lib21/TCATALOG.mad:449`, `src/lib21/TCATALOG.mad:453` |
-| Э72 | COTK2+NT3 | **не найдено в rukava.be** | — | 2 | `src/lib21/BEMSH_.mad:203`, `src/lib21/LINK#IPM.mad:111` |
-| Э72 | ICC105 | **не найдено в rukava.be** | — | 2 | `src/lib21/OVERLOAD.mad:628`, `src/lib21/OVERLOAD.mad:656` |
-| Э72 | ICL106 | **не найдено в rukava.be** | — | 2 | `src/lib21/OVERLOAD.mad:785`, `src/lib21/OVERLOAD.mad:817` |
-| Э20 | 20110 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2857` |
-| Э20 | 20113 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3061` |
-| Э20 | 20124 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2332` |
-| Э20 | 20142 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3019` |
-| Э20 | 20151 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1756` |
-| Э20 | 20160 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1532` |
-| Э20 | 2254 | **не найдено в rukava.be** | — | 1 | `src/LO_GEN.mad:1362` |
-| Э20 | 40513 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:856` |
-| Э20 | 40520 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3280` |
-| Э20 | 42546 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1036` |
-| Э20 | 42560 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1552` |
-| Э20 | 4323 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3795` |
-| Э20 | 4405 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3819` |
-| Э20 | 44117 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3287` |
-| Э20 | 44144 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1780` |
-| Э20 | 45543 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2026` |
-| Э20 | 47440 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1556` |
-| Э20 | 47505 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1735` |
-| Э20 | 47515 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2713` |
-| Э20 | 47547 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2860` |
-| Э20 | 50520 | **не найдено в rukava.be** | — | 1 | `src/LO_GEN.mad:660` |
-| Э20 | 53257 | **не найдено в rukava.be** | — | 1 | `src/LO_GEN.mad:631` |
-| Э20 | 62101 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3193` |
-| Э20 | 64440 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3125` |
-| Э20 | 64551 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2920` |
-| Э20 | 64561 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:862` |
-| Э20 | 64566 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2284` |
-| Э20 | 7017 | **не найдено в rukava.be** | — | 1 | `src/FOREX_CORE.mad:351` |
-| Э20 | 74440 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3094` |
-| Э20 | 75505 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2177` |
-| Э20 | 77101 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3241` |
-| Э21 | 1016 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3423` |
-| Э21 | 1302 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3495` |
-| Э21 | 22662 | **не найдено в rukava.be** | — | 1 | `src/LO_GEN.mad:661` |
-| Э21 | 326 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3354` |
-| Э21 | 4043 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3732` |
-| Э33 | 4114 | **не найдено в rukava.be** | — | 1 | `src/LO_GEN.mad:667` |
-| Э36 | 1310 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3504` |
-| Э36 | 20102 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1934` |
-| Э36 | 20142 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1318` |
-| Э36 | 317 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3339` |
-| Э36 | 4037 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3720` |
-| Э36 | 4054 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3741` |
-| Э36 | 44040 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1633` |
-| Э36 | 44101 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1870` |
-| Э36 | 45440 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2174` |
-| Э36 | 45501 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1387` |
-| Э36 | 45517 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3239` |
-| Э36 | 46126 | **не найдено в rukava.be** | — | 1 | `src/LO_GEN.mad:634` |
-| Э36 | 501 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3363` |
-| Э36 | 50101 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2687` |
-| Э36 | 51105 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1943` |
-| Э36 | 52117 | **не найдено в rukava.be** | — | 1 | `src/LO_GEN.mad:655` |
-| Э36 | 52120 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1883` |
-| Э36 | 52514 | **не найдено в rukava.be** | — | 1 | `src/LO_GEN.mad:669` |
-| Э36 | 61120 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3185` |
-| Э36 | 61154 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2674` |
-| Э36 | 62101 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1312` |
-| Э36 | 62117 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:859` |
-| Э36 | 6264 | **не найдено в rukava.be** | — | 1 | `src/FOREX_CORE.mad:577` |
-| Э36 | 63551 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:922` |
-| Э36 | 66110 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3106` |
-| Э36 | 66117 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2398` |
-| Э36 | 66151 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2944` |
-| Э36 | 70055 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2983` |
-| Э46 | 4510 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1055` |
-| Э47 | 4573 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3040` |
+| Э65 | 1 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/CHEKJOB_.mad:347`, `src/lib21/CHEKJOB_.mad:357` |
+| Э65 | 70101 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/LO_SYN.mad:2134`, `src/LO_SYN.mad:2827` |
+| Э65 | 760 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/CHEKJOB_.mad:345`, `src/lib21/CHEKJOB_.mad:450` |
+| Э65 | A | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/INPUTCAL.mad:136`, `src/lib21/INPUTCAL.mad:143` |
+| Э66 | 4502 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/LO_SYN.mad:1696`, `src/LO_SYN.mad:1763` |
+| Э66 | 4515 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/LO_SYN.mad:1123`, `src/LO_SYN.mad:1171` |
+| Э66 | 6151 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/LO_SYN.mad:3049`, `src/LO_SYN.mad:3145` |
+| Э67 | 117 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/LO_SYN.mad:2036`, `src/LO_SYN.mad:2353` |
+| Э70 | BUF084 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/LIBTAP_.mad:242`, `src/lib21/LIBTAP_.mad:542` |
+| Э70 | BUF134 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/MAKELIBT.mad:629`, `src/lib21/MAKELIBT.mad:737` |
+| Э70 | BUF135 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/MAKELIBT.mad:700`, `src/lib21/MAKELIBT.mad:739` |
+| Э70 | BUF136 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/MAKELIBT.mad:752`, `src/lib21/MAKELIBT.mad:836` |
+| Э70 | INF023-C | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/READ1.mad:87`, `src/lib21/READ2.mad:87` |
+| Э70 | XX367 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/TCATALOG.mad:449`, `src/lib21/TCATALOG.mad:453` |
+| Э72 | COTK2+NT3 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/BEMSH_.mad:203`, `src/lib21/LINK#IPM.mad:111` |
+| Э72 | ICC105 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/OVERLOAD.mad:628`, `src/lib21/OVERLOAD.mad:656` |
+| Э72 | ICL106 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 2 | `src/lib21/OVERLOAD.mad:785`, `src/lib21/OVERLOAD.mad:817` |
 | Э50 | 1202 | ГРАФОПОСТРОИТЕЛЬ: ... | ? | 1 | `src/LO_SYN.mad:3474` |
 | Э50 | 1311 | СЕРВИСНЫЕ ЭКСТРАКОДЫ И ЭЛЕМЕНТАРНЫЕ ФУНКЦИИ (ИР 050 A) [tyurin1985] | 264 | 1 | `src/LO_SYN.mad:3507` |
 | Э50 | 1323 | СЕРВИСНЫЕ ЭКСТРАКОДЫ И ЭЛЕМЕНТАРНЫЕ ФУНКЦИИ (ИР 050 A) [tyurin1985] | 264 | 1 | `src/LO_SYN.mad:3531` |
@@ -207,21 +119,21 @@
 | Э57 | 1247 | ВЫДЕЛЕНИЕ ЦЕЛОЙ ЧАСТИ (ENTIER) / СИСТЕМНАЯ ОПЕРАЦИЯ (ИР 057 A) [tyurin1985] | 264 | 1 | `src/FOREX_CORE.mad:367` |
 | Э57 | 4144 | ВЫДЕЛЕНИЕ ЦЕЛОЙ ЧАСТИ (ENTIER) / СИСТЕМНАЯ ОПЕРАЦИЯ (ИР 057 A) [tyurin1985] | 264 | 1 | `src/FOREX_CORE.mad:582` |
 | Э57 | 5 | ВЫДЕЛЕНИЕ ЦЕЛОЙ ЧАСТИ (ENTIER) / СИСТЕМНАЯ ОПЕРАЦИЯ (ИР 057 A) [tyurin1985] | 264 | 1 | `src/lib21/TEMP##.mad:45` |
-| Э60 | 4002 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3648` |
-| Э60 | 4041 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3726` |
-| Э60 | 4423 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3843` |
-| Э60 | 512 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3390` |
-| Э60 | 514 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3396` |
-| Э60 | 70312 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3324` |
-| Э60 | 70313 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3327` |
-| Э60 | 71015 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3420` |
-| Э60 | 71105 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3453` |
-| Э60 | 71215 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3486` |
-| Э60 | 71313 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3513` |
-| Э60 | 74030 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3699` |
-| Э60 | 74035 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3714` |
-| Э60 | 74040 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3723` |
-| Э60 | INC | **не найдено в rukava.be** | — | 1 | `src/lib21/INPUT_.mad:83` |
+| Э60 | 4002 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3648` |
+| Э60 | 4041 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3726` |
+| Э60 | 4423 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3843` |
+| Э60 | 512 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3390` |
+| Э60 | 514 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3396` |
+| Э60 | 70312 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3324` |
+| Э60 | 70313 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3327` |
+| Э60 | 71015 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3420` |
+| Э60 | 71105 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3453` |
+| Э60 | 71215 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3486` |
+| Э60 | 71313 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3513` |
+| Э60 | 74030 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3699` |
+| Э60 | 74035 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3714` |
+| Э60 | 74040 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3723` |
+| Э60 | INC | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/INPUT_.mad:83` |
 | Э62 | 110 | УСТАНОВКА (ВОССТАНОВЛЕНИЕ) ПАРОЛЯ НА ДОСТУП К МД ИЛИ МЛ | ? | 1 | `src/LO_SYN.mad:1579` |
 | Э62 | 115 | СИСТЕМНЫЕ ЭКСТРАКОДЫ УПРАВЛЕНИЯ ЗАДАЧАМИ И ТЕРМИНАЛАМИ (ИР 062 A) [tyurin1985] | 64 | 1 | `src/LO_SYN.mad:2432` |
 | Э62 | 1200 | СИСТЕМНЫЕ ЭКСТРАКОДЫ УПРАВЛЕНИЯ ЗАДАЧАМИ И ТЕРМИНАЛАМИ (ИР 062 A) [tyurin1985] | 64 | 1 | `src/FOREX_CORE.mad:543` |
@@ -253,60 +165,60 @@
 | Э64 | N00008 | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 1 | `src/lib21/PRINTR.mad:78` |
 | Э64 | N00009 | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 1 | `src/lib21/PRINTR.mad:86` |
 | Э64 | PRI028 | УПРАВЛЕНИЕ РЕЖИМОМ ЛИСТОВАНИЯ ПРИ ПЕЧАТИ НА АЦПУ (ИР 064 A) [tyurin1985] | 277 | 1 | `src/lib21/DISPAC.mad:210` |
-| Э65 | -20 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:93` |
-| Э65 | 2101 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3191` |
-| Э65 | 2110 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2849` |
-| Э65 | 2117 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1922` |
-| Э65 | 40 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:103` |
-| Э65 | 504 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:100` |
-| Э65 | 505 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:89` |
-| Э65 | 546 | **не найдено в rukava.be** | — | 1 | `src/lib21/INPUTCAL.mad:130` |
-| Э65 | 560 | **не найдено в rukava.be** | — | 1 | `src/lib21/CHEKJOB_.mad:355` |
-| Э65 | 700 | **не найдено в rukava.be** | — | 1 | `src/lib21/LIBTAP_.mad:389` |
-| Э65 | 757 | **не найдено в rukava.be** | — | 1 | `src/lib21/LIBTAP_.mad:391` |
-| Э65 | 761 | **не найдено в rukava.be** | — | 1 | `src/lib21/CHEKJOB_.mad:350` |
-| Э65 | 762 | **не найдено в rukava.be** | — | 1 | `src/lib21/CHEKJOB_.mad:454` |
-| Э65 | XNFM | **не найдено в rukava.be** | — | 1 | `src/lib21/INPUTCAL.mad:138` |
-| Э66 | 4546 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1099` |
-| Э66 | 74576 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:2192` |
-| Э66 | 76131 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:1054` |
-| Э67 | DEB | **не найдено в rukava.be** | — | 1 | `src/lib21/LINK#IPM.mad:120` |
-| Э67 | DEB010 | **не найдено в rukava.be** | — | 1 | `src/lib21/TEMP##.mad:69` |
-| Э67 | DEB021 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:152` |
-| Э67 | DEB022 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:153` |
-| Э67 | DEB023 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:154` |
-| Э70 | 14 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:803` |
-| Э70 | 21 | **не найдено в rukava.be** | — | 1 | `src/lib21/LINK#IPM.mad:237` |
-| Э70 | 3110 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3639` |
-| Э70 | 370 | **не найдено в rukava.be** | — | 1 | `src/LO_GEN.mad:614` |
-| Э70 | 4026 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3696` |
-| Э70 | 4072 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3750` |
-| Э70 | 4311 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3771` |
-| Э70 | 71000 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3399` |
-| Э70 | 71101 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3447` |
-| Э70 | 71326 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3540` |
-| Э70 | 71405 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3567` |
-| Э70 | 74021 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3681` |
-| Э70 | 74075 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3756` |
-| Э70 | 74312 | **не найдено в rukava.be** | — | 1 | `src/LO_SYN.mad:3774` |
-| Э70 | AEX333 | **не найдено в rukava.be** | — | 1 | `src/lib21/TCATALOG.mad:2741` |
-| Э70 | BUF076 | **не найдено в rukava.be** | — | 1 | `src/lib21/LIBDRU_.mad:276` |
-| Э70 | BUF133 | **не найдено в rukava.be** | — | 1 | `src/lib21/MAKELIBT.mad:471` |
-| Э70 | C070 | **не найдено в rukava.be** | — | 1 | `src/FOREX_RUNTIME_DISASM.mad:367` |
-| Э70 | CON070 | **не найдено в rukava.be** | — | 1 | `src/lib21/FORTLIBR.mad:134` |
-| Э70 | INF012 | **не найдено в rukava.be** | — | 1 | `src/lib21/TEMP##.mad:61` |
-| Э70 | INF048 | **не найдено в rukava.be** | — | 1 | `src/lib21/OCATALOG.mad:106` |
-| Э70 | IW053 | **не найдено в rukava.be** | — | 1 | `src/lib21/TEMFILE.mad:400` |
-| Э70 | IWN143 | **не найдено в rukava.be** | — | 1 | `src/lib21/MAKELIBT.mad:888` |
-| Э70 | RMO042 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:146` |
-| Э70 | TRCALL | **не найдено в rukava.be** | — | 1 | `src/lib21/BEMSH_.mad:163` |
-| Э70 | TRP026 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:157` |
-| Э71 | GAO019 | **не найдено в rukava.be** | — | 1 | `src/lib21/PUNCHICT.mad:96` |
-| Э72 | 4 | **не найдено в rukava.be** | — | 1 | `src/lib21/CHEKJOB_.mad:476` |
-| Э72 | C | **не найдено в rukava.be** | — | 1 | `src/lib21/EXECUTE.mad:278` |
-| Э72 | ETX007 | **не найдено в rukava.be** | — | 1 | `src/lib21/TEMP##.mad:60` |
-| Э72 | ETX019 | **не найдено в rukava.be** | — | 1 | `src/lib21/DISPAC.mad:137` |
-| Э75 | CN1777 | **не найдено в rukava.be** | — | 1 | `src/lib21/BEMSH_.mad:165` |
+| Э65 | -20 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:93` |
+| Э65 | 2101 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3191` |
+| Э65 | 2110 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:2849` |
+| Э65 | 2117 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:1922` |
+| Э65 | 40 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:103` |
+| Э65 | 504 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:100` |
+| Э65 | 505 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:89` |
+| Э65 | 546 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/INPUTCAL.mad:130` |
+| Э65 | 560 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/CHEKJOB_.mad:355` |
+| Э65 | 700 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/LIBTAP_.mad:389` |
+| Э65 | 757 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/LIBTAP_.mad:391` |
+| Э65 | 761 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/CHEKJOB_.mad:350` |
+| Э65 | 762 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/CHEKJOB_.mad:454` |
+| Э65 | XNFM | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/INPUTCAL.mad:138` |
+| Э66 | 4546 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:1099` |
+| Э66 | 74576 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:2192` |
+| Э66 | 76131 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:1054` |
+| Э67 | DEB | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/LINK#IPM.mad:120` |
+| Э67 | DEB010 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/TEMP##.mad:69` |
+| Э67 | DEB021 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:152` |
+| Э67 | DEB022 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:153` |
+| Э67 | DEB023 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:154` |
+| Э70 | 14 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:803` |
+| Э70 | 21 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/LINK#IPM.mad:237` |
+| Э70 | 3110 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3639` |
+| Э70 | 370 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_GEN.mad:614` |
+| Э70 | 4026 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3696` |
+| Э70 | 4072 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3750` |
+| Э70 | 4311 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3771` |
+| Э70 | 71000 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3399` |
+| Э70 | 71101 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3447` |
+| Э70 | 71326 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3540` |
+| Э70 | 71405 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3567` |
+| Э70 | 74021 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3681` |
+| Э70 | 74075 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3756` |
+| Э70 | 74312 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/LO_SYN.mad:3774` |
+| Э70 | AEX333 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/TCATALOG.mad:2741` |
+| Э70 | BUF076 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/LIBDRU_.mad:276` |
+| Э70 | BUF133 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/MAKELIBT.mad:471` |
+| Э70 | C070 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/FOREX_RUNTIME_DISASM.mad:367` |
+| Э70 | CON070 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/FORTLIBR.mad:134` |
+| Э70 | INF012 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/TEMP##.mad:61` |
+| Э70 | INF048 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/OCATALOG.mad:106` |
+| Э70 | IW053 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/TEMFILE.mad:400` |
+| Э70 | IWN143 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/MAKELIBT.mad:888` |
+| Э70 | RMO042 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:146` |
+| Э70 | TRCALL | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/BEMSH_.mad:163` |
+| Э70 | TRP026 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:157` |
+| Э71 | GAO019 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/PUNCHICT.mad:96` |
+| Э72 | 4 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/CHEKJOB_.mad:476` |
+| Э72 | C | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/EXECUTE.mad:278` |
+| Э72 | ETX007 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/TEMP##.mad:60` |
+| Э72 | ETX019 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/DISPAC.mad:137` |
+| Э75 | CN1777 | **не найдено ни в rukava.be, ни в Тюрине-1985** | — | 1 | `src/lib21/BEMSH_.mad:165` |
 
 ## Расшифрованные вхождения
 
@@ -326,7 +238,8 @@
 |---|---|---|---|
 | `rukava.be` | 5 | 7 | `[rukava.be:N]` |
 | `tyurin1985` | 73 | 113 | `[tyurin1985]`, стр. из книги |
-| не расшифровано | 219 | 492 | `НЕ НАЙДЕНО в rukava.be` |
+| не расшифровано | 99 | 178 | `НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (причина)` / `информационное слово — адрес/данные` |
+| команды 020..047 (НЕ экстракоды) | — | 314 | `. опк NN (мнемоника) … = КОМАНДА БЭСМ-6 «…», не экстракод [таблица]` |
 
 ### Пары, расшифрованные по Тюрину-1985
 

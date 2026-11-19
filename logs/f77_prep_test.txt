@@ -1,0 +1,9 @@
+=== F77PREP two-pass test (E3) ===
+date    : 2026-11-19T11:11:52Z
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+source  : /tmp/.private/azizz/opencode/re-forex/tests/f77/prep-case.f77
+ftn     : /tmp/.private/azizz/opencode/re-forex/src/f77prep/F77PREP.FTN
+Written 5 zones (30 kbytes) from file /tmp/.private/azizz/f77-prep.vB2jBs/image.bin to disk 2348
+PASS1 OK: lowering совпал с эталоном (11 строк)
+PASS2 OK: результат (         42) совпал с эталоном
+OK: обе проверки пройдены (rc=0)

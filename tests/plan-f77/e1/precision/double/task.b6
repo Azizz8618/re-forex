@@ -1,0 +1,27 @@
+шифр 419999 зс5^
+лен 41(2048)^
+eeв1а3
+*name double_precision
+*call yesmemory
+*no list
+*forex
+      DOUBLE PRECISION X,Y,Z
+      X=2.0D0
+      Y=SQRT(X)
+      Z=1.0D0/3.0D0
+      S=SQRT(2.0)
+      T=1.0/3.0
+      PRINT 10,Y
+   10 FORMAT(1X,D22.15)
+      PRINT 11,Z
+   11 FORMAT(1X,D22.15)
+      PRINT 20,S
+   20 FORMAT(1X,F20.15)
+      PRINT 21,T
+   21 FORMAT(1X,F20.15)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

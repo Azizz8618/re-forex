@@ -1,0 +1,12 @@
+шифр 419999ЗС5^
+ОЗУ 32^
+дис 40(2348)^
+eeв1а3
+*name catperso
+*libra:23
+*        disc:41(2048)/system,lcross
+*        file:libra,402300,r
+*call plcatalog:402300
+*end file
+``````
+еконец

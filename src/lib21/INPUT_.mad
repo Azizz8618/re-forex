@@ -80,7 +80,7 @@ WRI011: BSS . зарезервированная область  ; (POLN: WRITE)
 C,, . .....   ЗAПИCЬ KAPTЫ , CБPOC  ; S1:17403
 WTC,PROC W . HA COOTB.  ; S1:17404
 UJ, . ПPOЦEДYPY  ; S1:17405
-MAC012: *60,INC  ; (POLN: MAC 60) ; S1:17406 . Э60 INC = НЕ НАЙДЕНО в rukava.be
+MAC012: *60,INC  ; (POLN: MAC 60) ; S1:17406 . Э60 INC = НЕ НАЙДЕНО ни в rukava.be, ни в Тюрине-1985 (код Э60 — внутренний/неописанный, информационное слово — адрес/данные)
 000  ; S1:17407
 COD013: XTA,RET024 . HA KOДИPOBKY  ; (POLN: CODE) ; S1:17408
 CALL,DEC006 . BOЗBPAT-ПEPEKЛ.  ; S1:17409

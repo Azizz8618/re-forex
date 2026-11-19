@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Парсер таблицы системных вызовов (экстракодов) из rukava.be и книги Тюрина.
 
+КЛАССИФИКАЦИЯ КОДОВ (критическое правило): экстракоды — только 050..077.
+Коды 020..047 (*20, *21, *33, *36, *46, *47 и др.) — обычные КОМАНДЫ БЭСМ-6
+по таблицам besm6tape.py / disbesm6.c; они НЕ требуют расшифровки из
+rukava.be или книги Тюрина.  См. ``classify_opcode()``.
+
 Первичный источник: /home/azizz/Yandex.Disk/re-dispak/rukava.be,
 раздел 1.4 «ПЕРЕЧЕНЬ СИСТЕМНЫХ ВЫЗВОВ (ЭКСТРАКОДОВ)».
 
@@ -42,6 +47,92 @@ from typing import Any, Dict, List, Optional, Tuple
 DEFAULT_SOURCE = Path("/home/azizz/Yandex.Disk/re-dispak/rukava.be")
 DEFAULT_TYURIN = Path("/home/azizz/Yandex.Disk/re-dispak/docs/tyurin1985/extract-codes.json")
 SOURCES = ("rukava", "tyurin", "all")
+
+# ── Классификация кодов: экстракоды (050–077) vs команды (020–047) ────────────
+# КРИТИЧЕСКОЕ ПРАВИЛО: в ДИСПАКе экстракоды — только коды 050..077.
+# Коды 020..047 являются обычными КОМАНДАМИ БЭСМ-6 (в том числе *20, *21,
+# *33, *36, *46, *47).  Источники таблиц:
+#   /home/azizz/Yandex.Disk/besm6-new/besm6.net/tools/besm6tape.py
+#       string 25  — SHORT "*33";   string 26 — SHORT "*46", "*47"
+#       string 36  — SHORT_BEMSH "счп" (для *33)
+#       string 37  — SHORT_BEMSH "соп", "э47" (для *46, *47)
+#       strings 44–45 / 48–49 — LONG и LONG_BEMSH (*20…*37 / э20…цикл)
+#   /home/azizz/Yandex.Disk/dispak/disbesm6/disbesm6.c:83–84
+#       "Э46" (0x026000) и "Э47" (0x027000) — OPCODE_IMM, BASIC, НЕ экстракоды.
+# Значение: (MADLEN-мнемоника, БЭМШ-мнемоника, ссылка на таблицу).
+COMMAND_OPCODES: Dict[str, Tuple[str, str, str]] = {
+    # LONG 020–037 (besm6tape.py:44–45 / 48–49)
+    "20": ("*20", "э20", "besm6tape.py:44,48"),
+    "21": ("*21", "э21", "besm6tape.py:44,48"),
+    "22": ("utc", "мода", "besm6tape.py:44,48"),
+    "23": ("wtc", "мод", "besm6tape.py:44,48"),
+    "24": ("vtm", "уиа", "besm6tape.py:44,48"),
+    "25": ("utm", "слиа", "besm6tape.py:44,48"),
+    "26": ("uza", "по", "besm6tape.py:44,48"),
+    "27": ("u1a", "пе", "besm6tape.py:44,48"),
+    "30": ("uj", "пб", "besm6tape.py:45,49"),
+    "31": ("vjm", "пв", "besm6tape.py:45,49"),
+    "32": ("ij", "выпр", "besm6tape.py:45,49"),
+    "33": ("*33 / stop", "счп", "besm6tape.py:25,36 (SHORT *33/счп); 45,49 (LONG stop/стоп)"),
+    "34": ("vzm", "пио", "besm6tape.py:45,49"),
+    "35": ("v1m", "пино", "besm6tape.py:45,49"),
+    "36": ("*36", "втбрз", "besm6tape.py:45,49"),
+    "37": ("vlm", "цикл", "besm6tape.py:45,49"),
+    # SHORT 040–047 (besm6tape.py:26 / 37; 46–47 также disbesm6.c:83–84)
+    "40": ("ati", "уи", "besm6tape.py:26,37"),
+    "41": ("sti", "уим", "besm6tape.py:26,37"),
+    "42": ("ita", "счи", "besm6tape.py:26,37"),
+    "43": ("its", "счим", "besm6tape.py:26,37"),
+    "44": ("mtj", "уии", "besm6tape.py:26,37"),
+    "45": ("j+m", "сли", "besm6tape.py:26,37"),
+    "46": ("*46", "соп", "besm6tape.py:26,37; disbesm6.c:83"),
+    "47": ("*47", "э47", "besm6tape.py:26,37; disbesm6.c:84"),
+}
+
+
+def classify_opcode(code_octal: str) -> Tuple[str, str]:
+    """Классифицировать восьмеричный код команды/экстракода.
+
+    Возвращает ``(категория, мнемоника)``:
+      * ``('extract', 'Э50')``  — настоящий экстракод, код 050..077;
+      * ``('command', 'втбрз')`` — команда БЭСМ-6, код 020..047
+        (мнемоника — БЭМШ-имя из besm6tape.py/disbesm6.c);
+      * ``('unknown', '')``     — код вне диапазонов 020..077.
+
+    >>> classify_opcode('36')
+    ('command', 'втбрз')
+    >>> classify_opcode('050')
+    ('extract', 'Э50')
+    """
+    raw = str(code_octal).strip().upper().lstrip("Э*")
+    try:
+        value = int(raw, 8)
+    except ValueError:
+        return ("unknown", "")
+    if 0o20 <= value <= 0o47:
+        norm = format(value, "02o")
+        mnemonic = COMMAND_OPCODES.get(norm, (norm, norm, ""))[1]
+        return ("command", mnemonic)
+    if 0o50 <= value <= 0o77:
+        return ("extract", "Э" + format(value, "02o"))
+    return ("unknown", "")
+
+
+def command_ref(code_octal: str) -> str:
+    """Ссылка на таблицу, подтверждающую, что код — команда, а не экстракод."""
+    norm = format(int(str(code_octal).strip().lstrip("Э*"), 8), "02o")
+    return COMMAND_OPCODES.get(norm, (norm, norm, "besm6tape.py"))[2]
+
+
+def make_command_comment(code_octal: str, info: str = "") -> str:
+    """Канонический комментарий для команды, ошибочно названной экстракодом."""
+    kind, mnemonic = classify_opcode(code_octal)
+    if kind != "command":
+        return ""
+    norm = format(int(str(code_octal).strip().lstrip("Э*"), 8), "02o")
+    info_part = f" {info}" if info else ""
+    return (f". опк {norm} ({mnemonic}){info_part} = КОМАНДА БЭСМ-6 "
+            f"«{mnemonic}», не экстракод [{command_ref(norm)}]")
 
 # Ключ: (Э50, 0131).  Значение: (описание, страница, строка файла).
 Entry = Tuple[str, str, int]
@@ -306,11 +397,15 @@ def resolve_equ(name: str, equs: Dict[str, str], seen: Optional[set] = None) -> 
 def make_comment(code: str, info: str, table: CodeTable,
                  tyurin: Optional[TyurinData] = None,
                  source: str = "all") -> str:
-    """Построить встроенный комментарий-расшифровку для одного экстракода.
+    """Построить встроенный комментарий для одного кода.
 
-    Если описание найдено у Тюрина, комментарий заканчивается на
-    ``[tyurin1985]``; если в rukava.be — на ``[rukava.be:N]``.
+    Для команд (020..047) расшифровка из rukava.be/Тюрина НЕ требуется —
+    возвращается пометка «КОМАНДА БЭСМ-6, не экстракод» со ссылкой на таблицу.
+    Для настоящих экстракодов (050..077) — расшифровка по источникам.
     """
+    kind, _mnemonic = classify_opcode(code)
+    if kind == "command":
+        return make_command_comment(code, info)
     entry = lookup_all(code, info, table, tyurin, source)
     if entry is None:
         return f". {code} {info} = НЕ НАЙДЕНО в rukava.be"
@@ -318,22 +413,26 @@ def make_comment(code: str, info: str, table: CodeTable,
     return f". {code} {info} = {desc}, стр.{page} [{ref}]"
 
 
-def scan_line(line: str, equs: Dict[str, str]) -> List[Tuple[str, str, str]]:
-    """Экстракоды со информационным словом в одной строке.
+def scan_line(line: str, equs: Dict[str, str]) -> List[Tuple[str, str, str, str, str]]:
+    """Коды с информационным словом в одной строке.
 
-    Возвращает список ``(код, информационное_слово, исходный_токен)``.
+    Возвращает список ``(код, информационное_слово, исходный_токен,
+    категория, мнемоника)``.  Категория — ``extract`` (050..077),
+    ``command`` (020..047) или ``unknown``.
     """
-    out: List[Tuple[str, str, str]] = []
-    # Не сканируем собственные комментарии-расшифровки вида ". Э57 6 = ...":
-    # иначе они сами начинают выглядеть как ещё одно вхождение экстракода.
-    line = re.split(r"\s+\.\s+Э[0-7]{2}\s+", line, maxsplit=1)[0]
+    out: List[Tuple[str, str, str, str, str]] = []
+    # Не сканируем собственные комментарии вида ". Э57 6 = ..." или
+    # ". опк 36 (втбрз) 7417 = ...": иначе они сами выглядят как вхождение.
+    line = re.split(r"\s+\.\s+(?:Э[0-7]{2}|опк)\s+", line, maxsplit=1)[0]
     for rx in (OPCODE_RE, MNEMO_RE):
         for m in rx.finditer(line):
             raw = m.group(2).strip()
             if not raw or "=" in raw or ":" in raw or "*" in raw:
                 continue  # метка/литерал, а не информационное слово
             resolved = resolve_equ(raw, equs)
-            out.append(("Э" + m.group(1), resolved or raw, raw))
+            code = m.group(1)
+            kind, mnemonic = classify_opcode(code)
+            out.append(("Э" + code, resolved or raw, raw, kind, mnemonic))
     return out
 
 
@@ -353,11 +452,14 @@ def scan_sources(root: Path = Path("src"), table: Optional[CodeTable] = None,
             if m:
                 equs[m.group(1)] = m.group(2)
         for lineno, line in enumerate(lines, 1):
-            for code, info, raw in scan_line(line, equs):
-                entry = lookup_all(code, info, table, tyurin, source)
+            for code, info, raw, kind, mnemonic in scan_line(line, equs):
+                entry = (None if kind == "command"
+                         else lookup_all(code, info, table, tyurin, source))
                 found.append({
                     "file": str(path), "line": lineno, "code": code,
                     "info": info, "token": raw,
+                    "kind": kind, "mnemonic": mnemonic,
+                    "command_ref": command_ref(code) if kind == "command" else None,
                     "description": entry[0] if entry else None,
                     "page": entry[1] if entry else None,
                     "source_line": entry[2] if entry else None,
@@ -406,15 +508,23 @@ def main(argv: Optional[List[str]] = None) -> int:
         if args.json:
             print(json.dumps(rows, ensure_ascii=False, indent=2))
             return 0
-        hits = sum(1 for r in rows if r["description"] is not None)
+        extracts = [r for r in rows if r["kind"] == "extract"]
+        commands = [r for r in rows if r["kind"] == "command"]
+        hits = sum(1 for r in extracts if r["description"] is not None)
         for r in rows:
+            if r["kind"] == "command":
+                print(f"{r['file']}:{r['line']}: {r['code']} {r['info']} "
+                      f"[{r['token']}] -> КОМАНДА БЭСМ-6 «{r['mnemonic']}», "
+                      f"НЕ экстракод [{r['command_ref']}]")
+                continue
             mark = "НАЙДЕНО" if r["description"] is not None else "не найдено"
             src = r["source"] or "-"
             print(f"{r['file']}:{r['line']}: {r['code']} {r['info']} "
                   f"[{r['token']}] -> {mark} [{src}]")
-        print(f"\nВсего вхождений: {len(rows)}, расшифровано: {hits}, "
-              f"не найдено: {len(rows) - hits} (источник: {args.source})",
-              file=sys.stderr)
+        print(f"\nВсего вхождений: {len(rows)}; экстракоды (050..077): "
+              f"{len(extracts)} (расшифровано: {hits}, не найдено: "
+              f"{len(extracts) - hits}); команды (020..047, НЕ экстракоды): "
+              f"{len(commands)} (источник: {args.source})", file=sys.stderr)
         return 0
 
     if args.json and not args.find:

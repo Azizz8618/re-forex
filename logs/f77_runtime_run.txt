@@ -1,0 +1,19 @@
+=== E2: F77LIBR from PERSO 0o2310 ===
+date    : 2026-11-19T11:11:52Z
+dispak  : /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+image   : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
+etalon  : /usr/local/share/besm6/2348
+source  : /tmp/.private/azizz/opencode/re-forex/src/f77libr/F77LIB.FTN
+--- compile: catalog write / errors ---
+                  ИСПОРЧЕНЫ ПОДПРОГРАММЫ:
+ ДЛИНА LIВRАRУ  004 ЗОН
+--- run: PERSO load messages ---
+           *РЕRSО:602300
+           *РЕRSО:602310,СОNТ
+--- gold ---
+     3.0000    7.0000
+ F77LIВR Х=,   9.000
+--- fact ---
+     3.0000    7.0000
+ F77LIВR Х=,   9.000
+--- diff (gold / fact) ---

@@ -1,0 +1,17 @@
+шифр 419999 зс5^
+лен 41(2048)^
+eeв1а3
+*name charstar_original
+*call yesmemory
+*no list
+*forex
+      CHARACTER*10 S
+      S='ABCDE'
+      PRINT 10,S(2:4)
+   10 FORMAT(1X,A4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

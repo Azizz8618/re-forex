@@ -1,0 +1,26 @@
+шифр 419999 зс5^
+лен 41(2048)^
+eeв1а3
+*name complex_intrinsics
+*call yesmemory
+*no list
+*forex
+      COMPLEX Z,W
+      Z=(1.0,2.0)
+      W=(3.0,4.0)
+      Z=Z*W
+      PRINT 10,Z
+   10 FORMAT(1X,2F10.4)
+      Z=(3.0,4.0)
+      R=CABS(Z)
+      PRINT 11,R
+   11 FORMAT(1X,F10.4)
+      Z=CSQRT(Z)
+      PRINT 12,Z
+   12 FORMAT(1X,2F10.4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

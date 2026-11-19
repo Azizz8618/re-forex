@@ -213,15 +213,17 @@ python3 tools/xref_scan.py disasm/CORE_ROOT.bemsh.lst --out logs/core_xref.txt
 | `DMC06` | `4030B` | `*DUMON+6` | 2072 |
 | `DMTIM` | `4025B` | `*DUMON+3` | 2069 |
 
-## Экстракоды
+## Команды и экстракоды
+
+Коды 020..047 (`*20`, `*21`, `*33`, `*36`, `*46`, `*47`) — **команды БЭСМ-6**, НЕ экстракоды (таблицы `besm6tape.py` / `disbesm6.c:83–84`); экстракоды — только 050..077.
 
 Расшифровки по `rukava.be` (раздел 1.4). Подробности — `docs/lib21/04-extract-codes.md`.
 
 | Код | Информационное слово | Расшифровка | Стр. | Применений | Места |
 |-----|----------------------|-------------|------|------------|-------|
-| Э20 | 7017 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:351` |
-| Э36 | 6264 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:577` |
-| Э36 | 7417 | не найдено в rukava.be | — | 4 | `src/FOREX_CORE.mad:333`, `src/FOREX_CORE.mad:347`, `src/FOREX_CORE.mad:377`, `src/FOREX_CORE.mad:380` |
+| Э20 | 7017 | КОМАНДА БЭСМ-6 «э20», не экстракод [besm6tape.py:44,48] | — | 1 | `src/FOREX_CORE.mad:351` |
+| Э36 | 6264 | КОМАНДА БЭСМ-6 «втбрз», не экстракод [besm6tape.py:45,49] | — | 1 | `src/FOREX_CORE.mad:577` |
+| Э36 | 7417 | КОМАНДА БЭСМ-6 «втбрз», не экстракод [besm6tape.py:45,49] | — | 4 | `src/FOREX_CORE.mad:333`, `src/FOREX_CORE.mad:347`, `src/FOREX_CORE.mad:377`, `src/FOREX_CORE.mad:380` |
 | Э56 | 70000 | не найдено в rukava.be | — | 2 | `src/FOREX_CORE.mad:363`, `src/FOREX_CORE.mad:368` |
 | Э56 | 74757 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:583` |
 | Э56 | 76462 | не найдено в rukava.be | — | 1 | `src/FOREX_CORE.mad:517` |

@@ -1,0 +1,22 @@
+шифр 419999 зс5^
+лен 60(2348)^
+eeв1а3
+*name T77run
+*call yesmemory
+*perso:602300
+*perso:602310,cont
+*no list
+*forex
+c---- ПРОВЕРКА ВНЕШНИХ ПРОЦЕДУР ИЗ F77LIBR (ЗОНА 0o2310).
+      program t77run
+      x = myabs(-3.5)
+      y = mymax(2.0, 7.0)
+      print 1000, x, y
+      call fmtlnk(9.0)
+ 1000 format(1x,2f10.4)
+      stop
+      end
+*execute
+*end file
+``````
+еконец

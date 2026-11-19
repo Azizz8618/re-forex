@@ -1,0 +1,15 @@
+шифр 419999 зс5^
+лен 41(2048)^
+eeв1а3
+*name hollerith_format
+*call yesmemory
+*no list
+*forex
+      PRINT 10
+   10 FORMAT(1X,4HABCD)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

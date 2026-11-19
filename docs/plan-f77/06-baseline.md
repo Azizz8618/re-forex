@@ -1,0 +1,4 @@
+# F77 baseline (E0) — 2026-11-19
+aab191deb3cfaaf62e25fc884ace05a0eca3b3b069e263bee9ef7287f7877a83  build/FOREX_PERSO_2300.bin
+e38ee11114ebffc5d58e6515f07800bd248b788de91af893beefae6a3778be43  tests/forex-glissade/output.gold.txt
+a97f595863ea70417fc2a71c43e0104b22182a2ff678006ee7a287e1ce028f28  reference/output.gold.txt

@@ -1,0 +1,245 @@
+Лог E1-экспериментов (Приложение B, docs/plan-f77/03-fortran-path.md:450-461)
+Дата: 2026-11-19. dispak: /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+Фильтр ошибкообнаружения: ERR\s+\d+|ОШИБКА|НЕДОПУСТИМ|АТТ\s+\d+|ТИП ОП-ДА|ДОЛЖНА БЫТЬ|I/О-ЕRRОR|I/O-ERROR|ОШ\.В ИНФ|ОШ\. ТРАНСЛЯТОРА|НЕТ КАНАЛА|ИСПОРЧЕН РЕКОРД|ОШИБКА УПП|ОШИБКА СПЕЦИФИКАЦИИ|UNRECOGNIZED|БЫЛИ ОШИБКИ
+
+=== E1/units/read_nounit ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+  карта 3.50 прочитана, напечатано 3.50
+
+  evidence: tests/plan-f77/e1/units/read_nounit/out.txt:69 3.50
+
+=== E1/units/read_u1 ===
+  rc=0  verdict=ERROR: ИСПОРЧЕН РЕКОРД
+  error forms: ИСПОРЧЕН РЕКОРД
+  READ(1,10), карта данных 3.50
+
+  evidence: tests/plan-f77/e1/units/read_u1/out.txt:69 ИСПОРЧЕН РЕКОРД
+
+=== E1/units/read_u2 ===
+  rc=0  verdict=ERROR: ОШ.В ИНФ
+  error forms: ОШ.В ИНФ
+  READ(2,10), карта данных 3.50
+
+  evidence: tests/plan-f77/e1/units/read_u2/out.txt:69 ОШ.В ИНФ.СЛ.ЭКСТ
+
+=== E1/units/read_u5 ===
+  rc=0  verdict=ERROR: ОШ.В ИНФ
+  error forms: ОШ.В ИНФ
+  READ(5,10), карта данных 3.50
+
+  evidence: tests/plan-f77/e1/units/read_u5/out.txt:69 ОШ.В ИНФ.СЛ.ЭКСТ
+
+=== E1/units/read_u6 ===
+  rc=0  verdict=ERROR: ОШ.В ИНФ
+  error forms: ОШ.В ИНФ
+  READ(6,10), карта данных 3.50
+
+  evidence: tests/plan-f77/e1/units/read_u6/out.txt:69 ОШ.В ИНФ.СЛ.ЭКСТ
+
+=== E1/units/read_u10 ===
+  rc=0  verdict=ERROR: ОШ.В ИНФ
+  error forms: ОШ.В ИНФ
+  READ(10,10), карта данных 3.50
+
+  evidence: tests/plan-f77/e1/units/read_u10/out.txt:69 ОШ.В ИНФ.СЛ.ЭКСТ
+
+=== E1/units/read_u40 ===
+  rc=0  verdict=ERROR: НЕТ КАНАЛА
+  error forms: НЕТ КАНАЛА
+  READ(40,10), карта данных 3.50
+
+  evidence: tests/plan-f77/e1/units/read_u40/out.txt:69 НЕТ КАНАЛА  LUN 40
+
+=== E1/units/read_u45 ===
+  rc=0  verdict=ERROR: НЕТ КАНАЛА
+  error forms: НЕТ КАНАЛА
+  READ(45,10), карта данных 3.50
+
+  evidence: tests/plan-f77/e1/units/read_u45/out.txt:69 НЕТ КАНАЛА  LUN 45
+
+=== E1/units/read_u54 ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+  READ(54,10), карта данных 3.50
+
+  evidence: tests/plan-f77/e1/units/read_u54/out.txt (3.50 не напечатано)
+
+=== E1/units/write_u1 ===
+  rc=0  verdict=ERROR: ОШИБКА
+  error forms: ОШИБКА
+  WRITE(1,10) 12345
+
+  evidence: tests/plan-f77/e1/units/write_u1/out.txt:71 ОШИБКА МД ЭВМ
+
+=== E1/units/write_u2 ===
+  rc=0  verdict=ERROR: ОШ.В ИНФ
+  error forms: ОШ.В ИНФ
+  WRITE(2,10) 12345
+
+  evidence: tests/plan-f77/e1/units/write_u2/out.txt:63 ОШ.В ИНФ.СЛ.ЭКСТ
+
+=== E1/units/write_u5 ===
+  rc=0  verdict=ERROR: ОШ.В ИНФ
+  error forms: ОШ.В ИНФ
+  WRITE(5,10) 12345
+
+  evidence: tests/plan-f77/e1/units/write_u5/out.txt:63 ОШ.В ИНФ.СЛ.ЭКСТ
+
+=== E1/units/write_u6 ===
+  rc=0  verdict=ERROR: ОШ.В ИНФ
+  error forms: ОШ.В ИНФ
+  WRITE(6,10) 12345
+
+  evidence: tests/plan-f77/e1/units/write_u6/out.txt:63 ОШ.В ИНФ.СЛ.ЭКСТ
+
+=== E1/units/write_u10 ===
+  rc=0  verdict=ERROR: ОШ.В ИНФ
+  error forms: ОШ.В ИНФ
+  WRITE(10,10) 12345
+
+  evidence: tests/plan-f77/e1/units/write_u10/out.txt:63 ОШ.В ИНФ.СЛ.ЭКСТ
+
+=== E1/units/write_u40 ===
+  rc=0  verdict=ERROR: НЕТ КАНАЛА
+  error forms: НЕТ КАНАЛА
+  WRITE(40,10) 12345
+
+  evidence: tests/plan-f77/e1/units/write_u40/out.txt:63 НЕТ КАНАЛА  LUN 40
+
+=== E1/units/write_u45 ===
+  rc=0  verdict=ERROR: НЕТ КАНАЛА
+  error forms: НЕТ КАНАЛА
+  WRITE(45,10) 12345
+
+  evidence: tests/plan-f77/e1/units/write_u45/out.txt:63 НЕТ КАНАЛА  LUN 45
+
+=== E1/units/write_u54 ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+  WRITE(54,10) 12345
+
+  evidence: tests/plan-f77/e1/units/write_u54/out.txt:63 12345
+
+=== E1/units/write_redirect ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+  shell '>' captured both WRITE(54) and PRINT; dispak -o creates no file in this build (pout_file is used only by --decode-output)
+
+  evidence: tests/plan-f77/e1/units/write_redirect/out.txt:63 12345 (PRINT 6789 on next line)
+
+=== E1/punchinsert/text_ascii ===
+  rc=0  verdict=ERROR: ОШИБКА
+  error forms: БЫЛИ ОШИБКИ, ОШИБКА
+  punch.in0 = plain ASCII 120-byte records
+
+  evidence: tests/plan-f77/e1/punchinsert/text_ascii/out.txt:27 0005  ОШИБКА
+
+=== E1/punchinsert/text_gost ===
+  rc=0  verdict=ERROR: ОШИБКА
+  error forms: БЫЛИ ОШИБКИ, ОШИБКА
+  punch.in1 = GOST-10859 bytes with odd parity, 120-byte records
+
+  evidence: tests/plan-f77/e1/punchinsert/text_gost/out.txt:27 0005  ОШИБКА
+
+=== E1/punchinsert/bin_control ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+  punch.in3 produced by dispak --punch-binary (binary punch object)
+
+  evidence: tests/plan-f77/e1/punchinsert/bin_control/out.txt:63 1.00
+
+=== E1/callfortran/build_object ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+  *forex -> Fortran subroutine HELLO -> *to perso:602310
+
+  evidence: tests/plan-f77/e1/callfortran/build/out.txt:43 ДЛИНА LIВRАRУ  004 ЗОН
+
+=== E1/callfortran/call_object ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+  *call hello на Fortran-DMS-объекте из 0o2310 (без *forex)
+
+  evidence: tests/plan-f77/e1/callfortran/call/out.txt:34 *САLL WОRКS*
+
+=== E1/precision/double ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+  DSQRT через SQRT(DOUBLE), 1/3 в DP и SP; D22.15 / F20.15
+
+  evidence: tests/plan-f77/e1/precision/double/out.txt:67 1.414213562371515+000
+
+  evidence: tests/plan-f77/e1/precision/double/out.txt:68 3.333333333333333-001
+
+  evidence: tests/plan-f77/e1/precision/double/out.txt:69 1.414213562371515
+
+  evidence: tests/plan-f77/e1/precision/double/out.txt:70 0.333333333333485
+
+=== E1/precision/dp_f_format ===
+  rc=0  verdict=ERROR: I/О-ЕRRОR
+  error forms: I/О-ЕRRОR
+  FORMAT F с DOUBLE PRECISION — проверка дескриптора
+
+  evidence: tests/plan-f77/e1/precision/dp_f_format/out.txt:67 I/О-ЕRRОR 227 DЕТЕСТЕD IN IОСОNТD* САLLЕD FRОМ 01007В LUN 51 АDDRЕSS 01024В FОRМАТ
+
+=== E1/precision/complex ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+  (1+2i)*(3+4i) = -5+10i; CABS(3+4i)=5; CSQRT(3+4i)=2+i
+
+  evidence: tests/plan-f77/e1/precision/complex/out.txt:71 -5.0000   10.0000
+
+  evidence: tests/plan-f77/e1/precision/complex/out.txt:72 5.0000
+
+  evidence: tests/plan-f77/e1/precision/complex/out.txt:73 2.0000    1.0000
+
+=== E1/strings/charstar_original ===
+  rc=0  verdict=ERROR: ТИП ОП-ДА
+  error forms: БЫЛИ ОШИБКИ, НЕДОПУСТИМ, ТИП ОП-ДА
+        CHARACTER*10 S |       S='ABCDE' |       PRINT 10,S(2:4) |    10 FORMAT(1X,A4) |       STOP |       END
+
+  evidence: tests/plan-f77/e1/strings/charstar_original/out.txt:32 2       S=’АВСDЕ’                                                                     2
+
+=== E1/strings/charstar_fixed ===
+  rc=0  verdict=ERROR: ТИП ОП-ДА
+  error forms: БЫЛИ ОШИБКИ, НЕДОПУСТИМ, ТИП ОП-ДА
+        CHARACTER*4 S |       S='ABCD' |       PRINT 10,S |    10 FORMAT(1X,A4) |       STOP |       END
+
+  evidence: tests/plan-f77/e1/strings/charstar_fixed/out.txt:32 2       S=’АВСD’                                                                      2
+
+=== E1/strings/hollerith_format ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+        PRINT 10 |    10 FORMAT(1X,4HABCD) |       STOP |       END
+
+  evidence: tests/plan-f77/e1/strings/hollerith_format/out.txt:63 АВСD
+
+=== E1/strings/quote_format ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+        PRINT 10 |    10 FORMAT(1X,'ABCD') |       STOP |       END
+
+  evidence: tests/plan-f77/e1/strings/quote_format/out.txt:63 АВСD
+
+=== E1/strings/hollerith_data_a4 ===
+  rc=0  verdict=OK (no error form, task end)
+  error forms: -
+        INTEGER I |       DATA I/4HABCD/ |       PRINT 10,I |    10 FORMAT(1X,A4) |       STOP |       END
+
+  evidence: tests/plan-f77/e1/strings/hollerith_data_a4/out.txt:63 АВСD
+
+=== E1/strings/char_data_a4 ===
+  rc=0  verdict=ERROR: АТТ 04426
+  error forms: I/О-ЕRRОR, АТТ 04426
+        CHARACTER*4 S |       DATA S/4HABCD/ |       PRINT 10,S |    10 FORMAT(1X,A4) |       STOP |       END
+
+  evidence: tests/plan-f77/e1/strings/char_data_a4/out.txt:32 АТТ 04426
+
+=== E1/strings/a4_wrong_type ===
+  rc=0  verdict=ERROR: I/О-ЕRRОR
+  error forms: I/О-ЕRRОR
+        PRINT 10, 12345 |    10 FORMAT(1X,A4) |       STOP |       END
+
+  evidence: tests/plan-f77/e1/strings/a4_wrong_type/out.txt:63 I/О-ЕRRОR 232 DЕТЕСТЕD IN IОСОNТ* САLLЕD FRОМ 01004В LUN 51 АDDRЕSS 01020В FОRМАТ
+

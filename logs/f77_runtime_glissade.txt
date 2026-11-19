@@ -1,0 +1,5 @@
+PERSO catalog (9 modules): FOREX* LO*SYN LO*GEN FORMAT FORTLIBR DATAPR* OCTTDE* GIV/PG TAK/PG
+catalog terminator: (0, FULWORD) OK
+OK: 14 строк результата совпадают с эталоном (после нормализации даты)
+output: /tmp/.private/azizz/opencode/re-forex/tests/forex-glissade/output.new.txt
+log:    /tmp/.private/azizz/opencode/re-forex/logs/glissade_run_full.txt

@@ -1,0 +1,17 @@
+шифр 419999 зс5^
+лен 41(2048)^
+eeв1а3
+*name hollerith_data_a4
+*call yesmemory
+*no list
+*forex
+      INTEGER I
+      DATA I/4HABCD/
+      PRINT 10,I
+   10 FORMAT(1X,A4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

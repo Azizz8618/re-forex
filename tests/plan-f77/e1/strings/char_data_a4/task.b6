@@ -1,0 +1,17 @@
+шифр 419999 зс5^
+лен 41(2048)^
+eeв1а3
+*name char_data_a4
+*call yesmemory
+*no list
+*forex
+      CHARACTER*4 S
+      DATA S/4HABCD/
+      PRINT 10,S
+   10 FORMAT(1X,A4)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

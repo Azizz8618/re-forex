@@ -1,0 +1,123 @@
+КОНТЕКСТНЫЙ АНАЛИЗ Э65/Э70 (настоящие экстракоды)
+Источники: rukava.be разд.1.4 + Тюрин-1985. У Э65/Э70 нет записей ни в одном справочнике.
+Классификация: selector = есть расшифровка по справочнику; address/data = информационное слово — адрес/данные.
+
+src/FOREX_RUNTIME_DISASM.mad:367: Э70 C070 | instr='7,*70,C070' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/LO_GEN.mad:614: Э70 370 | instr='*70,AC0370' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/LO_SYN.mad:803: Э70 14 | instr='12,*70,EX0014' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:883: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:946: Э65 2040 | instr='4,*65,EX2040' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:974: Э65 2040 | instr='4,*65,EX2040' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:998: Э65 2040 | instr='4,*65,EX2040' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1237: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1249: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1300: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1333: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1378: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1405: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1447: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1453: Э65 2040 | instr='4,*65,EX2040' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1463: Э65 2040 | instr='4,*65,EX2040' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1597: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1684: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1708: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1750: Э65 2151 | instr='7J0507:  4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1774: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1922: Э65 2117 | instr='4,*65,EX2117' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1951: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:1964: Э65 2040 | instr='4,*65,EX2040' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2056: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2086: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2095: Э65 2120 | instr='4,*65,EX2120' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2134: Э65 70101 | instr='6,*65,EX6570' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2408: Э65 2120 | instr='4,*65,EX2120' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2524: Э65 2120 | instr='4,*65,EX2120' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2569: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2666: Э65 2040 | instr='4,*65,EX2040' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2827: Э65 70101 | instr='6,*65,EX6570' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2849: Э65 2110 | instr='4,*65,EX2110' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2911: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:2933: Э65 2040 | instr='4,*65,EX2040' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3068: Э65 2040 | instr='4,*65,EX2040' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3191: Э65 2101 | instr='4,*65,EX2101' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3208: Э65 2120 | instr='4,*65,EX2120' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3245: Э65 2120 | instr='4,*65,EX2120' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3289: Э65 2151 | instr='4,*65,EX2151' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3308: Э65 2120 | instr='4,*65,EX2120' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3399: Э70 71000 | instr='3,*70,EX7100' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3447: Э70 71101 | instr='5,*70,EX7110' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3540: Э70 71326 | instr='8,*70,EX7132' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3567: Э70 71405 | instr='9,*70,EX7140' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3639: Э70 3110 | instr='8,*70,EX3110' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3681: Э70 74021 | instr='14,*70,EX7402' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3696: Э70 4026 | instr='9,*70,EX4026' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3750: Э70 4072 | instr='1,*70,EX4072' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3756: Э70 74075 | instr='1,*70,EX7074' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3771: Э70 4311 | instr='2,*70,EX4311' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/LO_SYN.mad:3774: Э70 74312 | instr='2,*70,EX7431' | ref=no | addr_mark=True | via_mod=True | => address/data
+src/lib21/BEMSH_.mad:163: Э70 TRCALL | instr=',*70,TRCALL' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/CHEKJOB_.mad:339: Э65 502 | instr='*65,AYC041' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/CHEKJOB_.mad:345: Э65 760 | instr='*65,A043' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/CHEKJOB_.mad:347: Э65 1 | instr='14,*65,XNF044' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/CHEKJOB_.mad:350: Э65 761 | instr='*65,AK042' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/CHEKJOB_.mad:355: Э65 560 | instr='*65,ALI045' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/CHEKJOB_.mad:357: Э65 1 | instr='12,*65,SCC046' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/CHEKJOB_.mad:444: Э65 502 | instr='*65,EOC022' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/CHEKJOB_.mad:450: Э65 760 | instr='*65,EOC047' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/CHEKJOB_.mad:454: Э65 762 | instr='*65,EOC048' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/DISPAC.mad:89: Э65 505 | instr='*65,EOC008' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/DISPAC.mad:93: Э65 -20 | instr='13,*65,-EDC009' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/DISPAC.mad:100: Э65 504 | instr='IS007: *65,EOC011' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/DISPAC.mad:103: Э65 40 | instr='2,*65,EDC012' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/DISPAC.mad:146: Э70 RMO042 | instr='*70,RMO042' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/DISPAC.mad:157: Э70 TRP026 | instr='*70,TRP026' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/FORTLIBR.mad:134: Э70 CON070 | instr='L            7 ,   *70,  CON070    - CON061' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/INPUTCAL.mad:124: Э65 502 | instr='*65,AYC039' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/INPUTCAL.mad:130: Э65 546 | instr='*65,EOC018' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/INPUTCAL.mad:136: Э65 A | instr='*65,A/ИПД' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/INPUTCAL.mad:138: Э65 XNFM | instr='13,*65,XNFM' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/INPUTCAL.mad:143: Э65 A | instr='*65,A/ИПK' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:137: Э70 BUF075 | instr='*70,BUF075' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:167: Э70 BUF075 | instr='*70,BUF075' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:196: Э70 BUF075 | instr='*70,BUF075' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:222: Э70 BUF075 | instr='*70,BUF075' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:250: Э70 BUF077 | instr='*70,BUF077' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:276: Э70 BUF076 | instr='*70,BUF076' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:419: Э70 BUF075 | instr='*70,BUF075' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:432: Э70 BUF077 | instr='*70,BUF077' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:465: Э70 BUF077 | instr='*70,BUF077' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBDRU_.mad:521: Э70 BUF075 | instr='*70,BUF075' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:163: Э70 BUF083 | instr='*70,BUF083' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:195: Э70 BUF083 | instr='*70,BUF083' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:242: Э70 BUF084 | instr='*70,BUF084' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:389: Э65 700 | instr='*65,EOC042' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:391: Э65 757 | instr='*65,EOC043' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:508: Э70 PLA078 | instr='*70,PLA078' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:542: Э70 BUF084 | instr='*70,BUF084' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:560: Э70 BUF083 | instr='*70,BUF083' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:569: Э70 PLA078 | instr='*70,PLA078' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LIBTAP_.mad:576: Э70 PLA078 | instr='*70,PLA078' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/LINK#IPM.mad:237: Э70 21 | instr=',*70,AT21.' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:285: Э70 BUF132 | instr='*70,BUF132' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:289: Э70 BUF132 | instr='*70,BUF132' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:471: Э70 BUF133 | instr='*70,BUF133' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:616: Э70 BUF132 | instr='*70,BUF132' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:629: Э70 BUF134 | instr='*70,BUF134' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:700: Э70 BUF135 | instr='*70,BUF135' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:737: Э70 BUF134 | instr='*70,BUF134' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:739: Э70 BUF135 | instr='*70,BUF135' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:752: Э70 BUF136 | instr='*70,BUF136' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:836: Э70 BUF136 | instr='*70,BUF136' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/MAKELIBT.mad:888: Э70 IWN143 | instr='LWC091: *70,IWN143' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/OCATALOG.mad:106: Э70 INF048 | instr='*70,INF048' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/READ1.mad:87: Э70 INF023-C | instr='MAG010: 12,*70,INF023-C' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/READ2.mad:87: Э70 INF023-C | instr='MAG010: 12,*70,INF023-C' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/TCATALOG.mad:449: Э70 XX367 | instr='*70,XX367' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/TCATALOG.mad:453: Э70 XX367 | instr='*70,XX367' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/TCATALOG.mad:2741: Э70 AEX333 | instr='*70,AEX333' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/TEMFILE.mad:400: Э70 IW053 | instr='*70,IW053' | ref=no | addr_mark=True | via_mod=False | => address/data
+src/lib21/TEMP##.mad:61: Э70 INF012 | instr='*70,INF012' | ref=no | addr_mark=True | via_mod=False | => address/data
+
+ИТОГО по классификации:
+  Э65 address/data: 59
+  Э70 address/data: 56
