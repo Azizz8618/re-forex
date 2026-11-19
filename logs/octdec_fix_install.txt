@@ -1,0 +1,16 @@
+etalon sha256   : 97fb3196474abc3880f9d884fad6edafbefd7514da2e2c12ca24224e9a8608a8
+work copy       : /tmp/.private/azizz/install-forex-perso.6N5jH8/2348
+Written 5 zones (30 kbytes) from file /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin to disk 2348
+work sha256     : 0bcb8815d50615aa4c8060da5a0a58d45a6961744ff62c18701f40efc3da62b8
+etalon unchanged: OK
+Writing 5 zones (30 kbytes) from disk 2348/2300 to file /tmp/.private/azizz/install-forex-perso.6N5jH8/forex_perso_dump.bin
+siprod_lib: 9 names in catalog, 8 objects found
+catalog : DATAPR* FOREX* FORMAT FORTLIBR GIV/PG LO*GEN LO*SYN OCTTDE* TAK/PG
+objects : DATAPR* FOREX* FORMAT FORTLIBR GIV/PG LO*GEN LO*SYN OCTTDE*
+PASS: all expected names in catalog, all modules have loadable objects (TAK/PG is an entry point of GIV/PG)
+PLCATALOG: 9 modules listed, no ИСПОРЧЕНЫ ПОДПРОГРАММЫ
+zone 0o2277: unchanged (expected)
+zone 0o2300: changed (expected)
+zone 0o2304: changed (expected)
+zone 0o2305: unchanged (expected)
+OK: FOREX PERSO library installed at zone 0o2300 and verified

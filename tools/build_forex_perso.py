@@ -26,10 +26,28 @@ A missing/zero transfer vector makes the monitor print
 "ИСПОРЧЕНЫ ПОДПРОГРАММЫ" for every module except the first.
 
 Modules with a compiled word dump (FOREX*, LO*SYN, LO*GEN, FORMAT, FORTLIBR)
-carry the exact tape words wrapped in a DMS header.  The source-only runtime
-modules (DATAPR*, OCTTDEC, GIV/PG + its TAK/PG entry) are assembled from their
-authoritative MADLEN sources on the fly with the Monitor-80 `*assembler`
-through dispak, so all nine catalog entries are genuine, loadable DMS modules.
+carry the exact tape words wrapped in a DMS header.  OCTTDEC too now uses a
+BYTE-EXACT compiled DMS module extracted from the authoritative monsys.9 tape
+(words 0o37100..0o37137, see build/RUNTIME_OCTTDEC_ETALON.words).  The remaining
+source-only runtime modules (DATAPR*, GIV/PG + its TAK/PG entry) are assembled
+from their authoritative MADLEN sources on the fly with the Monitor-80
+`*assembler` through dispak, so all nine catalog entries are genuine, loadable
+DMS modules.
+
+WHY OCTTDEC IS CATALOGED AS "OCTTDE*"
+-------------------------------------
+The fixed MONSYS library on disk 2048 already contains a subprogram named
+`OCTTDEC` (loaded at 0o3614 by the FOREX loader).  When the PERSO catalog at
+0o2300 *also* lists the exact name `OCTTDEC`, the monitor's name resolution
+sees a duplicate and prints `ИСПОРЧЕНА ПОДПРОГРАММА` while loading the compiled
+task, truncating the 14 result lines.  This is independent of the module body
+and of the catalog record: a byte-exact etalon module and every f0/f1/f2/f3
+variant were tested; renaming the catalog entry alone makes the very same
+module load cleanly.  The PERSO copy therefore carries the alias `OCTTDE*`
+(consistent with `DATAPR*`, `FOREX*`); the program itself keeps using the
+system `OCTTDEC` at LINK 0o74013, so the result is bit-identical to the etalon.
+The module's internal head-section name is patched to the same alias so that
+`siprod_lib.Library` still finds a loadable object for every catalog entry.
 
 Output: build/FOREX_PERSO_2300.bin
 """
@@ -76,11 +94,20 @@ ETALON = Path("/usr/local/share/besm6/2348")
 DISPAK = "/usr/local/bin/dispak"
 SIPROD_LIB = Path.home() / "Yandex.Disk/re-siprod/tools/siprod_lib.py"
 
+# Byte-exact compiled OCTTDEC module (full DMS object, 32 words) from the
+# authoritative monsys.9 tape, field 4, words 0o37100..0o37137.
+# 3-word header + 15 cmd + 12 const + 1 head(name) + 1 sym.
+OCTTDEC_ETALON = ROOT / "build/RUNTIME_OCTTDEC_ETALON.words"
+# PERSO catalog alias: the system library on disk 2048 already provides
+# OCTTDEC; a duplicate name in the PERSO catalog triggers
+# "ИСПОРЧЕНА ПОДПРОГРАММА" when the compiled task is loaded.
+OCTTDEC_PERSO_NAME = "OCTTDE*"
+OCTTDEC_HEAD_INDEX = 30       # internal name word inside the 32-word module
+
 # (catalog name, source file, first line, last line).  TAK/PG is an ENTRY
 # inside GIV/PG and is added separately, not assembled on its own.
 SOURCE_SLICES = [
     ("DATAPR*", SRC_ROOT / "besmmons/system1.txt", 7645, 7733),
-    ("OCTTDEC", SRC_ROOT / "besmmons/system2.txt", 5042, 5084),
     ("GIV/PG",  SRC_ROOT / "besml21/libra211.l21", 16780, 16836),
 ]
 
@@ -107,6 +134,28 @@ def tape_words(start: int, count: int) -> list[int]:
         raise ValueError(f"short tape read at 0o{start:o}: {len(raw)} bytes")
     return [int.from_bytes(raw[i:i + WORD_BYTES], "big")
             for i in range(0, len(raw), WORD_BYTES)]
+
+
+def load_octdec_etalon() -> dict:
+    """Load the byte-exact compiled OCTTDEC DMS module from monsys.9.
+
+    The word dump is used verbatim; only the internal head-section name is
+    rewritten to the PERSO alias so that catalog and object agree (see the
+    module docstring for the name-collision explanation).
+    """
+    words = read_words(OCTTDEC_ETALON)
+    if len(words) != 32:
+        raise ValueError(f"OCTTDEC etalon: expected 32 words, got {len(words)}")
+    h0, h2 = words[0], words[2]
+    if (h0 & 0xFFF) != 1 or ((h2) & 0o77777) != 15 or ((h2 >> 30) & 0o77777) != 12:
+        raise ValueError("OCTTDEC etalon: unexpected DMS header")
+    if words[OCTTDEC_HEAD_INDEX] != text_encode("OCTTDEC"):
+        raise ValueError("OCTTDEC etalon: unexpected internal name")
+    words[OCTTDEC_HEAD_INDEX] = text_encode(OCTTDEC_PERSO_NAME)
+    load = (h2 & 0o77777) + ((h2 >> 15) & 0o77777) + ((h2 >> 30) & 0o77777)
+    print(f"  OCTTDEC etalon : body=32 load={load} (monsys.9 0o37100) "
+          f"catalog={OCTTDEC_PERSO_NAME}")
+    return dict(name=OCTTDEC_PERSO_NAME, body=words, load=load)
 
 
 def assemble_source(name: str, path: Path, first: int, last: int) -> tuple[list[int], int, int]:
@@ -180,6 +229,9 @@ def build() -> Path:
     for name, path, first, last in SOURCE_SLICES:
         body, load, entry = assemble_source(name, path, first, last)
         modules.append(dict(name=name, body=body, load=load))
+        if name == "DATAPR*":
+            # OCTTDEC is taken from the byte-exact compiled dump, not assembled.
+            modules.append(load_octdec_etalon())
         if name == "GIV/PG":
             takepg_entry = entry
 

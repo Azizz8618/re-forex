@@ -93,8 +93,12 @@ import sys
 from pathlib import Path
 
 dump, siprod = Path(sys.argv[1]), Path(sys.argv[2])
+# OCTTDEC is cataloged as OCTTDE*: the fixed system library on disk 2048
+# already loads OCTTDEC (at 0o3614), and a PERSO entry with the identical
+# name makes the loader print "ИСПОРЧЕНА ПОДПРОГРАММА".  The PERSO copy keeps
+# the byte-exact compiled body; only the catalog/head name carries the alias.
 EXPECTED = ["FOREX*", "LO*SYN", "LO*GEN", "FORMAT", "DATAPR*",
-            "OCTTDEC", "GIV/PG", "TAK/PG", "FORTLIBR"]
+            "OCTTDE*", "GIV/PG", "TAK/PG", "FORTLIBR"]
 
 if siprod.exists():
     sys.path.insert(0, str(siprod.parent))
@@ -180,7 +184,7 @@ EOF
         fail "PLCATALOG reported corrupt subprograms"
     fi
     for n in 'FОRЕХ*' 'LО*SУN' 'LО*GЕN' 'FОRМАТ' 'DАТАРR*' \
-             'ОСТТDЕС' 'GIV/РG' 'ТАК/РG'; do
+             'ОСТТDЕ*' 'GIV/РG' 'ТАК/РG'; do
         grep -Fq "$n" "$WORKDIR_WORK/plcatalog.out" \
             || fail "PLCATALOG did not list module $n"
     done

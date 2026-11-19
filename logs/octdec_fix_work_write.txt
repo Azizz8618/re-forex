@@ -1,0 +1,1 @@
+Written 5 zones (30 kbytes) from file build/FOREX_PERSO_2300.bin to disk 2348
