@@ -28,6 +28,8 @@ EVIDENCE = re.compile(
 def parse(path):
     rows = []
     for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        if line.startswith("## 12."):
+            break  # сводка и реестр исключений — не строки матрицы
         m = ROW.match(line)
         if not m:
             continue
