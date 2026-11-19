@@ -1,0 +1,8 @@
+C---- K03: COMPLEX ARITHMETIC AND CABS.
+      PROGRAM K03
+      WC=(3.0,4.0)
+      R=CABS(WC)
+      PRINT 10,R
+   10 FORMAT(1X,F10.4)
+      STOP
+      END

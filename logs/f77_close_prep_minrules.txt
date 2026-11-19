@@ -1,0 +1,5 @@
+[case1] PASS1 OK: lowering совпал с эталоном (11 строк)
+[case1] PASS2 OK: результат совпал с эталоном (1 строк)
+[case2] --- pass1 fatal diagnostics ---
+    ПЕРЕПОЛНЕНА ПАМЯТЬ, ТРАНСЛЯЦИЯ ПРЕКРАЩЕНА
+FAIL: [case2] ошибки компиляции/ввода в pass1 (см. /tmp/.private/azizz/opencode/re-forex/logs/f77_prep_v2_pass1_case2.txt)

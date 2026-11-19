@@ -29,8 +29,8 @@ OK F01  F01_dimension_data           tests/f77/suite/dataparam.b6
 F01|F01_dimension_data|f01_dimension_data.b6|F01_dimension_data.gold|suite|OK|tests/f77/suite/dataparam.b6
 OK F02  F02_parameter                01-matrix:F5
 F02|F02_parameter|f02_parameter.b6|F02_parameter.gold|new|OK|01-matrix:F5
-PENDING (E4/MADLEN) F03  F03_external_intrinsic       НЕДОПУСТИМ КЛЮЧ СЛОВО
-F03|F03_external_intrinsic|f03_external_intrinsic.b6|F03_external_intrinsic.gold|new|PENDING (E4/MADLEN)|НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK F03  F03_external_intrinsic       01-matrix:F14/F15
+F03|F03_external_intrinsic|f03_external_intrinsic.b6|F03_external_intrinsic.gold|new|OK|01-matrix:F14/F15
 OK F04  F04_implicit_lowered         01-matrix:F13
 F04|F04_implicit_lowered|f04_implicit_lowered.b6|F04_implicit_lowered.gold|new|OK|01-matrix:F13
 OK G01  G01_function                 tests/f77/suite/intrinsics_ext.b6
@@ -43,8 +43,8 @@ OK H02  H02_common_blockdata         tests/forex-glissade/output.gold.txt
 H02|H02_common_blockdata|h02_common_blockdata.b6|H02_common_blockdata.gold|e1|OK|tests/forex-glissade/output.gold.txt
 OK I01  I01_hollerith                tests/f77/suite/charhollerith.b6
 I01|I01_hollerith|i01_hollerith.b6|I01_hollerith.gold|suite|OK|tests/f77/suite/charhollerith.b6
-PENDING (E4/MADLEN) I02  I02_charstar                 ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
-I02|I02_charstar|i02_charstar.b6|I02_charstar.gold|new|PENDING (E4/MADLEN)|ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK I02  I02_charstar                 01-matrix:B6/I1/I2
+I02|I02_charstar|i02_charstar.b6|I02_charstar.gold|new|OK|01-matrix:B6/I1/I2
 OK J01  J01_write54                  e1/units/write_u54/out.txt
 J01|J01_write54|j01_write54.b6|J01_write54.gold|e1|OK|e1/units/write_u54/out.txt
 OK J02  J02_format_l                 01-matrix:J15
@@ -59,8 +59,8 @@ OK K01  K01_sqrt_abs                 e1/precision/double/out.txt
 K01|K01_sqrt_abs|k01_sqrt_abs.b6|K01_sqrt_abs.gold|new|OK|e1/precision/double/out.txt
 OK K02  K02_amod                     01-matrix:K
 K02|K02_amod|k02_amod.b6|K02_amod.gold|new|OK|01-matrix:K
-PENDING (E4/MADLEN) K03  K03_cabs                     нет совпадения с gold
-K03|K03_cabs|k03_cabs.b6|K03_cabs.gold|e1|PENDING (E4/MADLEN)|нет совпадения с gold
+OK K03  K03_cabs                     e1/precision/complex/out.txt
+K03|K03_cabs|k03_cabs.b6|K03_cabs.gold|e1|OK|e1/precision/complex/out.txt
 OK K04  K04_dsqrt                    e1/precision/double/out.txt
 K04|K04_dsqrt|k04_dsqrt.b6|K04_dsqrt.gold|e1|OK|e1/precision/double/out.txt
-Итог L0: 29 OK / 3 PENDING (E4/MADLEN)
+Итог L0: 32 OK / 0 PENDING (E4/MADLEN)

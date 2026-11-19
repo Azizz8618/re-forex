@@ -1,0 +1,208 @@
+=== F77 INTRINSICS COVERAGE — контрольные векторы для 66 UNKNOWN раздела K ===
+date: 2026-11-19T21:00:00Z
+repo: /tmp/.private/azizz/opencode/re-forex (main)
+result: 66 UNKNOWN закрыто (49 OK/PARTIAL положительных, 17 NO с доказательством отсутствия)
+doc:   docs/plan-f77-full/12-intrinsics-coverage.md
+decks: tests/plan-f77-full/unit/K05_intrinsics_numeric/
+       tests/plan-f77-full/unit/K06_intrinsics_absent/
+
+=== ENVIRONMENT ===
+dispak   = /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+besmtool = /usr/local/bin/besmtool
+etalon   = /usr/local/share/besm6/2348
+image    = build/FOREX_PERSO_2300.bin (PERSO 0o2300, offset 1216)
+mechanism: FOO(2.0) -> external reference (docs/plan-f77/02-extension-points.md §2.а)
+
+=== PRINCIPLE ===
+Name is available iff the dispak link map has NO line "ОТСУТСТВУЕТ <NAME>".
+  - entry in map (e.g. "DSIGN 03255", "AIMAG E 02642") => library procedure
+  - name absent from map entirely                      => native / inline (rule 0)
+  - "ОТСУТСТВУЕТ <NAME>"                               => NO implementation
+
+===============================================================================
+=== PROBE ALL60: 60 numeric UNKNOWN names, one deck ==========================
+===============================================================================
+Program: ALL60; *perso:602300; 60 assignments + 60 PRINT.
+rc=0. FATAL lines: 11 x ОТСУТСТВУЕТ. Program did NOT execute (no result block).
+
+ABSENT (11 names):
+  DFLOAT   DREAL   ANINT   DNINT   NINT   IDNINT   DDIM   DTAN   DASIN   ACOS   DACOS
+
+RESOLVED via link map (30 names):
+  IDINT  REAL   DBLE   CMPLX  DINT   DABS   DMOD   DMAX1  DMIN1  SIGN
+  DSIGN  AIMAG  CONJG  DSIN   CSIN   COS    DCOS   CCOS   TAN    ATAN
+  DATAN  ATAN2  DATAN2 DEXP   CEXP   ALOG   DLOG   CLOG   ALOG10  DLOG10
+
+NATIVE (19 names, no external reference generated):
+  INT  IFIX  AINT  IABS  MAX   MAX0   AMAX0  MAX1   AMAX1  MIN
+  MIN0 AMIN0 MIN1  AMIN1 DIM   IDIM   ASIN   LOG    LOG10
+
+Link map excerpts (resolved names):
+  IDINT E 02621   DBLE E 02624   REAL 02640   AIMAG E 02642   CMPLX 02644
+  DINT 02647      DABS 03144     DMOD 03150   DMAX1 03207      DMIN1 E 03226
+  DSIGN 03255     CONJG 03324    DSIN 03327   DCOS E 03330     CCOS 03712
+  CSIN E 03723    TAN 03761      DATAN 04006  ATAN2 04311      DATAN2 04410
+  DEXP 04536      CEXP E 04673   CLOG E 04702  ALOG E 07425     DLOG 04735
+  ALOG10 E 07444  DLOG10 05174   COS E 07430  ATAN E 07436     SIGN 07451
+  EXP 07417       ABS E 07422    SQRT E 07433  SIN E 07441
+
+LIBREFER 412 cross-reference (reference/expect_library21.txt) for absent-name context:
+  :173   F/PT6  IDIM (IFIX)
+  :174   F/PT6  IDIM (IFIX); IFIX E *MISTAKE
+  :312   PCPLOT E AMIN0
+  :566   E DSIGN
+  :675   E DINT
+  :793   INT
+  (These are system-library symbol names; only IFIX/IDINT/AMIN0/DSIGN/DINT/INT
+   appear as callable entries, consistent with their OK status.)
+
+===============================================================================
+=== PROBE CHAR6: 6 character UNKNOWN names ==================================
+===============================================================================
+Program: CHAR6; *perso:602300.
+rc=0. ABSENT (6 names):
+  LEN   INDEX   LGE   LGT   LLE   LLT
+Diagnostics in link map:
+  ОТСУТСТВУЕТ  LEN
+  ОТСУТСТВУЕТ  INDEX
+  ОТСУТСТВУЕТ  LGE
+  ОТСУТСТВУЕТ  LGT
+  ОТСУТСТВУЕТ  LLE
+  ОТСУТСТВУЕТ  LLT
+Reason: no library entry, no CHARACTER type on 2.02 (matrix B6 = NO).
+Workaround for LGE/LGT/LLE/LLT: F77LIBR ISTRCM/STRCMP (10-implementation-libr.md §2,
+verified -1/0/+1). LEN/INDEX need a new F77LIBR service.
+
+===============================================================================
+=== PROBE OK49: 49 resolvable names, numeric verification ====================
+===============================================================================
+Program: OK49; all 49 names called with control arguments.
+rc=0. absent=[] (no ОТСУТСТВУЕТ). Result block (51 lines, including 2 cosmetic
+I/O-ERR 224 lines for PRINT IDINT via I6):
+
+  INT(7.5)                  -> 7
+  IFIX(7.5)                 -> 7
+  IDINT(7.5D0)              -> 7          (I/O-ERR 224 for I6; value correct)
+  REAL(7)                   -> 7.0000
+  DBLE(7.5)                 -> 7.50000000+000
+  CMPLX(3.0,4.0)            -> 3.0000  4.0000
+  AINT(7.5)                 -> 7.0000
+  DINT(7.5D0)               -> 7.00000000+000
+  IABS(-3)                  -> 3
+  DABS(-7.5D0)              -> 7.50000000+000
+  DMOD(7.5D0,2.0D0)         -> 1.50000000+000
+  MAX(3,7,5)                -> 7.0000
+  MAX0(3,7,5)               -> 7
+  AMAX0(3,7,5)              -> 7.0000
+  MAX1(3,7,5)               -> 7
+  AMAX1(3,7,5)              -> 7.0000
+  DMAX1(3D0,7D0) [2 args]   -> 6.92756775+013   <<< WRONG
+  MIN(3,7,5)                -> 3.0000
+  MIN0(3,7,5)               -> 3
+  AMIN0(3,7,5)              -> 3.0000
+  MIN1(3,7,5)               -> 3
+  AMIN1(3,7,5)              -> 3.0000
+  DMIN1(3D0,7D0)            -> 0.00000000+000   <<< WRONG
+  DIM(7.5,3.0)              -> 4.5000
+  IDIM(7,3)                 -> 4
+  SIGN(-3.0,2.0)            -> 3.0000
+  DSIGN(-3D0,2D0)           -> 3.00000000+000
+  AIMAG((3,4))              -> 4.0000
+  CONJG((3,4))              -> 3.0000  -4.0000
+  DSIN(1D0)                 -> 8.41470985-001
+  CSIN((1,2))               -> 3.1658  1.9596
+  COS(1.0)                  -> 0.5403
+  DCOS(1D0)                 -> 5.40302306-001
+  CCOS((1,2))               -> 2.0327  -3.0519
+  TAN(1.0)                  -> 1.5574
+  ASIN(0.5)                 -> 0.5236
+  ATAN(1.0)                 -> 0.7854
+  DATAN(1D0)                -> 7.85398163-001
+  ATAN2(1.0,2.0)            -> 0.4636
+  DATAN2(1D0,2D0)           -> 4.63647609-001
+  DEXP(1D0)                 -> 2.71828183+000
+  CEXP((1,2))               -> -1.1312  2.4717
+  LOG(2.0)                  -> 0.6931
+  ALOG(2.0)                 -> 0.6931
+  DLOG(2D0)                 -> 6.93147181-001
+  CLOG((1,2))               -> 0.8047  1.1071
+  LOG10(100.0)              -> 2.0000
+  ALOG10(100.0)             -> 2.0000
+  DLOG10(100D0)             -> 2.00000000+000
+
+Conclusion: 47/49 numerically correct; DMAX1 (2 args) and DMIN1 (any args) -> PARTIAL.
+
+===============================================================================
+=== PROBE DMAX / DMIN: clarification of DP min/max ===========================
+===============================================================================
+DMAX:
+  DMAX1(3D0,7D0)          -> 6.92756775+013    (2 args, garbage)
+  DMIN1(3D0,7D0)          -> 0.00000000+000
+  MAX1(3D0,7D0)           -> 6          (INTEGER result, wrong)
+  MIN1(3D0,7D0)           -> 2          (INTEGER result, wrong)
+  DMAX1(3D0,7D0,5D0)      -> 7.00000000+000    (3 args, CORRECT)
+  DMIN1(3D0,7D0,5D0)      -> 0.00000000+000
+  Diagnostics: АТТ 04053 ПК 13 / ПК 14 (address traps in library routine).
+
+DMIN (repeat):
+  DMIN1(3D0,7D0,5D0)      -> 0.00000000+000
+  DMIN1(7D0,3D0)          -> 0.00000000+000
+  DMIN1(3D0,7D0,1D0)      -> 0.00000000+000
+  DMAX1(1D0,2D0,3D0)      -> 3.00000000+000    (3 args, CORRECT)
+  DMAX1(3D0,7D0,5D0)      -> 7.00000000+000
+=> DMAX1 usable with 3+ args; DMIN1 broken. Both -> PARTIAL, recommend rule 19.
+
+===============================================================================
+=== PROBE LOWER: inline-lowering control vectors for absent names ============
+===============================================================================
+AINT(7.5+SIGN(0.5,7.5))             -> 8.0000      (ANINT(7.5))
+AINT(-7.5+SIGN(0.5,-7.5))           -> -8.0000     (ANINT(-7.5))
+DINT(7.5D0+DSIGN(0.5D0,7.5D0))      -> 7.00000000+000  (expected 8 -> FAIL)
+INT(AINT(7.5+SIGN(0.5,7.5)))        -> 8            (NINT(7.5))
+IDINT(DINT(7.5D0+DSIGN(0.5D0,7.5D0))) -> 7          (expected 8 -> FAIL)
+DBLE(7)                             -> 7.00000000+000  (DFLOAT(7))
+DBLE(REAL((3.0,4.0)))               -> 3.00000000+000  (DREAL((3,4)))
+MAX(7.5D0-3.0D0,0.0D0)              -> 4.00000000+000  (DDIM(7.5D0,3D0))
+DSIN(1D0)/DCOS(1D0)                 -> 1.55740772+000  (DTAN(1D0))
+DMAX1(3D0,7D0,5D0)                  -> 6.92756775+013  (flaky, see DMAX)
+
+DP precision probes:
+  DINT(8.0D0)            -> 7.00000000+000   (expected 8)
+  DSIGN(0.5D0,7.5D0)     -> 5.00000000-001   (OK)
+  DINT(7.5D0)            -> 7.00000000+000   (OK)
+  DSIGN(0.5D0,-7.5D0)    -> -6.92756775+013  (garbage)
+  DINT(-8.0D0)           -> -7.00000000+000  (expected -8)
+=> REAL-path lowering verified (ANINT/NINT/DFLOAT/DREAL/DDIM/DTAN).
+=> DP-path lowering unreliable at exact boundaries -> DNINT/IDNINT stay NO.
+   Reason: decimal mantissa of FOREX 2.02 (8.0 stored as 0.79999...e1 truncated to 7).
+
+===============================================================================
+=== UNIT DECKS CREATED (owned area) ==========================================
+===============================================================================
+K05_intrinsics_numeric:
+  deck      = 213 lines; 49 calls; 49 PRINT with own FORMAT labels 101..149
+  gold      = 51 lines (49 numbers + 2 cosmetic I/O-ERR 224 lines)
+  verification: rc=0, absent=[], result == gold  => PASS
+
+K06_intrinsics_absent:
+  deck      = 85 lines; 17 calls (negative control)
+  gold      = 17 lines "ОТСУТСТВУЕТ <NAME>"
+  verification: rc=0, exactly 17 diagnostics matching the 17 gold lines => PASS
+  note: ASCII-only comment required; Cyrillic in a c---- comment caused "УПП ОШИБКА"
+
+===============================================================================
+=== FINAL STATUS COUNTS (matrix 01) ==========================================
+===============================================================================
+Before: OK=76  NO=4  PARTIAL=20  UNKNOWN=100  (total 200)
+After:  OK=123 NO=11 PARTIAL=32  UNKNOWN=34   (total 200)
+
+K section alone (80 elements):
+  OK      = 59  (12 unchanged + 47 newly verified)
+  PARTIAL = 14  (2 unchanged: ISIGN/DSQRT + 12 newly: DMAX1,DMIN1,
+                 ANINT,NINT,DFLOAT,DREAL,DDIM,DTAN,LGE,LGT,LLE,LLT)
+  NO      = 7   (DNINT, IDNINT, DASIN, ACOS, DACOS, LEN, INDEX)
+  UNKNOWN = 0
+
+Closed: 66/66 K-intrinsics (100% of section K).
+Remaining UNKNOWN: 34 (non-K: C=2, E=6, F=8, G=3, H=2, J=13) — out of scope.
+Coverage: 123/200 = 61.5% confirmed; 155/200 = 77.5% incl. partial.

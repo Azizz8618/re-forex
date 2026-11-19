@@ -1,0 +1,79 @@
+=== Закрытие F03 / I02 / K03 — реальный dispak, F77PREP + F77LIBR ===
+date : 2026-11-19T18:07:54Z
+dispak: /home/azizz/Yandex.Disk/dispak/build/dispak/dispak
+etalon: /usr/local/share/besm6/2348
+image : /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
+f77libr: /tmp/.private/azizz/opencode/re-forex/src/f77libr/F77LIB.FTN (13 процедур) -> PERSO 0o2310
+rule map: F03=21 (EXTERNAL/INTRINSIC), I02=12/14 (CHARACTER*10 + substring), K03=22 (CABS)
+
+F77LIBR сборка: rc=0; ДЛИНА LIВRАRУ
+F77LIBR каталог 0o2310 (14): DINT2 DMOD2 ISTRCM SUBSTR STRCAT STRCMP IDIV ISGN0 IMAX0 FMTLNK MYMAX MYABS FOREX* LO*SYN
+
+---------------------------------------------------------------------
+[F03] исходник: tests/f77/prep-case8.f77
+[F03] pass1 (F77PREP) rc=0; lowered (14 строк):
+    | C---- F03: EXTERNAL / INTRINSIC DECLARATION STATEMENTS.
+    |       PROGRAM F03
+    | C@ EXTERNAL MYFUN -> (removed; EXTERNAL/INTRINSIC declaration)
+    | C@ INTRINSIC SQRT -> (removed; EXTERNAL/INTRINSIC declaration)
+    |       X=SQRT(16.0)
+    |       R=MYFUN(3.0)
+    |       PRINT 10,X
+    |    10 FORMAT(1X,F10.4)
+    |       STOP
+    |       END
+    |       FUNCTION MYFUN(T)
+    |       MYFUN=T*T+1.0
+    |       RETURN
+    |       END
+[F03] lowering в деке совпадает с сгенерированным: OK
+[F03] dispak rc=0; gold/fact: OK
+    gold:  20 20 20 20 20 34 2e 30 30 30 30 0a
+    fact:  20 20 20 20 20 34 2e 30 30 30 30 0a
+[F03] блок результата:      4.0000|
+[F03] диагностика ФОРЭКСа: 
+---------------------------------------------------------------------
+[I02] исходник: tests/f77/prep-case9.f77
+[I02] pass1 (F77PREP) rc=0; lowered (13 строк):
+    | C---- I02: CHARACTER*10 ASSIGNMENT AND SUBSTRING S(2:4).
+    |       PROGRAM I02
+    | C@ CHARACTER*10 S -> INTEGER IS(2)
+    |       INTEGER IS(2)
+    | C@ S='ABCDE' -> DATA IS(1)/6HABCDE /; DATA IS(2)/6H      /
+    |       DATA IS(1)/6HABCDE /
+    |       DATA IS(2)/6H      /
+    | C@ PRINT 10,S(2:4) -> DATA IW5/6HBCD   / ; PRINT 10,IW5
+    |       DATA IW5/6HBCD   /
+    |       PRINT 10,IW5
+    |    10 FORMAT(1X,A4)
+    |       STOP
+    |       END
+[I02] lowering в деке совпадает с сгенерированным: OK
+[I02] dispak rc=0; gold/fact: OK
+    gold:  20 d0 92 d0 a1 44 0a
+    fact:  20 d0 92 d0 a1 44 0a
+[I02] блок результата:  ВСD|
+[I02] диагностика ФОРЭКСа: 
+---------------------------------------------------------------------
+[K03] исходник: tests/f77/prep-case10.f77
+[K03] pass1 (F77PREP) rc=0; lowered (11 строк):
+    | C---- K03: COMPLEX ARITHMETIC AND CABS.
+    |       PROGRAM K03
+    | C@ implicit COMPLEX WC (rule 22 complex-literal)
+    |       COMPLEX WC
+    |       WC=(3.0,4.0)
+    | C@ R=CABS(WC) -> R = SQRT(REAL(WC)**2 + AIMAG(WC)**2)
+    |       R = SQRT(REAL(WC)**2 + AIMAG(WC)**2)
+    |       PRINT 10,R
+    |    10 FORMAT(1X,F10.4)
+    |       STOP
+    |       END
+[K03] lowering в деке совпадает с сгенерированным: OK
+[K03] dispak rc=0; gold/fact: OK
+    gold:  20 20 20 20 20 35 2e 30 30 30 30 0a
+    fact:  20 20 20 20 20 35 2e 30 30 30 30 0a
+[K03] блок результата:      5.0000|
+[K03] диагностика ФОРЭКСа: 
+---------------------------------------------------------------------
+Итог: три дека F03/I02/K03 прошли на реальном dispak с *perso:602300 + *perso:602310,cont.
+См. logs/f77_full_matrix.txt и logs/f77_full_gold.txt (32 OK / 0 PENDING).

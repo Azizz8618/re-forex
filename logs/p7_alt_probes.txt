@@ -1,0 +1,76 @@
+# P7-ALTERNATIVES: Fortran-пробы на системном ФОРЭКСЕ 2.02 (диск 2048/2348)
+# Дата: 19.11.2026. Среда: dispak /usr/local/bin/dispak, decks в
+# /tmp/.private/azizz/opencode/p7probe/<name>/task.b6 (вне репозитория).
+# Метод: тот же, что tests/plan-f77/probe.sh: *forex ... *execute, КОНЕЦ ЗАДАЧИ
+# НЕ считается успехом — проверяется absence диагностики + факт вывода.
+# Классификатор: FAIL при ANY из {ОШ, ОШИБКА, НЕДОПУСТИМ, АТТ, ТИП ОП-ДА,
+#   БЫЛИ ОШИБКИ..., НЕТ КАНАЛА, ИСПОРЧЕН, ERR n}.
+
+## 1. FORMAT-дескрипторы (вопрос: какие из F/E/D/G/A/L/X/,/H реально есть)
+DESC_E    'FORMAT(1X,E12.4)'  X=3.5        -> OK   вывод: 3.5000+00
+DESC_D    'FORMAT(1X,D12.4)'  X=3.5D0      -> OK   (уже OK в матрице J12)
+DESC_P    'FORMAT(1X,1PE12.4)'             -> OK   вывод: 35.0000-01  (масштаб работает)
+          ПРИМЕЧАНИЕ: 'FORMAT(1X,1P,E12.4)' (с запятой после 1P) -> FAIL
+          'БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ'. Каноническая форма — 1PE12.4.
+DESC_L    'FORMAT(1X,L1)'     L=.TRUE.     -> OK   (матрица J15 была UNKNOWN -> OK)
+DESC_SL   'FORMAT(1X,F8.2/1X,F8.2)'        -> OK   ('/' работает, J18 UNKNOWN -> OK)
+DESC_G    'FORMAT(1X,G12.4)'  X=3.5        -> FAIL 'ОШИБКА СПЕЦИФИКАЦИИ ФОРМАТА'  (J13confirm NO)
+A6        'FORMAT(1X,A6)'  W=4HABCD        -> OK   (A с шириной работает)
+A4        'FORMAT(1X,A4)'  W=4HABCD        -> OK
+DESC_A    'FORMAT(1X,A)'   (без ширины)    -> FAIL 'АТТ 00506 ПК 2'  (нужна ширина A6)
+E_1P      'FORMAT(1X,1PE12.4)'              -> OK   (duplicates DESC_P, контроль)
+
+Вывод: в таблице 11 FT* реально присутствуют F, E, D, A(с шириной), L, X, /, H(nH),
+       I. G ОТСУТСТВУЕТ (единственный FAIL among edit-дескрипторов).
+
+## 2. IOSTAT / END= / ERR= (с ЯВНЫМ форматом, чтобы исключить list-directed *)
+IOST_R10  'READ(5,10,IOSTAT=K) X'  + FORMAT -> FAIL 'БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ ИЛИ В НАБИВКЕ'
+IOST_W54  'WRITE(54,10,IOSTAT=K) X' + FORMAT -> FAIL  то же
+END_R10   'READ(5,10,END=99) X'            -> FAIL  то же
+ERR_R10   'READ(5,10,ERR=99) X'            -> FAIL  то же
+IOSTAT_R  'READ(*,*,IOSTAT=K) X'           -> FAIL 'НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ' (двойной отказ: * + IOSTAT)
+END_EQ    'READ(*,*,END=99) X'             -> FAIL 'НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ'
+ERR_EQ    'READ(*,*,ERR=99) X'             -> FAIL 'НЕДОПУСТИМ СИМВОЛ * В ВЫРАЖ'
+
+Вывод: компилятор 2.02 НЕ распознаёт IOSTAT=, END=, ERR= ни в одной форме.
+       Требуется либо F77PREP-lowering (обработка EOF в рантайме, ветвление),
+       либо правка LO_SYN (NEEDS-MADLEN). 0 слов в оверлеях при lowering.
+
+## 3. Неформатированный I/O
+UNFMT_W   'WRITE(54) X'                    -> OK  (синтаксис принят, LUN 54, КОНЕЦ ЗАДАЧИ)
+UNFMT_R   'READ(54) X'                     -> OK  (синтаксис принят)
+UNF_RT    WRITE(54) X; READ(54) Y; PRINT   -> OK  (синтаксис; корректность данных на
+           Real device зависит от подключения канала — отдельная задача J2/J4 LUN45/Э70)
+
+Вывод: СИНТАКСИС неформатированного I/O принимается компилятором 2.02 БЕЗ правки
+       оверлеев (0 слов).iou: передача на диск — вопрос подключения LUN, не MADLEN.
+
+## 4. CHARACTER / CABS / нативные встроенные
+CABS      'R=CABS((3.0,4.0))' -> OK  F8.2 => 5.00  (матрица K22 OK, нативная реализация)
+CH_HA6    INTEGER W; DATA W/4HABCD/; FORMAT(1X,A6) -> OK  (nH-эмуляция строк!)
+CH_CHAR   CHARACTER*10 S; S='ABCDE'; PRINT S       -> FAIL 'ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ'
+CONJG     (из docs/10 §3.3): 'CONJG(Z)' -> OK  встроенная, (3,-4); попытка завести
+          CNJG0 в F77LIBR не дала каталог -> имя системное, алиасирование не нужно.
+
+## 5. REWIND / BACKSPACE / ENDFILE (перепроверка 08-madlen-impl §3)
+REWIND    'REWIND 10'    -> компилируется, LIBREFER *REWIN; runtime 'ОШ.В ИНФ.СЛ.ЭКСТ'
+          (неподключённый юнит 10, НЕ ошибка трансляции)
+BACKSPACE 'BACKSPACE 10' -> компилируется, *BACKS
+ENDFILE   'ENDFILE 10'   -> компилируется, *ENDFI
+Итог: 0 слов, уже в эталоне (08-madlen-impl §3).
+
+## 6. Интринзики — алиасирование / нативная реализация (0 слов в оверлеях)
+K_CABS   OK   CABS((3,4))=5.00
+K_CSQRT  OK   CSQRT((3,4))
+K_AIMAG  OK
+K_REAL   OK
+K_INT    OK
+K_NINT   OK
+K_DBLE   OK
+K_DABS   OK
+K_AINT   OK   AINT(7.5D0)
+K_CONJG  OK   нативная (не F77LIBR, см. docs/10 §3.3)
+K_DMOD   OK   DMOD(7.5D0,2.0D0)
+Итог: большинство интринзиков, помеченных в матрице как UNKNOWN,
+       реально работают НАТИВНО в 2.02. Остальные закрываются F77LIBR-обёртками
+       (src/f77libr/F77LIB.FTN v3) без правки оверлеев.

@@ -57,6 +57,13 @@ LABEL_HI = 99999
 INT_FIRST = "IJKLMN"       # implicit INTEGER letters -> I10
 CHAR_LIMIT = 4             # v2 rule 7/8 limit; v3 rule 12 removes it
 
+# Inline (rule 19) intrinsic families and their v3 rule numbers/ITYPE codes.
+MAX_FUNCS = {"MAX", "MAX0", "MAX1", "AMAX0", "AMAX1", "DMAX1"}
+MIN_FUNCS = {"MIN", "MIN0", "MIN1", "AMIN0", "AMIN1", "DMIN1"}
+ABS_FUNCS = {"ABS", "IABS", "DABS"}
+DIM_FUNCS = {"DIM", "IDIM"}
+R19_FAMILY = {1: "MAX", 2: "MIN", 3: "ABS", 4: "DIM"}
+
 # Fortran keywords and intrinsics: never treated as a truncatable identifier
 # by the rule-20 collision check.
 KEYWORDS = {
@@ -64,7 +71,7 @@ KEYWORDS = {
     "COMPLEX", "DOUBLE", "PRECISION", "CHARACTER", "DIMENSION", "COMMON",
     "DATA", "PARAMETER", "EQUIVALENCE", "ASSIGN", "IMPLICIT", "CONTINUE",
     "FORMAT", "PRINT", "READ", "WRITE", "WHILE", "GOTO", "GO", "STOP",
-    "RETURN", "ENDDO", "BLOCK", "EXTERNAL", "SAVE", "NONE", "CALL",
+    "RETURN", "ENDDO", "BLOCK", "EXTERNAL", "INTRINSIC", "SAVE", "NONE", "CALL",
     "IF", "THEN", "ELSE", "ELSEIF", "ENDIF", "DO", "TO", "TYPE",
     "SQRT", "SIN", "COS", "EXP", "ABS", "MOD", "AMOD", "FLOAT", "IFIX",
     "INT", "SNGL", "CABS", "CSQRT", "CONJG", "CMPLX", "MAX", "MIN",
@@ -236,12 +243,73 @@ def build_lowered(src_path, json_path):
     LAST_LABEL_RECORDS = []
     cards = read_cards(src_path)
     lines, seqs = logical_lines(cards)
+
+    def is_comment(ln):
+        return ln[:1].upper() in ("C", "*")
+
     seq_to_line = {s: i for i, s in enumerate(seqs, 1)}
     data = json.load(open(json_path, encoding="utf-8"))
     rules = {}
     for r in data["records"]:
         idx = seq_to_line.get(r.get("seq", r.get("line")), r.get("line"))
         rules[idx] = r
+
+    # F77PREP has no comment awareness: a ':' or a long identifier inside a
+    # comment card must not become a rewrite or a rule-20 diagnostic.
+    for _idx in range(1, len(lines) + 1):
+        if is_comment(lines[_idx - 1]) and _idx in rules:
+            rules[_idx]["rule"] = 0
+
+    # ------------------------------------------------------------------
+    # v3.1 host-side classification for rules 17/19/21/22.
+    #
+    # F77PREP.FTN itself is left at v3 byte-for-byte: the FOREX 2.02
+    # translator has a hard memory ceiling and even a handful of extra
+    # statements/DATA arrays overflow it on larger cases.  The host already
+    # holds the full logical-line text and the DO WHILE/END DO structure, so
+    # classifying these four constructs here is both cheaper and exact.
+    # ------------------------------------------------------------------
+    host_rules = {}
+    dwh_stack = []
+    for _idx, _line in enumerate(lines, 1):
+        if is_comment(_line):
+            continue
+        _s = _line.strip().upper()
+        if re.match(r"^DO\s+WHILE\s*\(", _s):
+            dwh_stack.append(_idx)
+            continue
+        if re.match(r"^END\s*DO\b", _s):
+            if dwh_stack:
+                dwh_stack.pop()
+            continue
+        if re.match(r"^(EXTERNAL|INTRINSIC)\s", _s):
+            host_rules[_idx] = 21
+        elif re.search(r"\bCABS\s*\(", _s):
+            host_rules[_idx] = 22
+        else:
+            for _fn in MAX_FUNCS | MIN_FUNCS | ABS_FUNCS | DIM_FUNCS:
+                if re.search(r"\b%s\s*\(" % re.escape(_fn), _s):
+                    host_rules[_idx] = 19
+                    break
+    for _idx in dwh_stack:
+        host_rules[_idx] = 17
+    for _idx, _rule in host_rules.items():
+        if rules.get(_idx, {}).get("rule", 0) == 0:
+            rules.setdefault(_idx, {"seq": seqs[_idx - 1] if _idx <= len(seqs) else _idx,
+                                    "line": _idx, "itype": 0})
+            itype = 0
+            if _rule == 19:
+                _s = lines[_idx - 1].strip().upper()
+                for _k, _fam in R19_FAMILY.items():
+                    if any(re.search(r"\b%s\s*\(" % re.escape(fn), _s)
+                           for fn in (MAX_FUNCS if _fam == "MAX" else
+                                      MIN_FUNCS if _fam == "MIN" else
+                                      ABS_FUNCS if _fam == "ABS" else DIM_FUNCS)):
+                        itype = _k
+                        break
+            rules[_idx]["rule"] = _rule
+            rules[_idx]["itype"] = itype
+
     varmap = {int(k): decode_var([v[i] for i in sorted(v)]).strip()
               for k, v in data["varcodes"].items()}
 
@@ -285,7 +353,10 @@ def build_lowered(src_path, json_path):
     formats = []            # (label, descriptor-without-1X)
     char_rename = {}        # source CHARACTER name -> INTEGER substitute
     char_info = {}          # v3 CHARACTER*n>4: name -> (iname, n, W)
+    char_literals = {}      # source name -> last assigned literal (fold substrings)
     dp_vars = set()
+    complex_vars = set()    # v3 rule 22: implicit COMPLEX from (a,b) assignment
+    explicit_complex = set()
     typed_int = set()       # v3 rule 9: names declared INTEGER explicitly
     assign_map = {}         # v3 rule 15: assign variable -> [labels]
     equiv_map = {}          # v3 rule 16: name -> (base, offset)
@@ -308,10 +379,22 @@ def build_lowered(src_path, json_path):
             iname = ("I" + m.group(2))[:6]
             char_info[m.group(2)] = (iname, n, (n + 5) // 6)
             char_rename[m.group(2)] = iname
+        if rule == 8:
+            lm = re.match(r"\s*([A-Za-z]\w*)\s*=\s*'(.*)'", line)
+            if lm:
+                char_literals[lm.group(1)] = lm.group(2)
         m = re.search(r"DOUBLE\s+PRECISION\s+([A-Za-z]\w*(?:\s*,\s*[A-Za-z]\w*)*)",
                       line, re.I)
         if m:
             dp_vars.update(v.strip().upper() for v in m.group(1).split(","))
+        # F77 implicit typing: VAR=(a,b) makes VAR COMPLEX.  Needed by the
+        # rule-22 CABS lowering, which relies on native REAL()/AIMAG().
+        for cm in re.finditer(r"(?<![A-Za-z0-9_])([A-Za-z]\w*)\s*=\s*\(([^()]*,[^()]*)\)",
+                              line):
+            complex_vars.add(cm.group(1).upper())
+        dm = re.match(r"\s*COMPLEX\s+([A-Za-z]\w*)", line, re.I)
+        if dm:
+            explicit_complex.add(dm.group(1).upper())
         m = re.search(r"ASSIGN\s+(\d+)\s+TO\s+([A-Za-z]\w*)", line, re.I)
         if m:
             v = m.group(2).upper()
@@ -399,7 +482,10 @@ def build_lowered(src_path, json_path):
             out.append("      " + new)
             formats.append((lab, spec))
 
-        elif rule == 5:
+        elif rule in (5, 17):
+            # rule 17: F77PREP flagged a DO WHILE with no matching END DO.
+            # Both rules open the loop identically; unmatched loops (always
+            # rule 17 from F77PREP) are closed automatically before END/STOP.
             m = re.search(r"DO\s+WHILE\s*\((.*)\)\s*$", line, re.I)
             if not m:
                 raise SystemExit("cannot parse DO WHILE on line %d" % idx)
@@ -412,12 +498,12 @@ def build_lowered(src_path, json_path):
             out.append("C@ %s -> %s" % (orig, new))
             out.append("%s CONTINUE" % _label_field(top))
             out.append("      IF (.NOT.(%s)) GO TO %d" % (cond, bottom))
-            loop_stack.append((top, bottom))
+            loop_stack.append((top, bottom, rule == 17))
 
         elif rule == 6:
             if not loop_stack:
                 raise SystemExit("END DO without DO WHILE on line %d" % idx)
-            top, bottom = loop_stack.pop()
+            top, bottom, _auto = loop_stack.pop()
             new = "GO TO %d / %d CONTINUE" % (top, bottom)
             out.append("C@ %s -> %s" % (orig, new))
             out.append("      GO TO %d" % top)
@@ -439,7 +525,9 @@ def build_lowered(src_path, json_path):
             name, literal = m.group(1), m.group(2)
             if name in char_info:
                 iname, n, w = char_info[name]
-                words = [literal[k:k + 6].ljust(6) for k in range(0, len(literal), 6)]
+                # Emit all W words (last one padded with blanks) so that
+                # CHARACTER*10 -> INTEGER IS(2) is fully initialized.
+                words = [literal[6 * k:6 * k + 6].ljust(6) for k in range(w)]
                 new = "; ".join("DATA %s(%d)/6H%s/" % (iname, k + 1, word)
                                 for k, word in enumerate(words))
                 out.append("C@ %s -> %s" % (orig, new))
@@ -577,6 +665,30 @@ def build_lowered(src_path, json_path):
                 out.append("C@ %s -> %s" % (orig, new))
                 out.append("      " + new)
             else:
+                # Substring used as an expression argument, e.g.
+                # PRINT 10,S(2:4) -> CALL SUBSTR(IS,2,4,IW) ; PRINT 10,IW.
+                sm = re.search(r"\b([A-Za-z]\w*)\s*\(\s*(\d+)\s*:\s*(\d+)\s*\)", line)
+                if sm and sm.group(1) in char_info:
+                    src, lo, hi = sm.group(1), int(sm.group(2)), int(sm.group(3))
+                    tname = "IW%d" % (idx % 100)
+                    newline = (line[:sm.start()] + tname + line[sm.end():]).rstrip()
+                    lit = char_literals.get(src)
+                    if lit is not None and 1 <= lo <= hi <= len(lit):
+                        # Fold a substring of a statically known literal into
+                        # an nH DATA word.  F77LIBR SUBSTR operates on arrays
+                        # of ASCII codes, not on packed nH words, so it is not
+                        # applicable to the rule-12 word representation.
+                        sub = lit[lo - 1:hi].ljust(6)
+                        data = "DATA %s/6H%s/" % (tname, sub)
+                        out.append("C@ %s -> %s ; %s" % (orig, data, newline.strip()))
+                        out.append("      " + data)
+                    else:
+                        call = "CALL SUBSTR(%s,%s,%s,%s)" % (
+                            char_info[src][0], lo, hi, tname)
+                        out.append("C@ %s -> %s ; %s" % (orig, call, newline.strip()))
+                        out.append("      " + call)
+                    out.append("      " + newline.strip())
+                    continue
                 cm = re.search(
                     r"IF\s*\(\s*([A-Za-z]\w*)\s*(\.EQ\.|\.NE\.)\s*([A-Za-z]\w*)\s*\)"
                     r"\s*(GO\s+TO\s+\d+)?", line, re.I)
@@ -623,6 +735,58 @@ def build_lowered(src_path, json_path):
         elif rule == 16:
             out.append("C@ %s -> (removed; rename map applied)" % orig)
 
+        elif rule == 19:
+            # Inline expansion of MAX/MIN/ABS/DIM (F77PREP ITYPE = family).
+            m = re.match(r"\s*([A-Za-z]\w*)\s*=\s*([A-Za-z]\w*)\s*\((.*)\)\s*$",
+                         line, re.I)
+            if not m:
+                out.append(line)
+                continue
+            dst, fn, raw = m.group(1), m.group(2).upper(), m.group(3)
+            args = [a.strip() for a in raw.split(",") if a.strip()]
+            fam = R19_FAMILY.get(itype, fn[:3])
+            out.append("C@ %s -> inline %s" % (orig, fam))
+            if fn in MAX_FUNCS or fam == "MAX":
+                a = args[0]
+                b = args[1] if len(args) > 1 else a
+                out.append("      %s = %s" % (dst, a))
+                out.append("      IF (%s .GT. %s) %s = %s" % (b, dst, dst, b))
+            elif fn in MIN_FUNCS or fam == "MIN":
+                a = args[0]
+                b = args[1] if len(args) > 1 else a
+                out.append("      %s = %s" % (dst, a))
+                out.append("      IF (%s .LT. %s) %s = %s" % (b, dst, dst, b))
+            elif fn in ABS_FUNCS or fam == "ABS":
+                a = args[0]
+                out.append("      %s = %s" % (dst, a))
+                out.append("      IF (%s .LT. 0) %s = -%s" % (a, dst, a))
+            elif fn in DIM_FUNCS or fam == "DIM":
+                if len(args) < 2:
+                    out.append(line)
+                    continue
+                out.append("      %s = %s - %s" % (dst, args[0], args[1]))
+                out.append("      IF (%s .LT. 0) %s = 0" % (dst, dst))
+            else:
+                out.append(line)
+            continue
+
+        elif rule == 21:
+            out.append("C@ %s -> (removed; EXTERNAL/INTRINSIC declaration)" % orig)
+
+        elif rule == 22:
+            # CABS(WC) -> SQRT(REAL(WC)**2 + AIMAG(WC)**2).  REAL/AIMAG are
+            # native; complex_vars declarations are materialized in Pass A.
+            m = re.match(r"\s*([A-Za-z]\w*)\s*=\s*CABS\s*\(\s*([^()]+)\s*\)",
+                         line, re.I)
+            if not m:
+                out.append(line)
+                continue
+            dst, z = m.group(1), m.group(2).strip()
+            new = "%s = SQRT(REAL(%s)**2 + AIMAG(%s)**2)" % (dst, z, z)
+            out.append("C@ %s -> %s" % (orig, new))
+            out.append("      " + new)
+            continue
+
         else:
             raise SystemExit("unknown rule %d on line %d" % (rule, idx))
 
@@ -643,8 +807,43 @@ def build_lowered(src_path, json_path):
                     out.append("      IF (KCMP %s 0) %s" % (cond, action.upper()))
                 continue
 
+    # rule 22 support: F77 gives an implicitly-REAL variable when the source
+    # assigns a complex literal to an undeclared name, so REAL()/AIMAG() would
+    # silently discard the imaginary part.  Materialize COMPLEX declarations
+    # immediately AFTER the PROGRAM/ENTRY statement (never before it).
+    if complex_vars - explicit_complex:
+        pos = None
+        for i, ln in enumerate(out):
+            if re.match(r"\s*(PROGRAM|SUBROUTINE|FUNCTION|ENTRY)\s", ln, re.I):
+                pos = i + 1
+                break
+        if pos is not None:
+            ins = []
+            for v in sorted(complex_vars - explicit_complex):
+                ins.append("C@ implicit COMPLEX %s (rule 22 complex-literal)" % v)
+                ins.append("      COMPLEX %s" % v)
+            out[pos:pos] = ins
+
     if loop_stack:
-        raise SystemExit("unbalanced DO WHILE / END DO")
+        # rule 17: no matching END DO -- close every open DO WHILE at the
+        # END/STOP of the program unit, LIFO, using the allocated labels.
+        end_at = None
+        for i in range(len(out) - 1, -1, -1):
+            if out[i].strip().upper().startswith("END"):
+                end_at = i
+                break
+        close_insert = []
+        for top, bottom, _auto in reversed(loop_stack):
+            close_insert.append(
+                "C@ (rule 17) open DO WHILE -> GO TO %d / %d CONTINUE"
+                % (top, bottom))
+            close_insert.append("      GO TO %d" % top)
+            close_insert.append("%s CONTINUE" % _label_field(bottom))
+        if end_at is None:
+            out += close_insert
+        else:
+            out[end_at:end_at] = close_insert
+        loop_stack = []
 
     # Appending all FORMAT statements just before the final END.
     if formats:
@@ -686,6 +885,8 @@ def build_lowered(src_path, json_path):
             subprograms.add(m.group(1).upper())
     bad = []
     for idx in sorted(names_by_line):
+        if idx <= len(lines) and is_comment(lines[idx - 1]):
+            continue
         for nm in names_by_line[idx]:
             u = nm.upper()
             if u in KEYWORDS or u in subprograms or not re.match(r"^[A-Za-z]", u):
@@ -703,6 +904,21 @@ def build_lowered(src_path, json_path):
             msg = "TRUNCATED NAME: %s (%d chars -> %s)" % (u, len(u), u[:6])
         print("C@ %s -> %s" % (orig, msg))
         raise SystemExit(msg)
+
+    # rule 18 (M2): re-split emitted statements longer than 72 columns into
+    # fixed-form continuation cards.  F77PREP classifies glued logical lines;
+    # without this step a >72-char result would silently lose columns 73+.
+    wrapped = []
+    for ln in out:
+        if len(ln) <= 72 or ln[:1].upper() == "C":
+            wrapped.append(ln)
+            continue
+        chunks = [ln[:72]]
+        chunks += [ln[i:i + 66] for i in range(72, len(ln), 66)]
+        wrapped.append(chunks[0])
+        for ch in chunks[1:]:
+            wrapped.append("     1" + ch)
+    out = wrapped
 
     return "\n".join(out) + "\n"
 

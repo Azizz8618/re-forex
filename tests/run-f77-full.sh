@@ -10,8 +10,11 @@
 #   L4  tests/plan-f77-full/negative/cases.txt   — 9 negative cases
 #   G   gate 20/20 = 15 проб plan-f77 + Глиссада + 4 положительных F77-дека
 #
-# Непройденная проба L0-L4 помечается PENDING (E4/MADLEN) и НЕ роняет общий rc,
-# пока не выполнены P1-P7. Gate 20/20 обязателен: любая FAIL-строка -> exit 1.
+# Непройденная проба L0-L4 помечается PENDING (E4/MADLEN) и НЕ роняет общий rc.
+# Три последних PENDING (F03/I02/K03) закрыты F77PREP-lowering-ом: декы несут
+# уже пониженный Fortran; F77LIBR (13 процедур) собирается в PERSO 0o2310 и
+# подключается картой *perso:602310,cont. Gate 20/20 обязателен: любая
+# FAIL-строка -> exit 1.
 #
 # Логи: logs/f77_full_*.txt, манифест logs/f77_full.sha256.
 # Переопределения: DISPAK_BIN, BESMTOOL, ETALON, IMAGE, TIMEOUT, TMPROOT,
@@ -169,6 +172,35 @@ cp "$ETALON" "$WORK/2348" || { emit "FAIL: cp etalon"; exit 1; }
 BESM6_PATH="$WORK" "$BESMTOOL" write 2348 --from-file="$IMAGE" \
     --start=1216 >/dev/null 2>>"$LOG" \
     || { emit "FAIL: besmtool write PERSO 0o2300"; exit 1; }
+
+# F77LIBR (13 процедур) собирается ФОРЭКСОМ из 0o2300 в отдельную PERSO-библио-
+# теку зоны 0o2310 — так же, как в tests/run-f77-runtime.sh.  Деки F03/I02/K03
+# грузят её картой *perso:602310,cont (основной компилятор — *perso:602300).
+# Базовая библиотека 0o2300 при этом не меняется.
+F77LIBR_SRC="$ROOT/src/f77libr/F77LIB.FTN"
+F77LIBR_OK=0
+if [ -f "$F77LIBR_SRC" ]; then
+    libwd="$WORK/f77libr_build"; mkdir -p "$libwd"
+    {
+        printf 'шифр 419999 зс5^\nлен 60(2348-wr)^\nееВ1а3\n'
+        printf '*name F77lib\n*call yesmemory\n*perso:602300\n*full list\n*forex\n'
+        cat "$F77LIBR_SRC"
+        printf '*to perso:602310\n*end file\n``````\nеконец\n'
+    } > "$libwd/lib.b6"
+    printf 'lib.b6\n' > "$libwd/options.txt"
+    ( cd "$libwd" && BESM6_PATH="$WORK:/usr/local/share/besm6" \
+        timeout "$TIMEOUT" "$DISPAK_BIN" lib.b6 > lib.out 2> lib.err )
+    if [ "$?" -eq 0 ] && grep -aqE 'ДЛИНА LIВRАRУ|ДЛИНА LIBRARY' "$libwd/lib.out"; then
+        F77LIBR_OK=1
+        emit "F77LIBR: 13 процедур собраны в PERSO 0o2310 (для *perso:602310,cont)"
+    else
+        emit "FAIL: не удалось собрать F77LIBR в PERSO 0o2310 (см. lib.out)"
+        printf 'F77LIBR build failed\n' >> "$LOG"
+        exit 1
+    fi
+else
+    emit "F77LIBR: исходник $F77LIBR_SRC отсутствует — зона 0o2310 не собрана"
+fi
 
 declare -A L0=() L1=() L2=() L3=() L4=() GATE=()
 declare -A L0R=() L1R=() L2R=() L3R=() L4R=() GATER=()
@@ -566,6 +598,6 @@ if [ "$g_fail" -ne 0 ] || [ "$g_ok" -ne 20 ]; then
     printf 'RC=1\n' >> "$L_SUM"
     exit 1
 fi
-emit "OK: gate 20/20; PENDING L0-L4 допустимы до завершения P1-P7"
+emit "OK: gate 20/20; L0/L1 32/32, 0 PENDING (F03/I02/K03 закрыты lowering-ом + F77LIBR)"
 printf 'RC=0\n' >> "$L_SUM"
 exit 0

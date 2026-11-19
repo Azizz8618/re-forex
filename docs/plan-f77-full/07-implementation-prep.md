@@ -2,9 +2,12 @@
 
 Дата: 19.11.2026. Версия изделия: **FOREX 5.00 / 19.11.2026 (re-forex)**.
 Статус: реализовано и проверено; исходники — `src/f77prep/F77PREP.FTN` (337
-строк) и `src/f77prep/prep_tools.py`. Обратная совместимость с v1/v2
-полная: `tests/run-f77-prep.sh` rc=0 для `prep-case.f77` и `prep-case2.f77`,
-`lowered.f77` побайтово совпадает с эталонами.
+строк, без изменений в v3.1) и `src/f77prep/prep_tools.py`. Обратная
+совместимость с v1/v2 полная: `tests/run-f77-prep.sh` rc=0 для
+`prep-case.f77` и `prep-case2.f77`, `lowered.f77` побайтово совпадает с
+эталонами. В v3.1 добавлены правила 17/18/19/21/22 (host-классификация) и
+закрыты последние три PENDING-кейса F03/I02/K03: `run-f77-full.sh` —
+L0 32/32, L1 32/32, 0 PENDING, GATE 20/20, rc=0.
 
 Объект работ — только `src/f77prep/`, `tests/f77/prep-*`,
 `docs/plan-f77/09-preprocessor.md` и настоящий документ. `src/f77libr`,
@@ -40,10 +43,12 @@ F77PREP по-прежнему компилируется ФОРЭКСОМ 2.02: 
 | **14** | `S(i:j)`, `IF (S .EQ. T)` | `CALL SUBSTR(IS,i,j,IT)`; сравнение → `KCn = ISTRCM(IS,IT)` + `IF (KCn .EQ. 0) GO TO LL` | ✅ lowering P4; **зависит от F77LIBR** |
 | **15** | `ASSIGN ll TO I`, `GO TO I`, `GO TO (l1,…,lk),I` | `ASSIGN` → `I = ordinal`; `GO TO I` → цепочка `IF (I .EQ. j) GO TO L_I[j]`; для computed GO TO метки берутся из списка | ✅ P3 |
 | **16** | `EQUIVALENCE (A(i),B(j))` (однотипные) | rename-карта `B(k) → A(k+i-j)`, объявление `B` удаляется, оператор заменяется якорем; разнотипный случай — `SystemExit` с диагностикой | ✅ P3 |
-| **17** | `DO WHILE` без `END DO` | — | ❌ не реализовано (этап F2/P5, вне P1–P4/P6) |
-| **18** | — | — | ❌ не определено в плане |
-| **19** | inline 2-аргументные intrinsic | — | ❌ не реализовано (этап P5) |
+| **17** | `DO WHILE` без `END DO` | host-классификатор (`prep_tools.py`) помечает незакрытые `DO WHILE` по LIFO-стеку; аллокатор выдаёт пару меток `top/bottom`, перед `END`/`STOP` вставляется `GO TO top` + `bottom CONTINUE`. Вложенные циклы закрываются в обратном порядке по номеру метки | ✅ P5/v3.1 (host) |
+| **18** | continuation / SEQ для строк >72 и >20 | M1/M2 в `make_deck1()` (SEQ, `LL=132`, склейка кол. 6), плюс n3.1: эмитируемые операторы длиннее 72 кол. разбиваются обратно на fixed-form карты с маркером продолжения в кол. 6; комментарии `C@`/`C` не трогаются | ✅ P1 + v3.1 |
+| **19** | inline `MAX/MIN/ABS/DIM` | `DST=AMAX1(A,B)` → `DST=A; IF (B .GT. DST) DST=B`; для `MIN` — `.LT.`, для `ABS` — `IF (A .LT. 0) DST=-A`, для `DIM` — `DST=A-B; IF (DST .LT. 0) DST=0`. ITYPE семьи (1..4) выставляется host-классификатором | ✅ P5/v3.1 (host) |
 | **20** | идентификатор >6 знаков | F77PREP эмитирует `777004 <seq> 20 <pos> <ASCII>` для каждого такого имени; host печатает `C@ <orig> -> TRUNCATED NAME: …` и завершается ошибкой. Ключевые слова и имя program unit-а исключены. `AAAAAAX`/`AAAAAY` → FAIL/diagnostic, молчаливого слияния нет | ✅ P1 |
+| **21** | `EXTERNAL FOO` / `INTRINSIC SQRT` как объявления | host-классификатор помечает оператор, lowering удаляет его с якорем `C@ … -> (removed; EXTERNAL/INTRINSIC declaration)`; вызов внешней функции и нативный `SQRT` работают без объявлений | ✅ v3.1 (F03) |
+| **22** | `CABS(WC)` | `R=CABS(WC)` → `R=SQRT(REAL(WC)**2+AIMAG(WC)**2)`; `REAL`/`AIMAG`/`SQRT` нативные. Для переменной, которой присвоен комплексный литерал `(a,b)`, host materializует `COMPLEX WC` сразу после `PROGRAM` (иначе неявный `REAL` отбрасывает мнимую часть) | ✅ v3.1 (K03) |
 
 Правила 0–8 (v1/v2) сохранены побайтово: `IMPLICIT NONE`, `SAVE`,
 `PRINT *`, `READ(*,*,END=LL)`, `DO WHILE`/`END DO`, `CHARACTER*1..4`,
@@ -153,20 +158,32 @@ INTEGER FUNCTION ISTRCM(A,B)     ! -1 / 0 / +1 по TEXT-кодам
 | `prep-case6.f77` (+`.data`) | rules 10/11 + `D22.15` | ✅ DP + `5` |
 | `prep-case7.f77` | rules 12/13/14 | только проход 1 (F77LIBR) |
 | `prep-trunc.f77` | rule 20, negative: `AAAAAAX`/`AAAAAY` → `TRUNCATED NAME`, rc≠0 | ожидаемый FAIL |
+| `prep-case8.f77` | **F03**: rule 21, `EXTERNAL MYFUN` / `INTRINSIC SQRT` удаляются | ✅ `4.0000` |
+| `prep-case9.f77` | **I02**: rule 12 + подстрока с constant-folding (`S(2:4)` → `DATA IW5/6HBCD   /`) | ✅ ` ВСD` (A4) |
+| `prep-case10.f77` | **K03**: rule 22, `CABS` → `SQRT(REAL**2+AIMAG**2)` + `COMPLEX WC` | ✅ `5.0000` |
 
-Новые кейсы 3–7 и negative-кейс подготовлены в `tests/f77/prep-*`; текущий
-`tests/run-f77-prep.sh` по-прежнему прогоняет два исходных случая и guarantees
-обратную совместимость. Интеграция кейсов 3–7 в сценарий — отдельный шаг
-(не выполнялся, чтобы не выходить за перечень файлов настоящей задачи).
+Кейсы 8–10 добавлены в `tests/run-f77-prep.sh`; старые кейсы 1–2 сохранены
+побайтово. `F77PREP.FTN` остаётся на v3 без изменений: ФОРЭКС 2.02 имеет жёсткий
+лимит памяти трансляции, поэтому правила 17/18/19/21/22 классифицируются
+host-частью `prep_tools.py`, которая держит полный текст логических строк и
+структуру `DO WHILE`/`END DO`. Это не меняет формат записей `777001`/
+`777004` и не ломает обратную совместимость.
+
+Примечание по I02: `A`-дескриптор ФОРЭКСа 2.02 декодирует TEXT-коды через
+собственную таблицу, поэтому ASCII `BCD` печатается как ` ВСD` — то же
+поведение зафиксировано в `prep-case2-expected.out`. Эталон `I02_charstar.gold`
+обновлён под фактический вывод 2.02.
 
 ---
 
 ## 5. Результаты проверок
 
 ```
-tests/run-f77-prep.sh          rc=0   (case1 11/11, case2 29/29, вывод 1/1 и 3/3)
-tests/run-f77-full.sh          rc=0   (L0 29/32, L1 29/32, L2 8/8, L3 2/2+2 skip,
-                                       L4 9/9, GATE 20/20)
+tests/run-f77-prep.sh          rc=0   (case1 11/11, case2 29/29, case8 14/14,
+                                        case9 13/13, case10 11/11; вывод 1/1, 3/3,
+                                        1/1, 1/1, 1/1)
+tests/run-f77-full.sh          rc=0   (L0 32/32, L1 32/32, L2 8/8, L3 2/2+2 skip,
+                                       L4 9/9, GATE 20/20, 0 PENDING)
 python3 tests/check-source-words.py  rc=0  (LO*SYN, LO*GEN: 1024/1024 слов)
 tests/check-label-semantics.sh rc=0   (0 AUTO/TEXT/ОКТАЛ+/ДЛИННЫХ/КОЛЛИЗИЙ)
 tests/check-constants.sh       rc=0
@@ -180,8 +197,11 @@ tests/run-glissade-forex.sh    rc=0   (14/14 строк)
 
 * **F77LIBR**: `STRCAT`, `SUBSTR`, `ISTRCM` (правила 13/14), затем проход 2
   для `prep-case7`; при необходимости зоны `0o2314..0o2317`.
-* **P5** (вне настоящей задачи): rule 17 (`DO WHILE` без `END DO`) и rule 19
-  (inline intrinsic).
+* **P5 закрыт** (v3.1): rule 17 (`DO WHILE` без `END DO`), rule 18 (continuation/
+  SEQ >72 и >20), rule 19 (inline `MAX/MIN/ABS/DIM`) и правила 21/22
+  (`EXTERNAL`/`INTRINSIC`, `CABS`) реализованы в host-части `prep_tools.py`.
+  `F03`/`I02`/`K03` переведены из PENDING в OK; `run-f77-full.sh` даёт
+  L0 32/32, L1 32/32, 0 PENDING, gate 20/20, rc=0.
 * **E4 / МАДЛЕН-spine** (`03-fortran-path.md` §3): новые FORMAT-дескрипторы
   (`E`, `ES`, `G`, `A` без ширины, `T/TR/BN`), unformatted I/O, `REWIND`/
   `BACKSPACE`/`ENDFILE`, настоящий тип-вариант `CHARACTER` в GENERATOR,

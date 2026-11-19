@@ -1,0 +1,1 @@
+k06_intrinsics_absent.b6

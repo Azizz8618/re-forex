@@ -1,0 +1,64 @@
+ПРОВЕРКА СЕМАНТИКИ ИМЁН: src/*.mad + src/lib21/*.mad
+ФАЙЛ                         |  АВТО |  TEXT | ОКТАЛ+ | ДЛИННЫХ | КОЛЛИЗИЙ
+----------------------------------------------------------------------------
+src/FOREX_CORE.mad           |     0 |     0 |      0 |       0 |        0
+src/FOREX_DECODER_DISASM.mad |     0 |     0 |      0 |       0 |        0
+src/FOREX_RUNTIME.mad        |     0 |     0 |      0 |       0 |        0
+src/FOREX_RUNTIME_DISASM.mad |     0 |     0 |      0 |       0 |        0
+src/LO_GEN.mad               |     0 |     0 |      0 |       0 |        0
+src/LO_SYN.mad               |     0 |     0 |      0 |       0 |        0
+src/lib21/BEMSH_.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/CAT.mad            |     0 |     0 |      0 |       0 |        0
+src/lib21/CHEKJOB_.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/CRELIB.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/DECODER.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/DISPAC.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/EXECUTE.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/F#PT6.mad          |     0 |     0 |      0 |       0 |        0
+src/lib21/FOR.mad            |     0 |     0 |      0 |       0 |        0
+src/lib21/FOREX_.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/FORMAT.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/FORTLIBR.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/FTNPRT.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/FTNPRT_.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/FT_REGIM.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/GIV#PG.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/INPUTCAL.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/INPUT_.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/LFSCAN.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/LIBDRU_.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/LIBRARY_.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/LIBTAP_.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/LINK#IPM.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/LOADLIBR.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/LUNTYP.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/MAKELIBT.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/OCATALOG.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/OVERLOAD.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/PRINT80.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/PRINTA.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/PRINTLIS.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/PRINTR.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/PT6.mad            |     0 |     0 |      0 |       0 |        0
+src/lib21/PUNCHA.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/PUNCHICT.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/READ1.mad          |     0 |     0 |      0 |       0 |        0
+src/lib21/READ2.mad          |     0 |     0 |      0 |       0 |        0
+src/lib21/SWRITE.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/TCATALOG.mad       |     0 |     0 |      0 |       0 |        0
+src/lib21/TEMFILE.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/TEMP##.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/TEMP#SI.mad        |     0 |     0 |      0 |       0 |        0
+src/lib21/WRITE1.mad         |     0 |     0 |      0 |       0 |        0
+src/lib21/XREF.mad           |     0 |     0 |      0 |       0 |        0
+src/lib21/ZONE.mad           |     0 |     0 |      0 |       0 |        0
+----------------------------------------------------------------------------
+ИТОГО                        |     0 |     0 |      0 |       0 |        0
+
+OK   [AUTO]: 0
+OK   [TEXT]: 0
+OK   [ОКТАЛ+]: 0
+OK   [ДЛИННЫХ]: 0
+OK   [КОЛЛИЗИЙ]: 0
+
+OK: нарушений семантики имён не найдено

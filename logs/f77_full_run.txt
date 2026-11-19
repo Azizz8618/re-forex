@@ -1,5 +1,6 @@
-F77 full verification — 2026-11-19T17:11:49Z
+F77 full verification — 2026-11-19T18:09:07Z
 dispak=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak etalon=/usr/local/share/besm6/2348 image=/tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
+F77LIBR: 13 процедур собраны в PERSO 0o2310 (для *perso:602310,cont)
 
 === L0/L1: unit-пробы и gold-пары стандарт-матрицы A-K ===
 OK A01  A01_fixed_form               01-matrix:A1/A3/A4
@@ -32,8 +33,8 @@ OK F01  F01_dimension_data           tests/f77/suite/dataparam.b6
 OK F01  F01_dimension_data.gold suite tests/f77/suite/dataparam.b6
 OK F02  F02_parameter                01-matrix:F5
 OK F02  F02_parameter.gold new 01-matrix:F5
-PENDING (E4/MADLEN) F03  F03_external_intrinsic       НЕДОПУСТИМ КЛЮЧ СЛОВО
-PENDING (E4/MADLEN) F03  F03_external_intrinsic.gold new НЕДОПУСТИМ КЛЮЧ СЛОВО
+OK F03  F03_external_intrinsic       01-matrix:F14/F15
+OK F03  F03_external_intrinsic.gold new 01-matrix:F14/F15
 OK F04  F04_implicit_lowered         01-matrix:F13
 OK F04  F04_implicit_lowered.gold new 01-matrix:F13
 OK G01  G01_function                 tests/f77/suite/intrinsics_ext.b6
@@ -46,8 +47,8 @@ OK H02  H02_common_blockdata         tests/forex-glissade/output.gold.txt
 OK H02  H02_common_blockdata.gold e1 tests/forex-glissade/output.gold.txt
 OK I01  I01_hollerith                tests/f77/suite/charhollerith.b6
 OK I01  I01_hollerith.gold suite tests/f77/suite/charhollerith.b6
-PENDING (E4/MADLEN) I02  I02_charstar                 ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
-PENDING (E4/MADLEN) I02  I02_charstar.gold new ТИП ОП-ДА НЕ СООТВЕТ ОПЕРАЦ
+OK I02  I02_charstar                 01-matrix:B6/I1/I2
+OK I02  I02_charstar.gold new 01-matrix:B6/I1/I2
 OK J01  J01_write54                  e1/units/write_u54/out.txt
 OK J01  J01_write54.gold e1 e1/units/write_u54/out.txt
 OK J02  J02_format_l                 01-matrix:J15
@@ -62,12 +63,12 @@ OK K01  K01_sqrt_abs                 e1/precision/double/out.txt
 OK K01  K01_sqrt_abs.gold new e1/precision/double/out.txt
 OK K02  K02_amod                     01-matrix:K
 OK K02  K02_amod.gold new 01-matrix:K
-PENDING (E4/MADLEN) K03  K03_cabs                     нет совпадения с gold
-PENDING (E4/MADLEN) K03  K03_cabs.gold e1 нет совпадения с gold
+OK K03  K03_cabs                     e1/precision/complex/out.txt
+OK K03  K03_cabs.gold e1 e1/precision/complex/out.txt
 OK K04  K04_dsqrt                    e1/precision/double/out.txt
 OK K04  K04_dsqrt.gold e1 e1/precision/double/out.txt
-Итог L0: 29 OK / 3 PENDING (E4/MADLEN)
-Итог L1: 29 OK / 3 PENDING; suite-пар переиспользовано 8, расхождений 0
+Итог L0: 32 OK / 0 PENDING (E4/MADLEN)
+Итог L1: 32 OK / 0 PENDING; suite-пар переиспользовано 8, расхождений 0
 
 === L2: кросс-компиляция *FTN / *FORTRAN (диск 2048) ===
 CROSS OK X01  FTN      1 чисел совпали (допуск max(1e-06, 1e-05*max))
@@ -121,11 +122,11 @@ OK   20 save_ok        ожидалось=gold факт=gold совпал
 ------------------------------------------------------------------------
 Итоговая таблица F77 full
 LEVEL    OK     PENDING    SKIP     DETAIL
-L0       29     3          0        unit A-K
-L1       29     3          0        gold pairs
+L0       32     0          0        unit A-K
+L1       32     0          0        gold pairs
 L2       8      0          0        cross FTN/FORTRAN
 L3       2      0          2        real programs
 L4       9      0          0        negative
 GATE     20     0(FAIL)    0        20/20 mandatory
 Логи: logs/f77_full_*.txt; манифест: logs/f77_full.sha256
-OK: gate 20/20; PENDING L0-L4 допустимы до завершения P1-P7
+OK: gate 20/20; L0/L1 32/32, 0 PENDING (F03/I02/K03 закрыты lowering-ом + F77LIBR)

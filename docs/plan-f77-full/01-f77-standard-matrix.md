@@ -248,37 +248,37 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
-| K1 | `INT` | UNKNOWN | В каталоге LIBREFER 412 (`reference/expect_library21.txt:793`), но пробы 2.02 нет | Проба; при отказе — Fortran-обёртка в F77LIBR |
-| K2 | `IFIX` | UNKNOWN | `reference/expect_library21.txt:173,204` (LIBREFER 412) | То же |
-| K3 | `IDINT` | UNKNOWN | Пробы нет | То же |
+| K1 | `INT` | OK | K05: `INT(7.5)=7` (I6); внешней ссылки нет — натива; `10-implementation-libr.md` §3.4 | — |
+| K2 | `IFIX` | OK | K05: `IFIX(7.5)=7`; LIBREFER 412 `IFIX E *MISTAKE` (`expect_library21.txt:174`) | — |
+| K3 | `IDINT` | OK | K05: `IDINT(7.5D0)=7` (I6, сопутствует cosmetic I/O-ERR 224); entry `IDINT E 02621` | — |
 | K4 | `FLOAT` | OK | `01-gap-analysis.md:17` (`dhrystone-forex.dub:73-74,149`) | — |
-| K5 | `DFLOAT` | UNKNOWN | Пробы нет | Обёртка в F77LIBR |
+| K5 | `DFLOAT` | PARTIAL | K06: `ОТСУТСТВУЕТ DFLOAT`; LOWER: `DBLE(7)=7.00000000+000` —可以降低 в rule 19 | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 | K6 | `SNGL` | OK | `logs/plan_f77_probes.txt:5` (`Y=SNGL(X)`) | — |
 | K7 | `ICHAR` | OK | `01-gap-analysis.md:17` | — |
 | K8 | `CHAR` | OK | `01-gap-analysis.md:17` | — |
-| K9 | `REAL` | UNKNOWN | Пробы нет | Проба/обёртка |
-| K10 | `DREAL` | UNKNOWN | Пробы нет | Обёртка |
-| K11 | `DBLE` | UNKNOWN | Пробы нет | Обёртка |
-| K12 | `CMPLX` | UNKNOWN | Пробы нет (литерал `(a,b)` работает — B10) | Обёртка на пару REAL |
+| K9 | `REAL` | OK | K05: `REAL(7)=7.0000`; entry `REAL 02640` (`10-implementation-libr.md` §3.4) | — |
+| K10 | `DREAL` | PARTIAL | K06: `ОТСУТСТВУЕТ DREAL`; LOWER: `DBLE(REAL((3,4)))=3.00000000+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K11 | `DBLE` | OK | K05: `DBLE(7.5)=7.50000000+000`; entry `DBLE E 02624` | — |
+| K12 | `CMPLX` | OK | K05: `CMPLX(3.0,4.0)=(3.0000,4.0000)`; entry `CMPLX 02644` | — |
 
 ### 11.2. Усечение и округление (6)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
-| K13 | `AINT` | UNKNOWN | Пробы нет | Обёртка |
-| K14 | `DINT` | UNKNOWN | Пробы нет | Обёртка |
-| K15 | `ANINT` | UNKNOWN | Пробы нет | Обёртка |
-| K16 | `DNINT` | UNKNOWN | Пробы нет | Обёртка |
-| K17 | `NINT` | UNKNOWN | Пробы нет | Обёртка |
-| K18 | `IDNINT` | UNKNOWN | Пробы нет | Обёртка |
+| K13 | `AINT` | OK | K05: `AINT(7.5)=7.0000`; натива (`10-implementation-libr.md` §3.4) | — |
+| K14 | `DINT` | OK | K05: `DINT(7.5D0)=7.00000000+000`; entry `DINT 02647` | — |
+| K15 | `ANINT` | PARTIAL | K06: `ОТСУТСТВУЕТ ANINT`; LOWER: `AINT(7.5+SIGN(0.5,7.5))=8.0000`, `-7.5` → `-8.0000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K16 | `DNINT` | NO | K06: `ОТСУТСТВУЕТ DNINT`; LOWER: DP-путь даёт `7.0` вместо `8.0`; `DSIGN(0.5D0,-X)` → мусор (десятичная мантисса 2.02) | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K17 | `NINT` | PARTIAL | K06: `ОТСУТСТВУЕТ NINT`; LOWER: `INT(AINT(7.5+SIGN(0.5,7.5)))=8` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K18 | `IDNINT` | NO | K06: `ОТСУТСТВУЕТ IDNINT`; DP-путь нестабилен — см. K16 | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
 
 ### 11.3. Абсолютная величина (4)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
 | K19 | `ABS` | OK | `logs/plan_f77_probes.txt:11` (`ABS(-2.0)`) | — |
-| K20 | `IABS` | UNKNOWN | Пробы нет | Обёртка |
-| K21 | `DABS` | UNKNOWN | Пробы нет | Обёртка |
+| K20 | `IABS` | OK | K05: `IABS(-3)=3`; натива; rule 19 доступен как запасной путь | — |
+| K21 | `DABS` | OK | K05: `DABS(-7.5D0)=7.50000000+000`; entry `DABS 03144` | — |
 | K22 | `CABS` | OK | `07-experiments.md:24,101` (`CABS(3+4i)=5.0000`); `12-acceptance.md:33` | — |
 
 ### 11.4. Остаток (3)
@@ -287,101 +287,101 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 |:---|:---|:---:|:---|:---|
 | K23 | `MOD` | OK | `02-extension-points.md:184,203` (`MOD(7.0,3.0)`) | — |
 | K24 | `AMOD` | OK | `01-gap-analysis.md:17,93` (`glkern.b6:107`) | — |
-| K25 | `DMOD` | UNKNOWN | Пробы нет | Обёртка |
+| K25 | `DMOD` | OK | K05: `DMOD(7.5D0,2.0D0)=1.50000000+000`; entry `DMOD 03150`; алиас `DMOD2` в 0o2310 | — |
 
 ### 11.5. Максимум (6)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
-| K26 | `MAX` (generic) | UNKNOWN | Пробы нет | Проба + обёртка/ lowered в `IF` |
-| K27 | `MAX0` | UNKNOWN | Пробы нет | Обёртка |
-| K28 | `AMAX0` | UNKNOWN | Пробы нет | Обёртка |
-| K29 | `MAX1` | UNKNOWN | Пробы нет | Обёртка |
-| K30 | `AMAX1` | UNKNOWN | Пробы нет | Обёртка |
-| K31 | `DMAX1` | UNKNOWN | Пробы нет | Обёртка |
+| K26 | `MAX` (generic) | OK | K05: `MAX(3.0,7.0,5.0)=7.0000`; натива | — |
+| K27 | `MAX0` | OK | K05: `MAX0(3,7,5)=7`; натива | — |
+| K28 | `AMAX0` | OK | K05: `AMAX0(3,7,5)=7.0000`; натива | — |
+| K29 | `MAX1` | OK | K05: `MAX1(3.0,7.0,5.0)=7`; натива | — |
+| K30 | `AMAX1` | OK | K05: `AMAX1(3.0,7.0,5.0)=7.0000`; натива | — |
+| K31 | `DMAX1` | PARTIAL | K05/DMAX: entry `DMAX1 03207`, но 2 арг. → `6.92756775+013`, 3 арг. → `7.00000000+000`; АТТ 04053 | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 
 ### 11.6. Минимум (6)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
-| K32 | `MIN` (generic) | UNKNOWN | Пробы нет | Проба + обёртка |
-| K33 | `MIN0` | UNKNOWN | Пробы нет | Обёртка |
-| K34 | `AMIN0` | UNKNOWN | `reference/expect_library21.txt:311,940` (LIBREFER 412) | Проба 2.02 |
-| K35 | `MIN1` | UNKNOWN | Пробы нет | Обёртка |
-| K36 | `AMIN1` | UNKNOWN | Пробы нет | Обёртка |
-| K37 | `DMIN1` | UNKNOWN | Пробы нет | Обёртка |
+| K32 | `MIN` (generic) | OK | K05: `MIN(3.0,7.0,5.0)=3.0000`; натива | — |
+| K33 | `MIN0` | OK | K05: `MIN0(3,7,5)=3`; натива | — |
+| K34 | `AMIN0` | OK | K05: `AMIN0(3,7,5)=3.0000`; LIBREFER 412 `PCPLOT E AMIN0` (`expect_library21.txt:312`) | — |
+| K35 | `MIN1` | OK | K05: `MIN1(3.0,7.0,5.0)=3`; натива | — |
+| K36 | `AMIN1` | OK | K05: `AMIN1(3.0,7.0,5.0)=3.0000`; натива | — |
+| K37 | `DMIN1` | PARTIAL | K05/DMIN: entry `DMIN1 E 03226`, но результат `0.00000000+000` при любом числе аргументов; использовать rule 19 | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 
 ### 11.7. Знак и разность (6)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
-| K38 | `DIM` | UNKNOWN | Пробы нет | Обёртка |
-| K39 | `IDIM` | UNKNOWN | `reference/expect_library21.txt:173,788` (LIBREFER 412) | Проба 2.02 |
-| K40 | `DDIM` | UNKNOWN | Пробы нет | Обёртка |
-| K41 | `SIGN` | UNKNOWN | Пробы нет | Обёртка |
-| K42 | `ISIGN` | PARTIAL | `08-runtime.md:49-50,243-246`: имя **занято встроенной функцией** (попытка определить `FUNCTION ISIGN(I)` даёт `ERR 04052 / ОШИБКА В СПИСКЕ АРГ`) — распознаётся, но численно не проверено | Проба `ISIGN(-3,2)`; подтвердить численный результат |
-| K43 | `DSIGN` | UNKNOWN | Пробы нет | Обёртка |
+| K38 | `DIM` | OK | K05: `DIM(7.5,3.0)=4.5000`; натива | — |
+| K39 | `IDIM` | OK | K05: `IDIM(7,3)=4`; LIBREFER 412 `IDIM (IFIX)` (`expect_library21.txt:173`) | — |
+| K40 | `DDIM` | PARTIAL | K06: `ОТСУТСТВУЕТ DDIM`; LOWER: `MAX(7.5D0-3.0D0,0.0D0)=4.00000000+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K41 | `SIGN` | OK | K05: `SIGN(-3.0,2.0)=3.0000`; entry `SIGN 07451` | — |
+| K42 | `ISIGN` | PARTIAL | `08-runtime.md:49-50,243-246`: имя **занято встроенной функцией** (попытка определить `FUNCTION ISIGN(I)` даёт `ERR 04052 / ОШИБКА В СПИСКЕ АРГ`) — распознаётся, но численно не проверено | — (исходная PARTIAL, не входит в 66 проверенных) |
+| K43 | `DSIGN` | OK | K05: `DSIGN(-3D0,2D0)=3.00000000+000`; entry `DSIGN 03255`, LIBREFER 412 (`expect_library21.txt:566`) | — |
 
 ### 11.8. Длина, индекс, символьные предикаты (6)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
-| K44 | `LEN` | UNKNOWN | Пробы нет (зависит от B6) | После B6 — проба |
-| K45 | `INDEX` | UNKNOWN | Пробы нет (зависит от B6) | После B6 — проба |
-| K46 | `LGE` | UNKNOWN | Пробы нет (зависит от B6) | После B6 — проба; при отказе — `STRCMP` |
-| K47 | `LGT` | UNKNOWN | То же | То же |
-| K48 | `LLE` | UNKNOWN | То же | То же |
-| K49 | `LLT` | UNKNOWN | То же | То же |
+| K44 | `LEN` | NO | K06: `ОТСУТСТВУЕТ LEN`; требует CHARACTER (B6 = NO на 2.02) | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K45 | `INDEX` | NO | K06: `ОТСУТСТВУЕТ INDEX`; требует CHARACTER + новой процедуры F77LIBR | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K46 | `LGE` | PARTIAL | K06: `ОТСУТСТВУЕТ LGE`; замена через F77LIBR `ISTRCM/STRCMP` (`10-implementation-libr.md` §2: -1/0/+1) | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K47 | `LGT` | PARTIAL | K06: `ОТСУТСТВУЕТ LGT`; то же через `ISTRCM/STRCMP` (>0) | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K48 | `LLE` | PARTIAL | K06: `ОТСУТСТВУЕТ LLE`; то же через `ISTRCM/STRCMP` (<=0) | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K49 | `LLT` | PARTIAL | K06: `ОТСУТСТВУЕТ LLT`; то же через `ISTRCM/STRCMP` (<0) | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
 
 ### 11.9. Комплекс (2)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
-| K50 | `AIMAG` | UNKNOWN | Пробы нет (`CABS/CSQRT` работают) | Обёртка |
-| K51 | `CONJG` | UNKNOWN | Пробы нет | Обёртка |
+| K50 | `AIMAG` | OK | K05: `AIMAG((3,4))=4.0000`; entry `AIMAG E 02642` (`10-implementation-libr.md` §3.4) | — |
+| K51 | `CONJG` | OK | K05: `CONJG((3,4))=(3.0000,-4.0000)`; entry `CONJG 03324` (системное имя, `10-implementation-libr.md` §3.3) | — |
 
 ### 11.10. Тригонометрия (16)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
 | K52 | `SIN` | OK | `02-extension-points.md:184,203` | — |
-| K53 | `DSIN` | UNKNOWN | Пробы нет | Обёртка/проверка generic `SIN(DP)` |
-| K54 | `CSIN` | UNKNOWN | Пробы нет | Обёртка |
-| K55 | `COS` | UNKNOWN | Пробы нет (механизм function-call работает) | Проба |
-| K56 | `DCOS` | UNKNOWN | Пробы нет | Обёртка |
-| K57 | `CCOS` | UNKNOWN | Пробы нет | Обёртка |
-| K58 | `TAN` | UNKNOWN | Пробы нет | Проба/обёртка |
-| K59 | `DTAN` | UNKNOWN | Пробы нет | Обёртка |
-| K60 | `ASIN` | UNKNOWN | Пробы нет | Обёртка |
-| K61 | `DASIN` | UNKNOWN | Пробы нет | Обёртка |
-| K62 | `ACOS` | UNKNOWN | Пробы нет | Обёртка |
-| K63 | `DACOS` | UNKNOWN | Пробы нет | Обёртка |
-| K64 | `ATAN` | UNKNOWN | Пробы нет (Whetstone использует `ATAN` — `03-fortran-path.md:325`, но без лога исполнения) | Проба |
-| K65 | `DATAN` | UNKNOWN | Пробы нет | Обёртка |
-| K66 | `ATAN2` | UNKNOWN | Пробы нет | Обёртка |
-| K67 | `DATAN2` | UNKNOWN | Пробы нет | Обёртка |
+| K53 | `DSIN` | OK | K05: `DSIN(1D0)=8.41470985-001`; entry `DSIN 03327` | — |
+| K54 | `CSIN` | OK | K05: `CSIN((1,2))=(3.1658,1.9596)`; entry `CSIN E 03723` | — |
+| K55 | `COS` | OK | K05: `COS(1.0)=0.5403`; entry `COS E 07430` | — |
+| K56 | `DCOS` | OK | K05: `DCOS(1D0)=5.40302306-001`; entry `DCOS E 03330` | — |
+| K57 | `CCOS` | OK | K05: `CCOS((1,2))=(2.0327,-3.0519)`; entry `CCOS 03712` | — |
+| K58 | `TAN` | OK | K05: `TAN(1.0)=1.5574`; entry `TAN 03761` | — |
+| K59 | `DTAN` | PARTIAL | K06: `ОТСУТСТВУЕТ DTAN`; LOWER: `DSIN(1D0)/DCOS(1D0)=1.55740772+000` | Inline (rule 19) / F77LIBR; см. `12-intrinsics-coverage.md` |
+| K60 | `ASIN` | OK | K05: `ASIN(0.5)=0.5236`; натива, внешней ссылки нет | — |
+| K61 | `DASIN` | NO | K06: `ОТСУТСТВУЕТ DASIN`; нет entry и проверенного DP-эквивалента | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K62 | `ACOS` | NO | K06: `ОТСУТСТВУЕТ ACOS`; нужна новая процедура F77LIBR | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K63 | `DACOS` | NO | K06: `ОТСУТСТВУЕТ DACOS`; нужна новая процедура F77LIBR | Новая процедура F77LIBR / CHARACTER; см. `12-intrinsics-coverage.md` |
+| K64 | `ATAN` | OK | K05: `ATAN(1.0)=0.7854`; entry `ATAN E 07436` (Whetstone-сценарий подтверждён) | — |
+| K65 | `DATAN` | OK | K05: `DATAN(1D0)=7.85398163-001`; entry `DATAN 04006` | — |
+| K66 | `ATAN2` | OK | K05: `ATAN2(1.0,2.0)=0.4636`; entry `ATAN2 04311` | — |
+| K67 | `DATAN2` | OK | K05: `DATAN2(1D0,2D0)=4.63647609-001`; entry `DATAN2 04410` | — |
 
 ### 11.11. Экспоненты и логарифмы (10)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
 | K68 | `EXP` | OK | `01-gap-analysis.md:17,48` (`glkern.b6:98`) | — |
-| K69 | `DEXP` | UNKNOWN | Пробы нет | Обёртка |
-| K70 | `CEXP` | UNKNOWN | Пробы нет | Обёртка |
-| K71 | `LOG` (generic) | UNKNOWN | Пробы нет | Проба |
-| K72 | `ALOG` | UNKNOWN | Диалект 1976 использует `ALOG` (book гл. II §14), пробы 2.02 нет | Проба |
-| K73 | `DLOG` | UNKNOWN | Пробы нет | Обёртка |
-| K74 | `CLOG` | UNKNOWN | Пробы нет | Обёртка |
-| K75 | `LOG10` (generic) | UNKNOWN | Пробы нет | Проба |
-| K76 | `ALOG10` | UNKNOWN | Диалект 1976 (`ALOG10`), пробы нет | Проба |
-| K77 | `DLOG10` | UNKNOWN | Пробы нет | Обёртка |
+| K69 | `DEXP` | OK | K05: `DEXP(1D0)=2.71828183+000`; entry `DEXP 04536` | — |
+| K70 | `CEXP` | OK | K05: `CEXP((1,2))=(-1.1312,2.4717)`; entry `CEXP E 04673` | — |
+| K71 | `LOG` (generic) | OK | K05: `LOG(2.0)=0.6931`; натива | — |
+| K72 | `ALOG` | OK | K05: `ALOG(2.0)=0.6931`; entry `ALOG E 07425` | — |
+| K73 | `DLOG` | OK | K05: `DLOG(2D0)=6.93147181-001`; entry `DLOG 04735` | — |
+| K74 | `CLOG` | OK | K05: `CLOG((1,2))=(0.8047,1.1071)`; entry `CLOG E 04702` | — |
+| K75 | `LOG10` (generic) | OK | K05: `LOG10(100.0)=2.0000`; натива | — |
+| K76 | `ALOG10` | OK | K05: `ALOG10(100.0)=2.0000`; entry `ALOG10 E 07444` | — |
+| K77 | `DLOG10` | OK | K05: `DLOG10(100D0)=2.00000000+000`; entry `DLOG10 05174` | — |
 
 ### 11.12. Корень (3)
 
 | ID | Intrinsic | Статус | Доказательство | Что делать |
 |:---|:---|:---:|:---|:---|
 | K78 | `SQRT` | OK | `logs/plan_f77_probes.txt:11`; `07-experiments.md:96` (`SQRT(2.0D0)` → 1.414213562371515) | — |
-| K79 | `DSQRT` | PARTIAL | Численно проверен **generic** `SQRT(2.0D0)` (`07-experiments.md:24,96`), но конкретное имя `DSQRT` не пробовано | Проба `DSQRT(2.0D0)`; при отказе — алиас на generic |
+| K79 | `DSQRT` | PARTIAL | Численно проверен **generic** `SQRT(2.0D0)` (`07-experiments.md:24,96`), но конкретное имя `DSQRT` не пробовано | — (исходная PARTIAL, не входит в 66 проверенных) |
 | K80 | `CSQRT` | OK | `07-experiments.md:102` (`CSQRT(3+4i)=2+i`) | — |
 
 > Итого интринзиков: 80 (12+6+4+3+6+6+6+6+2+16+10+3 = 80).
@@ -404,16 +404,18 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 | H. Массивы | 7 | 4 | 0 | 1 | 2 |
 | I. Символьные строки | 7 | 3 | 0 | 4 | 0 |
 | J. Ввод-вывод | 28 | 10 | 2 | 3 | 13 |
-| K. Интринзики X3.9 §15 | 80 | 12 | 0 | 2 | 66 |
-| **ИТОГО** | **200** | **76** | **4** | **20** | **100** |
+| K. Интринзики X3.9 §15 | 80 | **59** | **7** | **14** | **0** |
+| **ИТОГО** | **200** | **123** | **11** | **32** | **34** |
 
 Строка F13 (`IMPLICIT NONE`) учтена как **пограничная** (NO): она не входит в X3.9-1978,
 но присутствует в матрице, так как в `F77PREP` есть правило её понижения; при подсчёте
 «чисто F77» следует вычесть 1 из NO и из общего числа (199 элементов, NO=3).
 
-Доля подтверждённого покрытия: **76/200 = 38.0 %**; с учётом частичного — 96/200 = 48.0 %.
-`UNKNOWN` — 50 % матрицы: это не отказы, а **непроверенные** элементы, большинство из которых
-закрывается дешёвыми пробами и Fortran-обёртками в `F77LIBR`.
+Доля подтверждённого покрытия: **123/200 = 61.5 %**; с учётом частичного — 155/200 = 77.5 %.
+Раздел K закрыт полностью (`docs/plan-f77-full/12-intrinsics-coverage.md`,
+`logs/f77_intrinsics_coverage.txt`): 49 интринзиков подтверждены численно (K05),
+17 — отрицательным контролем `ОТСУТСТВУЕТ` в линк-карте (K06). Оставшиеся
+34 `UNKNOWN` — элементы разделов C/E/F/G/H/J, вне объёма этой задачи.
 
 ### 12.2. Критический путь (приоритеты)
 
@@ -428,7 +430,11 @@ LIBREFER/PERSO. Для отсутствующих процедур достат�
 ### 12.3. Что НЕ утверждается
 
 1. `OK` на 4.13-корпусе (Dhrystone/Whetstone/kermit) не означает поддержку в нашей сборке 2.02 — поэтому такие строки — `PARTIAL`.
-2. `UNKNOWN` для интринзиков означает «имя не пробовано», а не «не работает»: общий механизм вызова	function-style имён доказан (`02-extension-points.md:203-205`); не хватает процедуры/алиаса в LIBREFER.
+2. Раздел K более не содержит `UNKNOWN`: все 66 имён проверены линк-картой и/или численно
+   (`12-intrinsics-coverage.md`). Там, где имени нет, но семантика выводится inline,
+   стоит `PARTIAL`; где нет ни имени, ни проверенного эквивалента — `NO` с диагностикой
+   `ОТСУТСТВУЕТ` (`K06_intrinsics_absent.gold`). Общий механизм function-style вызова
+   доказан в `02-extension-points.md:203-205`.
 3. Диагностики ГДР (`ERROR 106/123/138`, `01-gap-analysis.md:90,92`) к нативному ФОРЕКСУ не применяются.
 4. Матрица оценивает **синтаксис и доступность**, не численную семантику (40-битная мантисса, `D`-дескриптор против `F` — `07-experiments.md:24,103`) и не производительность.
 5. Старые таблицы `dubna-languages.md:106-134,240-275` использовались при безусловной подмене `*forex`→`*fortran`; их «−» для многомерных массивов и «ч» для блочного `IF` **опровергнуты** (`01-gap-analysis.md:19`).
@@ -448,13 +454,16 @@ print(dict(c), 'total', sum(c.values()))
 PY
 ```
 
-Ожидается (сверено 19.11.2026): `{'OK': 76, 'PARTIAL': 20, 'UNKNOWN': 100, 'NO': 4}`, total 200.
+Ожидается (сверено 19.11.2026, после закрытия раздела K):
+`{'OK': 123, 'PARTIAL': 32, 'UNKNOWN': 34, 'NO': 11}`, total 200.
+По разделу K отдельно: `OK=59, PARTIAL=14, NO=7, UNKNOWN=0`.
 
 Расхождение с черновой оценкой (`NO: 3, PARTIAL: 21`) объясняется одной строкой: **F13**
 (`IMPLICIT NONE`) при ручном подсчёте была отнесена к PARTIAL как «объект понижения»,
 но в матрице ей присвоен статус **NO** — прямая проба `logs/plan_f77_probes.txt:9`
 даёт «НЕДОПУСТИМ КЛЮЧ СЛОВО». F13 — пограничная строка (не элемент X3.9-1978), но она
 участвует в счётчике; поэтому реальные значения: NO=4 (F11, F13, J4, J7), PARTIAL=20.
-Таблица §12.1 уже приведена к этим значениям (`F: 7 OK / 2 NO / 2 PARTIAL / 8 UNKNOWN`;
-итог `76 / 4 / 20 / 100`). Если исключить F13 как нестандартную — получится
-199 элементов, `76 / 3 / 20 / 100`.
+Это был базовый счёт до закрытия раздела K (`76 / 4 / 20 / 100`); F-строка при этом
+не менялась (`7 OK / 2 NO / 2 PARTIAL / 8 UNKNOWN`). После контрольных векторов K
+(`12-intrinsics-coverage.md`) итог стал `123 / 11 / 32 / 34`; F11/F13/J4/J7
+остались NO. Если исключить F13 как нестандартную — 199 элементов, `123 / 10 / 32 / 34`.

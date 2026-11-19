@@ -1,4 +1,4 @@
-# F77 full verification manifest — 2026-11-19T17:11:55Z
+# F77 full verification manifest — 2026-11-19T18:09:18Z
 2a9d5038367105aebc5c7f8bd6e43f049919c9ced179682a9126e76ac402253d  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/cross/cases.txt
 db31e28559fabfa649dca94a069f1c94de2f9c0c47117854d27867861d0223de  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gate/endread_ok.b6
 39ef6055f933b193878ec20085e00dcab0f9e9b6534aa960311df73499d0414b  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gate/endread_ok.gold
@@ -31,7 +31,7 @@ a969b4fa405381b5dac410e663a60ed1388a514bb609aad3392ce444f33acbb7  /tmp/.private/
 d0f2a8ae46b2c9bf49528a13d979256a96eba2d08dee7515353663088f2fa024  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gold/H01_dimension2.gold
 b9da3fb6e6c106458cae29064c4b7aa460bd0c45bd39b18698e499cbf87790c5  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gold/H02_common_blockdata.gold
 1bf97e16d06864d9ee682c4c68586bdb45fdbdeb7bb87c3293dd14c9d9b97363  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gold/I01_hollerith.gold
-ea7afd8ca08a5d7e485a569368d6bd4083fbd95851a524f1d2c2f9d3bf5334cb  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gold/I02_charstar.gold
+dc965b460c7fe7b07580bb2c09788cdda8b6b0e79381c6b66314b6c507245e5f  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gold/I02_charstar.gold
 3beb951870f3646fc28734ea069dd7bec395d7747351544ba6f0b4e4c7ac21be  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gold/J01_write54.gold
 9aaad1b6dc37f10f8e89d7385b61121d6f23f351097cb116da33c8332b28e66a  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gold/J02_format_l.gold
 23f7b5a9ef24ed848f53e1449eb128f8095d22920e3d92433c894649254c7100  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/gold/J03_format_slash.gold
@@ -89,7 +89,7 @@ a53dde2a2e8c8dfe1b3ef536d14e29cc1c744faee951d1535c81eaa6bd82b63c  /tmp/.private/
 c6cf31096c33c1449c0d713dbd9d4a0d8302696494e5406986e66c1568fc1d83  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/F02_parameter/f02_parameter.b6
 d024994ae20ded1632b7ee9fb77e3eeb6931a4395f2ca79f152bbd53a6c06f1f  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/F02_parameter/F02_parameter.gold
 75ae56749fb94b0c101773d8cc1895689da2095d5ba661792619b3647d0a8030  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/F02_parameter/options.txt
-2ea6ce76c80bc7c3932ed0710b409d39f34fb018c6dceb70654a64030f6ea714  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/F03_external_intrinsic/f03_external_intrinsic.b6
+5923af7f5d103f340f02743bcc23eb5a98e748894eae10f7a4766e728dca485f  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/F03_external_intrinsic/f03_external_intrinsic.b6
 b8617e3840e6cb7a7b70f89d0aeb859e0e24b4ebee231024aa3fd0a9788decff  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/F03_external_intrinsic/F03_external_intrinsic.gold
 eee259d122b86acba1405535615a55a0a7b39daf2169795ec4baa1714e1b4c79  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/F03_external_intrinsic/options.txt
 cb10b998a1d05d0378902b74dfc39c90e2ba7b1f1d1e83db17bea949a6c748b7  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/F04_implicit_lowered/f04_implicit_lowered.b6
@@ -110,8 +110,8 @@ a4b8b65ae4b69da8cabda1f2b057632b8c611c5cb3ceba125cf316dc698e0d33  /tmp/.private/
 6c71217cb8d57dcd03050b647f7cd35ddcb28b2983d0cefb4b3b2d9c22ce639d  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/I01_hollerith/i01_hollerith.b6
 1bf97e16d06864d9ee682c4c68586bdb45fdbdeb7bb87c3293dd14c9d9b97363  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/I01_hollerith/I01_hollerith.gold
 a11cd87617dc8faf95e43ba286473758689be51afc84c5e28c77d9e686f97782  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/I01_hollerith/options.txt
-7a9c93c4e59346cf87b717e68a3197c9268b134d49b70d5ae2703b84ec3d110e  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/I02_charstar/i02_charstar.b6
-ea7afd8ca08a5d7e485a569368d6bd4083fbd95851a524f1d2c2f9d3bf5334cb  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/I02_charstar/I02_charstar.gold
+c36750b17169220d9416dac386da0108885c9059e1e93f31c866ac60141655f9  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/I02_charstar/i02_charstar.b6
+dc965b460c7fe7b07580bb2c09788cdda8b6b0e79381c6b66314b6c507245e5f  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/I02_charstar/I02_charstar.gold
 3a30a1589304f95e93403464d1694f072fd3032d829c47c645d40131d334915b  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/I02_charstar/options.txt
 45a87bec62e918e48cce45a69e5135363df39a6b5740750e57cd41a34a5dd554  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/J01_write54/j01_write54.b6
 3beb951870f3646fc28734ea069dd7bec395d7747351544ba6f0b4e4c7ac21be  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/J01_write54/J01_write54.gold
@@ -134,11 +134,17 @@ d698512b0fbdd763d3fee557a7995872191648fe120fc1e215d3565071133e30  /tmp/.private/
 9ed9ef7dc546c654917754ba999203870f5ad218ebc43c48ed8dd2a829fd53d5  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K02_amod/k02_amod.b6
 5493331f59ccdeeb8f67f90c0929222adff7395764149aaa83eb9f33a59b0fb7  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K02_amod/K02_amod.gold
 aaa9e11558a055877629e2a4d8b672025d2e9e432f4ec04398165f1ab652bc57  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K02_amod/options.txt
-51686ce86f9b05226636203ae5b328d4415b22f33c19a25a84cb1d696219b295  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K03_cabs/k03_cabs.b6
+64c5d658ba6be535e4e044c91989fbbe9f4dddc405ac00a77af8a240283ee55f  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K03_cabs/k03_cabs.b6
 813479e497833f69eacf0f9fb9a5fce6abbf29c390d439ef8b1e6ce5f7a68aea  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K03_cabs/K03_cabs.gold
 5cb556a61fb988875784ddba20059d16d9e9c63140773e78348d367979d1f8c3  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K03_cabs/options.txt
 4bd8f33153dd33b4b005a76cea8f3a885af3fdbf975c350c06f26cb76dccc086  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K04_dsqrt/k04_dsqrt.b6
 65846adddeca90e27b7ed06fb2a643cf1738472cb28c38a65cb1bf6fa90b7181  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K04_dsqrt/K04_dsqrt.gold
 771709bdf081c13fe62fad1ac0e63aca551dcfb26d68328b1a45fbdec90bc762  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K04_dsqrt/options.txt
+72ce7f1fa9ac930d88f04baf8a011fd98b3515d0429f32a131050cf877b6345b  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K05_intrinsics_numeric/k05_intrinsics_numeric.b6
+33ae7a3d4a7b26d314d64224289358563a13ff2fcac6de66d8cda3f74e3f2761  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K05_intrinsics_numeric/K05_intrinsics_numeric.gold
+00a24b5b23367e7603a635c529cc3caec88fc940d5c3307f85fabc4b45a9fcdd  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K05_intrinsics_numeric/options.txt
+72562f1df9f9dd33f93cd3ac36ecf612d21d2786f9eb60629e9eea32b0cfac73  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K06_intrinsics_absent/k06_intrinsics_absent.b6
+9855b57aba7c22df9746cb969d6287fad5c5e49c1268bbb32b7820df6846835a  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K06_intrinsics_absent/K06_intrinsics_absent.gold
+db49f1a8744c2825e34b383483efc7a8869c96de467e952df043afa72ba2d275  /tmp/.private/azizz/opencode/re-forex/tests/plan-f77-full/unit/K06_intrinsics_absent/options.txt
 2cc2fbbec28883e45bb62ee72d6c4ed9747ce582ad1e6b39efd87d66c157e2b6  /tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
 543dac9ac85693fdf94edc02bc289b7eb2fd542d52f27b7d96de71bfba03f337  /usr/local/share/besm6/2348

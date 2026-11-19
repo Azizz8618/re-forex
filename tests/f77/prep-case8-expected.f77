@@ -1,0 +1,14 @@
+C---- F03: EXTERNAL / INTRINSIC DECLARATION STATEMENTS.
+      PROGRAM F03
+C@ EXTERNAL MYFUN -> (removed; EXTERNAL/INTRINSIC declaration)
+C@ INTRINSIC SQRT -> (removed; EXTERNAL/INTRINSIC declaration)
+      X=SQRT(16.0)
+      R=MYFUN(3.0)
+      PRINT 10,X
+   10 FORMAT(1X,F10.4)
+      STOP
+      END
+      FUNCTION MYFUN(T)
+      MYFUN=T*T+1.0
+      RETURN
+      END

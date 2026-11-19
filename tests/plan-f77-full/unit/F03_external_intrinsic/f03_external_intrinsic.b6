@@ -7,10 +7,10 @@ eeв1а3
 *perso:602300
 *no list
 *forex
-c---- F03: EXTERNAL / INTRINSIC declaration statements.
+C---- F03: EXTERNAL / INTRINSIC DECLARATION STATEMENTS.
       PROGRAM F03
-      EXTERNAL MYFUN
-      INTRINSIC SQRT
+C@ EXTERNAL MYFUN -> (removed; EXTERNAL/INTRINSIC declaration)
+C@ INTRINSIC SQRT -> (removed; EXTERNAL/INTRINSIC declaration)
       X=SQRT(16.0)
       R=MYFUN(3.0)
       PRINT 10,X

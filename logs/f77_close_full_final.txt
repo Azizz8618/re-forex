@@ -1,0 +1,20 @@
+F77 full verification — 2026-11-19T18:09:07Z
+dispak=/home/azizz/Yandex.Disk/dispak/build/dispak/dispak etalon=/usr/local/share/besm6/2348 image=/tmp/.private/azizz/opencode/re-forex/build/FOREX_PERSO_2300.bin
+F77LIBR: 13 процедур собраны в PERSO 0o2310 (для *perso:602310,cont)
+=== L0/L1: unit-пробы и gold-пары стандарт-матрицы A-K ===
+=== L2: кросс-компиляция *FTN / *FORTRAN (диск 2048) ===
+=== L3: реальные программы ===
+=== L4: negative cases ===
+=== GATE: регрессия 20/20 (16 базовых + 4 новых F77-теста) ===
+
+------------------------------------------------------------------------
+Итоговая таблица F77 full
+LEVEL    OK     PENDING    SKIP     DETAIL
+L0       32     0          0        unit A-K
+L1       32     0          0        gold pairs
+L2       8      0          0        cross FTN/FORTRAN
+L3       2      0          2        real programs
+L4       9      0          0        negative
+GATE     20     0(FAIL)    0        20/20 mandatory
+Логи: logs/f77_full_*.txt; манифест: logs/f77_full.sha256
+OK: gate 20/20; L0/L1 32/32, 0 PENDING (F03/I02/K03 закрыты lowering-ом + F77LIBR)

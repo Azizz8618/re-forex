@@ -12,6 +12,12 @@
 # Случай 2 (prep-case2.f77)  — правила v2: DO WHILE/END DO, READ END=,
 #                              CHARACTER*4, PRINT с двумя переменными.
 # Для случая 2 после *execute подаются две карты данных (prep-case2.data).
+# Случаи 8/9/10 (v3.1)      — F03 EXTERNAL/INTRINSIC, I02 CHARACTER*10,
+#                              K03 CABS -> SQRT/REAL/AIMAG.
+# Правила 17/18/19 (autoclose DO WHILE, continuation >72/20, inline
+# MAX/MIN/ABS/DIM) классифицируются host-частью prep_tools.py:<F77PREP.FTN>
+# компилируется ФОРЭКСОМ с жёстким лимитом памяти, поэтому новые правила
+# не добавляются в его собственный исходник.
 #
 # Каталог PERSO зоны 0o2300 НЕ изменяется: в рабочую копию диска 2348
 # записывается уже собранный build/FOREX_PERSO_2300.bin (как в run-glissade).
@@ -36,6 +42,16 @@ CASE2="$ROOT/tests/f77/prep-case2.f77"
 EXP2_LOW="$ROOT/tests/f77/prep-case2-expected.f77"
 EXP2_OUT="$ROOT/tests/f77/prep-case2-expected.out"
 DATA2="$ROOT/tests/f77/prep-case2.data"
+# v3.1 cases: F03 EXTERNAL/INTRINSIC, I02 CHARACTER*10, K03 CABS.
+CASE8="$ROOT/tests/f77/prep-case8.f77"
+EXP8_LOW="$ROOT/tests/f77/prep-case8-expected.f77"
+EXP8_OUT="$ROOT/tests/f77/prep-case8-expected.out"
+CASE9="$ROOT/tests/f77/prep-case9.f77"
+EXP9_LOW="$ROOT/tests/f77/prep-case9-expected.f77"
+EXP9_OUT="$ROOT/tests/f77/prep-case9-expected.out"
+CASE10="$ROOT/tests/f77/prep-case10.f77"
+EXP10_LOW="$ROOT/tests/f77/prep-case10-expected.f77"
+EXP10_OUT="$ROOT/tests/f77/prep-case10-expected.out"
 LOG_DIR="$ROOT/logs"
 LOG="$LOG_DIR/f77_prep_v2_test.txt"
 ZONE_DEC=1216                       # 0o2300
@@ -44,7 +60,9 @@ fail() { printf 'FAIL: %s\n' "$*" >&2; printf 'FAIL: %s\n' "$*" >> "$LOG"; exit 
 info() { printf '%s\n' "$*" | tee -a "$LOG"; }
 
 for f in "$DISPAK_BIN" "$ETALON" "$IMAGE" "$FTN" "$TOOLS" "$CASE1" \
-         "$EXP1_LOW" "$EXP1_OUT" "$CASE2" "$EXP2_LOW" "$EXP2_OUT" "$DATA2"; do
+         "$EXP1_LOW" "$EXP1_OUT" "$CASE2" "$EXP2_LOW" "$EXP2_OUT" "$DATA2" \
+         "$CASE8" "$EXP8_LOW" "$EXP8_OUT" "$CASE9" "$EXP9_LOW" "$EXP9_OUT" \
+         "$CASE10" "$EXP10_LOW" "$EXP10_OUT"; do
     [ -f "$f" ] || fail "нет файла: $f"
 done
 [ -x "$DISPAK_BIN" ] || fail "dispak не исполняем: $DISPAK_BIN"
@@ -156,6 +174,9 @@ run_case() {
 
 run_case case1 "$CASE1" "$EXP1_LOW" "$EXP1_OUT" ""
 run_case case2 "$CASE2" "$EXP2_LOW" "$EXP2_OUT" "$DATA2"
+run_case case8 "$CASE8" "$EXP8_LOW" "$EXP8_OUT" ""
+run_case case9 "$CASE9" "$EXP9_LOW" "$EXP9_OUT" ""
+run_case case10 "$CASE10" "$EXP10_LOW" "$EXP10_OUT" ""
 
-info "OK: оба случая пройдены (rc=0)"
+info "OK: все случаи пройдены (rc=0)"
 exit 0
