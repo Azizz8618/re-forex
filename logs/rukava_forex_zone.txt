@@ -1,0 +1,44 @@
+PROTOKOL: rukava.be — запись о PERSO-образе ФОРЭКС 5.00 в зоне 0o2300 диска 2348
+DATA: 19.11.2026
+REPO: re-forex (/tmp/.private/azizz/opencode/re-forex)
+
+ZAPIS V /home/azizz/Yandex.Disk/re-dispak/rukava.be (stroka 2959, kontse razdela karty zon 2348):
+*|  02300-02304 |  *PERSO: /FOREX 5.00/ (RE-FOREX, 19.11.26) | 1201 | 19.11.26 |
+*|              |   РЕКОНСТРУКЦИЯ ФОРЭКС ИПМ (5.00); ЗАПИСАНА В РАБОЧУЮ КОПИЮ
+*|              |   2348 ЧЕРЕЗ tests/install-forex-perso.sh; ЭТАЛОН НЕ ИЗМЕНЯЕТСЯ.
+
+ZONY: 0o2300..0o2304 == decimal 1216..1220 (5 zon, 5120 slov, 30720 bayt).
+
+--- 1. rebuild obraz ---
+$ cd /tmp/.private/azizz/opencode/re-forex && python3 tools/build_forex_perso.py
+words      : 5120 (5 zones of 1024 words)
+bytes      : 30720
+sha256     : 2cc2fbbec28883e45bb62ee72d6c4ed9747ce582ad1e6b39efd87d66c157e2b6
+version    : FOREX 5.00 / 19.11.2026 (re-forex) (TEXT stamps in tail words)
+catalog    : FOREX*, LO*SYN, LO*GEN, FORMAT, FORTLIBR, DATAPR*, OCTTDE*, GIV/PG, TAK/PG(ENTRY of GIV/PG)
+BUILD_RC=0
+
+--- 2. zapis v rabochuyu kopiyu ---
+$ bash tests/install-forex-perso.sh
+etalon sha256   : 543dac9ac85693fdf94edc02bc289b7eb2fd542d52f27b7d96de71bfba03f337
+work copy       : /tmp/.private/azizz/install-forex-perso.VEU4Xf/2348
+target zones zeroed in working copy: OK
+siprod_lib: 9 names in catalog, 8 objects found
+PASS: all expected names in catalog, all modules have loadable objects (TAK/PG is an entry point of GIV/PG)
+PLCATALOG: 9 modules listed, no ИСПОРЧЕНЫ ПОДПРОГРАММЫ
+zones 0o2300..0o2304: byte-identical to image
+zone 0o2277: unchanged (expected)
+zone 0o2305: unchanged (expected)
+etalon final sha256: 543dac9ac85693fdf94edc02bc289b7eb2fd542d52f27b7d96de71bfba03f337 (unchanged)
+OK: FOREX PERSO library installed at zone 0o2300 and verified
+INSTALL_RC=0
+
+--- 3. GLISSADA ---
+$ bash tests/run-glissade-forex.sh
+PERSO catalog (9 modules): FOREX* LO*SYN LO*GEN FORMAT FORTLIBR DATAPR* OCTTDE* GIV/PG TAK/PG
+catalog terminator: (0, FULWORD) OK
+OK: 14 строк результата совпадают с эталоном (после нормализации даты)
+GLISSADE_RC=0
+
+ETALON /usr/local/share/besm6/2348 NE IZMENYALSHA (SHA do == posle).
+Цель: dokument docs/21-rukava-forex-zone.md, skripty tests/ ne trogutye.
