@@ -147,6 +147,8 @@ def main():
     ap.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT)
     ap.add_argument("--session", default="besm6-deck", help="имя tmux-сессии")
     ap.add_argument("--ini", help="базовый ini вместо OSZAGR/dispak.ini")
+    ap.add_argument("--tape", action="store_true",
+                    help="ввод с перфоленты: at -t fs0 вместо at vu0 (UVU/*.ini)")
     ap.add_argument("--md", action="append", default=[],
                     help="доп. строка attach для SIMH (можно повторять)")
     ap.add_argument("--keep", action="store_true", help="не убивать сессию после прогона")
@@ -179,6 +181,20 @@ def main():
         log("ждём загрузки ОС (CM1П)...")
         wait_for(args.session, PROMPT_RE, args.timeout, "промпт ОС")
 
+        # Очистка входной очереди от предыдущих зависших задач нашего шифра:
+        # НОМ показывает «<шифр> <N>», ВЫБ <N> исключает задачу (1..377).
+        send(args.session, "НОМ")
+        time.sleep(2.0)
+        queued = re.findall(r"%s\s+(\d{1,3})" % re.escape(args.cipher),
+                            pane(args.session))
+        if queued:
+            log(f"очистка очереди: ВЫБ {queued}")
+            for n in queued:
+                send(args.session, f"ВЫБ {int(n)}")
+                time.sleep(0.8)
+            send(args.session, "НОМ")
+            time.sleep(2.0)
+
         # КЛЮЧЕВОЕ (re-dispak/docs/DISPAK_AGENT.md §6): сообщение
         # «ОСВОБ БУФ.ВЫВ» означает, что устройства вывода НЕ в конфигурации.
         # Операторская директива ДАЙ А0/А1 подключает АЦПУ; без неё задача
@@ -191,13 +207,14 @@ def main():
         if "ЕСТЬ" not in conf:
             log("ВНИМАНИЕ: ответа ЕСТЬ на ДАЙ А0/A1 нет — АЦПУ может быть не подключён")
 
-        log("Ctrl+G -> sim>, подаём колоду на vu0 + FS8")
+        log("Ctrl+G -> sim>, подаём колоду (" +
+            ("fs0 -t, перфолента" if args.tape else "vu0, перфокарты") + ") + FS8")
         tmux("send-keys", "-t", args.session, "C-g")
         time.sleep(0.5)
-        for cmd in (f"at vu0 {deck}",
-                    "d 6 1", "d 5 10", "set cpu req", "go"):
+        attach = f"at -t fs0 {deck}" if args.tape else f"at vu0 {deck}"
+        for cmd in (attach, "d 6 1", "d 5 10", "set cpu req", "go"):
             send(args.session, cmd)
-            time.sleep(0.3)
+            time.sleep(0.5)
 
         log(f"ждём КОНЕЦ ЗАДАЧИ (до {args.timeout} c)...")
         done = False
