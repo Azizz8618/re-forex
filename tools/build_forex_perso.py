@@ -130,6 +130,10 @@ OCTTDEC_HEAD_INDEX = 30       # internal name word inside the 32-word module
 # FOREX_RELOC=1 switches build() to this source and to build/FOREX_RELOC.bin,
 # leaving the stable PERSO image and all regression paths untouched.
 RELOC_SOURCE = ROOT / "src/reloc/FOREX_ROOT.reloc.mad"
+# F2b proof variant: all five external calls replaced by internal VJM to local
+# stubs, so the head module has zero C=0o6300 entries and generic `*CALL`
+# actually transfers control.  Stubs are no-ops; use FOREX_INLINE=1 to build.
+INLINE_SOURCE = ROOT / "src/reloc/FOREX_ROOT.inline.mad"
 
 # (catalog name, source file, first line, last line).  TAK/PG is an ENTRY
 # inside GIV/PG and is added separately, not assembled on its own.
@@ -298,9 +302,11 @@ def build() -> Path:
     # the head module only from the first module zone (zone=2, f2=0o42xx).
     _fx = next(x for x in SOURCE_SLICES if x[0] == "FOREX*")
     _reloc = os.environ.get("FOREX_RELOC") == "1"
+    _inline = os.environ.get("FOREX_INLINE") == "1"
+    _root_source = INLINE_SOURCE if _inline else RELOC_SOURCE
     _body, _load, _entry = assemble_source(
         "FOREX*", _fx[1], _fx[2], _fx[3],
-        source_file=RELOC_SOURCE if _reloc else None)
+        source_file=_root_source if _reloc else None)
     modules: list[dict] = [dict(name="FOREX*", body=_body, load=_load,
                                 entry=_entry)]
 
@@ -411,7 +417,8 @@ def build() -> Path:
 
     image = b"".join(w.to_bytes(WORD_BYTES, "big") for w in words_buf)
 
-    out = (ROOT / "build/FOREX_RELOC.bin" if _reloc else
+    out = (ROOT / ("build/FOREX_INLINE.bin" if _inline else
+                   "build/FOREX_RELOC.bin") if _reloc else
            ROOT / "build/FOREX_PERSO_2300.bin")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(image)

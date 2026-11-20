@@ -1,0 +1,97 @@
+ FOREX*:,NAME,
+ ENTRY*   :,BSS,50B.
+ FLGEX*   :,BSS,1.
+ NOLISFL* :,BSS,1.
+ FULISFL* :,BSS,1.
+ CHECKFL* :,BSS,1.
+ *DUMON*  :,BSS,5.
+ A/I0:,BSS,1.
+ *A*  :,BSS,400B.
+ INITFOR*:,ENTRY,.
+       8,BASE,*
+  ,ITA,13.
+  ,ATX,RET.
+  ,*57,6.
+  ,ATX,TIME.
+  ,XTA,.
+  ,ATX,*DUMON*+3
+  14,VTM,ENTRY*
+  ,ITA,14
+  ,ATX,*DUMON*
+  ,XTA,NOLISFL*
+  ,ATX,*DUMON*+2
+  ,UIA,NPR
+  13,VJM,XDATAPR
+  NPR:,XTA,FULISFL*
+  ,ATX,*DUMON*+1
+  ,XTA,CHECKFL*
+  ,ATX,*DUMON*+4
+  13,VJM,XGIVPG
+  LOREX:,ENTRY,.
+  ,XTS,LO*SYN
+  13,VJM,FXLODR
+  ,XTS,LO*GEN
+  13,VJM,FXLODR
+  RMON:,ENTRY,.
+  ,NTR,18
+  ,*57,6.
+  ,A-X,TIME.
+  ,A*X,=R100.0
+  ,NTR,3
+  ,A+X,A/I0
+  ,AEX,A/I0
+  13,VJM,OCTTDE*
+  ,APX,=6H'''17''17''17''17''17'
+  ,AUX,=6H'17''17''17''''17''17'
+  ,AOX,=6H'''''''16'''''
+  ,ATX,TIME.
+  13,VTM,TTEX
+  PRIN:,*64,INF
+  ,NTR,6.
+  ,XTA,*DUMON*+3
+  ,ATX,FLGEX*
+  ,WTC,RET.
+  13,UJ,.
+  13,UJ,.
+  STOP/:,ENTRY,.
+  13,VTM,MIST
+  ,ITA,13
+  ,ATX,*DUMON*+3
+  ,UJ,PRIN
+  INF:13,,
+  13,,
+  :,002,.
+  8,,
+  TTEX:,GOST,1H'212'
+  ,GOST,6HBPEMЯ-
+  TIME:,OCT,
+  ,GOST,1H'231'
+  MIST:,GOST,18H'200'0OШ. TPAHCЛЯTOPA'231'
+  LO*SYN:,TEXT,8HLO*SYN
+  LO*GEN:,TEXT,8HLO*GEN
+  RET:,BSS,1.
+C ---- F2b: inlined local callee bodies (zero external SUBP references) ----
+C Internal 13,VJM,LABEL puts the return address in M13; callee returns 13,UJ,.
+  XDATAPR:,BSS,1.
+  13,UJ,.
+  XGIVPG:,BSS,1.
+  13,UJ,.
+  XTAKPG:,BSS,1.
+  13,UJ,.
+  OCTTDE*:,BSS,1.
+  13,UJ,.
+  FXLODR:,BSS,1.
+  ,XTA,FXFLAG
+  ,U1A,FXDONE
+  ,XTA,FXONE
+  ,ATX,FXFLAG
+  ,*64,INFOP
+  FXDONE:13,UJ,.
+  FXFLAG:,BSS,1.
+  FXONE:,LOG,1
+  INFOP:,,PTEXT
+        ,,PTEXT
+        :,001,
+        8,,.
+  PTEXT:,GOST,14HM2 FOREX ROOT'231'
+  ,END,
