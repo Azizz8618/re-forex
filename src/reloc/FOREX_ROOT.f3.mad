@@ -281,9 +281,9 @@ C 1. Взять 8-символьное TEXT-слово по адресу из ac
    ,XTA,
    ,ATX,FXPAT
 C 2. Найти заголовок PERSO-каталога в ОЗУ (0o2105000).
-   ,XTA,F3START
+   ,XTA,=20000
    ,ATI,6
-   ,XTA,F3COUNT
+   ,XTA,=40000
    ,ATI,9
    F3SCAN: 6,XTA,
    ,AEX,=2105000
@@ -309,18 +309,18 @@ C 4. Имя совпало -> выбрать смещение тела по им
    F3MATCH: ,XTA,FXPAT
    ,AEX,=5457126371560000
    ,UZA,F3ISGEN
-   ,XTA,F3SYN
+   ,XTA,=5040
    ,UJ,F3COPY
-   F3ISGEN: ,XTA,F3GEN
+   F3ISGEN: ,XTA,=7100
    F3COPY: ,ATX,F3OFF
 C    Источник = CATBASE + offset (M10 = CATBASE).
    ,ITA,10
    ,A+X,F3OFF
    ,ATI,6
 C 5. Приёмник 0o22654, счётчик 1024 (0o2000), копия (overlay.asm:323-328).
-   ,XTA,F3DEST
+   ,XTA,=22654
    ,ATI,7
-   ,XTA,F3LEN
+   ,XTA,=2000
    ,ATI,9
    F3CP: 6,XTA,
    7,ATX,
@@ -334,10 +334,10 @@ C    значение слова +4 статически не выводится
    ,XTA,FXPAT
    ,AEX,=5457126371560000
    ,UZA,F3BASE7
-   ,XTA,F3DEST
+   ,XTA,=22654
    ,ATI,1
    ,UJ,F3DONE
-   F3BASE7: ,XTA,F3DEST
+   F3BASE7: ,XTA,=22654
    ,ATI,7
 C 7. Восстановить M13 и вернуться.
    F3DONE: ,XTA,FXSAVE
@@ -348,10 +348,4 @@ C ---- Данные ----
    FXSAVE:,BSS,1.
    FXPAT:,BSS,1.
    F3OFF:,BSS,1.
-   F3START:,OCT,20000
-   F3COUNT:,OCT,40000
-   F3SYN:,OCT,2592
-   F3GEN:,OCT,3648
-   F3DEST:,OCT,22654
-   F3LEN:,OCT,2000
    ,END,
