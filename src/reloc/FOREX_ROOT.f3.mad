@@ -26,7 +26,7 @@
   ,ATX,*DUMON*+1
   ,XTA,CHECKFL*
   ,ATX,*DUMON*+4
-  13,VJM,XGIVPG
+  13,VJM,*C
   LOREX:,ENTRY,.
   ,XTS,LO*SYN
   13,VJM,FXLODR
@@ -171,7 +171,7 @@ C ---- F3b: real GIV/PG+TAK/PG (libra211.l21:16780-16836) inlined ----
  ,ASN,64+12
  ,ATX,FL*SAV.
  13,UZA,.
- ,*72,=:11 4037 77
+ ,NTR,0
  ,XTA,=73401
  ,ATX,INFLOA.
  ,ATI,15.
@@ -257,7 +257,7 @@ C ---- F3b: real OCTTDEC source inlined ----
          :  ,REAL ,10.0                   .
  C1      :  ,REAL ,1.0                    .
  ZERO    :  ,8TEXT,''000000''             .
-   FXLODR:,BSS,1.
+   FXLODR:,BSS,.
 C === F3a: REAL FXLODR, LOCAL CALLEE, ZERO EXTERNAL SUBP ===================
 C Вход : acc = адрес TEXT-имени LO*SYN (0o4031) / LO*GEN (0o4032).
 C Вызов: 13,VJM,FXLODR (M13 = адрес возврата в LOREX).
@@ -274,6 +274,8 @@ C   Если каталог окажется another image, поправить F
 C
 C 0. Сохранить имя и M13 (scratch: M6/M7/M9/M10/M12).
    ,ATX,FXNAME
+   ,ITA,14
+   ,ATI,17
    ,ITA,13.
    ,ATX,FXSAVE
 C 1. Взять 8-символьное TEXT-слово по адресу из acc.
@@ -340,7 +342,9 @@ C    значение слова +4 статически не выводится
    F3BASE7: ,XTA,=22654
    ,ATI,7
 C 7. Восстановить M13 и вернуться.
-   F3DONE: ,XTA,FXSAVE
+   F3DONE: ,ITA,17
+   ,ATI,14
+   ,XTA,FXSAVE
    ,ATI,13
    13,UJ,.
 C ---- Данные ----
