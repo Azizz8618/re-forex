@@ -134,6 +134,8 @@ RELOC_SOURCE = ROOT / "src/reloc/FOREX_ROOT.reloc.mad"
 # stubs, so the head module has zero C=0o6300 entries and generic `*CALL`
 # actually transfers control.  Stubs are no-ops; use FOREX_INLINE=1 to build.
 INLINE_SOURCE = ROOT / "src/reloc/FOREX_ROOT.inline.mad"
+# F3: real FXLODR (F3a) + real runtime helpers (F3b) in one local module.
+F3_SOURCE = ROOT / "src/reloc/FOREX_ROOT.f3.mad"
 
 # (catalog name, source file, first line, last line).  TAK/PG is an ENTRY
 # inside GIV/PG and is added separately, not assembled on its own.
@@ -303,7 +305,8 @@ def build() -> Path:
     _fx = next(x for x in SOURCE_SLICES if x[0] == "FOREX*")
     _reloc = os.environ.get("FOREX_RELOC") == "1"
     _inline = os.environ.get("FOREX_INLINE") == "1"
-    _root_source = INLINE_SOURCE if _inline else RELOC_SOURCE
+    _f3 = os.environ.get("FOREX_F3") == "1"
+    _root_source = F3_SOURCE if _f3 else INLINE_SOURCE if _inline else RELOC_SOURCE
     _body, _load, _entry = assemble_source(
         "FOREX*", _fx[1], _fx[2], _fx[3],
         source_file=_root_source if _reloc else None)
@@ -417,8 +420,10 @@ def build() -> Path:
 
     image = b"".join(w.to_bytes(WORD_BYTES, "big") for w in words_buf)
 
-    out = (ROOT / ("build/FOREX_INLINE.bin" if _inline else
-                   "build/FOREX_RELOC.bin") if _reloc else
+    _reloc_name = ("build/FOREX_F3.bin" if _f3 else
+                   "build/FOREX_INLINE.bin" if _inline else
+                   "build/FOREX_RELOC.bin")
+    out = (ROOT / _reloc_name if _reloc else
            ROOT / "build/FOREX_PERSO_2300.bin")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(image)

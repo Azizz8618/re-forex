@@ -1,0 +1,357 @@
+ FOREX*:,NAME,
+ ENTRY*   :,BSS,50B.
+ FLGEX*   :,BSS,1.
+ NOLISFL* :,BSS,1.
+ FULISFL* :,BSS,1.
+ CHECKFL* :,BSS,1.
+ *DUMON*  :,BSS,5.
+ A/I0:,BSS,1.
+ *A*  :,BSS,400B.
+ INITFOR*:,ENTRY,.
+       8,BASE,*
+  ,ITA,13.
+  ,ATX,RET.
+  ,*57,6.
+  ,ATX,TIME.
+  ,XTA,.
+  ,ATX,*DUMON*+3
+  14,VTM,ENTRY*
+  ,ITA,14
+  ,ATX,*DUMON*
+  ,XTA,NOLISFL*
+  ,ATX,*DUMON*+2
+  ,UIA,NPR
+  13,VJM,XDATAPR
+  NPR:,XTA,FULISFL*
+  ,ATX,*DUMON*+1
+  ,XTA,CHECKFL*
+  ,ATX,*DUMON*+4
+  13,VJM,XGIVPG
+  LOREX:,ENTRY,.
+  ,XTS,LO*SYN
+  13,VJM,FXLODR
+  ,XTS,LO*GEN
+  13,VJM,FXLODR
+  RMON:,ENTRY,.
+  ,NTR,18
+  ,*57,6.
+  ,A-X,TIME.
+  ,A*X,=R100.0
+  ,NTR,3
+  ,A+X,A/I0
+  ,AEX,A/I0
+  13,VJM,OCTTDE*
+  ,APX,=6H'''17''17''17''17''17'
+  ,AUX,=6H'17''17''17''''17''17'
+  ,AOX,=6H'''''''16'''''
+  ,ATX,TIME.
+  13,VTM,TTEX
+  PRIN:,*64,INF
+  ,NTR,6.
+  ,XTA,*DUMON*+3
+  ,ATX,FLGEX*
+  ,WTC,RET.
+  13,UJ,.
+  13,UJ,.
+  STOP/:,ENTRY,.
+  13,VTM,MIST
+  ,ITA,13
+  ,ATX,*DUMON*+3
+  ,UJ,PRIN
+  INF:13,,
+  13,,
+  :,002,.
+  8,,
+  TTEX:,GOST,1H'212'
+  ,GOST,6HBPEMЯ-
+  TIME:,OCT,
+  ,GOST,1H'231'
+  MIST:,GOST,18H'200'0OШ. TPAHCЛЯTOPA'231'
+  LO*SYN:,TEXT,8HLO*SYN
+  LO*GEN:,TEXT,8HLO*GEN
+  RET:,BSS,1.
+C ---- F2b: inlined local callee bodies (zero external SUBP references) ----
+C Internal 13,VJM,LABEL puts the return address in M13; callee returns 13,UJ,.
+C ---- F3b: real DATAPR* (system1.txt:7645-7733) inlined ----
+  XDATAPR:,BSS,.
+ DATA*:,BSS,2
+C-------------------------------------------
+C ПEЧATЬ ДATЫ
+C ПO ФOPMATY  DD MON 7Y HH.MM
+C-------------------------------------------
+ ,ITS,13
+ 13,BASE,DARET
+ DATE*:,ENTRY,
+ DATE*:,BSS,
+ ,ITS,.
+ ,FUN,67B.DD.MM.YY.HH.MM
+ ,NTR,6
+ 13,UJ,.
+ DARET:,BSS,
+ ,XTS,DATE0
+ 15,XTS,-2
+ ,AUX,DMASK
+ ,ASN,64+16.
+ ,AOX,DATE1
+ 15,XTS,-3
+ ,AAX,MONTHFI
+ ,ASN,64+35
+ 15,ATX,
+ ,YTA,
+ 14,VTM,24
+ ,UZA,L1
+ 14,VTM,
+ L1:15,WTC,
+ ,XTA,MARR
+ 14,ASN,64
+ ,ASN,64-24
+ 15,XTS,-4
+ ,ASN,64-14.
+ ,AUX,YMASK
+ 15,AOX,
+ ,AOX,DATE2
+ 15,XTS,-4
+ ,ASN,64-22.
+ ,AUX,TMASK
+ ,AOX,DATE3
+ ,XTS,DATE4
+ 15,XTS,-8
+ 15,MTJ,13
+ ,UZA,L2
+ 13,UTM,1
+ L2:,UTC,L3
+ ,PRINT,
+ 15,UTM,-6
+ 15,XTA,
+ ,STI,13
+ 13,UJ,
+ PREPDAT:,ENTRY,
+ ,ITS,13.
+ 13,VJM,DATE*
+ B:13,BAS,B
+ 15,ATX,
+ ,ASN,64-14
+ ,AUX,=6H'17''17'''''''''
+ ,AOX,=6H00
+ ,STX,DATA*+1
+ ,AUX,=6H'3''17''''17''17'''
+ ,AOX,=6H00/00/
+ ,STX,DATA*
+ ,STI,13
+ ,UJ,XDATAPR
+ L3:13,Z00,-5
+ 15,Z00,-1
+ DATE0:,GOST,6H'201'  '200'7
+ DATE1:,GOST,2H '200'
+C ПOЗИЦИИ
+ ,CONT,1H'055'
+ ,CONT,3H00
+ DATE2:,GOST,6H000 00.
+ DATE4:,BSS,
+ MARR:,GOST,6H'231'  ЯHB
+ ,GOST,6HФEBMAP
+ ,GOST,6HAПPMAЯ
+ ,GOST,6HИЮHИЮЛ
+ ,GOST,6HABГCEH
+ DATE3:,GOST,6H 00.00
+ DMASK:,BSS,.
+ TMASK:,GOST,6H03 0
+ YMASK:,GOST,6H0000  .
+ ,GOST,6HOKTHOЯ
+ ,GOST,6HДEK
+ MONTHFI:,OCT,00 776
+C ---- F3b: real GIV/PG+TAK/PG (libra211.l21:16780-16836) inlined ----
+  XGIVPG:,BSS,.
+ INFLOA:,BSS,3
+ KCOUNT*:,BSS,1.
+ RM*:,BSS,4
+ *C:12,BASE,*C.
+ ,XTA,RM*+2
+ ,AEX,=73401
+ ,ASN,64+12
+ ,ATX,FL*SAV.
+ 13,UZA,.
+ ,*72,=:11 4037 77
+ ,XTA,=73401
+ ,ATX,INFLOA.
+ ,ATI,15.
+ ,AEX,RM*+2
+ ,ASN,64-20
+ ,ATX,*W.
+ COMM:14,VTM,-2
+ L/S:14,UTC,2.
+ ,XTA,INFLOA
+ ,AEX,*W
+ 14,UTC,2
+ ,ATX,INFLOA
+ 14,VLM,L/S.
+ ,XTA,17B.
+ ,ATX,*S
+ ,ITA,15.
+ ,AEX,Э67
+ ,ATX,Э67*
+ ,XTA,K67
+ ,CTX,17B.
+ ,UJ,17B.
+ R17:,XTA,*S.
+ ,ATX,17B.
+ 13,UJ,
+ Э67:,Z00,R17
+ 9,,1
+ K67:,*67,Э67*.
+  XTAKPG:,ENTRY,.
+ 12,VTM,*C.
+ ,XTA,FL*SAV.
+ 13,UZA,.
+ ,XTA,RM*+2
+ ,ATI,15.
+ ,AAX,=4000
+ ,UIA,GO.
+ ,*72,=:00 2677
+ GO:,*72,=:00 6736 77
+ ,UJ,COMM.
+ *W     :,BSS,1.
+ FL*SAV: ,BSS,1.
+ Э67*  : ,BSS,1.
+ *S    : ,BSS,1.
+C ---- F3b: real OCTTDEC source inlined ----
+  OCTTDE*:,BSS,.
+ C       :  ,BSS,
+ BEGIN   :12,VTM,C                        .
+            ,XTS,                         .
+          12,STX,DEC-C                    .
+          12,AAX,=777 7777-C
+          12,AOX,INT0-C                   .
+          12,ATX,OCT-C                    .
+          14,VTM,-5
+ CYCL    :  ,NTR,                         .
+          12,XTA,OCT-C                    .
+          14,UTC,C1                       .
+            ,A/X,                         .
+            ,NTR,3                        .
+          12,A+X,INT0-C                   .
+          15,ATX,                         .
+            ,NTR,2                        .
+          14,UTC,C1                       .
+            ,A*X,                         .
+          12,X-A,OCT-C                    .
+          12,STX,OCT-C                    .
+          12,AAX,MASK15-C                 .
+          12,AOX,DEC-C                    .
+          14,VLM,/6SYMB
+          12,AOX,ZERO-C                   .
+            ,NTR,10                       .
+          13, UJ,                         .
+ /6SYMB  :  ,BSS,
+            ,ASN,64-8                     .
+          12,ATX,DEC-C                    .
+            , UJ,CYCL
+ OCT     :  ,OCT  ,                       .
+ MASK15  :  ,OCT  ,0000000000077777       .
+ INT0    :  ,INT  ,0
+ DEC     :  ,OCT  ,                       .
+         :  ,REAL,100000.0
+         :  ,REAL ,10000.0                .
+         :  ,REAL ,1000.0                 .
+         :  ,REAL ,100.0                  .
+         :  ,REAL ,10.0                   .
+ C1      :  ,REAL ,1.0                    .
+ ZERO    :  ,8TEXT,''000000''             .
+   FXLODR:,BSS,1.
+C === F3a: REAL FXLODR, LOCAL CALLEE, ZERO EXTERNAL SUBP ===================
+C Вход : acc = адрес TEXT-имени LO*SYN (0o4031) / LO*GEN (0o4032).
+C Вызов: 13,VJM,FXLODR (M13 = адрес возврата в LOREX).
+C Возврат: 13,UJ, с восстановленным M13.
+C
+C ФАКТ (проба run_ram): PERSO-образ с каталогом Присутствует в ОЗУ задачи:
+C   сканирование слова HEADER_WORD=0o2105000 в диапазоне 0o20000..0o60000
+C   нашло его, после чего цикл копии 1024 слова выполнился и напечатал
+C   'F3 COPY OK'. Значит CATALOG доступен по прямому чтению, без *70/барабана.
+C ГИПОТЕЗА: смещения тел в образе фиксированы сборщиком
+C   (tools/build_forex_perso.py:349-371): BODYSYN=2464, BODYGEN=3520
+C   (десятичные номера слов build/FOREX_INLINE.bin, 0o4640/0o6700).
+C   Если каталог окажется another image, поправить F3SYN/F3GEN.
+C
+C 0. Сохранить имя и M13 (scratch: M6/M7/M9/M10/M12).
+   ,ATX,FXNAME
+   ,ITA,13.
+   ,ATX,FXSAVE
+C 1. Взять 8-символьное TEXT-слово по адресу из acc.
+   ,XTA,FXNAME
+   ,XTA,
+   ,ATX,FXPAT
+C 2. Найти заголовок PERSO-каталога в ОЗУ (0o2105000).
+   ,XTA,F3START
+   ,ATI,6
+   ,XTA,F3COUNT
+   ,ATI,9
+   F3SCAN: 6,XTA,
+   ,AEX,=2105000
+   ,UZA,F3HDR
+   6,UTM,1
+   9,UTM,-1
+   9,V1M,F3SCAN
+   ,UJ,F3DONE
+C 3. Обход пар (name,record) со слова CATBASE+2; terminator name=0.
+C    Шаблон: monitor80-re/utility/overlay.asm:299-302.
+   F3HDR: ,ITA,6
+   ,ATI,10
+   ,ITA,10
+   ,ATI,12
+   12,UTM,2
+   F3SCAN2: 12,XTA,
+   ,UZA,F3DONE
+   ,AEX,FXPAT
+   ,UZA,F3MATCH
+   12,UTM,2
+   ,UJ,F3SCAN2
+C 4. Имя совпало -> выбрать смещение тела по имени.
+   F3MATCH: ,XTA,FXPAT
+   ,AEX,=5457126371560000
+   ,UZA,F3ISGEN
+   ,XTA,F3SYN
+   ,UJ,F3COPY
+   F3ISGEN: ,XTA,F3GEN
+   F3COPY: ,ATX,F3OFF
+C    Источник = CATBASE + offset (M10 = CATBASE).
+   ,ITA,10
+   ,A+X,F3OFF
+   ,ATI,6
+C 5. Приёмник 0o22654, счётчик 1024 (0o2000), копия (overlay.asm:323-328).
+   ,XTA,F3DEST
+   ,ATI,7
+   ,XTA,F3LEN
+   ,ATI,9
+   F3CP: 6,XTA,
+   7,ATX,
+   6,UTM,1
+   7,UTM,1
+   9,UTM,-1
+   9,V1M,F3CP
+C 6. База M1 (SYN) / M7 (GEN) из слова DEST+4 (документированная
+C    альтернатива: база = адрес загруженного тела 0o22654; точное
+C    значение слова +4 статически не выводится).
+   ,XTA,FXPAT
+   ,AEX,=5457126371560000
+   ,UZA,F3BASE7
+   ,XTA,F3DEST
+   ,ATI,1
+   ,UJ,F3DONE
+   F3BASE7: ,XTA,F3DEST
+   ,ATI,7
+C 7. Восстановить M13 и вернуться.
+   F3DONE: ,XTA,FXSAVE
+   ,ATI,13
+   13,UJ,.
+C ---- Данные ----
+   FXNAME:,BSS,1.
+   FXSAVE:,BSS,1.
+   FXPAT:,BSS,1.
+   F3OFF:,BSS,1.
+   F3START:,OCT,20000
+   F3COUNT:,OCT,40000
+   F3SYN:,OCT,2592
+   F3GEN:,OCT,3648
+   F3DEST:,OCT,22654
+   F3LEN:,OCT,2000
+   ,END,
