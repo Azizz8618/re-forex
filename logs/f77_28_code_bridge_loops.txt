@@ -1,0 +1,92 @@
+P7c / H3 / f77_28_code — выгрузка ВСЕХ циклов и переходов моста, зависящих от /FILMAP/
+Источники: /var/tmp/p7c-arfa-lib/lib/p7clib.f, p7ceng.mad, build/mklib.py
+Режим: READ-ONLY. Дата: 20.11.2026
+
+=== p7clib.f: ZFOPEN (строки 7-49) ===
+12  I = 1
+13  10 IF (I .GT. 16) GO TO 20
+14     B = 1 + 15*(I-1)
+15     IF (FM(B+1) .EQ. 0) GO TO 30
+16     I = I + 1
+17     GO TO 10
+18  20 ISTAT = 1
+20  30 FM(B+0) = NM(1)
+21     FM(B+1) = NM(2)
+22     FM(B+2) = LUN
+23     FM(B+6) = NZ
+24     FM(B+9) = 0
+25     FM(249)  = 0
+26     CALL ZE01
+27     IF (FM(249) .EQ. 0) GO TO 28
+28     IF (FM(249) .NE. 6) GO TO 60
+30     CALL ZE12
+31     IF (FM(249) .NE. 0) GO TO 60
+34     IF (FM(248) .NE. 0) GO TO 55
+35     FM(B+3) = 41
+37  55 FM(B+3) = FM(248)
+40     FM(249)  = 0
+41     CALL ZE30
+42     IF (FM(249) .NE. 0) GO TO 60
+43     FM(B+9) = 0
+46  60 FM(B+9) = FM(249)
+=== p7clib.f: ZFCLOSE (52-79) ===
+57  I = 1
+58  10 IF (I .GT. 16) GO TO 20
+59     B = 1 + 15*(I-1)
+60     IF (FM(B+2) .EQ. LUN) GO TO 30
+61     I = I + 1
+62     GO TO 10
+65     FM(249) = 0
+66     CALL ZE31
+67     IF (FM(249) .NE. 0) GO TO 60
+68     IF (DEL .EQ. 0) GO TO 50
+69     CALL ZE02
+70     IF (FM(249) .NE. 0) GO TO 60
+71  50 FM(B+2) = 0 / 72 FM(B+3)=0 / 73 FM(B+9)=0
+=== p7clib.f: ZFINQ (82-105) ===
+90  I = 1
+91  10 IF (I .GT. 16) GO TO 40
+92     B = 1 + 15*(I-1)
+93     IF (FM(B+2) .EQ. LUN) GO TO 20
+94     I = I + 1
+95     GO TO 10
+96  20 OPENED = 1 / 97 FM(249)=0 / 98 CALL ZE07 / 99 IF(FM(249).EQ.0) EXIST=1
+101 40 FM(249)=0 / 102 CALL ZE07 / 103 IF(FM(249).EQ.0) EXIST=1
+=== p7clib.f: ZFWRIT (108-131) ===
+113 ISTAT = 1
+114 I = 1
+115 10 IF (I .GT. 16) RETURN
+116    B = 1 + 15*(I-1)
+117    IF (FM(B+2) .EQ. LUN) GO TO 20
+118    I = I + 1
+119    GO TO 10
+120 20 IF (FM(B+3) .EQ. 0) RETURN
+121    DO 25 I=1,N
+122 25 FM(256+I) = BUF(I)
+123    FM(249)=0 / 124 CALL ZE70W / 125 FM(B+9)=FM(249) / 126 ISTAT=FM(249)
+127    IF (ISTAT .NE. 0) RETURN
+128    FM(B+7)=FM(B+7)+1
+129    IF (FM(B+7) .GE. FM(B+6)) FM(B+8)=1
+=== p7clib.f: ZFREAD (134-161) ===
+139 ISTAT = 1
+140 I = 1
+141 10 IF (I .GT. 16) RETURN
+142    B = 1 + 15*(I-1)
+143    IF (FM(B+2) .EQ. LUN) GO TO 20
+144    I = I + 1
+145    GO TO 10
+146 20 IF (FM(B+3) .EQ. 0) RETURN
+147    IF (FM(B+7) .GE. FM(B+6)) GO TO 90
+148    FM(249)=0 / 149 CALL ZE70R / 150 FM(B+9)=FM(249) / 151 ISTAT=FM(249)
+152    IF (ISTAT .NE. 0) RETURN
+153    DO 26 I=1,N
+154 26 BUF(I)=FM(256+I)
+155    FM(B+7)=FM(B+7)+1
+157 90 FM(B+8)=1 / 158 FM(B+9)=-1 / 159 ISTAT=-1
+
+=== АНАЛИЗ ЦИКЛОВ ===
+Все 5 поисков слота: I ограничен 16, инкремент есть -> НЕ бесконечные.
+DO 25 / DO 26: ограничены N -> НЕ бесконечные; при N>8 выход за FM(320).
+МАДЛЕН (p7ceng.mad): ZE70W 117-141 и ZE70R 164-183 — развёрнутые копии
+ровно 8 слов, циклов НЕТ. Э63-вызовы используют константы, не FILMAP.
+VERDICT: в коде моста бесконечного цикла НЕТ.

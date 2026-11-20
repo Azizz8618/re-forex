@@ -1,0 +1,81 @@
+[10:43:15] start p7c-imm-deck
+[10:43:20] CM1П prompt seen
+[10:43:21] Ctrl+G ->  CM1П:00.00.ЭBM-3  ДATA:20.11.26 BPEMЯ:10.43.00  000.0 | Simulation stopped, "СчАС": 04440 (-> цикл 4440(15), цикл 4432(1)) | sim>
+[10:43:21] CMD 'at vu0 /var/tmp/p7c-hang-cmds/VVOD/p7ct.txt' rc=-1 proc=('1632945', 'Ss') tail=sim> at vu0 /var/tmp/p7c-hang-cmds/VVOD/p7ct.txt|sim>
+[10:43:22] CMD 'd 6 1'                                       rc=-1 proc=('1632945', 'Ss') tail=sim> d 6 1|sim>
+[10:43:22] CMD 'd 5 10'                                      rc=-1 proc=('1632945', 'Ss') tail=sim> d 5 10|sim>
+[10:43:23] CMD 'set cpu req'                                 rc=-1 proc=('1632945', 'Ss') tail=sim> set cpu req|sim>
+[10:43:23] CMD 'go' rc=-1 proc=('1632945', 'Ss')
+[10:43:25] B075 seen at t+2.5s after go
+[10:43:25] t+ 2.5s proc=('1632945', 'Ss') lines=151 tail=0| B075-1 410300000000|
+[10:43:28] t+ 5.0s proc=('1632945', 'Ss') lines=151 tail=0| B075-1 410300000000|
+[10:43:30] t+ 7.5s proc=('1632945', 'Ss') lines=151 tail=0| B075-1 410300000000|
+[10:43:33] t+10.0s proc=('1632945', 'Ss') lines=151 tail=0| B075-1 410300000000|
+[10:43:35] t+12.5s proc=('1632945', 'Ss') lines=151 tail=0| B075-1 410300000000|
+[10:43:38] t+15.0s proc=('1632945', 'Ss') lines=151 tail=0| B075-1 410300000000|
+[10:43:40] t+17.5s proc=('1632945', 'Ss') lines=151 tail=0| B075-1 410300000000|
+[10:43:40] probe НОМ after apparent hang:
+[10:43:43]   rc=-1 proc=('1632945', 'Ss') tail=sim> d 5 10|sim> set cpu req|sim> go|0| B075-1 410300000000|НОМ
+[10:43:43] probe ВЦП:
+[10:43:46]   rc=-1 proc=('1632945', 'Ss') tail=sim> d 5 10|sim> set cpu req|sim> go|0| B075-1 410300000000|НОМ
+[10:43:46] FINAL tail:
+%SIM-INFO: MG62: Tape Image '/var/tmp/p7c-hang-cmds/ML/207' scanned as SIMH format
+%SIM-INFO: contains 8520192 bytes of tape data (1032 records, 0 tapemarks)
+%SIM-INFO: A potentially unreasonable number of record sizes(1) vs tape marks (0) have been found
+%SIM-INFO: The tape format (SIMH) might not be correct for the '/var/tmp/p7c-hang-cmds/ML/207' tape image
+./dispak_copy.ini-65> attach -n prn0 /var/tmp/p7c-hang-cmds/ACPU/output.txt
+%SIM-INFO: PRN0: creating new file: /var/tmp/p7c-hang-cmds/ACPU/output.txt
+./dispak_copy.ini-66> attach -n prn1 /var/tmp/p7c-hang-cmds/ACPU/output1.txt
+%SIM-INFO: PRN1: creating new file: /var/tmp/p7c-hang-cmds/ACPU/output1.txt
+./dispak_copy.ini-67> attach -n vu0 /var/tmp/p7c-hang-cmds/VVOD/punchcard.txt
+%SIM-INFO: VU0: creating new file: /var/tmp/p7c-hang-cmds/VVOD/punchcard.txt
+./dispak_copy.ini-68> attach -n pi0 /var/tmp/p7c-hang-cmds/VVOD/punchcard1.txt
+%SIM-INFO: PI0: creating new file: /var/tmp/p7c-hang-cmds/VVOD/punchcard1.txt
+./dispak_copy.ini-69> attach -n pl0 /var/tmp/p7c-hang-cmds/VVOD/punch.txt
+%SIM-INFO: PL0: creating new file: /var/tmp/p7c-hang-cmds/VVOD/punch.txt
+*** console on T001
+###
+### Zeroing out the first page of RAM (as would be entered from
+### switch registers after powering up the machine,
+### likely about once a year or less).
+###
+write cache [7] = '                                                '
+write cache [6] = '                                                '
+write cache [5] = '                                                '
+write cache [4] = '                                                '
+write cache [3] = '                                                '
+write cache [2] = '                                                '
+write cache [1] = '                                                '
+write cache [0] = '                                                '
+
+Останов, "СчАС": 00004 (-> зп, зп)
+###
+### Done; data cache registers are displayed above. An error message
+### would be usually displayed there after a STOP instruction.
+### Naturally, at the moment they all contain zeros. Booting the OS now...
+###
+Resetting all devices...  This may not have been your intention.
+The GO and CONTINUE commands do not reset devices.
+>>> MUX: clear, PRP = 01400
+  2248 - 01
+  2061 - 21
+  2070 - 41
+ 20.11.24   10.42.00
+ 1HMБ-01234567     2HMБ-34567
+  PEC:  1710
+ ECTЬ
+ ПP.MГ - 44
+ ПP.MГ - 43
+  0209 - 50
+ ДATA:20.11.26 BPEMЯ:10.43.00
+ ЧП(001) 419919810623 10.42 M=000
+ CM1П:00.00.ЭBM-3  ДATA:20.11.26 BPEMЯ:10.43.00  000.0
+Simulation stopped, "СчАС": 04440 (-> цикл 4440(15), цикл 4432(1))
+sim> at vu0 /var/tmp/p7c-hang-cmds/VVOD/p7ct.txt
+sim> d 6 1
+sim> d 5 10
+sim> set cpu req
+sim> go
+0
+ B075-1 410300000000
+НОМ

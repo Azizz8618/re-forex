@@ -73,18 +73,13 @@ def pane(session, history=2000):
 def send(session, text, enter=True):
     """Подать команду в панель терминала.
 
-    Кириллические директивы ОС (ДАЙ, НОМ, ВЦП, ВЫБ) надёжно идут только
-    через pipe-buffer (см. ВВОД_АНАЛИЗ.md §3.4а); send-keys с кириллицей
-    искажает символы. Чтение ответа — только через capture-pane (pane()).
+    tmux pipe-buffer в этой сборке отсутствует (3.7b): всегда работал
+    fallback send-keys. Кириллица принимается терминалом ОС (tty1 unicode),
+    транслитерация не нужна. Ответ читается через capture-pane (pane()).
     """
-    payload = text + ("\r" if enter else "")
-    r = subprocess.run(["tmux", "pipe-buffer", "-t", session, "-"],
-                       input=payload, text=True, capture_output=True)
-    if r.returncode != 0:
-        # fallback для ASCII-команд SIMH на старых tmux без pipe-buffer
-        tmux("send-keys", "-t", session, text)
-        if enter:
-            tmux("send-keys", "-t", session, "Enter")
+    tmux("send-keys", "-t", session, text)
+    if enter:
+        tmux("send-keys", "-t", session, "Enter")
 
 
 def make_ini(work: Path, prn_path: Path, vu_path: Path, base=None, extra=None) -> Path:
@@ -210,7 +205,7 @@ def main():
         log("Ctrl+G -> sim>, подаём колоду (" +
             ("fs0 -t, перфолента" if args.tape else "vu0, перфокарты") + ") + FS8")
         tmux("send-keys", "-t", args.session, "C-g")
-        time.sleep(0.5)
+        wait_for(args.session, re.compile(r"sim>\s*$"), 10, "приглашение sim>")
         attach = f"at -t fs0 {deck}" if args.tape else f"at vu0 {deck}"
         for cmd in (attach, "d 6 1", "d 5 10", "set cpu req", "go"):
             send(args.session, cmd)
@@ -231,7 +226,7 @@ def main():
         # терминал свободен; список — система ещё занята. ВЦП <N канала>
         # дополнительно показывает обмен с МД/МГ (ЗП/ЧТ, зона, бобина).
         # re-dispak/Dispak-operator-guide.md §4.3.1, ВВОД_АНАЛИЗ.md §3.4а.
-        if "sim>" in pane(args.session).splitlines()[-1]:
+        if (pane(args.session).splitlines() or [""])[-1].find("sim>") >= 0:
             send(args.session, "go")
             time.sleep(1.0)
         send(args.session, "ВЦП")
@@ -255,7 +250,7 @@ def main():
         # выталкивается из буфера командами НОМ (список задач) и ВЫБ <N>
         # (исключить задачу с буфера, re-dispak/Dispak-operator-guide.md §4.4.5,
         # §5.6). Номер задачи берём из строки КЗ/ОЗ/ЧП вида КЗ(075).
-        if "sim>" in pane(args.session).splitlines()[-1]:
+        if (pane(args.session).splitlines() or [""])[-1].find("sim>") >= 0:
             send(args.session, "go")  # вернуть CPU из останова в ОС
             time.sleep(1.0)
         send(args.session, "НОМ")

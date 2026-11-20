@@ -1,0 +1,52 @@
+[10:47:27] booted
+[10:47:28] after Ctrl+G: ['sim>']
+[10:47:29] deck submitted
+[10:47:30] B075-1 seen
+[10:47:35] stop PC=21211 tail=['sim>']
+[10:47:39] stop PC=75361 tail=['sim>']
+[10:47:44] stop PC=74131 tail=['sim>']
+[10:47:49] stop PC=66643 tail=['sim>']
+[10:47:54] stop PC=66643 tail=['sim>']
+[10:47:59] stop PC=74776 tail=['sim>']
+[10:47:59] PCs=['21211', '75361', '74131', '66643', '66643', '74776']
+[10:47:59] FINAL tail:
+  2061 - 21
+  2070 - 41
+ 20.11.24   10.46.00
+ 1HMБ-01234567     2HMБ-34567
+  PEC:  1710
+ ECTЬ
+ ПP.MГ - 44
+ ПP.MГ - 43
+  0209 - 50
+ ДATA:20.11.26 BPEMЯ:10.47.00
+ ОCBОБ БУФ.BЫB
+ CM1П:00.00.
+Simulation stopped, "СчАС": 04440 (-> цикл 4440(15), цикл 4432(1))
+sim> at vu0 /var/tmp/p7c-hang-cmds/VVOD/p7ct.txt
+sim> d 6 1
+sim> d 5 10
+sim> set cpu req
+sim> go
+ЭBM-3  ДATA:20.11.26 BPEMЯ:10.47.00  000.00
+ ЧП(001) 419919810623 10.46 M=000
+ B075-1 410300000000
+
+Simulation stopped, "СчАС": 21211 (сч 73362, -> и 152(10))
+sim> go
+
+Simulation stopped, "СчАС": 75361 (-> или 151, или 152)
+sim> go
+
+Simulation stopped, "СчАС": 74131 (-> или 73411(16), пе 77632)
+sim> go
+
+Simulation stopped, "СчАС": 66643 (-> зп 72266(2), цикл 66642(2))
+sim> go
+
+Simulation stopped, "СчАС": 66643 (-> зп 72266(2), цикл 66642(2))
+sim> go
+
+Simulation stopped, "СчАС": 74776 (сбр 163, -> цикл 74776(2))
+sim> go
+

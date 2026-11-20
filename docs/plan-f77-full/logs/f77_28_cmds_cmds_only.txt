@@ -1,0 +1,64 @@
+[10:42:38] start p7c-a-cmdonly
+[10:42:43] CM1П prompt seen
+[10:42:45] CMD 'НОМ'        rc=-1 proc=('1632195', 'Ss') NEW=['НОМ', ' 419919810623  001']
+[10:42:47] CMD 'ДАЙ А0'     rc=-1 proc=('1632195', 'Ss') NEW=['ДАЙ А0']
+[10:42:49] CMD 'ДАЙ А1'     rc=-1 proc=('1632195', 'Ss') NEW=['ДАЙ А1']
+[10:42:51] CMD 'НОМ'        rc=-1 proc=('1632195', 'Ss') NEW=[]
+[10:42:53] CMD 'ВЦП'        rc=-1 proc=('1632195', 'Ss') NEW=['ВЦП', ' ЗHET']
+[10:42:55] CMD 'ВЦП Р'      rc=-1 proc=('1632195', 'Ss') NEW=['ВЦП Р', ' HET']
+[10:42:57] CMD 'НОМ'        rc=-1 proc=('1632195', 'Ss') NEW=[]
+[10:42:59] CMD 'ВЫБ 1'      rc=-1 proc=('1632195', 'Ss') NEW=['ВЫБ 1']
+[10:43:01] CMD 'НОМ'        rc=-1 proc=('1632195', 'Ss') NEW=[]
+[10:43:03] CMD 'НШИФ'       rc=-1 proc=('1632195', 'Ss') NEW=['НШИФ', ' ОШИБ']
+[10:43:05] CMD 'НОМ'        rc=-1 proc=('1632195', 'Ss') NEW=[]
+[10:43:05] FINAL tail:
+write cache [3] = '                                                '
+write cache [2] = '                                                '
+write cache [1] = '                                                '
+write cache [0] = '                                                '
+
+Останов, "СчАС": 00004 (-> зп, зп)
+###
+### Done; data cache registers are displayed above. An error message
+### would be usually displayed there after a STOP instruction.
+### Naturally, at the moment they all contain zeros. Booting the OS now...
+###
+Resetting all devices...  This may not have been your intention.
+The GO and CONTINUE commands do not reset devices.
+>>> MUX: clear, PRP = 01400
+  2248 - 01
+  2061 - 21
+  2070 - 41
+ 20.11.24   10.42.00
+ 1HMБ-01234567     2HMБ-34567
+  PEC:  1710
+ ECTЬ
+ ПP.MГ - 44
+ ПP.MГ - 43
+  0209 - 50
+ ДATA:20.11.26 BPEMЯ:10.42.00
+ ЧП(001) 419919810623 10.41 M=000
+ CM1П:00.00.ЭBM-3  ДATA:20.11.26 BPEMЯ:10.42.00  000.00
+НОМ
+ 419919810623  001
+ДАЙ А0
+ ECTЬ
+ДАЙ А1
+ ECTЬ
+НОМ
+ 419919810623  001
+ВЦП
+ ЗHET
+ВЦП Р
+ HET
+НОМ
+ 419919810623  001
+ВЫБ 1
+ ЗHET
+НОМ
+ 419919810623  001
+НШИФ
+ ОШИБ
+НОМ
+ 419919810623  001
+

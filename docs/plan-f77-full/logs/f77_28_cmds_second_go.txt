@@ -1,0 +1,70 @@
+[10:45:38] start p7c-d-2ndgo
+[10:45:43] CM1П prompt seen
+[10:45:48] B075 seen at t+2.5s
+[10:45:48] before 2nd go: sim> set cpu req | sim> go |  ЧП(075) 410300000000 10.44 M=005 |  B075-1 410300000000 | 
+[10:45:53] after 2nd 'go': proc=('1633861', 'Ss') tail=|Simulation stopped, "СчАС": 04440 (-> цикл 4440(15), цикл 4432(1))|sim> at vu0 /var/tmp/p7c-hang-cmds/VVOD/p7ct.txt|sim> d 6 1|sim> d 5 10|sim> set cpu req|sim> go| ЧП(075) 410300000000 10.44 M=005| B075-1 410300000000|GO
+[10:45:53] Ctrl+G diagnostic:
+[10:45:55]   show cpu:  B075-1 410300000000 | GO | Simulation stopped, "СчАС": 74131 (или 73411(16), -> пе 77632) | sim> show cpu | CPU     idle disabled, Automatic setup is enabled, Pult packet switch position is 0 |         Cyrillic mnemonics |         524KW | sim>
+[10:45:56]   show interrupt: sim> show cpu | CPU     idle disabled, Automatic setup is enabled, Pult packet switch position is 0 |         Cyrillic mnemonics |         524KW | sim> show interrupt | %SIM-ERROR: Non-existent device: INTERRUPT | %SIM-ERROR: Non-existent device: INTERRUPT | sim>
+[10:45:57]   show dev cpu:         Cyrillic mnemonics |         524KW | sim> show interrupt | %SIM-ERROR: Non-existent device: INTERRUPT | %SIM-ERROR: Non-existent device: INTERRUPT | sim> show dev cpu | Too many arguments | sim>
+[10:45:57] FINAL tail:
+./dispak_copy.ini-69> attach -n pl0 /var/tmp/p7c-hang-cmds/VVOD/punch.txt
+%SIM-INFO: PL0: creating new file: /var/tmp/p7c-hang-cmds/VVOD/punch.txt
+*** console on T001
+###
+### Zeroing out the first page of RAM (as would be entered from
+### switch registers after powering up the machine,
+### likely about once a year or less).
+###
+write cache [7] = '                                                '
+write cache [6] = '                                                '
+write cache [5] = '                                                '
+write cache [4] = '                                                '
+write cache [3] = '                                                '
+write cache [2] = '                                                '
+write cache [1] = '                                                '
+write cache [0] = '                                                '
+
+Останов, "СчАС": 00004 (-> зп, зп)
+###
+### Done; data cache registers are displayed above. An error message
+### would be usually displayed there after a STOP instruction.
+### Naturally, at the moment they all contain zeros. Booting the OS now...
+###
+Resetting all devices...  This may not have been your intention.
+The GO and CONTINUE commands do not reset devices.
+>>> MUX: clear, PRP = 01400
+  2248 - 01
+  2061 - 21
+  2070 - 41
+ 20.11.24   10.44.00
+ 1HMБ-01234567     2HMБ-34567
+  PEC:  1710
+ ECTЬ
+ ПP.MГ - 44
+ ПP.MГ - 43
+  0209 - 50
+ ДATA:20.11.26 BPEMЯ:10.45.00
+ ЧП(001) 419919810623 10.44 M=000
+ CM1П:00.00.ЭBM-3  ДATA:20.11.26 BPEMЯ:10.45.00  000.00
+
+Simulation stopped, "СчАС": 04440 (-> цикл 4440(15), цикл 4432(1))
+sim> at vu0 /var/tmp/p7c-hang-cmds/VVOD/p7ct.txt
+sim> d 6 1
+sim> d 5 10
+sim> set cpu req
+sim> go
+ ЧП(075) 410300000000 10.44 M=005
+ B075-1 410300000000
+GO
+Simulation stopped, "СчАС": 74131 (или 73411(16), -> пе 77632)
+sim> show cpu
+CPU     idle disabled, Automatic setup is enabled, Pult packet switch position is 0
+        Cyrillic mnemonics
+        524KW
+sim> show interrupt
+%SIM-ERROR: Non-existent device: INTERRUPT
+%SIM-ERROR: Non-existent device: INTERRUPT
+sim> show dev cpu
+Too many arguments
+sim>
