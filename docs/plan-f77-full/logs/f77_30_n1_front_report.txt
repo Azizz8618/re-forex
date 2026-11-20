@@ -1,0 +1,391 @@
+# N1 (подэтапы N1.1–N1.6) — отчёт субагента
+
+Дата: 21.11.2026. Рабочий каталог: `/var/tmp/b1-f77-fix/n1/` (все файлы — КОПИИ;
+репозиторий `/home/azizz/Yandex.Disk/re-forex` не изменялся, `git status` не
+показывает наших правок). Секретов не использовалось.
+
+Задача: сделать **только каркас** (SKELETON) будущего Fortran-компилятора по
+`docs/plan-f77-full/57-new-compiler-plan.md:53-60,114-120`: Fortran-77-программа
+печатает числовые IR-записи 777001/777002/777003/777004, которые host-часть
+`src/f77prep/prep_tools.py:417-441` умеет разбирать. Полный компилятор (N2–N5)
+**не** реализовывался.
+
+## Итоговая таблица
+
+| Подэтап | Статус | Доказательство |
+|---|---|---|
+| N1.1 `logical_lines` (col 6, >72, 20→132, SEQ) | ✅ | `front.out`: карта 6 не дала записи, SEQ = 1,2,3,4,5,**7**,8,9 |
+| N1.2 `card_codes` (ASCII в `INTEGER C(LL,NLV)`, PAT-таблица) | ✅ (с оговоркой) | WRITE-токен `PATPRN` распознан: `777001 8 3 2`; char→ASCII остаётся на host (инъекция), как в F77PREP |
+| N1.3 аллокатор меток 777001..777004 без коллизий | ✅ | `front_coll.out`: при исходной метке `90000` выдано `777004 … 21 0 90001` |
+| N1.4 вывод IR 777001/2/3/4 через `PRINT` + `I8` | ✅ | `front.out`: все четыре маркера, `FORMAT(1X,4I8/3I8/5I8)` |
+| N1.5 компиляция системным ФОРЭКСОМ 2.02, 0 ошибок | ✅ | `front.deck` → `front.out`, `RC=0`, `fatal=0`, нет `ПЕРЕПОЛНЕНА ПАМЯТЬ` |
+| N1.6 host `records`/`lower` всё ещё собирает `.f77` | ✅ (на варианте без continuation до PRINT) | `records` → `recs_reg.json`, `lower` → `lowered_reg.f77`, pass2 → `6.0000` |
+
+**Итог: DONE** (в объёме N1 SKELETON). Ниже — детали, код и честные оговорки.
+
+---
+
+## 1. Что именно скомпилировано и как
+
+Использован **провенный** путь из `src/f77prep/prep_tools.py:400-410` (дека `make_deck1`):
+`*perso:602300` + `*forex` (это и есть системный ФОРЭКС 2.02 на диске 2348),
+тело Fortran, `*execute`. Диск скопирован: `/var/tmp/b1-f77-fix/n1/probe/2348`.
+Команда (каждая дека прогонялась отдельно):
+
+```bash
+cd /var/tmp/b1-f77-fix/n1
+BESM6_PATH=/var/tmp/b1-f77-fix/n1:/usr/local/share/besm6 \
+  timeout 180 /home/azizz/Yandex.Disk/dispak/build/dispak/dispak front.deck \
+  > front.out 2> front.err
+```
+
+Фрагмент `front.out` (консоль, дословно):
+
+```
+*NАМЕ FRОNТ
+           *САLL УЕSМЕМОRУ
+           *РЕRSО:602300
+
+           *NО LISТ
+           *NО LОАD LISТ
+           *FОRЕХ
+ВРЕМЯ СЧЕТА: 00.00.00 0
+           *ЕХЕСUТЕ
+   777001       1       0       0
+   ...
+   777001       8       3       2
+   777002       8       1      83
+   777004       8      21       0   90000
+   777001       9       0       0
+   777003       8       1
+ КОНЕЦ ЗАДАЧИ
+```
+
+`grep -aE 'ПЕРЕПОЛНЕНА ПАМЯТЬ|БЫЛИ ОШИБКИ ПРИ ТРАНСЛЯЦИИ' front.out` → 0 совпадений,
+`front.err` пуст.
+
+Проба альтернативы `*ftn` (`front_ftn.deck`, та же программа) **провалилась**:
+`ERRORS: 19`, в том числе `ERROR 044 VARIABLE DIMENSION >LW< IS NOT A FORMAL`,
+`ERROR 016 FIRST STATEMENT NOT PROGRAM…`, `*ftn` — другой системный компилятор
+(кросс-тесты `docs/plan-f77-full/09-verification-impl.md:103-105`). Поэтому
+использован именно `*forex`, как в эталонном `prep_tools.py:407`.
+
+---
+
+## 2. Код по подэтапам (литерально, из `/var/tmp/b1-f77-fix/n1/FRONT.FTN`)
+
+Файл — один Fortran-исходник на 131 строку с двумя маркерами инъекции
+(`C@@DECL@@` в строке 28, `C@@DATA@@` в строке 41), в точности как
+`src/f77prep/F77PREP.FTN:30,54`. Ограничения подмножества соблюдены:
+INTEGER-массивы, `PARAMETER`-размерности, `DATA` до исполняемых операторов
+(`ERR 04441` из `docs/plan-f77-full/34-arfa-lowering.md:62`), без `IMPLICIT`,
+`SAVE`, `CHARACTER`, `PRINT *`, `READ`. Имена ≤6 символов. Собственные исходные
+строки ≤72 колонок (FORTRAN-метки ` 9001` — в колонках 2–5, не в колонке 6).
+
+### Инъекция (host, `gen.py`, только для прогона)
+
+```fortran
+      PARAMETER (NC=9,NLV=8,LL=132,LW=72)
+      INTEGER RAW(LW,NC)
+      INTEGER C(LL,NLV)
+      INTEGER SEQ(NLV)
+...
+      DATA SEQ /1,2,3,4,5,7,8,9,0/
+      DATA RAW /80,82,73,71,82,65,77,32,78,49,84,69,
+     1...
+```
+
+`RAW` — ASCII-коды **физических** карт (72 колонки), `SEQ` заполняется host,
+но **склейку делает Fortran**.
+
+### N1.1 — `FRONT.FTN:42-64`
+
+```fortran
+C-- N1.1: physical cards -> logical lines, SEQ and continuation ------------
+      NL = 0
+      DO 100 IC = 1, NC
+         IF (RAW(6,IC) .EQ. 32) GOTO 110
+         IF (NL .EQ. 0) GOTO 110
+         DO 120 J = 7, LW
+            IF (LNL(NL) .GE. LL) GOTO 120
+            LNL(NL) = LNL(NL) + 1
+            C(LNL(NL),NL) = RAW(J,IC)
+  120    CONTINUE
+         GOTO 100
+  110    NL = NL + 1
+         SEQ(NL) = IC
+         LNL(NL) = LW - 6
+         DO 130 J = 7, LW
+            C(J-6,NL) = RAW(J,IC)
+  130    CONTINUE
+  100 CONTINUE
+      DO 140 I = 1, NL
+         DO 141 J = LNL(I)+1, LL
+            C(J,I) = 32
+  141    CONTINUE
+  140 CONTINUE
+```
+
+Это точный порт `logical_lines()` из `prep_tools.py:344-356`: непустая кол. 6
+клеит кол. 7..72 к предыдущей логической строке, до LL=132, `SEQ` — номер
+первой физической карты. BASE77-текст (`tiny.f77`) содержал continuation:
+
+```
+      DO 10 I = 1, 3
+         S = S
+     1     + I
+   10 CONTINUE
+```
+
+В IR карта `6` отсутствует, а `CONTINUE` имеет `SEQ=7`:
+`777001 5 …`, `777001 7 …` (см. `front.out` выше).
+
+### N1.2 — `FRONT.FTN:29-40,65-99`
+
+```fortran
+      INTEGER LNL(NLV)
+      INTEGER IV(132)
+...
+      INTEGER PATPRN(7)
+      DATA MR1 /777001/
+      DATA MR2 /777002/
+      DATA PATPRN /80,82,73,78,84,32,42/     ! "PRINT *"
+...
+C-- classify logical lines (N1.2: PAT token matching) ----------------------
+      NR = 0
+      DO 200 I = 1, NL
+         IRULE = 0
+         ITYPE = 0
+         LV = 0
+         IFIRST = 1
+  210    IF (IFIRST .GT. LL) GOTO 220
+         IF (C(IFIRST,I) .EQ. 32) GOTO 215
+         GOTO 220
+  215    IFIRST = IFIRST + 1
+         GOTO 210
+  220    MATCH = 1
+         DO 221 J = 1, 7
+            IF (C(IFIRST+J-1,I) .NE. PATPRN(J)) MATCH = 0
+  221    CONTINUE
+         IF (MATCH .EQ. 0) GOTO 250
+         IRULE = 3
+         K = IFIRST + 7
+  231    IF (K .GT. LL) GOTO 233
+         IF (C(K,I) .EQ. 32) GOTO 232
+         IF (C(K,I) .EQ. 44) GOTO 232
+         GOTO 233
+  232    K = K + 1
+         GOTO 231
+  233    IF (K .GT. LL) GOTO 250
+         ITYPE = 2
+         IF (C(K,I) .GE. 73 .AND. C(K,I) .LE. 78) ITYPE = 1
+  234    IF (K .GT. LL) GOTO 240
+         IF (C(K,I) .EQ. 32) GOTO 235
+         LV = LV + 1
+         IV(LV) = C(K,I)
+  235    K = K + 1
+         GOTO 234
+  240    IF (LV .LE. 0) IRULE = 0
+```
+
+Совпадает с логикой `F77PREP.FTN:64-116`: пропуск Leading spaces, PAT-сравнение,
+`s=0`, `itype=1` для I..N, список переменных в `IV(132)`. В каркасе оставлен
+**один** PAT-шаблон (`PRINT *`) вместо 16, как в `F77PREP.FTN:34-53` — остальные
+относятся к N3 и упираются в память (см. §3).
+
+**Оговорка (честно):** преобразование символ→ASCII (`card_codes()`,
+`prep_tools.py:364-372`) физически остаётся на host — это та же инъекция, что и
+в F77PREP (`prep_tools.py:396-399`). В Fortran портированы **представление**
+ASCII-кодов в `INTEGER C(LL,NLV)` и PAT-таблицы; чтение настоящих текстовых
+карт Fortran'ом без `CHARACTER` в этой волне не делалось.
+
+### N1.3 — `FRONT.FTN:107-122`
+
+```fortran
+C-- N1.3: collision-free label allocator, 777004 kind 21 -------------------
+         LAB = NEXT
+  300    IF (LAB .GT. 99999) GOTO 320
+         DO 305 J = 1, NC
+            M = 0
+            DO 301 K = 1, 5
+               L = RAW(K,J)
+               IF (L .LT. 48 .OR. L .GT. 57) GOTO 302
+               M = M*10 + L - 48
+  301       CONTINUE
+  302       IF (M .NE. LAB) GOTO 305
+            LAB = LAB + 1
+            GOTO 300
+  305    CONTINUE
+  320    NEXT = LAB + 1
+         PRINT 9004, MR4, SEQ(I), 21, 0, LAB
+```
+
+Маркеры записей — константы `MR1..MR4` (`FRONT.FTN:35-38`), монотонный пул
+меток — `NEXT` от 90000 (`FRONT.FTN:39`), сканирование кол. 1..5 **физических**
+карт исключает коллизии. Проверка (`front_coll.deck`, исходник с `90000 CONTINUE`):
+
+```
+   777001       5       3       2
+   777002       5       1      83
+   777004       5      21       0   90001        <-- 90000 занят, взят 90001
+   777003       6       1
+```
+
+### N1.4 — `FRONT.FTN:100-105,125-129`
+
+```fortran
+C-- N1.4: IR records for this logical line ---------------------------------
+  250    PRINT 9001, MR1, SEQ(I), IRULE, ITYPE
+         IF (IRULE .NE. 0) NR = NR + 1
+         IF (IRULE .NE. 3) GOTO 260
+         DO 251 K = 1, LV
+            PRINT 9002, MR2, SEQ(I), K, IV(K)
+  251    CONTINUE
+...
+      PRINT 9003, MR3, NL, NR
+ 9001 FORMAT(1X,4I8)
+ 9002 FORMAT(1X,4I8)
+ 9003 FORMAT(1X,3I8)
+ 9004 FORMAT(1X,5I8)
+```
+
+Формат записей полностью совпадает с `F77PREP.FTN:292-331` и
+`prep_tools.py:417-441`. `777004 kind=21` — запись-запрос метки; host `lower`
+её **не потребляет** (в `prep_tools.py` `dyn_alloc()` вызывается только из
+`lower` для правил 10/R-E9/R-G8, строки 1085, 1319, 1327-1328, 1364), поэтому
+она попадает только в JSON-журнал. Это сделано намеренно: контракт 2.02
+не ломается, а аллокатор уже проверен.
+
+### N1.5 — компиляция
+
+- `FRONT_injected.FTN` + `front.deck` (`gen.py` на хосте);
+- системный ФОРЭКС 2.02 через `*forex`: `RC=0`, 0 ошибок трансляции,
+  `FRONT.FTN` укладывается в память при `NLV=8`;
+- `*ftn` не подходит (19 ошибок, см. §1).
+
+### N1.6 — host-контракт
+
+Команды и результат:
+
+```bash
+python3 prep_tools.py records front_reg.out recs_reg.json
+python3 prep_tools.py lower tiny_reg.f77 recs_reg.json lowered_reg.f77
+python3 -c "…pt.make_deck2('lowered_reg.f77')…"
+dispak pass2_reg.deck
+```
+
+`recs_reg.json` (дословно):
+
+```json
+{"records": [{"seq": 1, "line": 1, "rule": 0, "itype": 0}, …,
+             {"seq": 7, "line": 7, "rule": 3, "itype": 2}, …],
+ "varcodes": {"7": {"1": 83}},
+ "aux": [{"seq": 7, "kind": 21, "pos": 0, "value": 90000}],
+ "summary": {"lines": 8, "rewrites": 1}}
+```
+
+`lowered_reg.f77` содержит `C@ PRINT *, S -> PRINT 9000,S` и
+`9000 FORMAT(1X,F12.4)`, а pass2 печатает:
+
+```
+           *ЕХЕСUТЕ
+       6.0000
+ КОНЕЦ ЗАДАЧИ
+```
+
+**Найденный host-баг (важно для интеграции):** если continuation стоит **до**
+`PRINT *`, host `lower` падает `no variable codes for PRINT * on line 7`
+(`prep_tools.py:935-938`): `varmap` ключуется SEQ-номером (`prep_tools.py:608`),
+а читается по индексу логической строки. Это **не** ошибка FRONT: F77PREP с
+таким же исходником даст тот же сбой. Наш `cont`-вариант (`front.out`) поэтому
+проверен до уровня IR, а `reg`-вариант — полным проходом 2. Минимальный фикс
+хоста (вне зоны этого субагента): в `prep_tools.py:608` брать
+`seq_to_line.get(int(k), int(k))` как ключ `varmap`.
+
+---
+
+## 3. Лимит памяти и минимальный split
+
+Эксперимент на КОПИИ диска (увеличение числа логических строк при том же
+`LL=132`, `LW=72`):
+
+| NLV (логических строк) | Результат |
+|---|---|
+| 8, 25, 27, 28, 29, 30, **31** | OK, 0 ошибок |
+| **32** и более (пробовались 32/33/35/40/45/85) | `ПЕРЕПОЛ РАБ ОБЛ ТР-РА` → `ПЕРЕПОЛНЕНА ПАМЯТЬ` |
+
+Точная граница для этой конфигурации: **NLV ≤ 31**. Это совпадает с известным
+жёстким потолком трансляции 2.02 (`docs/plan-f77-full/34-arfa-lowering.md:64-65`,
+`07-implementation-prep.md:164-169`), из-за которого правила 34–40 в F77PREP
+уже вынесены в host.
+
+**Вывод:** весь «полный каркас» (все 16 PAT-массивов F77PREP + симтаблица +
+эмиттер кода N3) в одной Fortran-программе 2.02 **не поместится**. Минимальный
+split, который сохраняет доказанный контур:
+
+1. **Оставляем в FOREX/Fortran (N1, этот файл):** `RAW(72,NC)`, `C(132,NLV)`,
+   `SEQ(NLV)`, `IV(132)`, 1–2 PAT-таблицы, аллокатор, `PRINT`-эмиттер IR.
+   Порция исходника ≤31 логической строки; `SEQ` — глобальный номер физической карты,
+   поэтому куски склеиваются host-ом без потери порядка.
+2. **Оставляем на host (уже работает):** char→ASCII инъекция (`card_codes`,
+   `data_statement`), разбиение на куски, полный набор правил 0–40,
+   `records`/`lower`, materialisation, deck2, проверки 21/21.
+3. Граница раздела — **набор записей 777001/2/3/4**: Fortran печатает IR куска,
+   host объединяет куски по `SEQ` и применяет правила. Это ровно та же граница,
+   что у F77PREP (`prep_tools.py:344-410` против `F77PREP.FTN:55-331`).
+
+---
+
+## 4. Точные шаги интеграции в репозиторий (делает главный агент)
+
+1. Скопировать `/var/tmp/b1-f77-fix/n1/FRONT.FTN` → `src/newcomp/FRONT.FTN`
+   (новый каталог, 131 строка, без правок эталонов `src/f77prep/*`).
+2. Перенести host-генератор (`/var/tmp/b1-f77-fix/n1/gen.py`) →
+   `src/newcomp/gen_front_deck.py`; он должен импортировать
+   `src/f77prep/prep_tools.py` только для `logical_lines/card_codes/data_statement/
+   PASSPORT/make_deck2` и писать деку в `$WORK`, **не** в репозиторий.
+   Убрать из него probationary-ветку `cont/reg` (оставить один тестовый источник
+   без continuation до PRINT — см. host-баг выше).
+3. Добавить `tests/newcomp/run-front-n1.sh` по образцу
+   `tests/run-f77-prep.sh:164-179,293-333`: скопировать эталон 2348 и
+   `build/FOREX_PERSO_2300.bin`, записать PERSO, собрать деку,
+   прогнать dispak, проверить `FATAL`-маску (`tests/run-f77-prep.sh:291`),
+   вызвать `prep_tools.py records`, `lower`, `make_deck2`, сравнить pass2 с
+   эталоном `6.0000`.
+4. Добавить `tests/newcomp/n1-base77.f77` (вариант `tiny_reg.f77`) и
+   `tests/newcomp/n1-gold.txt` (`6.0000`).
+5. Добавить `docs/plan-f77-full/logs/n1_front_console.txt` и
+   `n1_front_ir.json` из этих артефактов; в `57-new-compiler-plan.md:114-120`
+   отметить N1.1–N1.6 как закрытые, N1.6 — с оговоркой про баг
+   `prep_tools.py:608/936`.
+6. Отдельный коммит «N1: Fortran front-end skeleton (IR only)», только
+   перечисленные выше новые файлы; `logs/` — по правилам репозитория.
+   Запрет регрессии: `tests/run-f77-prep.sh` (21/21) и `tests/run-f77-full.sh`
+   (gate 20/20) должны остаться зелёными — новые файлы в них не входят.
+
+## 5. Честная оценка труда
+
+- Перенос/отладка этого каркаса (N1.1–N1.6 на копиях): **~0.5 агент-дня**
+  (несколько итераций компиляции: дубли маркеров в комментариях, метка `9001`
+  в кол. 6, затем collision-скан по `C` вместо `RAW`).
+- Интеграция в репозиторий с тестом и логами (шаги 1–6): **~1 агент-день**.
+- Дальше по плану 57: N2 3–6, N3 10–20, N4 5–10, N5 2–4 дня
+  (`57-new-compiler-plan.md:148-150`) — **не** выполнено и здесь не оценивается
+  как сделанное. Главный риск остаётся N3 (отсутствие object writer);
+  память 2.02 ограничивает Fortran-часть ≈31 строкой за проход, поэтому
+  кодогенератор придётся либо дробить, либо оставлять в host — это решение
+  главного агента.
+
+---
+
+## 6. Файлы-артефакты в `/var/tmp/b1-f77-fix/n1/`
+
+`FRONT.FTN` (рабочий исходник), `FRONT_injected.FTN`, `FRONT_injected_reg.FTN`,
+`front.deck`/`front.out` (continuation), `front_reg.deck`/`front_reg.out`,
+`front_coll.deck`/`front_coll.out` (коллизия метки),
+`front_m20/22/…/m80.deck|.out` (замер памяти), `gen.py`, `probe_extra.py`,
+`tiny.f77`, `tiny_reg.f77`, `recs_reg.json`, `lowered_reg.f77`,
+`pass2_reg.deck`/`pass2_reg.out` (`6.0000`), `front_ftn.out` (неудачная проба
+`*ftn`), `probe/` (копия диска 2348).
+
+DONE
