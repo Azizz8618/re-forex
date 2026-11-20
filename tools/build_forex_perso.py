@@ -381,6 +381,12 @@ def build() -> Path:
         # places the first CODE word (body+3) at the module base, so f0 is the
         # assembler ENTRY offset from cmd start with NO header adjustment.
         _f0 = m.get("entry", 0)
+        # F2b: the probe FXLODR has no ENTRY symbol resolved into the catalog;
+        # f0=0 makes the Dubna loader treat it as corrupt (TERR6).  A nonzero
+        # entry offset (3 = first code word after the 3-word DMS header) makes
+        # it load cleanly and appear as `FXLODR E <base+3>`.
+        if _reloc and m["name"] == "FXLODR":
+            _f0 = 3
         record = ((f3 << 36) | (f2 << 24) | (f1 << 12) | (_f0 & 0xFFF))
         catalog_words.append(text_encode(m["name"]))
         catalog_words.append(record)
