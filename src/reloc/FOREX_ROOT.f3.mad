@@ -51,7 +51,7 @@
   ,XTA,*DUMON*+3
   ,ATX,FLGEX*
   ,WTC,RET.
-  13,UJ,.
+  13,VTM,.
   13,UJ,.
   STOP/:,ENTRY,.
   13,VTM,MIST
