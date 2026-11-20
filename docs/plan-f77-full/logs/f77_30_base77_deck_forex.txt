@@ -1,0 +1,26 @@
+шифр 419999 зс5^
+лен 60(2348)^
+eeв1а3
+*name BASE77
+*call yesmemory
+*perso:602320
+*perso:602300
+*full list
+*stand
+*forex
+c---- BASE: INTEGER/REAL arithmetic, counted DO, explicit FORMAT.
+      PROGRAM BASE77
+      N=0
+      DO 10 I=1,6
+         N=N+I
+   10 CONTINUE
+      X=1.0
+      Y=X+2.0
+      PRINT 100,N,X,Y
+  100 FORMAT(1X,I4,2F10.2)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец

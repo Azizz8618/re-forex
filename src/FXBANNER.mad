@@ -1,0 +1,14 @@
+C FOREX 5.00 / 19.11.2026 (re-forex)
+C M0: proved PERSO module path via `*perso` + `*call fxbanner`.
+C Proven Monitor-80 E64 (*64) GOST print idiom from besmmons/system1.txt
+C (BLEXPRIN/ERR). GOST 10859 has no lowercase: the console shows homoglyphs.
+  FXBANNER:,NAME,
+  FXBNR:,ENTRY,
+        ,*64,BANDESC
+  13,UJ,.
+  BANDESC:,,BANTXT
+          ,,BANTXT
+          :,001,
+          8,,.
+  BANTXT:,GOST,35HFOREX 5.00 / 19.11.2026 (RE-FOREX)'231'
+  ,END,FXBANNER

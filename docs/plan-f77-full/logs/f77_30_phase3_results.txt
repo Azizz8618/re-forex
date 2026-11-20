@@ -1,0 +1,50 @@
+# Фаза 3 — исправления латентных дефектов F77-PROCEDURE (20.11.2026)
+
+Источник плана: `/var/tmp/b1-f77-fix/phase3_patch_plan.md`.
+Все правки — в `src/f77prep/prep_tools.py`; режим по умолчанию сохраняет
+поведение золотых тестов (новые ветки включаются env-флагами).
+
+## Что исправлено
+
+1. **Deck2 не подключал F77LIBR.** `make_deck2()` теперь добавляет
+   `*perso:602310,cont` между `602300` и `602320,cont`. escape- hatch:
+   `F77PREP_NO_F77LIBR=1` (CLI `deck2 ... 0` не используется).
+2. **Rule 20 пропускал имена процедур.** В множестве исключений остался только
+   `PROGRAM`; `SUBROUTINE/FUNCTION/ENTRY` >6 знаков теперь дают
+   `TRUNCATED NAME` вместо молчаливого усечения (матрица A5/P0).
+3. **R-G8 портил сигнатуру вызывающего.** Убрана регистрация CALL-сайта в
+   `g8_units` (RC получает только единица с `RETURN j`); `ENTRY` в единице
+   R-G8 тоже получает RC; `INTEGER RC` выводится один раз на единицу.
+   Исправлена ошибка `_unit_of()` на строке заголовка (он пропускает текущую
+   строку и возвращал предыдущую единицу).
+4. **EXTERNAL как фактический аргумент (opt-in).** `F77PREP_KEEP_EXTERNAL_ARG=1`
+   сохраняет объявление `EXTERNAL F`, если имя передаётся голым
+   идентификатором в CALL/функциональном вызове; по умолчанию правило 21
+   по-прежнему удаляет объявления (FOREX 2.02 не принимает EXTERNAL нативно).
+5. **SAVE в главной программе (opt-in).** `F77PREP_SAVE_MAIN=1` включает
+   R-F11 (`COMMON /…SV/` + `BLOCK DATA`) вместо удаления; по умолчанию
+   gold-поведение `prep-case.f77` не изменено.
+6. **ABI-адаптер оставлен в харнессе** (`tests/plan-f77-full/tools/real_bridge_adapt.py`)
+   согласно решению D0: перенос в `prep_tools.py` ломает PASS1-gold и несёт
+   кейс-специфичные эвристики.
+
+## Проверки (факты)
+
+| Проверка | Результат |
+|---|---|
+| `python3 -m py_compile src/f77prep/prep_tools.py tools/run_besm6_deck.py` | OK |
+| `python3 tests/check-f77-matrix-200.py` | 200/200 OK |
+| `bash tests/run-f77-prep.sh` (21 кейс, реальный PERSO-мост) | rc=0, 21/21 PASS1 + PASS2 |
+| `bash tests/run-f77-full.sh` | rc=0, gate 20/20, L0 55, L1 55, L2 8, L4 9 |
+| Синтетика R-G8: CALLER без RC, CALLEE(RC,B), ENTRY OTHER(RC,B), INTEGER RC ×1 | OK |
+| Синтетика R21: default удаляет, флаг сохраняет только EXTERNAL-аргумент | OK |
+| Синтетика F11: default `(removed)`, флаг даёт COMMON + BLOCK DATA | OK |
+
+Логи: `/var/tmp/b1-f77-fix/verify/run-f77-prep-final.log`,
+`run-f77-full-final.log`.
+
+## Не проверено
+
+- Симуляторная семантика `F77PREP_KEEP_EXTERNAL_ARG=1` и `F77PREP_SAVE_MAIN=1`
+  (нужны новые кейсы 29/31 и рабочая подача дек в full OS, см. Phase 1b).
+- Пункт 7 плана (хардкод базы `/FILMAP/` в МАДЛЕН-движках) не трогался.

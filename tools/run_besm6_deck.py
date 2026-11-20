@@ -119,7 +119,7 @@ def build_deck(args) -> str:
     body = "\n".join("      " + l.strip() if l.strip() else "" for l in src.splitlines())
     return (
         f"ШИФР {args.cipher} ЗС5^\n"
-        f"ОЗУ 32^АЦП {args.acpu}^\n"
+        f"ОЗУ 32^АЦП {args.acpu}^дис 45(2348)^\n"
         f"EEВ1А3\n"
         f"*NAME {args.name}\n"
         f"*FTN\n{body}\n"
@@ -161,7 +161,7 @@ def main():
     # Снимок папки ACPU до прогона: после найдём изменившийся файл.
     acpu_before = {p.name: p.stat().st_mtime_ns for p in ACPU_DIR.glob("*")
                    if p.is_file()}
-    ini = make_ini(work, None, deck)
+    ini = make_ini(work, None, deck, base=args.ini, extra=args.md or None)
     log(f"koloda : {deck} ({deck.stat().st_size} байт)")
     log(f"acpu   : папка {ACPU_DIR} (prn0=output.txt, prn1=output1.txt)")
     log(f"ini    : {ini}")
@@ -255,9 +255,13 @@ def main():
             time.sleep(1.0)
         send(args.session, "НОМ")
         time.sleep(2.0)
-        status = pane(args.session)
-        nums = re.findall(r"[ЧК]З\((\d{1,3})\)|ЧП\((\d{1,3})\)", status)
-        targets = [a or b for a, b in nums]
+        # Только строки ПОСЛЕ последней НОМ и только наши задачи: старая
+        # история панели содержит ЧП(001) системной задачи, её ВЫБ вызывает СБО.
+        raw = pane(args.session, history=80).splitlines()
+        last = max((i for i, l in enumerate(raw) if l.strip().startswith("НОМ")),
+                   default=-1)
+        pairs = re.findall(r"(\d{12})\s+(\d{1,3})", "\n".join(raw[last:]))
+        targets = [n for c, n in pairs if c != "419919810623"]
         log(f"НОМ: задачи на буфере: {targets}")
         for n in targets:
             send(args.session, f"ВЫБ {int(n)}")

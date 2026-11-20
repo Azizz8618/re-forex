@@ -28,6 +28,7 @@ Rules 0-8 keep their byte-for-byte lowering; rules 9-16/20 are new.
 """
 
 import json
+import os
 import re
 import sys
 
@@ -293,7 +294,8 @@ def _f11_applies(lines, idx):
                     lines[j - 1], re.I):
             hdr = lines[j - 1].strip().upper()
             break
-    if hdr and not hdr.startswith("PROGRAM"):
+    if hdr and (not hdr.startswith("PROGRAM") or
+                os.environ.get("F77PREP_SAVE_MAIN") == "1"):
         return True
     m = re.search(r"\bSAVE\s+(.+)$", lines[idx - 1], re.I)
     saved = [t.strip().upper() for t in _split_top(m.group(1))] if m else []
@@ -668,6 +670,17 @@ def build_lowered(src_path, json_path):
     g8_ret_units = {}       # RETURN j line -> unit
     g8_declared = set()
     g4_declared = set()
+    # R21 (opt-in): a procedure passed as a bare CALL argument must keep its
+    # EXTERNAL declaration, otherwise it degrades to an implicit scalar.
+    ext_decl_names = {}
+    all_ext = set()
+    proc_actual_names = set()
+    for _idx, _ln in enumerate(lines, 1):
+        _em = re.match(r"^\s*EXTERNAL\s+(.*)$", _ln, re.I)
+        if _em:
+            _names = {t.strip().upper() for t in _split_top(_em.group(1))}
+            ext_decl_names[_idx] = _names
+            all_ext.update(_names)
     # wave F (rules 34-40): declarations are hoisted to the top of the unit
     # (FOREX 2.02 rejects a declaration after an executable statement).
     filmap_units = set()
@@ -734,12 +747,24 @@ def build_lowered(src_path, json_path):
             for j in dlines:
                 f11_data_idx[j] = block
 
+        if all_ext and not re.search(
+                r"\b(SUBROUTINE|FUNCTION|ENTRY|EXTERNAL)\b", line, re.I):
+            # Both CALL F(...) and function-style G(F,...) can pass a
+            # procedure by its bare name as an actual argument.  A header
+            # SUBROUTINE F(G) is not a call site.
+            for _cm in re.finditer(r"\b[A-Za-z]\w*\s*\(([^)]*)\)", line):
+                for _a in _split_top(_cm.group(1)):
+                    _tok = _a.strip().upper()
+                    if re.match(r"^[A-Za-z]\w*$", _tok) and _tok in all_ext:
+                        proc_actual_names.add(_tok)
+
         if rule == R_G8:
             if re.match(r"\s*CALL\s", line, re.I):
                 labels = [int(x) for x in re.findall(r"\*\s*(\d+)", line)]
                 unit = _unit_of(lines, idx)
                 g8_calls[idx] = (unit, labels)
-                g8_units.setdefault(unit, len(labels))
+                # A CALL site must not add RC to its own caller's signature:
+                # only RETURN j (g8_ret_units) makes a unit an R-G8 callee.
             elif re.match(r"\s*RETURN\s+\d+", line, re.I):
                 unit = _unit_of(lines, idx)
                 g8_ret_units[idx] = unit
@@ -859,18 +884,27 @@ def build_lowered(src_path, json_path):
             continue
 
         # R-G8: add RC as the first dummy of every unit with RETURN j / *label.
-        hm = re.match(r"\s*(SUBROUTINE|FUNCTION)\s+([A-Za-z]\w*)\s*\((.*)\)\s*$",
+        hm = re.match(r"\s*(SUBROUTINE|FUNCTION|ENTRY)\s+([A-Za-z]\w*)\s*\((.*)\)\s*$",
                       line, re.I)
-        if hm and hm.group(2).upper() in g8_units:
-            args = [a.strip() for a in _split_top(hm.group(3)) if a.strip()]
-            if not any(a.upper() == "RC" for a in args):
-                args = ["RC"] + args
-            newline = "      %s %s(%s)" % (hm.group(1).upper(), hm.group(2),
-                                           ",".join(args))
-            out.append("C@ %s -> %s / INTEGER RC" % (orig, newline.strip()))
-            out.append(newline)
-            out.append("      INTEGER RC")
-            continue
+        if hm:
+            # _unit_of() skips the current line, so on a SUBROUTINE/FUNCTION
+            # header it would return the previous unit, not this one.
+            unit = (hm.group(2).upper() if hm.group(1).upper() != "ENTRY"
+                    else _unit_of(lines, idx))
+            is_g8 = (hm.group(2).upper() in g8_units or
+                     (hm.group(1).upper() == "ENTRY" and unit in g8_units))
+            if is_g8:
+                args = [a.strip() for a in _split_top(hm.group(3)) if a.strip()]
+                if not any(a.upper() == "RC" for a in args):
+                    args = ["RC"] + args
+                newline = "      %s %s(%s)" % (hm.group(1).upper(), hm.group(2),
+                                               ",".join(args))
+                out.append("C@ %s -> %s / INTEGER RC" % (orig, newline.strip()))
+                out.append(newline)
+                if unit not in g8_declared:
+                    out.append("      INTEGER RC")
+                    g8_declared.add(unit)
+                continue
 
         if rule == 0:
             if equiv_map:
@@ -1227,7 +1261,16 @@ def build_lowered(src_path, json_path):
             continue
 
         elif rule == 21:
-            out.append("C@ %s -> (removed; EXTERNAL/INTRINSIC declaration)" % orig)
+            if (os.environ.get("F77PREP_KEEP_EXTERNAL_ARG") == "1" and
+                    re.match(r"^EXTERNAL\s", orig, re.I) and
+                    any(n in proc_actual_names
+                        for n in ext_decl_names.get(idx, ()))):
+                # FOREX 2.02 rejects EXTERNAL natively; this opt-in turns a
+                # silently wrong CALL APPLY(F,X) into a provable case.
+                out.append("C@ %s -> (KEPT: procedure actual argument)" % orig)
+                out.append(line)
+            else:
+                out.append("C@ %s -> (removed; EXTERNAL/INTRINSIC declaration)" % orig)
 
         elif rule == 22:
             # CABS(WC) -> SQRT(REAL(WC)**2 + AIMAG(WC)**2).  REAL/AIMAG are
@@ -1671,8 +1714,8 @@ def build_lowered(src_path, json_path):
             out.append("      END")
 
     # Rule 20: any identifier longer than six characters is a hard error
-    # (A5: silent 6-char truncation).  Keywords and the name of the program
-    # unit itself are not identifiers subject to the F77 length limit.
+    # (A5: silent 6-char truncation).  Keywords and the PROGRAM name are
+    # exempt; procedure names are not, because CALL targets them.
     names_by_line = {}
     # 777004 kind=20 carries one char per record (pos = 1..M).  A line may
     # contain several long identifiers, so consume the records in emission
@@ -1684,10 +1727,12 @@ def build_lowered(src_path, json_path):
         if a["pos"] == 1 or idx not in names_by_line or not names_by_line[idx][-1]:
             names_by_line.setdefault(idx, []).append("")
         names_by_line[idx][-1] += chr(a["value"])
+    # Only PROGRAM is exempt: its name is never a CALL target.  Exempting
+    # SUBROUTINE/FUNCTION/ENTRY lets FOREX silently truncate a procedure name
+    # that CALL references (matrix A5, P0 risk).
     subprograms = set()
     for ln in lines:
-        m = re.search(r"\b(?:PROGRAM|SUBROUTINE|FUNCTION|ENTRY)\s+([A-Za-z]\w*)",
-                      ln, re.I)
+        m = re.search(r"\bPROGRAM\s+([A-Za-z]\w*)", ln, re.I)
         if m:
             subprograms.add(m.group(1).upper())
     bad = []
@@ -1730,12 +1775,16 @@ def build_lowered(src_path, json_path):
     return "\n".join(out) + "\n"
 
 
-def make_deck2(low_path, data_path=None, sentinels=None):
+def make_deck2(low_path, data_path=None, sentinels=None, f77libr=True):
     low = open(low_path, encoding="utf-8").read()
     deck = PASSPORT + [
         "*name Target",
         "*call yesmemory",
         "*perso:602300",
+    ]
+    if f77libr:
+        deck.append("*perso:602310,cont")   # F77LIBR: STRCAT/SUBSTR/MYABS/...
+    deck += [
         "*perso:602320,cont",   # doc 34 H8: PERSO 0o2320 file bridge
         "*no list",
         "*no load list",
@@ -1767,7 +1816,9 @@ def main():
                   open(sys.argv[4] + ".777004.json", "w", encoding="utf-8"))
     elif cmd == "deck2":
         data = sys.argv[4] if len(sys.argv) > 4 else None
-        open(sys.argv[3], "w", encoding="utf-8").write(make_deck2(sys.argv[2], data))
+        f77libr = os.environ.get("F77PREP_NO_F77LIBR") != "1"
+        open(sys.argv[3], "w", encoding="utf-8").write(
+            make_deck2(sys.argv[2], data, f77libr=f77libr))
     else:
         raise SystemExit("unknown command: " + cmd)
 

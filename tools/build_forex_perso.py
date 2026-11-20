@@ -69,6 +69,8 @@ is 5.00 / 19.11.2026 (see docs/00-charter.md, docs/16-glissade-run.md).
 
 from __future__ import annotations
 
+import re
+
 import argparse
 import hashlib
 import os
@@ -127,9 +129,15 @@ OCTTDEC_HEAD_INDEX = 30       # internal name word inside the 32-word module
 # (catalog name, source file, first line, last line).  TAK/PG is an ENTRY
 # inside GIV/PG and is added separately, not assembled on its own.
 SOURCE_SLICES = [
-    ("DATAPR*", SRC_ROOT / "besmmons/system1.txt", 7645, 7733),
-    ("GIV/PG",  SRC_ROOT / "besml21/libra211.l21", 16780, 16836),
+    # FOREX* must be a RELOCATABLE Monitor-80 object for `*CALL FOREX*` to
+    # work: the raw monsys.9 dump has field-0 absolute addresses and returns
+    # immediately when loaded as an ordinary PERSO module.
+    ("FOREX*",  SRC_ROOT / "besml21/libra211.l21", 15448, 15528),
+    ("XDATAPR", SRC_ROOT / "besmmons/system1.txt", 7645, 7733),
+    ("XGIVPG",  SRC_ROOT / "besml21/libra211.l21", 16780, 16836),
 ]
+# ENTRY symbol inside a source module whose offset becomes catalog f0.
+ENTRY_SYMBOL = {"FOREX*": "INITFOR*"}
 
 
 def text_encode(name: str) -> int:
@@ -201,6 +209,34 @@ def assemble_source(name: str, path: Path, first: int, last: int) -> tuple[list[
     try:
         shutil.copy(ETALON, tmp / "2348")
         lines = path.read_text(errors="replace").splitlines()[first - 1:last]
+        # PERSO must not duplicate MONSYS permanent names: the Dubna loader
+        # treats a duplicate as a corrupt subprogram (TERR6).
+        RENAME = {
+            r"\bDATAPR\*": "XDATAPR",
+            r"\bGIV/PG": "XGIVPG",
+            r"\bTAK/PG": "XTAKPG",
+            r"\bOCTTDEC\b": "OCTTDE*",
+        }
+        for _pat, _repl in RENAME.items():
+            lines = [re.sub(_pat, _repl, ln) for ln in lines]
+        if name == "FOREX*":
+            # Local COMMON declared as `,LC,` is resolved by the loader as an
+            # external COMMON and fails TERR6 when the head module is loaded
+            # via *CALL.  Allocate the small blocks locally instead; keep the
+            # 2048-word source buffer compact so the module stays loadable.
+            lines = [re.sub(r"^(\s*[^\s:]+\s*:),LC,", r"\1,BSS,", ln)
+                     for ln in lines]
+            lines = [ln.replace(",BSS,4000B", ",BSS,400B") for ln in lines]
+            # These five SUBP names are declared but never called (LIBREFER
+            # marks them EN, no bodies on any medium).  Left in the assembled
+            # object they enter the sym section with unresolved C=0o6300
+            # references and the loader prints ИСПОРЧЕНА ПОДПРОГРАММА.
+            lines = [ln for ln in lines
+                     if not re.match(
+                         r"^\s*(?:FOREX|CONST|COMEQ|OPRTR|ПP)\s*:,SUBP",
+                         ln, re.I)]
+            lines = [ln.replace(",CALL,OCTTDEC", ",CALL,OCTTDE*")
+                     for ln in lines]
         deck = [
             "шифр 419999 зс5^", "лен 40(2348-wr)^", "eeв1а3",
             "*name", "*call yesmemory", "*assembler",
@@ -226,10 +262,16 @@ def assemble_source(name: str, path: Path, first: int, last: int) -> tuple[list[
         body = [lib.words[i] for i in range(s, sec["end"])]
         load = h["cmd"] + h["const"] + h["bss"]
         entry = 0
-        if name == "GIV/PG":
-            rec = lib.catalog.get("TAK/PG")
+        if name == "XGIVPG":
+            rec = lib.catalog.get("XTAKPG")
+            if rec is None:
+                rec = lib.catalog.get("TAK/PG")
             if rec is not None:
                 entry = rec & 0xFFF  # entry-point offset inside GIV/PG
+        if name in ENTRY_SYMBOL:
+            rec = lib.catalog.get(ENTRY_SYMBOL[name])
+            if rec is not None:
+                entry = rec & 0xFFF  # f0 for the module's real entry point
         print(f"  assembled {name:8s}: body={len(body)} load={load} "
               f"takepg_entry=0o{entry:o}")
         return body, load, entry
@@ -238,14 +280,19 @@ def assemble_source(name: str, path: Path, first: int, last: int) -> tuple[list[
 
 
 def build() -> Path:
+    # FOREX* must be the FIRST module in the library: the *CALL loader accepts
+    # the head module only from the first module zone (zone=2, f2=0o42xx).
+    _fx = next(x for x in SOURCE_SLICES if x[0] == "FOREX*")
+    _body, _load, _entry = assemble_source("FOREX*", _fx[1], _fx[2], _fx[3])
+    modules: list[dict] = [dict(name="FOREX*", body=_body, load=_load,
+                                entry=_entry)]
+
     compiled = [
-        ("FOREX*",   ROOT / "build/CORE_ROOT.words",       0o510300,  96),
         ("LO*SYN",   ROOT / "build/LO_SYN.words",          0o241500, 1024),
         ("LO*GEN",   ROOT / "build/LO_GEN.words",          0o277500, 1024),
         ("FORMAT",   ROOT / "build/RUNTIME_FORMAT.words",  0o510443,  61),
         ("FORTLIBR", ROOT / "build/RUNTIME_FORTLIBR.words", 0o510543,  69),
     ]
-    modules: list[dict] = []
     for name, local, tape_start, count in compiled:
         words = read_words(local) if local.exists() else tape_words(tape_start, count)
         if len(words) != count:
@@ -257,17 +304,19 @@ def build() -> Path:
 
     takepg_entry = 0
     for name, path, first, last in SOURCE_SLICES:
+        if name == "FOREX*":
+            continue
         body, load, entry = assemble_source(name, path, first, last)
-        modules.append(dict(name=name, body=body, load=load))
-        if name == "DATAPR*":
+        modules.append(dict(name=name, body=body, load=load, entry=entry))
+        if name == "XDATAPR":
             # OCTTDEC is taken from the byte-exact compiled dump, not assembled.
             modules.append(load_octdec_etalon())
-        if name == "GIV/PG":
+        if name == "XGIVPG":
             takepg_entry = entry
 
-    # TAK/PG is an entry point inside GIV/PG: catalog-only record, no body.
-    modules.append(dict(name="TAK/PG", body=None, load=takepg_entry,
-                        entry_of="GIV/PG"))
+    # XTAKPG is an entry point inside XGIVPG: catalog-only record, no body.
+    modules.append(dict(name="XTAKPG", body=None, load=takepg_entry,
+                        entry_of="XGIVPG"))
 
     # Place module bodies FIRST: the catalog record needs each module's zone
     # and 32-word block inside the library (the transfer vector).
@@ -306,7 +355,11 @@ def build() -> Path:
         length = m["load"]
         f2 = (TV_BIAS_F2 + zone * 0o100 + (length // 512)) & 0xFFF
         f1 = ((length % 512) * 8) & 0xFFF
-        record = (f3 << 36) | (f2 << 24) | (f1 << 12)  # overlay = 0
+        # Low 12 bits f0 = entry-point offset inside the module.  For the old
+        # wrapped dumps it was 0 (start of the synthetic header); for assembled
+        # objects it comes from the assembler's ENTRY symbol (e.g. INITFOR*).
+        record = ((f3 << 36) | (f2 << 24) | (f1 << 12) |
+                  (m.get("entry", 0) & 0xFFF))
         catalog_words.append(text_encode(m["name"]))
         catalog_words.append(record)
     # Real catalogs terminate with an empty name word followed by an all-ones

@@ -71,7 +71,7 @@ for i in range(2, 20, 2):
     if n:
         names.append(n)
         # TAK/PG — точка входа внутри GIV/PG, у неё TV намеренно нулевой.
-        if (getw(i+1) >> 24) == 0 and n != "TAK/PG":
+        if (getw(i+1) >> 24) == 0 and n not in ("TAK/PG", "XTAKPG"):
             raise SystemExit(f"zero transfer vector for {n} at catalog word {i+1}")
 print("PERSO catalog (%d modules): %s" % (len(names), " ".join(names)))
 if len(names) != 9:
