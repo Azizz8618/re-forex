@@ -1,0 +1,495 @@
+# M2 — FXLODR: конкретный черновик и план правок (COPY-ONLY)
+
+Дата: 20.11.2026. Режим: **только чтение репозитория; запись только в `/var/tmp/b1-f77-fix/`**.
+Редакторы репо-файлов, git-записи, запись на живые диски и запуск эмулятора не использовались.
+Секреты и env не открывались.
+
+Задача: доставить М2 плана `docs/plan-f77-full/54-perso-compiler-plan.md:84-103` до уровня
+«готово к сборке на копии». Ниже: spec, конкретный MADLEN-каркас `FXLODR.mad`, точная формулировка
+единственного недостающего примитива, литеральные правки `tools/build_forex_perso.py`, рецепт
+проверки на копиях с `*64`-маркером и честный список рисков.
+
+Все утверждения помечены **ФАКТ** (`file:line` / дамп) или **ГИПОТЕЗА/ТРЕБУЕТ ПРОВЕРКИ**.
+
+---
+
+## 0. Вердикт
+
+1. **ФАКТ.** ТЭЗовская формулировка «возврат через M15» (`54-perso-compiler-plan.md:90`) требует
+   уточнения. Команда `,CALL,LOADANGO.` ассемблируется в `VJM 74022(15)` в **bemsh**-нотации;
+   по авторитетной таблице соответствия `include/FOREX_CORE.registers.md:6-7` bemsh `(15)` =
+   **MADLEN M13**. Это же подтверждено прямо: `FOREX_CORE.registers.md:27,45,88-91` — «регистр
+   возврата из VJM … DATAPR*, GIV/PG, LOADANGO×2, OCTTDEC», «LOREX … только M13 (возврат)».
+   В аннотированном `include/FOREX_ROOT.mad:180-181` написано «M15», но это расхождение
+   нумерации внутри этого комментария; ниже возврат = **bemsh 15 = M13**, инструкция `13,UJ,`.
+   **Запрещено** завершать `13,VJM,...` — это перезаписало бы адрес возврата.
+2. **ФАКТ.** В двух реальных site-строках, которые читает сборщик, литерал — **`,CALL,LOADANGO.`**,
+   а не `,CALL,LOADAN.`:
+   `/home/azizz/besm6.github.io/sources/dubna/besml21/libra211.l21:15487,15489` и
+   `reference/libra211.forex.inc:40,42`. Литерал `,CALL,LOADAN.` есть только в аннотированном
+   `include/FOREX_ROOT.mad:106,108`. **Правка в `build_forex_perso.py` должна искать
+   `,CALL,LOADANGO.`**, иначе замена не сработает. Это критическая деталь write set.
+3. **ФАКТ.** Готового `FIND_IN_PERSO(name) -> (body,length)` в репозитории нет, **но почти весь
+   механизм уже написан и проверен в `monitor80-re/utility/overlay.asm`**: обход каталога парами
+   `FIND0` (`:299-302`), блочное копирование `COPY` (`:323-328`), примитив параметризации
+   `PARAMT*` (`:19-34`), `*70`-экстракоды reads (`:280,293,329-331,340-341`) и возврат `13,UJ,`
+   (`:359`). Новый код — только клей: сравнение 8-символьного TEXT-имени + декодирование f2/f3.
+4. **ФАКТ.** Текущий образ (прочитан напрямую, только чтение):
+   `build/FOREX_PERSO_2300.bin` sha256
+   `0bd8e5862d61a4b30358534260cf7cd06029966e4504821d4fc4d078e8a9d53b`, 5120 слов / 5 зон,
+   9 записей каталога, первая `FOREX*`. Записи LO*SYN/LO*GEN: `f2=0o4202/0o4302`,
+   `f3=0o2610/0o2650`, `f1=0`, `f0=0`. Тела raw-оверлеев лежат в слове **2435 (0o4603)** и
+   **3491 (0o6643)** образа (3 слова DMS-заголовка перед каждым: 2432 и 3488).
+5. **ГИПОТЕЗА (главный риск).** Адрес каталога/тел PERSO в **адресном пространстве исполняющейся
+   задачи** статически из исходников не выводится: карта `*perso:602300` задаёт не память, а
+   `LU=60 + зона 0o2300` (`docs/plan-f77/08-runtime.md:192-194,262-266`). Поэтому одиночный walker
+   требует одного живого замера базы (§5). до этого момента рабочий черновик держит базу в
+   отдельной `,EQU,` константе.
+
+**Вывод:** M2 технически выполним без изменения системных модулей. Ниже всё, что можно
+зафиксироватьстатически, зафиксировано; единственная неопределённость вынесена в один
+в единственную константу `IMGBASE` и снимается пробой из §5.
+
+---
+
+## 1. Контракт FXLODR (spec)
+
+| Поле | Значение | Источник |
+|---|---|---|
+| Вход | `acc = адрес TEXT-константы`: `0o4031` = `LO*SYN  `, `0o4032` = `LO*GEN  ` | `include/FOREX_ROOT.mad:50-51,104-108,151-152`; `libra211.l21:15525-26` |
+| Вызов | `13,VJM,74022B` (bemsh `VJM 74022(15)`), LINK-ячейка `0o74022` | `FOREX_CORE.registers.md:45`; `docs/06-address-map.md:144` |
+| Возврат | `13,UJ,`; M13 не трогать до самого возврата | `ident6.asm:53-54,57-58`; `loadango.asm:53`; `ficmemor.asm:16-17` |
+| Источник | PERSO-образ: каталог пары `(name,record)` со слова 2; тела от слова 2048, выравнивание 32 | `tools/build_forex_perso.py:6-12,14-24,321-364` |
+| Приёмник | `0o22654`, 1024 слова (`0o2000`), **одинаково** для SYN и GEN | `docs/06-address-map.md:124,151`; `include/catalog.md:144-161` |
+| Базы | M1 (SYN) / M7 (GEN) из слова `+4` скопированного тела | `docs/06-address-map.md:106-109`; `disasm/LO_SYN.bemsh.lst:5`; `disasm/LO_GEN.bemsh.lst:5` |
+| Сохранить | M13 (обязательно); M6/M7/M9/M12 как scratch с восстановлением | шаблон `ficmemor.asm:6-7,13-14` |
+| Разрешено менять | M1/M7 (по назначению), аккумулятор | `FOREX_CORE.registers.md:27-30` (M2/M4/M6/M7 в корне не используются) |
+
+**Дополнительно (ФАКТ по плану):**LINK-ячейки выделяются per-module (`docs/06-address-map.md:178-184`),
+поэтому замена двух `,CALL,` в нашем срезе не требует fall-through и не трогает системный `*forex`.
+
+---
+
+## 2. Черновик `src/FXLODR.mad`
+
+Стиль — как в рабочем M0-модуле `src/FXBANNER.mad:5-14` и в проверенных
+`monitor80-re/permanent/{ident6, ficmemor, givcall%}.asm`. Всё, что нельзя вывести статически,
+помечено `C ????` и разобрано в §3/§5.
+
+```
+C***********************************************************************
+C* FXLODR — загрузчик оверлеев FOREX из PERSO (M2).                      *
+C* acc на входе = адрес TEXT-имени 0o4031/0o4032.                        *
+C* Вызов  : 13,VJM,74022B  (bemsh VJM 74022(15)).                        *
+C* Возврат: 13,UJ,  (bemsh 15 = MADLEN M13; M13 НЕ трогать).             *
+C* Тело   : 1024 слова по 0o22654; база M1/M7 из слова +4.               *
+C***********************************************************************
+  FXLODR:,NAME,
+  FXLODR*:,ENTRY,
+  *1:     ,BLOCK,M1,M2,M3,M4,M5,M6,M7,M8,M9
+          ,CONT,M10,M11,M12,M13,M14,M15
+  DEST    :,EQU,22654B
+  LEN     :,EQU,2000B
+  CATOFS  :,EQU,2             . первая пара каталога; build_forex_perso.py:10
+  HDRP4   :,EQU,4             . слово +4 заголовка; include/catalog.md:132-136
+  IMGBASE :,EQU,???????B       . C ???? база PERSO-образа в ОЗУ (§5, проба)
+  BODYSYN :,EQU,2435          . слово 2435 образа (0o4603) — raw LO*SYN
+  BODYGEN :,EQU,3491          . слово 3491 образа (0o6643) — raw LO*GEN
+  TSYN    :,TEXT,8HLO*SYN
+  TGEN    :,TEXT,8HLO*GEN
+C ---- 0. ВРЕМЕННЫЙ МАРКЕР ДЛЯ ПРОБЫ (убрать перед финальной сборкой) ----
+  FXPRB:  ,*64,INFOP
+C ---- 1. Сохранить имя и scratch ---------------------------------------
+          ,ATX,NAMEADR
+          ,ITA,M6
+          ,ATX,SAVEM6
+          ,ITA,M7
+          ,ATX,SAVEM7
+          ,ITA,M9
+          ,ATX,SAVEM9
+          ,ITA,M12
+          ,ATX,SAVEM12
+C ---- 2. TEXT-слово по адресу из acc -----------------------------------
+          ,XTA,NAMEADR
+          ,XTA,                . acc := слово по адресу из acc (ident6.asm:9)
+          ,ATX,NAMEPAT
+          ,AEX,TSYN
+          ,UZA,ISGEN
+C ---- 3. Поиск записи в каталоге PERSO ---------------------------------
+  ISSYN:  M12,VTM,IMGBASE+CATOFS
+          ,XTA,=TSYN
+          ,ATX,NAMEPAT
+          ,UJ,SCAN
+  ISGEN:  M12,VTM,IMGBASE+CATOFS
+          ,XTA,=TGEN
+          ,ATX,NAMEPAT
+C  FIND_IN_PERSO: обход пар (name,record), завершатель name=0.
+C  Шаблон дословно из monitor80-re/utility/overlay.asm:299-302.
+  SCAN:   M12,XTA,            . имя текущей пары
+          ,UZA,NOTFOUND       . 0 -> завершатель каталога
+          ,AEX,NAMEPAT
+          ,UZA,FOUND
+        M12,UTM,2             . следующая пара
+          ,UJ,SCAN
+  FOUND:  M12,UTM,1
+        M12,XTA,              . record_word
+          ,ATX,REC
+C ---- 4. recordWord -> адрес тела и длина ------------------------------
+C   f2=(rec>>24)&0o7777, f3=(rec>>36)&0o7777, f1=(rec>>12)&0o7777
+C   src = IMGBASE + ((f2-0o4000)>>6)*1024 + (f3-0o2010) + 3
+C   len = (f2&0o77)*512 + (f1>>3)      (build_forex_perso.py:353-357)
+C   Здесь используется фиксированная раскладка этого образа:
+          ,XTA,=IMGBASE+BODYSYN
+          ,ATX,SRCADR
+        M9,VTM,=LEN           . счётчик = 1024
+C ---- 5. Копия 1024 слов -> 0o22654 ------------------------------------
+C  Шаблон из loadf.asm:37-39 и ident6.asm:42-43 (счётчик вместо 0-терминатора
+C  из overlay.asm:323-328). FICMEM*/PARAMT* — альтернатива, см. §3.2.
+        M6,VTM,SRCADR
+        M7,VTM,DEST
+  CP:   M6,XTA,
+        M7,ATX,
+      M6,UTM,1
+      M7,UTM,1
+      M9,UTM,-1             . 1024 -> 0
+      M9,V1M,CP             . шаблон ident6.asm:42-43 / loadf.asm:37-39
+C ---- 6. База M1/M7 из слова DEST+4 ------------------------------------
+C  ???? значение базы измеряется пробой §5; сам код универсален по регистру:
+        M7,XTA,=DEST+HDRP4
+        ,AEX,=000146600000    . маска «ATX 1»
+        ,UZA,SETM7
+        ,XTA,=BASEVAL         . ???? константа базы
+        ,ATI,M1
+        ,UJ,RET
+  SETM7: ,XTA,=BASEVAL
+        ,ATI,M7
+  RET :
+C ---- 7. Восстановление scratch и возврат ------------------------------
+        ,XTA,SAVEM6
+        ,ATI,M6
+        ,XTA,SAVEM7
+        ,ATI,M7
+        ,XTA,SAVEM9
+        ,ATI,M9
+        ,XTA,SAVEM12
+        ,ATI,M12
+  13,    UJ  ,                 . ВОЗВРАТ через M13. НЕ VJM!
+  NOTFOUND: ,UJ,RET             . запасной путь без порчи регистра возврата
+C ---- Данные -----------------------------------------------------------
+  NAMEADR :,BSS,1
+  NAMEPAT :,BSS,1
+  SAVEM6  :,BSS,1
+  SAVEM7  :,BSS,1
+  SAVEM9  :,BSS,1
+  SAVEM12 :,BSS,1
+  SRCADR  :,BSS,1
+  REC     :,BSS,1
+  INFOP:,,INSTXT
+         ,,INSTXT
+         :,001,
+         8,,.
+  INSTXT:,GOST,20HM2 FXLODR ENTER 2026'231'
+          ,END,FXLODR
+```
+
+### 2.1 Что в каркасе переиспользовано (hard rule «reuse proven code»)
+
+| Фрагмент | Прототип |
+|---|---|
+| Возврат `,WTC,` + `13,UJ,` и сохранение M6/M7 | `monitor80-re/permanent/ficmemor.asm:6-7,13-17` |
+| Обход каталога парами и terminate-on-zero | `monitor80-re/utility/overlay.asm:299-302` |
+| Цикл копирования `XTA/ATX/UTM/UTM/UJ` | `monitor80-re/utility/overlay.asm:323-328`; `loadf.asm:37-39`; `ident6.asm:42-43` |
+| Сравнение 8-символьного TEXT-слова `,AEX,` + `,UZA,` | `ident6.asm:26-30`; `loadango.asm:19-20`; `givcall%.asm:25-37` |
+| Чтение слова по адресу из аккумулятора `,XTA,` | `ident6.asm:9,18` |
+| `*64` GOST-печать и блок описания печати | `src/FXBANNER.mad:7-13` (M0 proven live, `logs/f77_30_m0_banner_live.txt`) |
+| Формат каталога, смещения 2/2048/32, f2/f3/f1/f0 | `tools/build_forex_perso.py:6-24,353-364` |
+| Адреса 0o22654 / 0o2000 / +4 / M1/M7 | `docs/06-address-map.md:106-109,124,151`; `include/catalog.md:132-161` |
+
+**Новый код (и только он):** (a) dispatch `LO*SYN`/`LO*GEN` по 8-символьному TEXT-слову;
+(b) декодирование f2/f3 в адрес тела; (c) установка базы M1/M7. Всё остальное — копирование
+провенных последовательностей.
+
+### 2.2 Исправление черновика из предыдущего отчёта
+
+В `/var/tmp/b1-f77-fix/m2-fxlodr.md:242-245` стоял `M13,VJM,IDENT6` — **недопустимо**: он
+перезаписывает M13 адресом возврата из IDENT6. Ниже разбор вариантов:
+- вызывать IDENT6 через `14,VJM,IDENT6` (как `loadf.asm` вызывает свои подпрограммы), или
+- сохранить M13 в BSS и восстановить перед `13,UJ,`, или
+- **рекомендуемый путь в этом черновике**: вообще не вызывать IDENT6, а сделать линейное
+  сравнение 8-символьного слова (всего два имени). IDENT6 остаётся «источником логики»,
+  а не вызываемой подпрограммой — это снимает конфликт LINK-регистра entirely.
+
+### 2.3 FICMEM* как альтернатива циклу
+
+`FICMEM*` (`ficmemor.asm:1-19`) — готовый блочный move через `PARAMT*`, но его протокол
+(`:6-12`: `M14,MTJ,M6` / `M13,MTJ,M7` / `M10,VTM,` / `M13,VJM,PARAMT*` …) **использует M13 как
+LINK-регистр внутри**. При вызове из FXLODR, где M13 = наш адрес возврата, это требует
+обязательного сохранить-восстановить M13 (как в варианте 2.2). Пока простой copy-цикл ниже не
+показал ошибки, предпочтителен простой цикл из §2; если нужна побайтовая equivalence с системным
+путем — перейти на FICMEM* с сохранённым M13.
+
+---
+
+## 3. Exactly недостающий примитив
+
+### 3.1 Формулировка
+
+> **`FIND_IN_PERSO(name_word) -> (body_address, load_length)`**
+>
+> Вход: 48-битное 8-символьное TEXT-слово (например `5457126371560000` = `LO*SYN  `).
+> Выход: адрес первого слова **raw-тела** оверлея в адресном пространстве задачи и длина
+> (1024 = `0o2000`). Должен работать с форматом каталога нашего PERSO-образа
+> (`tools/build_forex_perso.py:14-24,353-364`) и НЕ пользоваться системными ячейками
+> `17B/43B/46B/60B/61B` + `*70`, потому что это путь `*TEMPO`/drum, а не raw-образ PERSO
+> (`loadango.asm:10-34`; `loadf.asm:49-66`; `re-siprod/notes/loader.md:19-30`;
+> `docs/plan-f77/08-runtime.md:268-271`).
+
+### 3.2 Почему готового нет и что именно писать
+
+`LOADF`/`LOADT` (`loadf.asm:1-85`) и `LOADANGO` (`loadango.asm:1-79`) решают похожую задачу,
+но через каталог на ленте/барабане, выбранный `*PERMANENT`/`*TEMPO`
+(`monitor80-re/docs/СПРАВОЧНИК_КОМАНДЫ.md:305-311`; `star%.masm:299-308`; `libdrum.asm:137-178`).
+Совместимость этого пути с raw-образом, загруженным `*perso:602300`, **не доказана**
+(это и есть причина, по которой M2 не сводится к вызову `LOADANGO`).
+
+**Минимальный план реализации (3 шага, ~25 команд):**
+
+1. **Имя → запись.** Пробег пар каталога со слова `CATBASE+2`, как в `overlay.asm:299-302`:
+   `M12,XTA,` → `UZA,END` → `AEX,NAMEPAT` → `UZA,FOUND` → `M12,UTM,2` → `UJ`.
+2. **Запись → смещение.** Декодировать из `record` (биты: `f3=rec>>36`, `f2=rec>>24`,
+   `f1=rec>>12`, `f0=rec&0oFFF`) по формуле сборщика `tools/build_forex_perso.py:353-357`:
+   ```
+   zone = (f2 - 0o4000) >> 6
+   off  = f3 - 0o2010
+   src  = IMGBASE + zone*1024 + off + 3     ! +3 = 3-словный DMS-заголовок
+   len  = (f2 & 0o77)*512 + (f1 >> 3)
+   ```
+   Проверка на текущем образе (вычислено по дампу, только чтение):
+   SYN `zone=2, off=0o600, src=IMGBASE+2435`, GEN `zone=3, off=0o640, src=IMGBASE+3491`,
+   `len=1024` у обоих. **Эти числа совпадают с f2/f3 из реального каталога** — формула верна.
+3. **Скопировать.** Цикл из `overlay.asm:323-328` / `loadf.asm:37-39` на 1024 итерации.
+
+**Единственная величина, которую нельзя вывести статически — `IMGBASE`** (адрес, по которому
+PERSO-образ виден исполняющейся задаче). Карта `*perso:602300` — это LU+зона диска
+(`docs/plan-f77/08-runtime.md:192-194`), а не адрес ОЗУ. ГИПОТЕЗА «образ уже в ОЗУ и читается
+напрямую» из `/var/tmp/b1-f77-fix/m2-fxlodr.md:118-124` остаётся гипотезой до проба §5.
+
+### 3.3 Запасной путь без `IMGBASE` (build-time константы)
+
+Образ собирается детерминированно: body-слова 2435 и 3491 известны на этапе сборки.
+Можно передать их в FXLODR как `,EQU,` константы (уже сделано в §2: `BODYSYN/BODYGEN`), а
+`IMGBASE` получить не из каталога, а **из одного живого замера** (§5). Если замер не удаётся,
+fallback — вообще отказаться от прямого чтения и вызвать проверенный `*21 22654(12)` путь
+через системную `LOADANGO`, оставив FXLODR только как dispatch-обёртку (это уже не полный M2,
+но рабочий пробный шаг `54-perso-compiler-plan.md:92-93`).
+
+---
+
+## 4. Точные правки `tools/build_forex_perso.py` (НЕ применять к репо)
+
+Все фрагменты ниже скопированы из текущего файла (только чтение) и даны как `old → new`.
+
+### 4.1 (a-1) Добавить FXLODR в `SOURCE_SLICES`
+
+`old` (`tools/build_forex_perso.py:131-138`):
+```python
+SOURCE_SLICES = [
+    # FOREX* must be a RELOCATABLE Monitor-80 object for `*CALL FOREX*` to
+    # work: the raw monsys.9 dump has field-0 absolute addresses and returns
+    # immediately when loaded as an ordinary PERSO module.
+    ("FOREX*",  SRC_ROOT / "besml21/libra211.l21", 15448, 15528),
+    ("XDATAPR", SRC_ROOT / "besmmons/system1.txt", 7645, 7733),
+    ("XGIVPG",  SRC_ROOT / "besml21/libra211.l21", 16780, 16836),
+]
+# ENTRY symbol inside a source module whose offset becomes catalog f0.
+ENTRY_SYMBOL = {"FOREX*": "INITFOR*"}
+```
+`new`:
+```python
+SOURCE_SLICES = [
+    # FOREX* must be a RELOCATABLE Monitor-80 object for `*CALL FOREX*` to
+    # work: the raw monsys.9 dump has field-0 absolute addresses and returns
+    # immediately when loaded as an ordinary PERSO module.
+    ("FOREX*",  SRC_ROOT / "besml21/libra211.l21", 15448, 15528),
+    ("XDATAPR", SRC_ROOT / "besmmons/system1.txt", 7645, 7733),
+    ("XGIVPG",  SRC_ROOT / "besml21/libra211.l21", 16780, 16836),
+    # M2: our own overlay loader, a separate PERSO module with a NEW name.
+    ("FXLODR",  ROOT / "src/FXLODR.mad", 1, 10**9),
+]
+# ENTRY symbol inside a source module whose offset becomes catalog f0.
+ENTRY_SYMBOL = {"FOREX*": "INITFOR*", "FXLODR": "FXLODR*"}
+```
+
+**Почему FXLODR в конце списка, а не вторым:** `build()` жёстко ставит FOREX* первым
+(`:283-288`), а `re-siprod/notes/loader.md:16-18` требует добавлять новые записи **только после
+завершателя** — вставка в середину сдвигает формальные номера входов личной библиотеки
+(`C=0o6700`), которых в пересобранном корне 6 (`/var/tmp/b1-f77-fix/loadango-report.md:15,123`).
+Поэтому FXLODR собирается отдельно **после `XTAKPG`** (см. 4.2).
+
+### 4.2 (a-2) Разместить запись каталога последней
+
+`old` (`tools/build_forex_perso.py:317-320`):
+```python
+    # XTAKPG is an entry point inside XGIVPG: catalog-only record, no body.
+    modules.append(dict(name="XTAKPG", body=None, load=takepg_entry,
+                        entry_of="XGIVPG"))
+```
+`new`:
+```python
+    # XTAKPG is an entry point inside XGIVPG: catalog-only record, no body.
+    modules.append(dict(name="XTAKPG", body=None, load=takepg_entry,
+                        entry_of="XGIVPG"))
+
+    # M2: FXLODR is appended LAST so that C=0o6700 entry numbers of the
+    # existing nine modules keep their values (re-siprod/notes/loader.md:16-18).
+    _fx = next(x for x in SOURCE_SLICES if x[0] == "FXLODR")
+    _body, _load, _entry = assemble_source("FXLODR", _fx[1], _fx[2], _fx[3])
+    modules.append(dict(name="FXLODR", body=_body, load=_load,
+                        entry=_entry))
+```
+
+### 4.3 (a-3) Пропустить FXLODR в общем цикле сборки
+
+`old` (`tools/build_forex_perso.py:305-309`):
+```python
+    takepg_entry = 0
+    for name, path, first, last in SOURCE_SLICES:
+        if name == "FOREX*":
+            continue
+```
+`new`:
+```python
+    takepg_entry = 0
+    for name, path, first, last in SOURCE_SLICES:
+        if name in ("FOREX*", "FXLODR"):
+            continue
+```
+
+### 4.4 (b) Заменить два `,CALL,LOADANGO.` на `,CALL,FXLODR.`
+
+Внутри `assemble_source()`, в конце блока `if name == "FOREX*":`
+(после строк `tools/build_forex_perso.py:238-239`).
+
+`old` (`:238-239`):
+```python
+            lines = [ln.replace(",CALL,OCTTDEC", ",CALL,OCTTDE*")
+                     for ln in lines]
+```
+`new`:
+```python
+            lines = [ln.replace(",CALL,OCTTDEC", ",CALL,OCTTDE*")
+                     for ln in lines]
+            # M2: route the two overlay loads to our PERSO loader.  The
+            # literal in libra211.l21:15487/15489 is ",CALL,LOADANGO." (the
+            # shorter ",CALL,LOADAN." exists only in the annotated copy
+            # include/FOREX_ROOT.mad:106,108 and is NOT what we assemble).
+            lines = [ln.replace(",CALL,LOADANGO.", ",CALL,FXLODR.")
+                     for ln in lines]
+```
+
+**Ожидаемый эффект:** в собранном images каталог станет из 10 записей (`FOREX*` первая,
+`FXLODR` последняя); у FOREX* останется f0=`0o462` из INITFOR*; две команды в LOREX станут
+`VJM 74022(15)` с LINK-ячейкой, указывающей на FXLODR вместо системной `LOADANGO`.
+**Никаких SUBP-деклараций добавлять не нужно**: эталонный `LOADANGO` тоже не объявлен `,SUBP,`
+в исходнике (`libra211.l21:15448-15528`), но порождает внешнюю ссылку через `,CALL,` — это
+подтверждено `loadango-report.md:45`. Добавление лишней SUBP-строки увеличило бы число внешних
+ссылок головного модуля и вернуло бы `ИСПОРЧЕНА ПОДПРОГРАММА` (`54-perso-compiler-plan.md:165-171`).
+
+---
+
+## 5. Рецепт проверки ТОЛЬКО НА КОПИЯХ
+
+1. **Рабочая директория.** Создать `/var/tmp/b1-f77-fix/m2-work/` и скопировать туда:
+   репозиторий (или минимально `tools/build_forex_perso.py`, `src/`, `tests/plan-f77/`,
+   `tests/forex-glissade/`), эталон диска `/usr/local/share/besm6/2348` **в рабочую копию**,
+  и свою копию `build/FOREX_PERSO_2300.bin`. Все правки §4 применять **только к копии**
+   `tools/build_forex_perso.py`. Репо остаётся read-only.
+2. **Временный `*64`-маркер.** В `src/FXLODR.mad` (копия) оставить блок `FXPRB`/`INFOP` из §2.
+   Он печатает `M2 FXLODR ENTER 2026` при каждом входе. Если число `20H` не совпадает с числом
+   символов GOST-строки — сверрить с рабочим `src/FXBANNER.mad:13` (там `35H` на строку
+   «FOREX 5.00 / 19.11.2026 (RE-FOREX)»; конвенция счётчика должна быть одинаковой).
+3. **Сборка образа на копии:** `python3 tools/build_forex_perso.py` в копии. Контроль:
+   10 записей в каталоге, `FOREX*` первая, `FXLODR` последняя, завершатель `(0, FULWORD)`.
+   В копии `tests/run-glissade-forex.sh:69,77,79` нужно заменить `range(2,20,2)` →
+   `range(2,22,2)`, `!= 9` → `!= 10`, `getw(20)/getw(21)` → `getw(22)/getw(23)`.
+4. **Запись на копию диска:** `besmtool write 2348 --from-file=image.bin --start=1216`
+   (`--start` — **десятичный**, `docs/14-perso-write.md:122-126`; `ZONE_DEC=1216` из
+   `tests/run-glissade-forex.sh:31`). Эталон `/usr/local/share/besm6/2348` не трогать.
+5. **Дека-проба** (аналог `tests/plan-f77/fxbanner.b6:1-11` + `run-glissade-forex.sh:88-103`):
+   ```
+   шифр 419999 зс5^
+   лен 60(2348)^
+   ееВ1а3
+   *name M2FX
+   *call yesmemory
+   *perso:602300
+   *call forex*
+   <любой Fortran-исходник из tests/forex-glissade/glkern.b6:10..111>
+   *execute
+   *end file
+   ``````
+   еконец
+   ```
+6. **Что именно доказывает вызов FXLODR (console output):**
+   - **Маркер `M2 FXLODR ENTER 2026` ровно 2 раза** в логе, до начала компиляции/листинга:
+     первый раз для `LO*SYN`, второй для `LO*GEN` (два `,XTS/`CALL` в `FOREX_ROOT.mad:105-108`).
+     0 раз → вызов не доходит (головной модуль не загрузился или LINK-ячейка не переадресована);
+     1 раз → возврат через M13 сломан (второй `CALL` не выполнен).
+   - **Отсутствие** `ОТСУТСТВУЕТ LO*SYN`, `ОТСУТСТВУЕТ LO*GEN`, `ИСПОРЧЕНА ПОДПРОГРАММА`
+     на этапе `*call forex*` (критерий плана `54-perso-compiler-plan.md:99-100`;
+     `loadango-report.md:159-167`).
+   - Дамп зоны `0o22654..0o22853` (1024 слова) после первого маркера должен совпасть с
+     эталонным raw-дампом `build/LO_SYN.words` (адрес ленты `0o241500`), после второго — с
+     `build/LO_GEN.words` (`0o277500`). Это доказывает адрес и длину копирования.
+   - Сравнение M1/M7 до и после каждого вызова с эталонным системным `*forex`
+     (`dispak/tests/forex/output.txt:26-33,59`) — снимает `C ????` про базу из §2.
+   - Полный прогон `tests/run-glissade-forex.sh` на копии: `rc=0`, 14/14 строк результата.
+7. **Обратимость.** После пробы маркер `FXPRB` удаляется, LINK-патч (вариант (a) из
+   `/var/tmp/b1-f77-fix/m2-fxlodr.md:348-366`) снимается, остаётся только вариант (b).
+
+---
+
+## 6. Риски и границы доказательности
+
+| Риск | Факт / источник | Влияние |
+|---|---|---|
+| **329 абсолютных целей**, ~100 без имени | `54-perso-compiler-plan.md:102-103`; `docs/06-address-map.md:292-336` | FXLODR **не** релокирует: это копирование, не relocation (`06-address-map.md:110-113`). Работоспособность зависит от резидентных MONSYS/библиотеки 21. M2 риск не снимает. |
+| **Один DEST `0o22654`** | `docs/06-address-map.md:124,151`; `include/catalog.md:144-155` | SYN и GEN перезаписывают одну зону. Корректность требует строгой последовательности SYN→GEN (`FOREX_ROOT.mad:105-108`) и отсутствия повторного входа. |
+| **5 отсутствующих SUBP** (`FOREX/CONST/COMEQ/OPRTR/ПP`) | `loadango-report.md:13,150-154,173`; `54-perso-compiler-plan.md:110`, `:165-171` | Тел нет на носителях; они не вызываются, но попадают в sym-секцию → `ИСПОРЧЕНА ПОДПРОГРАММА`. M2 это **не** исправляет (зона M1/M3). |
+| **Дубль имени `LOADANGO`** | `loadango-report.md:9,115-117`; `tools/build_forex_perso.py:37-48` | Нельзя класть FXLODR под именем `LOADANGO`; только новое имя `FXLODR`/`FXLODR*`. |
+| **LINK-ячейки per-module** | `docs/06-address-map.md:178-184` | Патч общей ячейки `0o74022` опасен и требует fall-through; поэтому выбран вариант (b) — замена двух CALL в нашем срезе. |
+| **Значение базы из слова +4** | `include/catalog.md:132-136`; `LO_*.bemsh.lst:5`; `06-address-map.md:106-113,190-193` | Статически не выводится; нужен замер M1/M7 на живом `*forex` (§5.6). |
+| **`IMGBASE` неизвестен** | `docs/plan-f77/08-runtime.md:192-194,262-266` | Единственная величина, которую нельзя получить статически; снимается пробой §5 или build-time fallback §3.3. |
+| **Каталог сместится на 10-ю запись** | `tests/run-glissade-forex.sh:69,77,79` | Старый diagnostic скрипт на копии упадёт, если не поправить expected count/индексы (§5.3). |
+
+**Что M2 МОЖЕТ доказать:** что обе CALL-точки приходят в FXLODR (2 маркера); что обе записи
+находятся по имени в нашем PERSO-каталоге; что 1024 слова доставлены точно на `0o22654`; что
+базы M1/M7 совпадают с эталоном; что `LOREX` продолжается во вторую CALL и возвращается без
+`ОТСУТСТВУЕТ / ИСПОРЧЕНА`; что системный путь не сломан (21/21, gate 20/20, 14/14).
+
+**Что M2 НЕ МОЖЕТ доказать:** полную компиляцию BASE77 и unit-кейсов (это M3,
+`54-perso-compiler-plan.md:105-113`); разрешение ~100 безымянных целей (нет карты «адрес→имя»,
+`06-address-map.md:310-336`); побайтовую эквивалентность *нашего* пути системному на всех 21
+тесте (M4); универсальность FXLODR — он специализирован на deux именах.
+
+---
+
+## 7. Источники (ключевые)
+
+- `/var/tmp/b1-f77-fix/m2-fxlodr.md:19-40,118-124,210-342,348-450` — предыдущий дизайн.
+- `docs/plan-f77-full/54-perso-compiler-plan.md:15-16,84-103,153-174`.
+- `tools/build_forex_perso.py:6-24,52,94-102,131-140,199-277,282-405` — формат образа, сборка.
+- `include/FOREX_ROOT.mad:50-51,95-108,151-152,156-187`; `reference/libra211.forex.inc:38-42,78-79`.
+- `/home/azizz/besm6.github.io/sources/dubna/besml21/libra211.l21:15448-15528` — реальные CALL-литералы.
+- `include/FOREX_CORE.registers.md:6-7,27,39-61,88-91` — bemsh↔MADLEN, возврат M13.
+- `monitor80-re/permanent/{ident6.asm:1-78, loadango.asm:1-79, loadf.asm:1-153, ficmemor.asm:1-19, ficmem%.asm:1-108, givcall%.asm:9,15-57}`.
+- `monitor80-re/utility/overlay.asm:8-34,216-227,241-359` — **proven catalog walker + copy loop**.
+- `re-siprod/notes/loader.md:1-18`; `docs/14-perso-write.md:54-85,115-137`;
+  `docs/15-perso-build.md:55-93`; `docs/plan-f77/08-runtime.md:192-194,262-281`.
+- `docs/06-address-map.md:90-155,178-193,292-336`; `include/catalog.md:115-161`;
+  `disasm/{LO_SYN,LO_GEN,CORE_ROOT}.bemsh.lst`.
+- `src/FXBANNER.mad:1-14`; `tests/plan-f77/{build_fxbanner.py, fxbanner.b6}` — M0 proof.
+- `tests/run-glissade-forex.sh:1-129` — deck, disk-copy, expected counts.
+- `/var/tmp/b1-f77-fix/loadango-report.md:9-70,74-107,136-174` — LOADANGO и 5 SUBP.
+
+**DONE**
