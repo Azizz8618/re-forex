@@ -377,14 +377,10 @@ def build() -> Path:
         length = m["load"]
         f2 = (TV_BIAS_F2 + zone * 0o100 + (length // 512)) & 0xFFF
         f1 = ((length % 512) * 8) & 0xFFF
-        # Low 12 bits f0 = entry-point offset inside the module.  For the old
-        # wrapped dumps it was 0 (start of the synthetic header); for assembled
-        # objects it comes from the assembler's ENTRY symbol (e.g. INITFOR*).
-        # F1 probe: the assembler's INITFOR* offset is measured from the first
-        # CODE word, while f0 is measured from the body start (3 header words).
+        # Low 12 bits f0 = entry-point offset inside the module.  The loader
+        # places the first CODE word (body+3) at the module base, so f0 is the
+        # assembler ENTRY offset from cmd start with NO header adjustment.
         _f0 = m.get("entry", 0)
-        if _reloc and m["name"] == "FOREX*":
-            _f0 += 3
         record = ((f3 << 36) | (f2 << 24) | (f1 << 12) | (_f0 & 0xFFF))
         catalog_words.append(text_encode(m["name"]))
         catalog_words.append(record)
