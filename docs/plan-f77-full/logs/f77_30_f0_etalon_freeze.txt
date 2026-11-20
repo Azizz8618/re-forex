@@ -1,0 +1,184 @@
+===============================================================================
+F0 BASELINE / ETALON FREEZE — symbolic rewrite of FOREX 5.00 (plan 56)
+===============================================================================
+Purpose : Milestone F0 ("Заморозка эталонов и двухпутевая структура") of
+          docs/plan-f77-full/56-symbolic-rewrite-plan.md.
+          This log is the immutable baseline against which all later phases
+          (F1 symbolic root, F2 loader path, F3 overlay relocation) prove that
+          the etalon artifacts were NOT touched.
+Recorded: 2026-11-20T19:26:13Z
+Repo    : /home/azizz/Yandex.Disk/re-forex
+Branch  : main
+HEAD    : 14c0f604bacbe0283543f6e2e0acca0da4ac4ae4
+Scope   : READ-ONLY. Only two new artifacts created by this milestone:
+            - src/reloc/README.md  (new placeholder dir for future sources)
+            - this freeze log
+          No edits to any existing tracked file. No git writes/commits.
+
+-------------------------------------------------------------------------------
+1. BASELINE GATES (rc + key output lines)
+-------------------------------------------------------------------------------
+
+[1a] bash tests/verify-dumps.sh
+  RC = 0
+  tape: /home/azizz/Yandex.Disk/besm6-new/besm6.net/tapes/monsys.9
+  LO_SYN offset=0o241500  size=6144   sha256=83a7e962a9db89e62b856b7461ce2aba91239957931a03e1520fb4d228459366
+         побайтовая сверка с build/LO_SYN.words: OK
+  LO_GEN offset=0o277500  size=6144   sha256=4f4d8e4cc8fff1ec9742fe8be0a0c5f797716ab1bd085a1625d37569d222cbfd
+         побайтовая сверка с build/LO_GEN.words: OK
+  OK: оверлеи LO*SYN и LO*GEN выгружены и сверены
+
+[1b] python3 tests/check-source-words.py
+  RC = 0
+  OK LO*SYN: все 1024 слова совпадают с дампом
+  OK LO*GEN: все 1024 слова совпадают с дампом
+
+[1c] bash tests/run-glissade-forex.sh
+  RC = 0
+  PERSO catalog (9 modules): FOREX* LO*SYN LO*GEN FORMAT FORTLIBR XDATAPR OCTTDE* XGIVPG XTAKPG
+  catalog terminator: (0, FULWORD) OK
+  OK: 14 строк результата совпадают с эталоном (после нормализации даты)
+  NOTE: this gate rewrites two tracked generated files
+        (tests/forex-glissade/output.new.txt, logs/glissade_run_full.txt).
+        They were backed up before the run and restored afterwards, so the
+        final git state is unchanged (see section 4).
+
+[1d] python3 tests/check-f77-matrix-200.py
+  RC = 0
+  MATRIX docs/plan-f77-full/01-f77-standard-matrix.md
+  строк: 200 (ожидается 200); уникальных ID: 200
+  счётчик: OK=200 NO=0 PARTIAL=0 UNKNOWN=0
+  OK: 200/200, каждая строка OK имеет исполнимое доказательство
+
+Summary: all four baseline gates returned rc=0.
+
+-------------------------------------------------------------------------------
+2. ETALON SHA256 (exact, at F0)
+-------------------------------------------------------------------------------
+build/CORE_ROOT.words         3861ee47dab0952a7c6d68c7803e1543dd8f0473657348f98466ee8405bd749f
+build/LO_SYN.words            83a7e962a9db89e62b856b7461ce2aba91239957931a03e1520fb4d228459366
+build/LO_GEN.words            4f4d8e4cc8fff1ec9742fe8be0a0c5f797716ab1bd085a1625d37569d222cbfd
+build/FOREX_PERSO_2300.bin    0bd8e5862d61a4b30358534260cf7cd06029966e4504821d4fc4d078e8a9d53b
+src/LO_SYN.mad                66e2acb80f9a577536e68bfb9900cc742c214242d14aab3a9de30774d147f80f
+src/LO_GEN.mad                19e57c22dcb91dedae8361348078bfa9dad3e341547b0830ca3a84e1aca00471
+src/FOREX_CORE.mad            70d849e02d7e6d7ed5b5d79f0b96b92fd164b1a07c0d2a28fa651e36a40340d6
+include/FOREX_ROOT.mad        a72fef40c17cdecfd1c26428cbfb3c70a4937f28c80d082f2db718cae18870c6
+disasm/CORE_ROOT.bemsh.lst    171bd4c59b5a7ef4058579d4f9a71b9cdb15a7b054a1315fc19e70d3b9a4f64a
+
+The PERSO image sha256 0bd8e586... matches the "стабильный PERSO 0o2300"
+image pinned in plan 56 §F0 (line 56 of the plan).
+
+-------------------------------------------------------------------------------
+3. COUNTERS 104 / 225 / 329 / 5 (with file:line refs)
+-------------------------------------------------------------------------------
+
+104 — LO*SYN external absolute addresses
+  include/LO_SYN.xref.md:218-219
+    "Управляющих команд: 269; различных целей: 129."
+    "Внутренних целей: 25; внешних абсолютных: 104."
+  include/LO_SYN.xref.md:293
+    "Всего внешних переходов: 244, различных адресов: 104."
+  docs/06-address-map.md:8
+    "Вход: include/LO_SYN.xref.md (104 внешних адреса)"
+  docs/06-address-map.md:199
+    "### 4.1. LO*SYN (104 внешних адреса, всего 269 управляющих команд)"
+  docs/06-address-map.md:304
+    "Итого уникальных внешних адресов: 104 (SYN) + 225 (GEN) ..."
+
+225 — LO*GEN external absolute addresses
+  include/LO_GEN.xref.md:541-543
+    "### 3.2 Внешние абсолютные адреса ( резидентная память MONSYS/FOREX*)"
+    "Различных целей: 225. Помётка «требует сопоставления с корнем FOREX*/MONSYS» ..."
+  include/LO_GEN.xref.md:884
+    "... полный перечень символов целей (225 внешних адресов)."
+  docs/06-address-map.md:9
+    "include/LO_GEN.xref.md (225 внешних адресов)"
+  docs/06-address-map.md:232
+    "### 4.2. LO*GEN (225 внешних адресов, 504 команды управления)"
+  docs/06-address-map.md:304
+    "Итого уникальных внешних адресов: 104 (SYN) + 225 (GEN) ..."
+
+329 — total unique external addresses across both overlays (104 + 225)
+  docs/06-address-map.md:300
+    "| confirmed (класс области/подсистемы, без имени) | ~290 из 329 | §2, §5 |"
+  docs/06-address-map.md:304-306
+    "Итого уникальных внешних адресов: 104 (SYN) + 225 (GEN), из них в
+     корень FOREX* — 22 (только SYN), в MONSYS high memory — ~70, в
+     резидентную библиотеку — остальные."
+  (329 = 104 + 225; ~100 of them are unnamed targets per plan 56 §0/§F3.)
+
+5 — SUBP bodies absent from all available images (CONST / COMEQ / OPRTR / ПP / FOREX)
+  docs/06-address-map.md:276
+    "## 5. Попадание в тела FOREX / CONST / COMEQ / OPRTR / ПP и MONSYS"
+  docs/06-address-map.md:281
+    "тела этих SUBP не найдены ни в одном доступном образе: они присутствуют
+     только как SUBP-объявления корня и E … в LIBREFER; DTRAN в dispak —
+     IS ABSENT ..."
+  These are the exactly 5 missing SUBP bodies counted in plan 56 §0 item 4
+  and §F3 ("5 SUBP-тел нет"); entry points fall in 0o40000..0o73777.
+
+-------------------------------------------------------------------------------
+4. GIT STATUS AT F0 (etals untouched proof)
+-------------------------------------------------------------------------------
+Modified (pre-existing user changes, not from this milestone):
+  M  src/f77prep/__pycache__/prep_tools.cpython-312.pyc
+  M  tools/run_besm6_deck.py
+
+Untracked (pre-existing, not from this milestone):
+  ?? docs/plan-f77-full/40-hang-repro.md
+  ?? docs/plan-f77-full/50-arfa-modules.md
+  ?? docs/plan-f77-full/51-arfa-docs.md
+  ?? docs/plan-f77-full/52-arfa-emulator.md
+  ?? docs/plan-f77-full/53-monitor-path.md
+  ?? docs/plan-f77-full/56-symbolic-rewrite-plan.md
+  ?? docs/plan-f77-full/logs/f77_28_repro-2348-transcript.txt
+  ?? docs/plan-f77-full/logs/f77_28_repro-console-analysis.txt
+  ?? docs/plan-f77-full/logs/f77_28_repro-cycles.txt
+  ?? docs/plan-f77-full/logs/f77_28_repro-m2048-transcript.txt
+  ?? docs/plan-f77-full/logs/f77_28_repro-orig-transcript.txt
+  ?? docs/plan-f77-full/logs/f77_28_repro-timeout90-transcript.txt
+  ?? docs/plan-f77-full/logs/f77_29_docs_e63_structure.txt
+  ?? docs/plan-f77-full/logs/f77_29_docs_hang_places.txt
+  ?? docs/plan-f77-full/logs/f77_29_docs_media_wait.txt
+  ?? docs/plan-f77-full/logs/f77_29_docs_names_shifry.txt
+  ?? docs/plan-f77-full/logs/f77_29_monitor_grep.txt
+  ?? docs/plan-f77-full/logs/f77_29_monitor_passport.txt
+  ?? docs/plan-f77-full/logs/f77_29_monitor_trace.txt
+  ?? logs/f77_29_emul_errors_waits.txt
+  ?? logs/f77_29_emul_name_key.txt
+  ?? logs/f77_29_emul_volume.txt
+  ?? logs/f77_29_modules_arfa_labels.txt
+  ?? logs/f77_29_modules_evidence.txt
+  ?? logs/f77_29_modules_gidra_labels.txt
+  ?? logs/f77_29_modules_inventory.txt
+
+Etalon git-diff check (empty => etalons were NOT modified):
+  git diff --name-only -- build/CORE_ROOT.words build/LO_SYN.words \
+     build/LO_GEN.words build/FOREX_PERSO_2300.bin src/LO_SYN.mad \
+     src/LO_GEN.mad src/FOREX_CORE.mad include/FOREX_ROOT.mad \
+     disasm/CORE_ROOT.bemsh.lst
+  => (empty)
+
+The two modified files and all untracked files were already in this state
+before F0 started (status captured at task start and re-checked at end;
+identical). The glissade gate's generated-file side effects were backed up
+and restored. No existing tracked file was changed by this milestone.
+
+-------------------------------------------------------------------------------
+5. F0 CRITERIA CHECK (plan 56 §F0)
+-------------------------------------------------------------------------------
+  [x] verify-dumps.sh rc=0
+  [x] check-source-words.py 1024/1024 (both overlays)
+  [ ] check-disasm.sh — see NOTE below (not part of the four requested gates)
+  [x] check-f77-matrix-200.py 200/200 OK
+  [x] run-glissade-forex.sh 14/14
+  [x] PERSO image sha256 0bd8e586... pinned as "stable PERSO 0o2300"
+  [x] new sources live only in src/reloc/ (currently README.md placeholder)
+  [x] git diff by etalons is empty
+
+NOTE on check-disasm.sh: plan 56 §F0 lists it as a criterion but the F0 task
+write set / step list did not request running it. It is NOT part of the frozen
+four-gate baseline recorded in section 1. Run it separately if the F0 exit
+criteria require it; this log does not claim its rc.
+
+END OF F0 FREEZE LOG.

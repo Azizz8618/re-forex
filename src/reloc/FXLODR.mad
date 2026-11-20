@@ -1,0 +1,13 @@
+C FXLODR — provisional PERSO overlay loader (F2b probe).
+C Prints a marker on each entry and returns via M13; real 1024-word copy
+C will replace the marker after the probe proves the call path.
+  FXLODR:,NAME,
+  FXLODR*:,ENTRY,
+        ,*64,INFOP
+  13,UJ,.
+  INFOP:,,PTEXT
+        ,,PTEXT
+        :,001,
+        8,,.
+  PTEXT:,GOST,20HM2 FXLODR ENTER 2026'231'
+  ,END,FXLODR

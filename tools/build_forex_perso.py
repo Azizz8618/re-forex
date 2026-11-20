@@ -126,6 +126,11 @@ OCTTDEC_ETALON = ROOT / "build/RUNTIME_OCTTDEC_ETALON.words"
 OCTTDEC_PERSO_NAME = "OCTTDE*"
 OCTTDEC_HEAD_INDEX = 30       # internal name word inside the 32-word module
 
+# F1: fully relocatable FOREX root, assembled from a dedicated symbolic source.
+# FOREX_RELOC=1 switches build() to this source and to build/FOREX_RELOC.bin,
+# leaving the stable PERSO image and all regression paths untouched.
+RELOC_SOURCE = ROOT / "src/reloc/FOREX_ROOT.reloc.mad"
+
 # (catalog name, source file, first line, last line).  TAK/PG is an ENTRY
 # inside GIV/PG and is added separately, not assembled on its own.
 SOURCE_SLICES = [
@@ -138,6 +143,10 @@ SOURCE_SLICES = [
 ]
 # ENTRY symbol inside a source module whose offset becomes catalog f0.
 ENTRY_SYMBOL = {"FOREX*": "INITFOR*"}
+
+# F2b: the provisional FXLODR probe is appended LAST so catalog entry numbers
+# used by C=0o6700 sym references of earlier modules do not shift.
+FXLODR_SOURCE = ROOT / "src/reloc/FXLODR.mad"
 
 
 def text_encode(name: str) -> int:
@@ -196,10 +205,12 @@ def load_octdec_etalon() -> dict:
     return dict(name=OCTTDEC_PERSO_NAME, body=words, load=load)
 
 
-def assemble_source(name: str, path: Path, first: int, last: int) -> tuple[list[int], int, int]:
+def assemble_source(name: str, path: Path, first: int, last: int,
+                    source_file: Path | None = None) -> tuple[list[int], int, int]:
     """Assemble one MADLEN source with Monitor-80 `*assembler` via dispak.
 
     Returns (dms_body_words, load_length, entry_offset_for_TAK_PG or 0).
+    If source_file is given it is read verbatim (F1 relocatable root).
     """
     sys.path.insert(0, str(SIPROD_LIB.parent))
     import siprod_lib  # noqa: WPS433 (optional dependency, checked below)
@@ -208,7 +219,10 @@ def assemble_source(name: str, path: Path, first: int, last: int) -> tuple[list[
                                 dir="/tmp/.private/azizz"))
     try:
         shutil.copy(ETALON, tmp / "2348")
-        lines = path.read_text(errors="replace").splitlines()[first - 1:last]
+        if source_file is not None:
+            lines = source_file.read_text(errors="replace").splitlines()
+        else:
+            lines = path.read_text(errors="replace").splitlines()[first - 1:last]
         # PERSO must not duplicate MONSYS permanent names: the Dubna loader
         # treats a duplicate as a corrupt subprogram (TERR6).
         RENAME = {
@@ -283,7 +297,10 @@ def build() -> Path:
     # FOREX* must be the FIRST module in the library: the *CALL loader accepts
     # the head module only from the first module zone (zone=2, f2=0o42xx).
     _fx = next(x for x in SOURCE_SLICES if x[0] == "FOREX*")
-    _body, _load, _entry = assemble_source("FOREX*", _fx[1], _fx[2], _fx[3])
+    _reloc = os.environ.get("FOREX_RELOC") == "1"
+    _body, _load, _entry = assemble_source(
+        "FOREX*", _fx[1], _fx[2], _fx[3],
+        source_file=RELOC_SOURCE if _reloc else None)
     modules: list[dict] = [dict(name="FOREX*", body=_body, load=_load,
                                 entry=_entry)]
 
@@ -317,6 +334,11 @@ def build() -> Path:
     # XTAKPG is an entry point inside XGIVPG: catalog-only record, no body.
     modules.append(dict(name="XTAKPG", body=None, load=takepg_entry,
                         entry_of="XGIVPG"))
+
+    if _reloc:
+        _fb, _fl, _fe = assemble_source("FXLODR", FXLODR_SOURCE, 1, 10**9,
+                                        source_file=FXLODR_SOURCE)
+        modules.append(dict(name="FXLODR", body=_fb, load=_fl, entry=_fe))
 
     # Place module bodies FIRST: the catalog record needs each module's zone
     # and 32-word block inside the library (the transfer vector).
@@ -358,8 +380,12 @@ def build() -> Path:
         # Low 12 bits f0 = entry-point offset inside the module.  For the old
         # wrapped dumps it was 0 (start of the synthetic header); for assembled
         # objects it comes from the assembler's ENTRY symbol (e.g. INITFOR*).
-        record = ((f3 << 36) | (f2 << 24) | (f1 << 12) |
-                  (m.get("entry", 0) & 0xFFF))
+        # F1 probe: the assembler's INITFOR* offset is measured from the first
+        # CODE word, while f0 is measured from the body start (3 header words).
+        _f0 = m.get("entry", 0)
+        if _reloc and m["name"] == "FOREX*":
+            _f0 += 3
+        record = ((f3 << 36) | (f2 << 24) | (f1 << 12) | (_f0 & 0xFFF))
         catalog_words.append(text_encode(m["name"]))
         catalog_words.append(record)
     # Real catalogs terminate with an empty name word followed by an all-ones
@@ -383,7 +409,8 @@ def build() -> Path:
 
     image = b"".join(w.to_bytes(WORD_BYTES, "big") for w in words_buf)
 
-    out = ROOT / "build/FOREX_PERSO_2300.bin"
+    out = (ROOT / "build/FOREX_RELOC.bin" if _reloc else
+           ROOT / "build/FOREX_PERSO_2300.bin")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(image)
 
