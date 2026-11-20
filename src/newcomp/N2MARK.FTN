@@ -1,0 +1,5 @@
+      SUBROUTINE N2MRK
+      PRINT 100
+  100 FORMAT(1X,'N2MARK-7391')
+      RETURN
+      END

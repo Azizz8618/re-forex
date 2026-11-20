@@ -1,0 +1,18 @@
+шифр 419999 зс5^
+лен 41(2048)^
+лен 60(2348-wr)^
+ееВ1а3
+*name N2BUILD
+*call yesmemory
+*perso:602300
+*no list
+*forex
+      SUBROUTINE N2MRK
+      PRINT 100
+  100 FORMAT(1X,'N2MARK-7391')
+      RETURN
+      END
+*to perso:602400
+*end file
+``````
+еконец
