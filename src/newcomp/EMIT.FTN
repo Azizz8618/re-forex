@@ -1,0 +1,122 @@
+C     N3.1/N3.2 -- BESM-6 48-BIT WORD EMITTER + GOST-10859 ENCODER
+C=======================================================================
+C Compiled by SYSTEM FOREX 2.02 (PERSO 0o2300), fixed form, 72 columns.
+C Proven subset only: INTEGER arrays, COMMON, DATA, PARAMETER-free dims,
+C DO loops, numbered PRINT/FORMAT, arithmetic. No CHARACTER, no PRINT *,
+C no SAVE, no IMPLICIT. No nH literals: decimal ASCII codes are given,
+C exactly what an nH literal produces on 2.02 (doc 34:57-59).
+C
+C FOUR PROGRAM UNITS in one deck; each is a separate DMS module loaded
+C by *call n3emt with *perso:602300 + *perso:602406,cont (N2 path (a)).
+C
+C   N3EMT   driver/self-test: 4 EMIT48 + 2 GOSTEN words, octal dump
+C   EMIT48  IR/KOP/ADR pair -> one 48-bit word = two 24-bit halfwords
+C   GOSTEN  ASCII(12) -> GOST-10859 bytes -> 2 words (6x8-bit per word)
+C   OCT8    24-bit INTEGER -> 8 octal digits (LSB first) in /OCTBF/
+C
+C WORD LAYOUT (big-endian, tools/build_forex_perso.py:85,175-180):
+C   word = HI * 2**24 + LO,  HI/LO are 24-bit FOREX INTEGERs.
+C   EMIT48 halfword: IR*2**21+KOP*2**15+ADR
+C                  = IR*2097152+KOP*32768+ADR
+C   (bits 23..21 IR, 20..15 KOP, 14..0 ADR; max 7*2**21+63*2**15+32767
+C    = 16777215 = 2**24-1, inside INTEGER mantissa limit, doc 34:60-61)
+C
+C GOST table GT is the AUTHORITATIVE monitor table
+C   monitor80-re/tools/encoding.cpp:614-679 (text_to_gost[64]), values
+C   from monitor80-re/tools/gost10859.h. It reproduces the byte-exact
+C   "TEST/4" word of docs/plan-f77-full/31-fortran-arfa-bridge.md:63-70.
+C   The copy in tools/besm6_text_scan.py:117-128 differs in 14 letters;
+C   see REPORT.md section 4 for the full diff and the decision.
+C=======================================================================
+      SUBROUTINE N3EMT
+      INTEGER HI(8), LO(8), NW
+      COMMON /EMBUF/ HI,LO,NW
+      INTEGER IA(12), NI
+      COMMON /TXTBF/ IA,NI
+      INTEGER OD(8)
+      COMMON /OCTBF/ OD
+      INTEGER I
+      DATA IA /78,51,69,77,73,84,32,70,79,82,69,88/
+      DATA NI /12/
+      PRINT 90
+   90 FORMAT(1X,'N3EMIT-7391')
+      NW = 0
+C-- W1..W4: opcode+address pairs ---------------------------------------
+      CALL EMIT48(0,10,83, 0,7,302)
+      CALL EMIT48(1,0,1, 0,63,0)
+      CALL EMIT48(2,11,511, 3,12,64)
+      CALL EMIT48(7,63,4095, 0,0,0)
+C-- W5..W6: GOST-10859 from ASCII "N3EMIT FOREX" -----------------------
+      CALL GOSTEN
+C-- dump six 48-bit words: 16 octal digits + decimal HI/LO -------------
+      PRINT 91, NW
+   91 FORMAT(1X,'N3NW ',I3)
+      DO 10 I = 1, 6
+         CALL OCT8(HI(I))
+         PRINT 100, I, OD(8),OD(7),OD(6),OD(5),OD(4),OD(3),OD(2),OD(1)
+         CALL OCT8(LO(I))
+         PRINT 101, I, OD(8),OD(7),OD(6),OD(5),OD(4),OD(3),OD(2),OD(1)
+         PRINT 102, I, HI(I), LO(I)
+   10 CONTINUE
+  100 FORMAT(1X,'N3W ',I2,' HI ',8I1)
+  101 FORMAT(1X,'N3W ',I2,' LO ',8I1)
+  102 FORMAT(1X,'N3D ',I2,2I10)
+      RETURN
+      END
+      SUBROUTINE EMIT48(IR1,K1,A1,IR2,K2,A2)
+      INTEGER IR1,K1,A1,IR2,K2,A2
+      INTEGER HI(8), LO(8), NW
+      COMMON /EMBUF/ HI,LO,NW
+      NW = NW + 1
+      HI(NW) = IR1*2097152 + K1*32768 + A1
+      LO(NW) = IR2*2097152 + K2*32768 + A2
+      RETURN
+      END
+      SUBROUTINE GOSTEN
+      INTEGER IA(12), NI
+      COMMON /TXTBF/ IA,NI
+      INTEGER HI(8), LO(8), NW
+      COMMON /EMBUF/ HI,LO,NW
+      INTEGER GT(64), B(6)
+      INTEGER I, IC, K, NP, HIW, LOW
+      DATA GT /15,0,0,0,0,0,0,0,
+     1         18,19,25,10,13,11,14,12,
+     2         0,1,2,3,4,5,6,7,
+     3         8,9,0,0,0,0,0,0,
+     4         0,32,34,49,63,37,64,65,
+     5         45,66,67,42,68,44,69,46,
+     6         48,70,71,72,50,73,74,75,
+     7         53,51,76,0,0,0,0,0/
+      NP = 0
+      DO 20 I = 1, NI
+         IC = IA(I) - 31
+         IF (IC .LT. 1) GOTO 20
+         IF (IC .GT. 64) GOTO 20
+         K = GT(IC)
+         NP = NP + 1
+         B(NP) = K
+         IF (NP .LT. 6) GOTO 20
+         NW = NW + 1
+C-- step-by-step Horner avoids nested array expressions on FOREX 2.02
+         HIW = B(1)
+         HIW = HIW*256 + B(2)
+         HIW = HIW*256 + B(3)
+         LOW = B(4)
+         LOW = LOW*256 + B(5)
+         LOW = LOW*256 + B(6)
+         HI(NW) = HIW
+         LO(NW) = LOW
+         NP = 0
+   20 CONTINUE
+      RETURN
+      END
+      SUBROUTINE OCT8(X)
+      INTEGER X, OD(8), Q, I
+      COMMON /OCTBF/ OD
+      Q = X
+      DO 30 I = 1, 8
+         OD(I) = Q - (Q/8)*8
+         Q = Q/8
+   30 CONTINUE
+      RETURN
+      END

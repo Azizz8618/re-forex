@@ -1,0 +1,70 @@
+шифр 419999 зс5^
+лен 60(2348)^
+eeв1а3
+*name N3CG
+*call yesmemory
+*perso:602300
+*forex
+      SUBROUTINE N3EMIT(H, L)
+      INTEGER IH(256), IL(256), NW
+      COMMON /N3COM/ IH, IL, NW
+      INTEGER H, L
+      NW = NW + 1
+      IH(NW) = H
+      IL(NW) = L
+      RETURN
+      END
+      SUBROUTINE N3E
+      INTEGER IH(256), IL(256), NW
+      COMMON /N3COM/ IH, IL, NW
+      INTEGER A(5), B(5), J
+      DATA A /32836,32832,64,66,67/
+      DATA B /64,16449,32840,16457,0/
+      DO 10 J = 1, 5
+         CALL N3EMIT(A(J), B(J))
+   10 CONTINUE
+      RETURN
+      END
+      SUBROUTINE N3D
+      INTEGER IH(256), IL(256), NW
+      COMMON /N3COM/ IH, IL, NW
+      INTEGER A(5), B(5), J
+      DATA A /32837,32832,64,16453,20551/
+      DATA B /65,16449,32833,65,753680/
+      DO 10 J = 1, 5
+         CALL N3EMIT(A(J), B(J))
+   10 CONTINUE
+      RETURN
+      END
+      SUBROUTINE N3P
+      INTEGER IH(256), IL(256), NW
+      COMMON /N3COM/ IH, IL, NW
+      INTEGER A(8), B(8), J
+      DATA A /14712906,32832,32834,32835,819277,2634072,2896454,
+     *3287328/
+      DATA B /819275,819276,819276,819276,0,2902324,3223598,2105376/
+      DO 10 J = 1, 8
+         CALL N3EMIT(A(J), B(J))
+   10 CONTINUE
+      RETURN
+      END
+      PROGRAM N3DRV
+      INTEGER IH(256), IL(256), NW
+      COMMON /N3COM/ IH, IL, NW
+      INTEGER J
+      NW = 0
+      CALL N3E
+      CALL N3D
+      CALL N3P
+      PRINT 100, NW
+  100 FORMAT('N3CODEGEN-7391 BASE77 NW=',I4)
+      DO 20 J = 1, NW
+         PRINT 120, J, IH(J), IL(J)
+   20 CONTINUE
+  120 FORMAT(I4,':',I12,',',I12)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
