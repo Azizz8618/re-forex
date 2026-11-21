@@ -1,0 +1,1681 @@
+C     O412C -- EMITTER: CATALOG + A3 BODY + ZONE N+2 TABLE
+C===============================================================
+C All words emitted by OUR Fortran program (FOREX 2.02).
+C    1..16     catalog zone N (O412B, name OURMRK*)
+C    17..35    body zone N+1 words 0..18 (our *64 code)
+C    36..      zone N+2 words 526..900
+C F77 subset, <=72 cols.
+C===============================================================
+      SUBROUTINE O412C
+      INTEGER HI(1100), LO(1100), NW
+      COMMON /EMBUF/ HI,LO,NW
+      INTEGER OD(8)
+      COMMON /OCTBF/ OD
+      INTEGER I
+      PRINT 90
+   90 FORMAT(1X,'O412C-412')
+      NW = 0
+C-- CAT 00
+      NW = NW + 1
+      HI(NW) = 11991977
+      LO(NW) = 13827210
+C-- CAT 01
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 248
+C-- CAT 02
+      NW = NW + 1
+      HI(NW) = 12541101
+      LO(NW) = 13283968
+C-- CAT 03
+      NW = NW + 1
+      HI(NW) = 1050647
+      LO(NW) = 12354544
+C-- CAT 04
+      NW = NW + 1
+      HI(NW) = 11727539
+      LO(NW) = 15130624
+C-- CAT 05
+      NW = NW + 1
+      HI(NW) = 1054878
+      LO(NW) = 15479657
+C-- CAT 06
+      NW = NW + 1
+      HI(NW) = 11727527
+      LO(NW) = 9887744
+C-- CAT 07
+      NW = NW + 1
+      HI(NW) = 1085598
+      LO(NW) = 7353193
+C-- CAT 08
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- CAT 09
+      NW = NW + 1
+      HI(NW) = 1110336
+      LO(NW) = 0
+C-- CAT 10
+      NW = NW + 1
+      HI(NW) = 5199429
+      LO(NW) = 5393473
+C-- CAT 11
+      NW = NW + 1
+      HI(NW) = 1646671
+      LO(NW) = 5513248
+C-- CAT 12
+      NW = NW + 1
+      HI(NW) = 3290926
+      LO(NW) = 3159598
+C-- CAT 13
+      NW = NW + 1
+      HI(NW) = 3683616
+      LO(NW) = 5059360
+C-- CAT 14
+      NW = NW + 1
+      HI(NW) = 3947565
+      LO(NW) = 2965054
+C-- CAT 15
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- BODY 00
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 458787
+C-- BODY 01
+      NW = NW + 1
+      HI(NW) = 10157221
+      LO(NW) = 14758528
+C-- BODY 02
+      NW = NW + 1
+      HI(NW) = 16320
+      LO(NW) = 2127615
+C-- BODY 03
+      NW = NW + 1
+      HI(NW) = 9344
+      LO(NW) = 1008
+C-- BODY 04
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 30513
+C-- BODY 05
+      NW = NW + 1
+      HI(NW) = 15336432
+      LO(NW) = 786740
+C-- BODY 06
+      NW = NW + 1
+      HI(NW) = 16320
+      LO(NW) = 2127615
+C-- BODY 07
+      NW = NW + 1
+      HI(NW) = 19840
+      LO(NW) = 13161
+C-- BODY 08
+      NW = NW + 1
+      HI(NW) = 15872
+      LO(NW) = 132088
+C-- BODY 09
+      NW = NW + 1
+      HI(NW) = 214010
+      LO(NW) = 589824
+C-- BODY 10
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- BODY 11
+      NW = NW + 1
+      HI(NW) = 1020
+      LO(NW) = 1020
+C-- BODY 12
+      NW = NW + 1
+      HI(NW) = 4096
+      LO(NW) = 8388608
+C-- BODY 13
+      NW = NW + 1
+      HI(NW) = 4206151
+      LO(NW) = 2438415
+C-- BODY 14
+      NW = NW + 1
+      HI(NW) = 331264
+      LO(NW) = 3852
+C-- BODY 15
+      NW = NW + 1
+      HI(NW) = 983305
+      LO(NW) = 917761
+C-- BODY 16
+      NW = NW + 1
+      HI(NW) = 918016
+      LO(NW) = 132623
+C-- BODY 17
+      NW = NW + 1
+      HI(NW) = 1197861
+      LO(NW) = 737326
+C-- BODY 18
+      NW = NW + 1
+      HI(NW) = 4662581
+      LO(NW) = 1284367
+C-- Z2 0526
+      NW = NW + 1
+      HI(NW) = 4
+      LO(NW) = 655425
+C-- Z2 0527
+      NW = NW + 1
+      HI(NW) = 131071
+      LO(NW) = 16777193
+C-- Z2 0528
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1
+C-- Z2 0529
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 64
+C-- Z2 0530
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 127
+C-- Z2 0531
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1023
+C-- Z2 0532
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 65535
+C-- Z2 0533
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- Z2 0534
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 48
+C-- Z2 0535
+      NW = NW + 1
+      HI(NW) = 13631488
+      LO(NW) = 0
+C-- Z2 0536
+      NW = NW + 1
+      HI(NW) = 131071
+      LO(NW) = 16777215
+C-- Z2 0537
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 255
+C-- Z2 0538
+      NW = NW + 1
+      HI(NW) = 16777215
+      LO(NW) = 16777215
+C-- Z2 0539
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 184
+C-- Z2 0540
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 168
+C-- Z2 0541
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 165
+C-- Z2 0542
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 166
+C-- Z2 0543
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 169
+C-- Z2 0544
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 175
+C-- Z2 0545
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 185
+C-- Z2 0546
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 72
+C-- Z2 0547
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 79
+C-- Z2 0548
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 73
+C-- Z2 0549
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 76
+C-- Z2 0550
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 9234
+C-- Z2 0551
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 0
+C-- Z2 0552
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 0
+C-- Z2 0553
+      NW = NW + 1
+      HI(NW) = 98304
+      LO(NW) = 0
+C-- Z2 0554
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 9241
+C-- Z2 0555
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 9387
+C-- Z2 0556
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 9336
+C-- Z2 0557
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 9273
+C-- Z2 0558
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 9501
+C-- Z2 0559
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 9535
+C-- Z2 0560
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 78
+C-- Z2 0561
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 96
+C-- Z2 0562
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 31
+C-- Z2 0563
+      NW = NW + 1
+      HI(NW) = 8399530
+      LO(NW) = 11184811
+C-- Z2 0564
+      NW = NW + 1
+      HI(NW) = 16777214
+      LO(NW) = 0
+C-- Z2 0565
+      NW = NW + 1
+      HI(NW) = 8519679
+      LO(NW) = 16777168
+C-- Z2 0566
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 9645
+C-- Z2 0567
+      NW = NW + 1
+      HI(NW) = 16711680
+      LO(NW) = 0
+C-- Z2 0568
+      NW = NW + 1
+      HI(NW) = 8953856
+      LO(NW) = 0
+C-- Z2 0569
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 10
+C-- Z2 0570
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 45
+C-- Z2 0571
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 48
+C-- Z2 0572
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- Z2 0573
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 46
+C-- Z2 0574
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 6
+C-- Z2 0575
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 16
+C-- Z2 0576
+      NW = NW + 1
+      HI(NW) = 8047820
+      LO(NW) = 13421773
+C-- Z2 0577
+      NW = NW + 1
+      HI(NW) = 8552448
+      LO(NW) = 0
+C-- Z2 0578
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4
+C-- Z2 0579
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 69
+C-- Z2 0580
+      NW = NW + 1
+      HI(NW) = 5024716
+      LO(NW) = 7803270
+C-- Z2 0581
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 32
+C-- Z2 0582
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 2
+C-- Z2 0583
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 17
+C-- Z2 0584
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 7
+C-- Z2 0585
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 15
+C-- Z2 0586
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 80
+C-- Z2 0587
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 89
+C-- Z2 0588
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 64
+C-- Z2 0589
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 10
+C-- Z2 0590
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 22
+C-- Z2 0591
+      NW = NW + 1
+      HI(NW) = 2105376
+      LO(NW) = 2105376
+C-- Z2 0592
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 1048576
+C-- Z2 0593
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0594
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 294913
+C-- Z2 0595
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0596
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- Z2 0597
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 229392
+C-- Z2 0598
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0599
+      NW = NW + 1
+      HI(NW) = 327680
+      LO(NW) = 0
+C-- Z2 0600
+      NW = NW + 1
+      HI(NW) = 3080192
+      LO(NW) = 0
+C-- Z2 0601
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0602
+      NW = NW + 1
+      HI(NW) = 3047424
+      LO(NW) = 0
+C-- Z2 0603
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0604
+      NW = NW + 1
+      HI(NW) = 491520
+      LO(NW) = 0
+C-- Z2 0605
+      NW = NW + 1
+      HI(NW) = 4718592
+      LO(NW) = 0
+C-- Z2 0606
+      NW = NW + 1
+      HI(NW) = 4751360
+      LO(NW) = 0
+C-- Z2 0607
+      NW = NW + 1
+      HI(NW) = 4784128
+      LO(NW) = 0
+C-- Z2 0608
+      NW = NW + 1
+      HI(NW) = 4816896
+      LO(NW) = 0
+C-- Z2 0609
+      NW = NW + 1
+      HI(NW) = 4849664
+      LO(NW) = 0
+C-- Z2 0610
+      NW = NW + 1
+      HI(NW) = 4882432
+      LO(NW) = 0
+C-- Z2 0611
+      NW = NW + 1
+      HI(NW) = 4915200
+      LO(NW) = 0
+C-- Z2 0612
+      NW = NW + 1
+      HI(NW) = 4947968
+      LO(NW) = 0
+C-- Z2 0613
+      NW = NW + 1
+      HI(NW) = 7077888
+      LO(NW) = 0
+C-- Z2 0614
+      NW = NW + 1
+      HI(NW) = 7110656
+      LO(NW) = 0
+C-- Z2 0615
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 163866
+C-- Z2 0616
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0617
+      NW = NW + 1
+      HI(NW) = 1081344
+      LO(NW) = 0
+C-- Z2 0618
+      NW = NW + 1
+      HI(NW) = 1114112
+      LO(NW) = 0
+C-- Z2 0619
+      NW = NW + 1
+      HI(NW) = 1146880
+      LO(NW) = 0
+C-- Z2 0620
+      NW = NW + 1
+      HI(NW) = 1179648
+      LO(NW) = 0
+C-- Z2 0621
+      NW = NW + 1
+      HI(NW) = 1212416
+      LO(NW) = 0
+C-- Z2 0622
+      NW = NW + 1
+      HI(NW) = 1245184
+      LO(NW) = 0
+C-- Z2 0623
+      NW = NW + 1
+      HI(NW) = 1277952
+      LO(NW) = 0
+C-- Z2 0624
+      NW = NW + 1
+      HI(NW) = 1310720
+      LO(NW) = 0
+C-- Z2 0625
+      NW = NW + 1
+      HI(NW) = 1343488
+      LO(NW) = 0
+C-- Z2 0626
+      NW = NW + 1
+      HI(NW) = 1376256
+      LO(NW) = 0
+C-- Z2 0627
+      NW = NW + 1
+      HI(NW) = 1409024
+      LO(NW) = 0
+C-- Z2 0628
+      NW = NW + 1
+      HI(NW) = 1441792
+      LO(NW) = 0
+C-- Z2 0629
+      NW = NW + 1
+      HI(NW) = 1474560
+      LO(NW) = 0
+C-- Z2 0630
+      NW = NW + 1
+      HI(NW) = 1507328
+      LO(NW) = 0
+C-- Z2 0631
+      NW = NW + 1
+      HI(NW) = 1540096
+      LO(NW) = 0
+C-- Z2 0632
+      NW = NW + 1
+      HI(NW) = 1572864
+      LO(NW) = 0
+C-- Z2 0633
+      NW = NW + 1
+      HI(NW) = 1605632
+      LO(NW) = 0
+C-- Z2 0634
+      NW = NW + 1
+      HI(NW) = 1638400
+      LO(NW) = 0
+C-- Z2 0635
+      NW = NW + 1
+      HI(NW) = 1671168
+      LO(NW) = 0
+C-- Z2 0636
+      NW = NW + 1
+      HI(NW) = 1703936
+      LO(NW) = 0
+C-- Z2 0637
+      NW = NW + 1
+      HI(NW) = 1736704
+      LO(NW) = 0
+C-- Z2 0638
+      NW = NW + 1
+      HI(NW) = 1769472
+      LO(NW) = 0
+C-- Z2 0639
+      NW = NW + 1
+      HI(NW) = 1802240
+      LO(NW) = 0
+C-- Z2 0640
+      NW = NW + 1
+      HI(NW) = 1835008
+      LO(NW) = 0
+C-- Z2 0641
+      NW = NW + 1
+      HI(NW) = 1867776
+      LO(NW) = 0
+C-- Z2 0642
+      NW = NW + 1
+      HI(NW) = 1900544
+      LO(NW) = 0
+C-- Z2 0643
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 98317
+C-- Z2 0644
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0645
+      NW = NW + 1
+      HI(NW) = 2064384
+      LO(NW) = 0
+C-- Z2 0646
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0647
+      NW = NW + 1
+      HI(NW) = 65536
+      LO(NW) = 0
+C-- Z2 0648
+      NW = NW + 1
+      HI(NW) = 98304
+      LO(NW) = 0
+C-- Z2 0649
+      NW = NW + 1
+      HI(NW) = 131072
+      LO(NW) = 0
+C-- Z2 0650
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0651
+      NW = NW + 1
+      HI(NW) = 163840
+      LO(NW) = 0
+C-- Z2 0652
+      NW = NW + 1
+      HI(NW) = 196608
+      LO(NW) = 0
+C-- Z2 0653
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0654
+      NW = NW + 1
+      HI(NW) = 229376
+      LO(NW) = 0
+C-- Z2 0655
+      NW = NW + 1
+      HI(NW) = 360448
+      LO(NW) = 0
+C-- Z2 0656
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0657
+      NW = NW + 1
+      HI(NW) = 393216
+      LO(NW) = 0
+C-- Z2 0658
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 131074
+C-- Z2 0659
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0660
+      NW = NW + 1
+      HI(NW) = 917504
+      LO(NW) = 0
+C-- Z2 0661
+      NW = NW + 1
+      HI(NW) = 425984
+      LO(NW) = 0
+C-- Z2 0662
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 819297
+C-- Z2 0663
+      NW = NW + 1
+      HI(NW) = 458752
+      LO(NW) = 0
+C-- Z2 0664
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0665
+      NW = NW + 1
+      HI(NW) = 851968
+      LO(NW) = 0
+C-- Z2 0666
+      NW = NW + 1
+      HI(NW) = 1015808
+      LO(NW) = 0
+C-- Z2 0667
+      NW = NW + 1
+      HI(NW) = 1048576
+      LO(NW) = 0
+C-- Z2 0668
+      NW = NW + 1
+      HI(NW) = 1933312
+      LO(NW) = 0
+C-- Z2 0669
+      NW = NW + 1
+      HI(NW) = 1966080
+      LO(NW) = 0
+C-- Z2 0670
+      NW = NW + 1
+      HI(NW) = 1998848
+      LO(NW) = 0
+C-- Z2 0671
+      NW = NW + 1
+      HI(NW) = 2031616
+      LO(NW) = 0
+C-- Z2 0672
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- Z2 0673
+      NW = NW + 1
+      HI(NW) = 798375
+      LO(NW) = 589824
+C-- Z2 0674
+      NW = NW + 1
+      HI(NW) = 798381
+      LO(NW) = 589824
+C-- Z2 0675
+      NW = NW + 1
+      HI(NW) = 798391
+      LO(NW) = 589824
+C-- Z2 0676
+      NW = NW + 1
+      HI(NW) = 798399
+      LO(NW) = 589824
+C-- Z2 0677
+      NW = NW + 1
+      HI(NW) = 798401
+      LO(NW) = 589824
+C-- Z2 0678
+      NW = NW + 1
+      HI(NW) = 798403
+      LO(NW) = 589824
+C-- Z2 0679
+      NW = NW + 1
+      HI(NW) = 798405
+      LO(NW) = 589824
+C-- Z2 0680
+      NW = NW + 1
+      HI(NW) = 798407
+      LO(NW) = 589824
+C-- Z2 0681
+      NW = NW + 1
+      HI(NW) = 798410
+      LO(NW) = 589824
+C-- Z2 0682
+      NW = NW + 1
+      HI(NW) = 798412
+      LO(NW) = 589824
+C-- Z2 0683
+      NW = NW + 1
+      HI(NW) = 798415
+      LO(NW) = 589824
+C-- Z2 0684
+      NW = NW + 1
+      HI(NW) = 798417
+      LO(NW) = 589824
+C-- Z2 0685
+      NW = NW + 1
+      HI(NW) = 798422
+      LO(NW) = 589824
+C-- Z2 0686
+      NW = NW + 1
+      HI(NW) = 798426
+      LO(NW) = 589824
+C-- Z2 0687
+      NW = NW + 1
+      HI(NW) = 798433
+      LO(NW) = 589824
+C-- Z2 0688
+      NW = NW + 1
+      HI(NW) = 13250283
+      LO(NW) = 143369
+C-- Z2 0689
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 32768
+C-- Z2 0690
+      NW = NW + 1
+      HI(NW) = 8388609
+      LO(NW) = 12615682
+C-- Z2 0691
+      NW = NW + 1
+      HI(NW) = 8388610
+      LO(NW) = 139274
+C-- Z2 0692
+      NW = NW + 1
+      HI(NW) = 8433664
+      LO(NW) = 8392707
+C-- Z2 0693
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- Z2 0694
+      NW = NW + 1
+      HI(NW) = 13250283
+      LO(NW) = 8400898
+C-- Z2 0695
+      NW = NW + 1
+      HI(NW) = 765620
+      LO(NW) = 12615682
+C-- Z2 0696
+      NW = NW + 1
+      HI(NW) = 8388610
+      LO(NW) = 8421377
+C-- Z2 0697
+      NW = NW + 1
+      HI(NW) = 12627969
+      LO(NW) = 8388609
+C-- Z2 0698
+      NW = NW + 1
+      HI(NW) = 8433664
+      LO(NW) = 8429571
+C-- Z2 0699
+      NW = NW + 1
+      HI(NW) = 732902
+      LO(NW) = 4096
+C-- Z2 0700
+      NW = NW + 1
+      HI(NW) = 12189696
+      LO(NW) = 14417920
+C-- Z2 0701
+      NW = NW + 1
+      HI(NW) = 131081
+      LO(NW) = 10158072
+C-- Z2 0702
+      NW = NW + 1
+      HI(NW) = 139273
+      LO(NW) = 8392706
+C-- Z2 0703
+      NW = NW + 1
+      HI(NW) = 12189696
+      LO(NW) = 14417920
+C-- Z2 0704
+      NW = NW + 1
+      HI(NW) = 13250283
+      LO(NW) = 8400898
+C-- Z2 0705
+      NW = NW + 1
+      HI(NW) = 12623874
+      LO(NW) = 765629
+C-- Z2 0706
+      NW = NW + 1
+      HI(NW) = 8388610
+      LO(NW) = 8429569
+C-- Z2 0707
+      NW = NW + 1
+      HI(NW) = 732902
+      LO(NW) = 12627971
+C-- Z2 0708
+      NW = NW + 1
+      HI(NW) = 12619779
+      LO(NW) = 8392705
+C-- Z2 0709
+      NW = NW + 1
+      HI(NW) = 12189696
+      LO(NW) = 14417920
+C-- Z2 0710
+      NW = NW + 1
+      HI(NW) = 8421378
+      LO(NW) = 131081
+C-- Z2 0711
+      NW = NW + 1
+      HI(NW) = 10125320
+      LO(NW) = 798389
+C-- Z2 0712
+      NW = NW + 1
+      HI(NW) = 143373
+      LO(NW) = 14462682
+C-- Z2 0713
+      NW = NW + 1
+      HI(NW) = 135181
+      LO(NW) = 798381
+C-- Z2 0714
+      NW = NW + 1
+      HI(NW) = 143373
+      LO(NW) = 14462678
+C-- Z2 0715
+      NW = NW + 1
+      HI(NW) = 798400
+      LO(NW) = 589824
+C-- Z2 0716
+      NW = NW + 1
+      HI(NW) = 143373
+      LO(NW) = 14462682
+C-- Z2 0717
+      NW = NW + 1
+      HI(NW) = 135181
+      LO(NW) = 798391
+C-- Z2 0718
+      NW = NW + 1
+      HI(NW) = 143373
+      LO(NW) = 14462678
+C-- Z2 0719
+      NW = NW + 1
+      HI(NW) = 798404
+      LO(NW) = 589824
+C-- Z2 0720
+      NW = NW + 1
+      HI(NW) = 143373
+      LO(NW) = 14462637
+C-- Z2 0721
+      NW = NW + 1
+      HI(NW) = 12496590
+      LO(NW) = 589824
+C-- Z2 0722
+      NW = NW + 1
+      HI(NW) = 135181
+      LO(NW) = 798426
+C-- Z2 0723
+      NW = NW + 1
+      HI(NW) = 143373
+      LO(NW) = 14462637
+C-- Z2 0724
+      NW = NW + 1
+      HI(NW) = 135181
+      LO(NW) = 798422
+C-- Z2 0725
+      NW = NW + 1
+      HI(NW) = 143373
+      LO(NW) = 14462647
+C-- Z2 0726
+      NW = NW + 1
+      HI(NW) = 12496590
+      LO(NW) = 798409
+C-- Z2 0727
+      NW = NW + 1
+      HI(NW) = 135181
+      LO(NW) = 14417920
+C-- Z2 0728
+      NW = NW + 1
+      HI(NW) = 143373
+      LO(NW) = 14462647
+C-- Z2 0729
+      NW = NW + 1
+      HI(NW) = 798411
+      LO(NW) = 589824
+C-- Z2 0730
+      NW = NW + 1
+      HI(NW) = 11173885
+      LO(NW) = 12288
+C-- Z2 0731
+      NW = NW + 1
+      HI(NW) = 11075587
+      LO(NW) = 8421376
+C-- Z2 0732
+      NW = NW + 1
+      HI(NW) = 11075587
+      LO(NW) = 9437184
+C-- Z2 0733
+      NW = NW + 1
+      HI(NW) = 11513554
+      LO(NW) = 4096
+C-- Z2 0734
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- Z2 0735
+      NW = NW + 1
+      HI(NW) = 11316968
+      LO(NW) = 589824
+C-- Z2 0736
+      NW = NW + 1
+      HI(NW) = 131082
+      LO(NW) = 9469952
+C-- Z2 0737
+      NW = NW + 1
+      HI(NW) = 10608704
+      LO(NW) = 12619776
+C-- Z2 0738
+      NW = NW + 1
+      HI(NW) = 135182
+      LO(NW) = 14417920
+C-- Z2 0739
+      NW = NW + 1
+      HI(NW) = 11316968
+      LO(NW) = 589824
+C-- Z2 0740
+      NW = NW + 1
+      HI(NW) = 12623875
+      LO(NW) = 131082
+C-- Z2 0741
+      NW = NW + 1
+      HI(NW) = 12615680
+      LO(NW) = 10608705
+C-- Z2 0742
+      NW = NW + 1
+      HI(NW) = 9474048
+      LO(NW) = 9478144
+C-- Z2 0743
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 10608705
+C-- Z2 0744
+      NW = NW + 1
+      HI(NW) = 15769600
+      LO(NW) = 9441280
+C-- Z2 0745
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- Z2 0746
+      NW = NW + 1
+      HI(NW) = 11173885
+      LO(NW) = 12288
+C-- Z2 0747
+      NW = NW + 1
+      HI(NW) = 11075587
+      LO(NW) = 9469952
+C-- Z2 0748
+      NW = NW + 1
+      HI(NW) = 11075587
+      LO(NW) = 8388608
+C-- Z2 0749
+      NW = NW + 1
+      HI(NW) = 11513570
+      LO(NW) = 4096
+C-- Z2 0750
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- Z2 0751
+      NW = NW + 1
+      HI(NW) = 12189697
+      LO(NW) = 4096
+C-- Z2 0752
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- Z2 0753
+      NW = NW + 1
+      HI(NW) = 13250283
+      LO(NW) = 8400896
+C-- Z2 0754
+      NW = NW + 1
+      HI(NW) = 8433665
+      LO(NW) = 131081
+C-- Z2 0755
+      NW = NW + 1
+      HI(NW) = 8421378
+      LO(NW) = 11272192
+C-- Z2 0756
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 255
+C-- Z2 0757
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1
+C-- Z2 0758
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 40
+C-- Z2 0759
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 32767
+C-- Z2 0760
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 950273
+C-- Z2 0761
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 12219
+C-- Z2 0762
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 229377
+C-- Z2 0763
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 3758
+C-- Z2 0764
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 163843
+C-- Z2 0765
+      NW = NW + 1
+      HI(NW) = 13631488
+      LO(NW) = 0
+C-- Z2 0766
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 8757
+C-- Z2 0767
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 32768
+C-- Z2 0768
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 557094
+C-- Z2 0769
+      NW = NW + 1
+      HI(NW) = 8007511
+      LO(NW) = 126979
+C-- Z2 0770
+      NW = NW + 1
+      HI(NW) = 28672
+      LO(NW) = 1048604
+C-- Z2 0771
+      NW = NW + 1
+      HI(NW) = 16416773
+      LO(NW) = 139271
+C-- Z2 0772
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- Z2 0773
+      NW = NW + 1
+      HI(NW) = 8007511
+      LO(NW) = 139270
+C-- Z2 0774
+      NW = NW + 1
+      HI(NW) = 7340037
+      LO(NW) = 601864
+C-- Z2 0775
+      NW = NW + 1
+      HI(NW) = 32793
+      LO(NW) = 7380992
+C-- Z2 0776
+      NW = NW + 1
+      HI(NW) = 8093687
+      LO(NW) = 601864
+C-- Z2 0777
+      NW = NW + 1
+      HI(NW) = 622617
+      LO(NW) = 15347549
+C-- Z2 0778
+      NW = NW + 1
+      HI(NW) = 139270
+      LO(NW) = 122911
+C-- Z2 0779
+      NW = NW + 1
+      HI(NW) = 14721024
+      LO(NW) = 7376897
+C-- Z2 0780
+      NW = NW + 1
+      HI(NW) = 14721024
+      LO(NW) = 14680064
+C-- Z2 0781
+      NW = NW + 1
+      HI(NW) = 602061
+      LO(NW) = 32768
+C-- Z2 0782
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 622617
+C-- Z2 0783
+      NW = NW + 1
+      HI(NW) = 15347549
+      LO(NW) = 14721024
+C-- Z2 0784
+      NW = NW + 1
+      HI(NW) = 7376898
+      LO(NW) = 14721024
+C-- Z2 0785
+      NW = NW + 1
+      HI(NW) = 14680064
+      LO(NW) = 601864
+C-- Z2 0786
+      NW = NW + 1
+      HI(NW) = 32793
+      LO(NW) = 7356419
+C-- Z2 0787
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 25
+C-- Z2 0788
+      NW = NW + 1
+      HI(NW) = 602064
+      LO(NW) = 32768
+C-- Z2 0789
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 622617
+C-- Z2 0790
+      NW = NW + 1
+      HI(NW) = 7340038
+      LO(NW) = 601864
+C-- Z2 0791
+      NW = NW + 1
+      HI(NW) = 32793
+      LO(NW) = 7356419
+C-- Z2 0792
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 25
+C-- Z2 0793
+      NW = NW + 1
+      HI(NW) = 7372805
+      LO(NW) = 7376900
+C-- Z2 0794
+      NW = NW + 1
+      HI(NW) = 8093690
+      LO(NW) = 6946816
+C-- Z2 0795
+      NW = NW + 1
+      HI(NW) = 8159229
+      LO(NW) = 589824
+C-- Z2 0796
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 32794
+C-- Z2 0797
+      NW = NW + 1
+      HI(NW) = 7356419
+      LO(NW) = 601864
+C-- Z2 0798
+      NW = NW + 1
+      HI(NW) = 26
+      LO(NW) = 589824
+C-- Z2 0799
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- Z2 0800
+      NW = NW + 1
+      HI(NW) = 131079
+      LO(NW) = 16449531
+C-- Z2 0801
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- Z2 0802
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 10
+C-- Z2 0803
+      NW = NW + 1
+      HI(NW) = 16776704
+      LO(NW) = 0
+C-- Z2 0804
+      NW = NW + 1
+      HI(NW) = 255
+      LO(NW) = 16777215
+C-- Z2 0805
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1
+C-- Z2 0806
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 16384
+C-- Z2 0807
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 131073
+C-- Z2 0808
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 48
+C-- Z2 0809
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1
+C-- Z2 0810
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 65611
+C-- Z2 0811
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 8
+C-- Z2 0812
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 48
+C-- Z2 0813
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 48
+C-- Z2 0814
+      NW = NW + 1
+      HI(NW) = 135177
+      LO(NW) = 139277
+C-- Z2 0815
+      NW = NW + 1
+      HI(NW) = 601998
+      LO(NW) = 0
+C-- Z2 0816
+      NW = NW + 1
+      HI(NW) = 10059776
+      LO(NW) = 14462929
+C-- Z2 0817
+      NW = NW + 1
+      HI(NW) = 11153274
+      LO(NW) = 798596
+C-- Z2 0818
+      NW = NW + 1
+      HI(NW) = 135177
+      LO(NW) = 589824
+C-- Z2 0819
+      NW = NW + 1
+      HI(NW) = 11153274
+      LO(NW) = 139277
+C-- Z2 0820
+      NW = NW + 1
+      HI(NW) = 10485780
+      LO(NW) = 33156
+C-- Z2 0821
+      NW = NW + 1
+      HI(NW) = 10522643
+      LO(NW) = 765830
+C-- Z2 0822
+      NW = NW + 1
+      HI(NW) = 143369
+      LO(NW) = 10125322
+C-- Z2 0823
+      NW = NW + 1
+      HI(NW) = 143369
+      LO(NW) = 15335424
+C-- Z2 0824
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 14462929
+C-- Z2 0825
+      NW = NW + 1
+      HI(NW) = 126979
+      LO(NW) = 10518544
+C-- Z2 0826
+      NW = NW + 1
+      HI(NW) = 10506258
+      LO(NW) = 10485776
+C-- Z2 0827
+      NW = NW + 1
+      HI(NW) = 733061
+      LO(NW) = 589826
+C-- Z2 0828
+      NW = NW + 1
+      HI(NW) = 14462929
+      LO(NW) = 589824
+C-- Z2 0829
+      NW = NW + 1
+      HI(NW) = 10518545
+      LO(NW) = 10485776
+C-- Z2 0830
+      NW = NW + 1
+      HI(NW) = 634766
+      LO(NW) = 786432
+C-- Z2 0831
+      NW = NW + 1
+      HI(NW) = 143369
+      LO(NW) = 10125332
+C-- Z2 0832
+      NW = NW + 1
+      HI(NW) = 143369
+      LO(NW) = 15335425
+C-- Z2 0833
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 14451411
+C-- Z2 0834
+      NW = NW + 1
+      HI(NW) = 634766
+      LO(NW) = 786432
+C-- Z2 0835
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 63
+C-- Z2 0836
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 63
+C-- Z2 0837
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1
+C-- Z2 0838
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 0
+C-- Z2 0839
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- Z2 0840
+      NW = NW + 1
+      HI(NW) = 8007618
+      LO(NW) = 589824
+C-- Z2 0841
+      NW = NW + 1
+      HI(NW) = 61445
+      LO(NW) = 2162727
+C-- Z2 0842
+      NW = NW + 1
+      HI(NW) = 15728646
+      LO(NW) = 16416780
+C-- Z2 0843
+      NW = NW + 1
+      HI(NW) = 139265
+      LO(NW) = 143367
+C-- Z2 0844
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- Z2 0845
+      NW = NW + 1
+      HI(NW) = 8007618
+      LO(NW) = 16027638
+C-- Z2 0846
+      NW = NW + 1
+      HI(NW) = 131073
+      LO(NW) = 126979
+C-- Z2 0847
+      NW = NW + 1
+      HI(NW) = 16027639
+      LO(NW) = 7393280
+C-- Z2 0848
+      NW = NW + 1
+      HI(NW) = 7397377
+      LO(NW) = 7356416
+C-- Z2 0849
+      NW = NW + 1
+      HI(NW) = 7376898
+      LO(NW) = 15994872
+C-- Z2 0850
+      NW = NW + 1
+      HI(NW) = 1081344
+      LO(NW) = 15728641
+C-- Z2 0851
+      NW = NW + 1
+      HI(NW) = 15761409
+      LO(NW) = 7376899
+C-- Z2 0852
+      NW = NW + 1
+      HI(NW) = 122987
+      LO(NW) = 15728642
+C-- Z2 0853
+      NW = NW + 1
+      HI(NW) = 16351234
+      LO(NW) = 601965
+C-- Z2 0854
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 15994873
+C-- Z2 0855
+      NW = NW + 1
+      HI(NW) = 16027640
+      LO(NW) = 7376900
+C-- Z2 0856
+      NW = NW + 1
+      HI(NW) = 8126431
+      LO(NW) = 16027640
+C-- Z2 0857
+      NW = NW + 1
+      HI(NW) = 8159201
+      LO(NW) = 589824
+C-- Z2 0858
+      NW = NW + 1
+      HI(NW) = 16027640
+      LO(NW) = 15728645
+C-- Z2 0859
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15500804
+C-- Z2 0860
+      NW = NW + 1
+      HI(NW) = 122920
+      LO(NW) = 1089536
+C-- Z2 0861
+      NW = NW + 1
+      HI(NW) = 7376901
+      LO(NW) = 1089536
+C-- Z2 0862
+      NW = NW + 1
+      HI(NW) = 1048576
+      LO(NW) = 16027640
+C-- Z2 0863
+      NW = NW + 1
+      HI(NW) = 122943
+      LO(NW) = 16011256
+C-- Z2 0864
+      NW = NW + 1
+      HI(NW) = 122940
+      LO(NW) = 16019447
+C-- Z2 0865
+      NW = NW + 1
+      HI(NW) = 15994874
+      LO(NW) = 15728643
+C-- Z2 0866
+      NW = NW + 1
+      HI(NW) = 16027641
+      LO(NW) = 7393280
+C-- Z2 0867
+      NW = NW + 1
+      HI(NW) = 126976
+      LO(NW) = 16384
+C-- Z2 0868
+      NW = NW + 1
+      HI(NW) = 15728642
+      LO(NW) = 15761411
+C-- Z2 0869
+      NW = NW + 1
+      HI(NW) = 7393280
+      LO(NW) = 15785986
+C-- Z2 0870
+      NW = NW + 1
+      HI(NW) = 126979
+      LO(NW) = 7356416
+C-- Z2 0871
+      NW = NW + 1
+      HI(NW) = 7376898
+      LO(NW) = 15994875
+C-- Z2 0872
+      NW = NW + 1
+      HI(NW) = 122914
+      LO(NW) = 1089538
+C-- Z2 0873
+      NW = NW + 1
+      HI(NW) = 7376902
+      LO(NW) = 1089538
+C-- Z2 0874
+      NW = NW + 1
+      HI(NW) = 1048578
+      LO(NW) = 16027643
+C-- Z2 0875
+      NW = NW + 1
+      HI(NW) = 7393287
+      LO(NW) = 16056313
+C-- Z2 0876
+      NW = NW + 1
+      HI(NW) = 102464
+      LO(NW) = 7381000
+C-- Z2 0877
+      NW = NW + 1
+      HI(NW) = 7356425
+      LO(NW) = 16035834
+C-- Z2 0878
+      NW = NW + 1
+      HI(NW) = 8093686
+      LO(NW) = 1081345
+C-- Z2 0879
+      NW = NW + 1
+      HI(NW) = 602064
+      LO(NW) = 0
+C-- Z2 0880
+      NW = NW + 1
+      HI(NW) = 6956038
+      LO(NW) = 15511352
+C-- Z2 0881
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- Z2 0882
+      NW = NW + 1
+      HI(NW) = 135175
+      LO(NW) = 131073
+C-- Z2 0883
+      NW = NW + 1
+      HI(NW) = 16449524
+      LO(NW) = 15466496
+C-- Z2 0884
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 2
+C-- Z2 0885
+      NW = NW + 1
+      HI(NW) = 3092271
+      LO(NW) = 3092271
+C-- Z2 0886
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 163853
+C-- Z2 0887
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 8
+C-- Z2 0888
+      NW = NW + 1
+      HI(NW) = 3092271
+      LO(NW) = 3092256
+C-- Z2 0889
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- Z2 0890
+      NW = NW + 1
+      HI(NW) = 13631488
+      LO(NW) = 0
+C-- Z2 0891
+      NW = NW + 1
+      HI(NW) = 9224192
+      LO(NW) = 0
+C-- Z2 0892
+      NW = NW + 1
+      HI(NW) = 131071
+      LO(NW) = 16777215
+C-- Z2 0893
+      NW = NW + 1
+      HI(NW) = 7864320
+      LO(NW) = 0
+C-- Z2 0894
+      NW = NW + 1
+      HI(NW) = 16777215
+      LO(NW) = 16646144
+C-- Z2 0895
+      NW = NW + 1
+      HI(NW) = 262143
+      LO(NW) = 0
+C-- Z2 0896
+      NW = NW + 1
+      HI(NW) = 16777152
+      LO(NW) = 0
+C-- Z2 0897
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 0
+C-- Z2 0898
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 0
+C-- Z2 0899
+      NW = NW + 1
+      HI(NW) = 98304
+      LO(NW) = 0
+C-- Z2 0900
+      NW = NW + 1
+      HI(NW) = 1
+      LO(NW) = 7438517
+      PRINT 91, NW
+   91 FORMAT(1X,'O412CNW ',I4)
+      DO 10 I = 1, NW
+         CALL OCT8(HI(I))
+         PRINT 100, I, OD(8),OD(7),OD(6),OD(5),OD(4),OD(3),OD(2),OD(1)
+         CALL OCT8(LO(I))
+         PRINT 101, I, OD(8),OD(7),OD(6),OD(5),OD(4),OD(3),OD(2),OD(1)
+         PRINT 102, I, HI(I), LO(I)
+   10 CONTINUE
+  100 FORMAT(1X,'O412W ',I4,' HI ',8I1)
+  101 FORMAT(1X,'O412W ',I4,' LO ',8I1)
+  102 FORMAT(1X,'O412D ',I4,2I10)
+      RETURN
+      END
+      SUBROUTINE OCT8(X)
+      INTEGER X, OD(8), Q, I
+      COMMON /OCTBF/ OD
+      Q = X
+      DO 30 I = 1, 8
+         OD(I) = Q - (Q/8)*8
+         Q = Q/8
+   30 CONTINUE
+      RETURN
+      END
