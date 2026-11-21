@@ -1,0 +1,4089 @@
+C     O412D -- EMITTER: BODY ZONE N+1 TAIL WORDS
+C===============================================================
+C All words emitted by OUR Fortran program (FOREX 2.02).
+C    tail words 19..1023 of body zone N+1
+C F77 subset, <=72 cols.
+C===============================================================
+      SUBROUTINE DRIVER
+      INTEGER HI(1100), LO(1100), NW
+      COMMON /EMBUF/ HI,LO,NW
+      PRINT 90
+   90 FORMAT(1X,'O412D-412')
+      NW = 0
+      CALL EMT00
+      CALL EMT01
+      CALL EMT02
+      CALL EMT03
+      CALL DUMP
+      RETURN
+      END
+      SUBROUTINE EMT00
+      INTEGER HI(1100), LO(1100), NW
+      COMMON /EMBUF/ HI,LO,NW
+C-- TAIL 0019
+      NW = NW + 1
+      HI(NW) = 14451769
+      LO(NW) = 589824
+C-- TAIL 0020
+      NW = NW + 1
+      HI(NW) = 33050
+      LO(NW) = 46098
+C-- TAIL 0021
+      NW = NW + 1
+      HI(NW) = 37906
+      LO(NW) = 54283
+C-- TAIL 0022
+      NW = NW + 1
+      HI(NW) = 1035
+      LO(NW) = 226315
+C-- TAIL 0023
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 163906
+C-- TAIL 0024
+      NW = NW + 1
+      HI(NW) = 33804
+      LO(NW) = 163907
+C-- TAIL 0025
+      NW = NW + 1
+      HI(NW) = 623626
+      LO(NW) = 786432
+C-- TAIL 0026
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- TAIL 0027
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- TAIL 0028
+      NW = NW + 1
+      HI(NW) = 1030
+      LO(NW) = 9437184
+C-- TAIL 0029
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 16
+C-- TAIL 0030
+      NW = NW + 1
+      HI(NW) = 5198394
+      LO(NW) = 3617587
+C-- TAIL 0031
+      NW = NW + 1
+      HI(NW) = 2769729
+      LO(NW) = 5000224
+C-- TAIL 0032
+      NW = NW + 1
+      HI(NW) = 3618592
+      LO(NW) = 2105376
+C-- TAIL 0033
+      NW = NW + 1
+      HI(NW) = 4606275
+      LO(NW) = 5064013
+C-- TAIL 0034
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 30464
+C-- TAIL 0035
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 32767
+C-- TAIL 0036
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 163949
+C-- TAIL 0037
+      NW = NW + 1
+      HI(NW) = 787775
+      LO(NW) = 589824
+C-- TAIL 0038
+      NW = NW + 1
+      HI(NW) = 14827526
+      LO(NW) = 13778951
+C-- TAIL 0039
+      NW = NW + 1
+      HI(NW) = 11141120
+      LO(NW) = 14451833
+C-- TAIL 0040
+      NW = NW + 1
+      HI(NW) = 11141125
+      LO(NW) = 10093608
+C-- TAIL 0041
+      NW = NW + 1
+      HI(NW) = 14451833
+      LO(NW) = 589824
+C-- TAIL 0042
+      NW = NW + 1
+      HI(NW) = 6438926
+      LO(NW) = 7487501
+C-- TAIL 0043
+      NW = NW + 1
+      HI(NW) = 623656
+      LO(NW) = 16384000
+C-- TAIL 0044
+      NW = NW + 1
+      HI(NW) = 787529
+      LO(NW) = 589824
+C-- TAIL 0045
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- TAIL 0046
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 589824
+C-- TAIL 0047
+      NW = NW + 1
+      HI(NW) = 13778958
+      LO(NW) = 14319607
+C-- TAIL 0048
+      NW = NW + 1
+      HI(NW) = 590903
+      LO(NW) = 12288
+C-- TAIL 0049
+      NW = NW + 1
+      HI(NW) = 14648363
+      LO(NW) = 16449527
+C-- TAIL 0050
+      NW = NW + 1
+      HI(NW) = 4096
+      LO(NW) = 754736
+C-- TAIL 0051
+      NW = NW + 1
+      HI(NW) = 590904
+      LO(NW) = 32768
+C-- TAIL 0052
+      NW = NW + 1
+      HI(NW) = 15728641
+      LO(NW) = 589824
+C-- TAIL 0053
+      NW = NW + 1
+      HI(NW) = 33149
+      LO(NW) = 15728650
+C-- TAIL 0054
+      NW = NW + 1
+      HI(NW) = 33150
+      LO(NW) = 15728651
+C-- TAIL 0055
+      NW = NW + 1
+      HI(NW) = 15876109
+      LO(NW) = 16416780
+C-- TAIL 0056
+      NW = NW + 1
+      HI(NW) = 14319617
+      LO(NW) = 143373
+C-- TAIL 0057
+      NW = NW + 1
+      HI(NW) = 14319626
+      LO(NW) = 143373
+C-- TAIL 0058
+      NW = NW + 1
+      HI(NW) = 143360
+      LO(NW) = 14451411
+C-- TAIL 0059
+      NW = NW + 1
+      HI(NW) = 16449524
+      LO(NW) = 15466496
+C-- TAIL 0060
+      NW = NW + 1
+      HI(NW) = 2105376
+      LO(NW) = 2105376
+C-- TAIL 0061
+      NW = NW + 1
+      HI(NW) = 3219488
+      LO(NW) = 2105376
+C-- TAIL 0062
+      NW = NW + 1
+      HI(NW) = 139277
+      LO(NW) = 1096
+C-- TAIL 0063
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 1423
+C-- TAIL 0064
+      NW = NW + 1
+      HI(NW) = 33863
+      LO(NW) = 1420
+C-- TAIL 0065
+      NW = NW + 1
+      HI(NW) = 33380
+      LO(NW) = 1422
+C-- TAIL 0066
+      NW = NW + 1
+      HI(NW) = 754750
+      LO(NW) = 589824
+C-- TAIL 0067
+      NW = NW + 1
+      HI(NW) = 33381
+      LO(NW) = 1421
+C-- TAIL 0068
+      NW = NW + 1
+      HI(NW) = 33039
+      LO(NW) = 1424
+C-- TAIL 0069
+      NW = NW + 1
+      HI(NW) = 590918
+      LO(NW) = 12288
+C-- TAIL 0070
+      NW = NW + 1
+      HI(NW) = 14450975
+      LO(NW) = 589824
+C-- TAIL 0071
+      NW = NW + 1
+      HI(NW) = 590917
+      LO(NW) = 12288
+C-- TAIL 0072
+      NW = NW + 1
+      HI(NW) = 14450975
+      LO(NW) = 589824
+C-- TAIL 0073
+      NW = NW + 1
+      HI(NW) = 623688
+      LO(NW) = 786432
+C-- TAIL 0074
+      NW = NW + 1
+      HI(NW) = 11727527
+      LO(NW) = 9887744
+C-- TAIL 0075
+      NW = NW + 1
+      HI(NW) = 11727539
+      LO(NW) = 15130624
+C-- TAIL 0076
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 569
+C-- TAIL 0077
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- TAIL 0078
+      NW = NW + 1
+      HI(NW) = 16680013
+      LO(NW) = 16414464
+C-- TAIL 0079
+      NW = NW + 1
+      HI(NW) = 787533
+      LO(NW) = 589824
+C-- TAIL 0080
+      NW = NW + 1
+      HI(NW) = 16408320
+      LO(NW) = 787533
+C-- TAIL 0081
+      NW = NW + 1
+      HI(NW) = 16415488
+      LO(NW) = 589824
+C-- TAIL 0082
+      NW = NW + 1
+      HI(NW) = 10093645
+      LO(NW) = 139279
+C-- TAIL 0083
+      NW = NW + 1
+      HI(NW) = 9490469
+      LO(NW) = 9437221
+C-- TAIL 0084
+      NW = NW + 1
+      HI(NW) = 139279
+      LO(NW) = 122929
+C-- TAIL 0085
+      NW = NW + 1
+      HI(NW) = 9437225
+      LO(NW) = 16449535
+C-- TAIL 0086
+      NW = NW + 1
+      HI(NW) = 139279
+      LO(NW) = 9437224
+C-- TAIL 0087
+      NW = NW + 1
+      HI(NW) = 16416770
+      LO(NW) = 139279
+C-- TAIL 0088
+      NW = NW + 1
+      HI(NW) = 282
+      LO(NW) = 32804
+C-- TAIL 0089
+      NW = NW + 1
+      HI(NW) = 9474090
+      LO(NW) = 9490473
+C-- TAIL 0090
+      NW = NW + 1
+      HI(NW) = 36
+      LO(NW) = 33051
+C-- TAIL 0091
+      NW = NW + 1
+      HI(NW) = 9474090
+      LO(NW) = 9490473
+C-- TAIL 0092
+      NW = NW + 1
+      HI(NW) = 283
+      LO(NW) = 9469990
+C-- TAIL 0093
+      NW = NW + 1
+      HI(NW) = 386
+      LO(NW) = 9469991
+C-- TAIL 0094
+      NW = NW + 1
+      HI(NW) = 122964
+      LO(NW) = 35
+C-- TAIL 0095
+      NW = NW + 1
+      HI(NW) = 387
+      LO(NW) = 33053
+C-- TAIL 0096
+      NW = NW + 1
+      HI(NW) = 122954
+      LO(NW) = 722013
+C-- TAIL 0097
+      NW = NW + 1
+      HI(NW) = 32803
+      LO(NW) = 285
+C-- TAIL 0098
+      NW = NW + 1
+      HI(NW) = 15368189
+      LO(NW) = 589824
+C-- TAIL 0099
+      NW = NW + 1
+      HI(NW) = 14712872
+      LO(NW) = 9490471
+C-- TAIL 0100
+      NW = NW + 1
+      HI(NW) = 14680104
+      LO(NW) = 15696990
+C-- TAIL 0101
+      NW = NW + 1
+      HI(NW) = 32816
+      LO(NW) = 9490471
+C-- TAIL 0102
+      NW = NW + 1
+      HI(NW) = 48
+      LO(NW) = 32817
+C-- TAIL 0103
+      NW = NW + 1
+      HI(NW) = 9490471
+      LO(NW) = 49
+C-- TAIL 0104
+      NW = NW + 1
+      HI(NW) = 33045
+      LO(NW) = 9490471
+C-- TAIL 0105
+      NW = NW + 1
+      HI(NW) = 277
+      LO(NW) = 33052
+C-- TAIL 0106
+      NW = NW + 1
+      HI(NW) = 9490471
+      LO(NW) = 284
+C-- TAIL 0107
+      NW = NW + 1
+      HI(NW) = 33048
+      LO(NW) = 9474091
+C-- TAIL 0108
+      NW = NW + 1
+      HI(NW) = 9490472
+      LO(NW) = 280
+C-- TAIL 0109
+      NW = NW + 1
+      HI(NW) = 15335928
+      LO(NW) = 589824
+C-- TAIL 0110
+      NW = NW + 1
+      HI(NW) = 14712833
+      LO(NW) = 9474091
+C-- TAIL 0111
+      NW = NW + 1
+      HI(NW) = 9490472
+      LO(NW) = 14680065
+C-- TAIL 0112
+      NW = NW + 1
+      HI(NW) = 14712837
+      LO(NW) = 9474091
+C-- TAIL 0113
+      NW = NW + 1
+      HI(NW) = 9490472
+      LO(NW) = 14680069
+C-- TAIL 0114
+      NW = NW + 1
+      HI(NW) = 14712838
+      LO(NW) = 40975
+C-- TAIL 0115
+      NW = NW + 1
+      HI(NW) = 722032
+      LO(NW) = 14712838
+C-- TAIL 0116
+      NW = NW + 1
+      HI(NW) = 131086
+      LO(NW) = 787561
+C-- TAIL 0117
+      NW = NW + 1
+      HI(NW) = 9662501
+      LO(NW) = 589824
+C-- TAIL 0118
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- TAIL 0119
+      NW = NW + 1
+      HI(NW) = 1137
+      LO(NW) = 9437184
+C-- TAIL 0120
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1
+C-- TAIL 0121
+      NW = NW + 1
+      HI(NW) = 1984
+      LO(NW) = 0
+C-- TAIL 0122
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 30463
+C-- TAIL 0123
+      NW = NW + 1
+      HI(NW) = 59
+      LO(NW) = 8388608
+C-- TAIL 0124
+      NW = NW + 1
+      HI(NW) = 16777152
+      LO(NW) = 32767
+C-- TAIL 0125
+      NW = NW + 1
+      HI(NW) = 16777215
+      LO(NW) = 16744448
+C-- TAIL 0126
+      NW = NW + 1
+      HI(NW) = 591234
+      LO(NW) = 0
+C-- TAIL 0127
+      NW = NW + 1
+      HI(NW) = 139271
+      LO(NW) = 7996538
+C-- TAIL 0128
+      NW = NW + 1
+      HI(NW) = 143361
+      LO(NW) = 143362
+C-- TAIL 0129
+      NW = NW + 1
+      HI(NW) = 143363
+      LO(NW) = 143368
+C-- TAIL 0130
+      NW = NW + 1
+      HI(NW) = 143369
+      LO(NW) = 7340298
+C-- TAIL 0131
+      NW = NW + 1
+      HI(NW) = 143370
+      LO(NW) = 143373
+C-- TAIL 0132
+      NW = NW + 1
+      HI(NW) = 143370
+      LO(NW) = 1715965
+C-- TAIL 0133
+      NW = NW + 1
+      HI(NW) = 2752513
+      LO(NW) = 3801088
+C-- TAIL 0134
+      NW = NW + 1
+      HI(NW) = 122948
+      LO(NW) = 755007
+C-- TAIL 0135
+      NW = NW + 1
+      HI(NW) = 1048576
+      LO(NW) = 11273347
+C-- TAIL 0136
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 787607
+C-- TAIL 0137
+      NW = NW + 1
+      HI(NW) = 2752512
+      LO(NW) = 787610
+C-- TAIL 0138
+      NW = NW + 1
+      HI(NW) = 14288073
+      LO(NW) = 787611
+C-- TAIL 0139
+      NW = NW + 1
+      HI(NW) = 3833808
+      LO(NW) = 787665
+C-- TAIL 0140
+      NW = NW + 1
+      HI(NW) = 14288090
+      LO(NW) = 787611
+C-- TAIL 0141
+      NW = NW + 1
+      HI(NW) = 14288145
+      LO(NW) = 787611
+C-- TAIL 0142
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 787610
+C-- TAIL 0143
+      NW = NW + 1
+      HI(NW) = 14288159
+      LO(NW) = 787611
+C-- TAIL 0144
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 787767
+C-- TAIL 0145
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 787603
+C-- TAIL 0146
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 787773
+C-- TAIL 0147
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 491759
+C-- TAIL 0148
+      NW = NW + 1
+      HI(NW) = 1048578
+      LO(NW) = 7373035
+C-- TAIL 0149
+      NW = NW + 1
+      HI(NW) = 1048577
+      LO(NW) = 9056000
+C-- TAIL 0150
+      NW = NW + 1
+      HI(NW) = 10093587
+      LO(NW) = 11141132
+C-- TAIL 0151
+      NW = NW + 1
+      HI(NW) = 14288203
+      LO(NW) = 798360
+C-- TAIL 0152
+      NW = NW + 1
+      HI(NW) = 7373035
+      LO(NW) = 1048577
+C-- TAIL 0153
+      NW = NW + 1
+      HI(NW) = 9056000
+      LO(NW) = 10093587
+C-- TAIL 0154
+      NW = NW + 1
+      HI(NW) = 11141132
+      LO(NW) = 14462616
+C-- TAIL 0155
+      NW = NW + 1
+      HI(NW) = 14288203
+      LO(NW) = 589824
+C-- TAIL 0156
+      NW = NW + 1
+      HI(NW) = 139277
+      LO(NW) = 12288
+C-- TAIL 0157
+      NW = NW + 1
+      HI(NW) = 7340297
+      LO(NW) = 1048578
+C-- TAIL 0158
+      NW = NW + 1
+      HI(NW) = 9056000
+      LO(NW) = 10104580
+C-- TAIL 0159
+      NW = NW + 1
+      HI(NW) = 14462627
+      LO(NW) = 589824
+C-- TAIL 0160
+      NW = NW + 1
+      HI(NW) = 9045381
+      LO(NW) = 10104561
+C-- TAIL 0161
+      NW = NW + 1
+      HI(NW) = 11141132
+      LO(NW) = 14462616
+C-- TAIL 0162
+      NW = NW + 1
+      HI(NW) = 15368181
+      LO(NW) = 7373049
+C-- TAIL 0163
+      NW = NW + 1
+      HI(NW) = 15281916
+      LO(NW) = 0
+C-- TAIL 0164
+      NW = NW + 1
+      HI(NW) = 15697058
+      LO(NW) = 1081345
+C-- TAIL 0165
+      NW = NW + 1
+      HI(NW) = 722119
+      LO(NW) = 589824
+C-- TAIL 0166
+      NW = NW + 1
+      HI(NW) = 9056000
+      LO(NW) = 14462620
+C-- TAIL 0167
+      NW = NW + 1
+      HI(NW) = 139275
+      LO(NW) = 7340304
+C-- TAIL 0168
+      NW = NW + 1
+      HI(NW) = 139278
+      LO(NW) = 7340303
+C-- TAIL 0169
+      NW = NW + 1
+      HI(NW) = 14827533
+      LO(NW) = 14352352
+C-- TAIL 0170
+      NW = NW + 1
+      HI(NW) = 14550208
+      LO(NW) = 15281688
+C-- TAIL 0171
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 7377155
+C-- TAIL 0172
+      NW = NW + 1
+      HI(NW) = 7381230
+      LO(NW) = 754865
+C-- TAIL 0173
+      NW = NW + 1
+      HI(NW) = 2244621
+      LO(NW) = 14352382
+C-- TAIL 0174
+      NW = NW + 1
+      HI(NW) = 14582959
+      LO(NW) = 7373071
+C-- TAIL 0175
+      NW = NW + 1
+      HI(NW) = 7381265
+      LO(NW) = 754865
+C-- TAIL 0176
+      NW = NW + 1
+      HI(NW) = 139278
+      LO(NW) = 1048577
+C-- TAIL 0177
+      NW = NW + 1
+      HI(NW) = 787645
+      LO(NW) = 589824
+C-- TAIL 0178
+      NW = NW + 1
+      HI(NW) = 601839
+      LO(NW) = 32768
+C-- TAIL 0179
+      NW = NW + 1
+      HI(NW) = 722102
+      LO(NW) = 9056000
+C-- TAIL 0180
+      NW = NW + 1
+      HI(NW) = 14462618
+      LO(NW) = 589824
+C-- TAIL 0181
+      NW = NW + 1
+      HI(NW) = 15335466
+      LO(NW) = 14462619
+C-- TAIL 0182
+      NW = NW + 1
+      HI(NW) = 624009
+      LO(NW) = 15335424
+C-- TAIL 0183
+      NW = NW + 1
+      HI(NW) = 9045381
+      LO(NW) = 14462619
+C-- TAIL 0184
+      NW = NW + 1
+      HI(NW) = 1081346
+      LO(NW) = 7385323
+C-- TAIL 0185
+      NW = NW + 1
+      HI(NW) = 1048578
+      LO(NW) = 4064445
+C-- TAIL 0186
+      NW = NW + 1
+      HI(NW) = 624009
+      LO(NW) = 15347224
+C-- TAIL 0187
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 122941
+C-- TAIL 0188
+      NW = NW + 1
+      HI(NW) = 3268720
+      LO(NW) = 7393545
+C-- TAIL 0189
+      NW = NW + 1
+      HI(NW) = 7340297
+      LO(NW) = 3833862
+C-- TAIL 0190
+      NW = NW + 1
+      HI(NW) = 7373072
+      LO(NW) = 722113
+C-- TAIL 0191
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 1048577
+C-- TAIL 0192
+      NW = NW + 1
+      HI(NW) = 787655
+      LO(NW) = 589824
+C-- TAIL 0193
+      NW = NW + 1
+      HI(NW) = 3048637
+      LO(NW) = 787633
+C-- TAIL 0194
+      NW = NW + 1
+      HI(NW) = 624009
+      LO(NW) = 601624
+C-- TAIL 0195
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 7377155
+C-- TAIL 0196
+      NW = NW + 1
+      HI(NW) = 7381230
+      LO(NW) = 754853
+C-- TAIL 0197
+      NW = NW + 1
+      HI(NW) = 2244621
+      LO(NW) = 14352382
+C-- TAIL 0198
+      NW = NW + 1
+      HI(NW) = 14582983
+      LO(NW) = 7373071
+C-- TAIL 0199
+      NW = NW + 1
+      HI(NW) = 7381265
+      LO(NW) = 754853
+C-- TAIL 0200
+      NW = NW + 1
+      HI(NW) = 4096
+      LO(NW) = 131085
+C-- TAIL 0201
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- TAIL 0202
+      NW = NW + 1
+      HI(NW) = 1081346
+      LO(NW) = 722127
+C-- TAIL 0203
+      NW = NW + 1
+      HI(NW) = 7385323
+      LO(NW) = 122947
+C-- TAIL 0204
+      NW = NW + 1
+      HI(NW) = 722124
+      LO(NW) = 14452035
+C-- TAIL 0205
+      NW = NW + 1
+      HI(NW) = 7373064
+      LO(NW) = 601841
+C-- TAIL 0206
+      NW = NW + 1
+      HI(NW) = 40960
+      LO(NW) = 754905
+C-- TAIL 0207
+      NW = NW + 1
+      HI(NW) = 7340297
+      LO(NW) = 787787
+C-- TAIL 0208
+      NW = NW + 1
+      HI(NW) = 7373035
+      LO(NW) = 7340297
+C-- TAIL 0209
+      NW = NW + 1
+      HI(NW) = 787787
+      LO(NW) = 589824
+C-- TAIL 0210
+      NW = NW + 1
+      HI(NW) = 2752513
+      LO(NW) = 14451867
+C-- TAIL 0211
+      NW = NW + 1
+      HI(NW) = 1081346
+      LO(NW) = 722251
+C-- TAIL 0212
+      NW = NW + 1
+      HI(NW) = 7385338
+      LO(NW) = 122948
+C-- TAIL 0213
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 589824
+C-- TAIL 0214
+      NW = NW + 1
+      HI(NW) = 601841
+      LO(NW) = 32768
+C-- TAIL 0215
+      NW = NW + 1
+      HI(NW) = 122984
+      LO(NW) = 131086
+C-- TAIL 0216
+      NW = NW + 1
+      HI(NW) = 15281688
+      LO(NW) = 32768
+C-- TAIL 0217
+      NW = NW + 1
+      HI(NW) = 7377155
+      LO(NW) = 722251
+C-- TAIL 0218
+      NW = NW + 1
+      HI(NW) = 14288203
+      LO(NW) = 787779
+C-- TAIL 0219
+      NW = NW + 1
+      HI(NW) = 15347441
+      LO(NW) = 1081346
+C-- TAIL 0220
+      NW = NW + 1
+      HI(NW) = 722251
+      LO(NW) = 7381238
+C-- TAIL 0221
+      NW = NW + 1
+      HI(NW) = 754915
+      LO(NW) = 14712832
+C-- TAIL 0222
+      NW = NW + 1
+      HI(NW) = 7377130
+      LO(NW) = 7393516
+C-- TAIL 0223
+      NW = NW + 1
+      HI(NW) = 14721024
+      LO(NW) = 754905
+C-- TAIL 0224
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 7405802
+C-- TAIL 0225
+      NW = NW + 1
+      HI(NW) = 7409922
+      LO(NW) = 589824
+C-- TAIL 0226
+      NW = NW + 1
+      HI(NW) = 624004
+      LO(NW) = 0
+C-- TAIL 0227
+      NW = NW + 1
+      HI(NW) = 7340297
+      LO(NW) = 787787
+C-- TAIL 0228
+      NW = NW + 1
+      HI(NW) = 7381233
+      LO(NW) = 754922
+C-- TAIL 0229
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 7377149
+C-- TAIL 0230
+      NW = NW + 1
+      HI(NW) = 7393517
+      LO(NW) = 14721024
+C-- TAIL 0231
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 14712832
+C-- TAIL 0232
+      NW = NW + 1
+      HI(NW) = 7405821
+      LO(NW) = 589824
+C-- TAIL 0233
+      NW = NW + 1
+      HI(NW) = 122974
+      LO(NW) = 7340303
+C-- TAIL 0234
+      NW = NW + 1
+      HI(NW) = 7373071
+      LO(NW) = 787681
+C-- TAIL 0235
+      NW = NW + 1
+      HI(NW) = 1081346
+      LO(NW) = 7381231
+C-- TAIL 0236
+      NW = NW + 1
+      HI(NW) = 754933
+      LO(NW) = 14712832
+C-- TAIL 0237
+      NW = NW + 1
+      HI(NW) = 7377159
+      LO(NW) = 7381237
+C-- TAIL 0238
+      NW = NW + 1
+      HI(NW) = 754929
+      LO(NW) = 14712832
+C-- TAIL 0239
+      NW = NW + 1
+      HI(NW) = 122936
+      LO(NW) = 122952
+C-- TAIL 0240
+      NW = NW + 1
+      HI(NW) = 7393522
+      LO(NW) = 14680064
+C-- TAIL 0241
+      NW = NW + 1
+      HI(NW) = 787706
+      LO(NW) = 589824
+C-- TAIL 0242
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 7377140
+C-- TAIL 0243
+      NW = NW + 1
+      HI(NW) = 7393542
+      LO(NW) = 14721024
+C-- TAIL 0244
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 14712832
+C-- TAIL 0245
+      NW = NW + 1
+      HI(NW) = 7405812
+      LO(NW) = 787688
+C-- TAIL 0246
+      NW = NW + 1
+      HI(NW) = 7381227
+      LO(NW) = 754954
+C-- TAIL 0247
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 7377159
+C-- TAIL 0248
+      NW = NW + 1
+      HI(NW) = 7381237
+      LO(NW) = 754905
+C-- TAIL 0249
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 122936
+C-- TAIL 0250
+      NW = NW + 1
+      HI(NW) = 14680064
+      LO(NW) = 589824
+C-- TAIL 0251
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 7377150
+C-- TAIL 0252
+      NW = NW + 1
+      HI(NW) = 7393542
+      LO(NW) = 14721024
+C-- TAIL 0253
+      NW = NW + 1
+      HI(NW) = 7377157
+      LO(NW) = 754905
+C-- TAIL 0254
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 7405822
+C-- TAIL 0255
+      NW = NW + 1
+      HI(NW) = 14680064
+      LO(NW) = 7377155
+C-- TAIL 0256
+      NW = NW + 1
+      HI(NW) = 7340303
+      LO(NW) = 14712832
+C-- TAIL 0257
+      NW = NW + 1
+      HI(NW) = 122941
+      LO(NW) = 122940
+C-- TAIL 0258
+      NW = NW + 1
+      HI(NW) = 102400
+      LO(NW) = 14680064
+C-- TAIL 0259
+      NW = NW + 1
+      HI(NW) = 7385335
+      LO(NW) = 122948
+C-- TAIL 0260
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 7373071
+C-- TAIL 0261
+      NW = NW + 1
+      HI(NW) = 722183
+      LO(NW) = 7381230
+C-- TAIL 0262
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 14712832
+C-- TAIL 0263
+      NW = NW + 1
+      HI(NW) = 7385344
+      LO(NW) = 14680064
+C-- TAIL 0264
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 732826
+C-- TAIL 0265
+      NW = NW + 1
+      HI(NW) = 122932
+      LO(NW) = 7385321
+C-- TAIL 0266
+      NW = NW + 1
+      HI(NW) = 787681
+      LO(NW) = 589824
+C-- TAIL 0267
+      NW = NW + 1
+      HI(NW) = 1081346
+      LO(NW) = 7381227
+C-- TAIL 0268
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 14712832
+C-- TAIL 0269
+      NW = NW + 1
+      HI(NW) = 7381243
+      LO(NW) = 754958
+C-- TAIL 0270
+      NW = NW + 1
+      HI(NW) = 7373048
+      LO(NW) = 787681
+      RETURN
+      END
+      SUBROUTINE EMT01
+      INTEGER HI(1100), LO(1100), NW
+      COMMON /EMBUF/ HI,LO,NW
+C-- TAIL 0019
+      NW = NW + 1
+      HI(NW) = 14712832
+      LO(NW) = 7381244
+C-- TAIL 0020
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 7373057
+C-- TAIL 0021
+      NW = NW + 1
+      HI(NW) = 787681
+      LO(NW) = 589824
+C-- TAIL 0022
+      NW = NW + 1
+      HI(NW) = 1081346
+      LO(NW) = 722251
+C-- TAIL 0023
+      NW = NW + 1
+      HI(NW) = 7385323
+      LO(NW) = 122947
+C-- TAIL 0024
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 601841
+C-- TAIL 0025
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 7340296
+C-- TAIL 0026
+      NW = NW + 1
+      HI(NW) = 7373064
+      LO(NW) = 7377156
+C-- TAIL 0027
+      NW = NW + 1
+      HI(NW) = 7381224
+      LO(NW) = 754970
+C-- TAIL 0028
+      NW = NW + 1
+      HI(NW) = 7373064
+      LO(NW) = 122952
+C-- TAIL 0029
+      NW = NW + 1
+      HI(NW) = 7393522
+      LO(NW) = 7340296
+C-- TAIL 0030
+      NW = NW + 1
+      HI(NW) = 787733
+      LO(NW) = 589824
+C-- TAIL 0031
+      NW = NW + 1
+      HI(NW) = 7373064
+      LO(NW) = 7377149
+C-- TAIL 0032
+      NW = NW + 1
+      HI(NW) = 7393517
+      LO(NW) = 7381256
+C-- TAIL 0033
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 7373064
+C-- TAIL 0034
+      NW = NW + 1
+      HI(NW) = 7405821
+      LO(NW) = 122974
+C-- TAIL 0035
+      NW = NW + 1
+      HI(NW) = 787681
+      LO(NW) = 589824
+C-- TAIL 0036
+      NW = NW + 1
+      HI(NW) = 601841
+      LO(NW) = 32768
+C-- TAIL 0037
+      NW = NW + 1
+      HI(NW) = 7340297
+      LO(NW) = 1081346
+C-- TAIL 0038
+      NW = NW + 1
+      HI(NW) = 131083
+      LO(NW) = 722251
+C-- TAIL 0039
+      NW = NW + 1
+      HI(NW) = 7385323
+      LO(NW) = 122947
+C-- TAIL 0040
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 12255226
+C-- TAIL 0041
+      NW = NW + 1
+      HI(NW) = 12453160
+      LO(NW) = 12222465
+C-- TAIL 0042
+      NW = NW + 1
+      HI(NW) = 7373065
+      LO(NW) = 122952
+C-- TAIL 0043
+      NW = NW + 1
+      HI(NW) = 7393523
+      LO(NW) = 7340297
+C-- TAIL 0044
+      NW = NW + 1
+      HI(NW) = 787748
+      LO(NW) = 589824
+C-- TAIL 0045
+      NW = NW + 1
+      HI(NW) = 7373065
+      LO(NW) = 7381229
+C-- TAIL 0046
+      NW = NW + 1
+      HI(NW) = 7340297
+      LO(NW) = 7377151
+C-- TAIL 0047
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 7373065
+C-- TAIL 0048
+      NW = NW + 1
+      HI(NW) = 7385328
+      LO(NW) = 7377151
+C-- TAIL 0049
+      NW = NW + 1
+      HI(NW) = 754905
+      LO(NW) = 7373065
+C-- TAIL 0050
+      NW = NW + 1
+      HI(NW) = 7393529
+      LO(NW) = 7340297
+C-- TAIL 0051
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 7340303
+C-- TAIL 0052
+      NW = NW + 1
+      HI(NW) = 7373065
+      LO(NW) = 122936
+C-- TAIL 0053
+      NW = NW + 1
+      HI(NW) = 7340297
+      LO(NW) = 102400
+C-- TAIL 0054
+      NW = NW + 1
+      HI(NW) = 722230
+      LO(NW) = 7381224
+C-- TAIL 0055
+      NW = NW + 1
+      HI(NW) = 7352591
+      LO(NW) = 122943
+C-- TAIL 0056
+      NW = NW + 1
+      HI(NW) = 7340303
+      LO(NW) = 122942
+C-- TAIL 0057
+      NW = NW + 1
+      HI(NW) = 7385359
+      LO(NW) = 15773696
+C-- TAIL 0058
+      NW = NW + 1
+      HI(NW) = 7340303
+      LO(NW) = 787759
+C-- TAIL 0059
+      NW = NW + 1
+      HI(NW) = 7373071
+      LO(NW) = 787681
+C-- TAIL 0060
+      NW = NW + 1
+      HI(NW) = 139275
+      LO(NW) = 7340305
+C-- TAIL 0061
+      NW = NW + 1
+      HI(NW) = 2752514
+      LO(NW) = 14451867
+C-- TAIL 0062
+      NW = NW + 1
+      HI(NW) = 126979
+      LO(NW) = 7373064
+C-- TAIL 0063
+      NW = NW + 1
+      HI(NW) = 1069058
+      LO(NW) = 722236
+C-- TAIL 0064
+      NW = NW + 1
+      HI(NW) = 126978
+      LO(NW) = 14452035
+C-- TAIL 0065
+      NW = NW + 1
+      HI(NW) = 126978
+      LO(NW) = 787787
+C-- TAIL 0066
+      NW = NW + 1
+      HI(NW) = 9056004
+      LO(NW) = 10104576
+C-- TAIL 0067
+      NW = NW + 1
+      HI(NW) = 14288203
+      LO(NW) = 798371
+C-- TAIL 0068
+      NW = NW + 1
+      HI(NW) = 15336788
+      LO(NW) = 143374
+C-- TAIL 0069
+      NW = NW + 1
+      HI(NW) = 15336793
+      LO(NW) = 143374
+C-- TAIL 0070
+      NW = NW + 1
+      HI(NW) = 7352555
+      LO(NW) = 14451411
+C-- TAIL 0071
+      NW = NW + 1
+      HI(NW) = 245760
+      LO(NW) = 589824
+C-- TAIL 0072
+      NW = NW + 1
+      HI(NW) = 1081344
+      LO(NW) = 7393515
+C-- TAIL 0073
+      NW = NW + 1
+      HI(NW) = 1048576
+      LO(NW) = 601840
+C-- TAIL 0074
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 14385152
+C-- TAIL 0075
+      NW = NW + 1
+      HI(NW) = 601841
+      LO(NW) = 32768
+C-- TAIL 0076
+      NW = NW + 1
+      HI(NW) = 7340263
+      LO(NW) = 15336795
+C-- TAIL 0077
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15336801
+C-- TAIL 0078
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 7352555
+C-- TAIL 0079
+      NW = NW + 1
+      HI(NW) = 787155
+      LO(NW) = 589824
+C-- TAIL 0080
+      NW = NW + 1
+      HI(NW) = 1081344
+      LO(NW) = 131086
+C-- TAIL 0081
+      NW = NW + 1
+      HI(NW) = 1081345
+      LO(NW) = 131083
+C-- TAIL 0082
+      NW = NW + 1
+      HI(NW) = 1081346
+      LO(NW) = 135180
+C-- TAIL 0083
+      NW = NW + 1
+      HI(NW) = 135181
+      LO(NW) = 135178
+C-- TAIL 0084
+      NW = NW + 1
+      HI(NW) = 135177
+      LO(NW) = 135176
+C-- TAIL 0085
+      NW = NW + 1
+      HI(NW) = 135171
+      LO(NW) = 135170
+C-- TAIL 0086
+      NW = NW + 1
+      HI(NW) = 135169
+      LO(NW) = 131079
+C-- TAIL 0087
+      NW = NW + 1
+      HI(NW) = 591235
+      LO(NW) = 32768
+C-- TAIL 0088
+      NW = NW + 1
+      HI(NW) = 14417920
+      LO(NW) = 589824
+C-- TAIL 0089
+      NW = NW + 1
+      HI(NW) = 4736368
+      LO(NW) = 5259586
+C-- TAIL 0090
+      NW = NW + 1
+      HI(NW) = 6909048
+      LO(NW) = 4738885
+C-- TAIL 0091
+      NW = NW + 1
+      HI(NW) = 2124099
+      LO(NW) = 7360364
+C-- TAIL 0092
+      NW = NW + 1
+      HI(NW) = 7895631
+      LO(NW) = 4342088
+C-- TAIL 0093
+      NW = NW + 1
+      HI(NW) = 6898976
+      LO(NW) = 5259602
+C-- TAIL 0094
+      NW = NW + 1
+      HI(NW) = 4279636
+      LO(NW) = 2760736
+C-- TAIL 0095
+      NW = NW + 1
+      HI(NW) = 2105376
+      LO(NW) = 2105376
+C-- TAIL 0096
+      NW = NW + 1
+      HI(NW) = 5208937
+      LO(NW) = 6441793
+C-- TAIL 0097
+      NW = NW + 1
+      HI(NW) = 2114080
+      LO(NW) = 8012132
+C-- TAIL 0098
+      NW = NW + 1
+      HI(NW) = 4278377
+      LO(NW) = 6889584
+C-- TAIL 0099
+      NW = NW + 1
+      HI(NW) = 4280385
+      LO(NW) = 5064020
+C-- TAIL 0100
+      NW = NW + 1
+      HI(NW) = 5259552
+      LO(NW) = 2105376
+C-- TAIL 0101
+      NW = NW + 1
+      HI(NW) = 2105376
+      LO(NW) = 2105376
+C-- TAIL 0102
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 0
+C-- TAIL 0103
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 32
+C-- TAIL 0104
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 131072
+C-- TAIL 0105
+      NW = NW + 1
+      HI(NW) = 460551
+      LO(NW) = 460544
+C-- TAIL 0106
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1
+C-- TAIL 0107
+      NW = NW + 1
+      HI(NW) = 3158064
+      LO(NW) = 3158048
+C-- TAIL 0108
+      NW = NW + 1
+      HI(NW) = 3158064
+      LO(NW) = 3158064
+C-- TAIL 0109
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- TAIL 0110
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 2
+C-- TAIL 0111
+      NW = NW + 1
+      HI(NW) = 394758
+      LO(NW) = 394758
+C-- TAIL 0112
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 3
+C-- TAIL 0113
+      NW = NW + 1
+      HI(NW) = 3145728
+      LO(NW) = 0
+C-- TAIL 0114
+      NW = NW + 1
+      HI(NW) = 3145728
+      LO(NW) = 0
+C-- TAIL 0115
+      NW = NW + 1
+      HI(NW) = 460544
+      LO(NW) = 0
+C-- TAIL 0116
+      NW = NW + 1
+      HI(NW) = 4587520
+      LO(NW) = 0
+C-- TAIL 0117
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 5
+C-- TAIL 0118
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 6
+C-- TAIL 0119
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 12288
+C-- TAIL 0120
+      NW = NW + 1
+      HI(NW) = 2105376
+      LO(NW) = 2105376
+C-- TAIL 0121
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 7
+C-- TAIL 0122
+      NW = NW + 1
+      HI(NW) = 3219488
+      LO(NW) = 2105376
+C-- TAIL 0123
+      NW = NW + 1
+      HI(NW) = 3285024
+      LO(NW) = 2105376
+C-- TAIL 0124
+      NW = NW + 1
+      HI(NW) = 460551
+      LO(NW) = 460551
+C-- TAIL 0125
+      NW = NW + 1
+      HI(NW) = 462592
+      LO(NW) = 0
+C-- TAIL 0126
+      NW = NW + 1
+      HI(NW) = 15790320
+      LO(NW) = 15790320
+C-- TAIL 0127
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 10
+C-- TAIL 0128
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 20480
+C-- TAIL 0129
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 258559
+C-- TAIL 0130
+      NW = NW + 1
+      HI(NW) = 14680064
+      LO(NW) = 0
+C-- TAIL 0131
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 255
+C-- TAIL 0132
+      NW = NW + 1
+      HI(NW) = 16776960
+      LO(NW) = 0
+C-- TAIL 0133
+      NW = NW + 1
+      HI(NW) = 3158048
+      LO(NW) = 2105376
+C-- TAIL 0134
+      NW = NW + 1
+      HI(NW) = 16711680
+      LO(NW) = 0
+C-- TAIL 0135
+      NW = NW + 1
+      HI(NW) = 13
+      LO(NW) = 12943642
+C-- TAIL 0136
+      NW = NW + 1
+      HI(NW) = 7997061
+      LO(NW) = 126979
+C-- TAIL 0137
+      NW = NW + 1
+      HI(NW) = 139264
+      LO(NW) = 15728640
+C-- TAIL 0138
+      NW = NW + 1
+      HI(NW) = 36865
+      LO(NW) = 1081354
+C-- TAIL 0139
+      NW = NW + 1
+      HI(NW) = 15728645
+      LO(NW) = 16416775
+C-- TAIL 0140
+      NW = NW + 1
+      HI(NW) = 139271
+      LO(NW) = 143374
+C-- TAIL 0141
+      NW = NW + 1
+      HI(NW) = 15728640
+      LO(NW) = 7997061
+C-- TAIL 0142
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 32798
+C-- TAIL 0143
+      NW = NW + 1
+      HI(NW) = 15994877
+      LO(NW) = 16011260
+C-- TAIL 0144
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 30
+C-- TAIL 0145
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 20519
+C-- TAIL 0146
+      NW = NW + 1
+      HI(NW) = 8093685
+      LO(NW) = 16027645
+C-- TAIL 0147
+      NW = NW + 1
+      HI(NW) = 8159000
+      LO(NW) = 589824
+C-- TAIL 0148
+      NW = NW + 1
+      HI(NW) = 15728641
+      LO(NW) = 589824
+C-- TAIL 0149
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0150
+      NW = NW + 1
+      HI(NW) = 131079
+      LO(NW) = 15761411
+C-- TAIL 0151
+      NW = NW + 1
+      HI(NW) = 16449529
+      LO(NW) = 15466496
+C-- TAIL 0152
+      NW = NW + 1
+      HI(NW) = 28672
+      LO(NW) = 1048590
+C-- TAIL 0153
+      NW = NW + 1
+      HI(NW) = 16416773
+      LO(NW) = 139271
+C-- TAIL 0154
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- TAIL 0155
+      NW = NW + 1
+      HI(NW) = 7997061
+      LO(NW) = 7372839
+C-- TAIL 0156
+      NW = NW + 1
+      HI(NW) = 7385088
+      LO(NW) = 7340071
+C-- TAIL 0157
+      NW = NW + 1
+      HI(NW) = 7409665
+      LO(NW) = 7393282
+C-- TAIL 0158
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 622622
+C-- TAIL 0159
+      NW = NW + 1
+      HI(NW) = 1
+      LO(NW) = 601864
+C-- TAIL 0160
+      NW = NW + 1
+      HI(NW) = 622622
+      LO(NW) = 14286848
+C-- TAIL 0161
+      NW = NW + 1
+      HI(NW) = 7639027
+      LO(NW) = 13631488
+C-- TAIL 0162
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 32798
+C-- TAIL 0163
+      NW = NW + 1
+      HI(NW) = 131077
+      LO(NW) = 601864
+C-- TAIL 0164
+      NW = NW + 1
+      HI(NW) = 32798
+      LO(NW) = 601864
+C-- TAIL 0165
+      NW = NW + 1
+      HI(NW) = 14286848
+      LO(NW) = 7356419
+C-- TAIL 0166
+      NW = NW + 1
+      HI(NW) = 13631518
+      LO(NW) = 589824
+C-- TAIL 0167
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0168
+      NW = NW + 1
+      HI(NW) = 131079
+      LO(NW) = 16449531
+C-- TAIL 0169
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- TAIL 0170
+      NW = NW + 1
+      HI(NW) = 40961
+      LO(NW) = 2129935
+C-- TAIL 0171
+      NW = NW + 1
+      HI(NW) = 15728645
+      LO(NW) = 16416775
+C-- TAIL 0172
+      NW = NW + 1
+      HI(NW) = 139269
+      LO(NW) = 143367
+C-- TAIL 0173
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- TAIL 0174
+      NW = NW + 1
+      HI(NW) = 7997061
+      LO(NW) = 7372840
+C-- TAIL 0175
+      NW = NW + 1
+      HI(NW) = 7385088
+      LO(NW) = 7340072
+C-- TAIL 0176
+      NW = NW + 1
+      HI(NW) = 122941
+      LO(NW) = 7409665
+C-- TAIL 0177
+      NW = NW + 1
+      HI(NW) = 7393284
+      LO(NW) = 15994876
+C-- TAIL 0178
+      NW = NW + 1
+      HI(NW) = 5931004
+      LO(NW) = 15880197
+C-- TAIL 0179
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15500863
+C-- TAIL 0180
+      NW = NW + 1
+      HI(NW) = 7639028
+      LO(NW) = 5242880
+C-- TAIL 0181
+      NW = NW + 1
+      HI(NW) = 16027643
+      LO(NW) = 122901
+C-- TAIL 0182
+      NW = NW + 1
+      HI(NW) = 5283840
+      LO(NW) = 7376901
+C-- TAIL 0183
+      NW = NW + 1
+      HI(NW) = 5283840
+      LO(NW) = 5242880
+C-- TAIL 0184
+      NW = NW + 1
+      HI(NW) = 139269
+      LO(NW) = 8159037
+C-- TAIL 0185
+      NW = NW + 1
+      HI(NW) = 15728641
+      LO(NW) = 589824
+C-- TAIL 0186
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0187
+      NW = NW + 1
+      HI(NW) = 135175
+      LO(NW) = 131077
+C-- TAIL 0188
+      NW = NW + 1
+      HI(NW) = 15761412
+      LO(NW) = 16449529
+C-- TAIL 0189
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- TAIL 0190
+      NW = NW + 1
+      HI(NW) = 40960
+      LO(NW) = 2162704
+C-- TAIL 0191
+      NW = NW + 1
+      HI(NW) = 15728646
+      LO(NW) = 16416775
+C-- TAIL 0192
+      NW = NW + 1
+      HI(NW) = 139269
+      LO(NW) = 143367
+C-- TAIL 0193
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- TAIL 0194
+      NW = NW + 1
+      HI(NW) = 7997061
+      LO(NW) = 601864
+C-- TAIL 0195
+      NW = NW + 1
+      HI(NW) = 32798
+      LO(NW) = 131077
+C-- TAIL 0196
+      NW = NW + 1
+      HI(NW) = 16027643
+      LO(NW) = 122901
+C-- TAIL 0197
+      NW = NW + 1
+      HI(NW) = 7380998
+      LO(NW) = 5242880
+C-- TAIL 0198
+      NW = NW + 1
+      HI(NW) = 16027643
+      LO(NW) = 8093517
+C-- TAIL 0199
+      NW = NW + 1
+      HI(NW) = 16027643
+      LO(NW) = 7380999
+C-- TAIL 0200
+      NW = NW + 1
+      HI(NW) = 8126287
+      LO(NW) = 589824
+C-- TAIL 0201
+      NW = NW + 1
+      HI(NW) = 5275648
+      LO(NW) = 7393288
+C-- TAIL 0202
+      NW = NW + 1
+      HI(NW) = 5242880
+      LO(NW) = 589824
+C-- TAIL 0203
+      NW = NW + 1
+      HI(NW) = 16027644
+      LO(NW) = 5242881
+C-- TAIL 0204
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15500765
+C-- TAIL 0205
+      NW = NW + 1
+      HI(NW) = 139269
+      LO(NW) = 8159058
+C-- TAIL 0206
+      NW = NW + 1
+      HI(NW) = 15728641
+      LO(NW) = 589824
+C-- TAIL 0207
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0208
+      NW = NW + 1
+      HI(NW) = 135175
+      LO(NW) = 131077
+C-- TAIL 0209
+      NW = NW + 1
+      HI(NW) = 15761412
+      LO(NW) = 16449529
+C-- TAIL 0210
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- TAIL 0211
+      NW = NW + 1
+      HI(NW) = 32769
+      LO(NW) = 1048611
+C-- TAIL 0212
+      NW = NW + 1
+      HI(NW) = 16416774
+      LO(NW) = 139271
+C-- TAIL 0213
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- TAIL 0214
+      NW = NW + 1
+      HI(NW) = 7997061
+      LO(NW) = 601864
+C-- TAIL 0215
+      NW = NW + 1
+      HI(NW) = 32798
+      LO(NW) = 131077
+C-- TAIL 0216
+      NW = NW + 1
+      HI(NW) = 5275648
+      LO(NW) = 15728641
+C-- TAIL 0217
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 14286859
+C-- TAIL 0218
+      NW = NW + 1
+      HI(NW) = 15761409
+      LO(NW) = 122987
+C-- TAIL 0219
+      NW = NW + 1
+      HI(NW) = 7376905
+      LO(NW) = 15728642
+C-- TAIL 0220
+      NW = NW + 1
+      HI(NW) = 139277
+      LO(NW) = 15745026
+C-- TAIL 0221
+      NW = NW + 1
+      HI(NW) = 131083
+      LO(NW) = 5275648
+C-- TAIL 0222
+      NW = NW + 1
+      HI(NW) = 122949
+      LO(NW) = 7376906
+C-- TAIL 0223
+      NW = NW + 1
+      HI(NW) = 15994877
+      LO(NW) = 11567104
+C-- TAIL 0224
+      NW = NW + 1
+      HI(NW) = 8126310
+      LO(NW) = 139269
+C-- TAIL 0225
+      NW = NW + 1
+      HI(NW) = 11534336
+      LO(NW) = 8159092
+C-- TAIL 0226
+      NW = NW + 1
+      HI(NW) = 131083
+      LO(NW) = 5275648
+C-- TAIL 0227
+      NW = NW + 1
+      HI(NW) = 11575296
+      LO(NW) = 7376907
+C-- TAIL 0228
+      NW = NW + 1
+      HI(NW) = 8126319
+      LO(NW) = 16027645
+C-- TAIL 0229
+      NW = NW + 1
+      HI(NW) = 7356428
+      LO(NW) = 131085
+C-- TAIL 0230
+      NW = NW + 1
+      HI(NW) = 5832704
+      LO(NW) = 13664256
+C-- TAIL 0231
+      NW = NW + 1
+      HI(NW) = 12124160
+      LO(NW) = 13672448
+C-- TAIL 0232
+      NW = NW + 1
+      HI(NW) = 8126319
+      LO(NW) = 14352383
+C-- TAIL 0233
+      NW = NW + 1
+      HI(NW) = 14583279
+      LO(NW) = 11681797
+C-- TAIL 0234
+      NW = NW + 1
+      HI(NW) = 8159099
+      LO(NW) = 589824
+C-- TAIL 0235
+      NW = NW + 1
+      HI(NW) = 11567104
+      LO(NW) = 122968
+C-- TAIL 0236
+      NW = NW + 1
+      HI(NW) = 7376909
+      LO(NW) = 8126310
+C-- TAIL 0237
+      NW = NW + 1
+      HI(NW) = 139269
+      LO(NW) = 122920
+C-- TAIL 0238
+      NW = NW + 1
+      HI(NW) = 11575296
+      LO(NW) = 7376910
+C-- TAIL 0239
+      NW = NW + 1
+      HI(NW) = 11575296
+      LO(NW) = 11534336
+C-- TAIL 0240
+      NW = NW + 1
+      HI(NW) = 5275648
+      LO(NW) = 7376911
+C-- TAIL 0241
+      NW = NW + 1
+      HI(NW) = 5242880
+      LO(NW) = 601864
+C-- TAIL 0242
+      NW = NW + 1
+      HI(NW) = 32798
+      LO(NW) = 16011261
+C-- TAIL 0243
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 14286848
+C-- TAIL 0244
+      NW = NW + 1
+      HI(NW) = 7356419
+      LO(NW) = 13631518
+C-- TAIL 0245
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 20519
+C-- TAIL 0246
+      NW = NW + 1
+      HI(NW) = 8093685
+      LO(NW) = 589824
+C-- TAIL 0247
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0248
+      NW = NW + 1
+      HI(NW) = 131079
+      LO(NW) = 16449530
+C-- TAIL 0249
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- TAIL 0250
+      NW = NW + 1
+      HI(NW) = 36864
+      LO(NW) = 2129929
+C-- TAIL 0251
+      NW = NW + 1
+      HI(NW) = 15728645
+      LO(NW) = 16416774
+C-- TAIL 0252
+      NW = NW + 1
+      HI(NW) = 139265
+      LO(NW) = 143367
+C-- TAIL 0253
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- TAIL 0254
+      NW = NW + 1
+      HI(NW) = 7997061
+      LO(NW) = 7372812
+C-- TAIL 0255
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15500692
+C-- TAIL 0256
+      NW = NW + 1
+      HI(NW) = 131073
+      LO(NW) = 16027644
+C-- TAIL 0257
+      NW = NW + 1
+      HI(NW) = 1048576
+      LO(NW) = 139265
+C-- TAIL 0258
+      NW = NW + 1
+      HI(NW) = 7381008
+      LO(NW) = 8159111
+C-- TAIL 0259
+      NW = NW + 1
+      HI(NW) = 15728641
+      LO(NW) = 589824
+C-- TAIL 0260
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0261
+      NW = NW + 1
+      HI(NW) = 135175
+      LO(NW) = 131073
+C-- TAIL 0262
+      NW = NW + 1
+      HI(NW) = 15761412
+      LO(NW) = 16449530
+C-- TAIL 0263
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- TAIL 0264
+      NW = NW + 1
+      HI(NW) = 45058
+      LO(NW) = 1114153
+C-- TAIL 0265
+      NW = NW + 1
+      HI(NW) = 15728646
+      LO(NW) = 16416777
+C-- TAIL 0266
+      NW = NW + 1
+      HI(NW) = 139271
+      LO(NW) = 143374
+C-- TAIL 0267
+      NW = NW + 1
+      HI(NW) = 15728640
+      LO(NW) = 7997061
+C-- TAIL 0268
+      NW = NW + 1
+      HI(NW) = 16383994
+      LO(NW) = 32768
+C-- TAIL 0269
+      NW = NW + 1
+      HI(NW) = 15728641
+      LO(NW) = 15761409
+C-- TAIL 0270
+      NW = NW + 1
+      HI(NW) = 7376901
+      LO(NW) = 122987
+      RETURN
+      END
+      SUBROUTINE EMT02
+      INTEGER HI(1100), LO(1100), NW
+      COMMON /EMBUF/ HI,LO,NW
+C-- TAIL 0019
+      NW = NW + 1
+      HI(NW) = 15728642
+      LO(NW) = 16351234
+C-- TAIL 0020
+      NW = NW + 1
+      HI(NW) = 601965
+      LO(NW) = 32768
+C-- TAIL 0021
+      NW = NW + 1
+      HI(NW) = 15994877
+      LO(NW) = 7372817
+C-- TAIL 0022
+      NW = NW + 1
+      HI(NW) = 16383995
+      LO(NW) = 0
+C-- TAIL 0023
+      NW = NW + 1
+      HI(NW) = 16383994
+      LO(NW) = 32768
+C-- TAIL 0024
+      NW = NW + 1
+      HI(NW) = 7376901
+      LO(NW) = 7381010
+C-- TAIL 0025
+      NW = NW + 1
+      HI(NW) = 7376901
+      LO(NW) = 8093598
+C-- TAIL 0026
+      NW = NW + 1
+      HI(NW) = 16383994
+      LO(NW) = 32768
+C-- TAIL 0027
+      NW = NW + 1
+      HI(NW) = 7376901
+      LO(NW) = 7381011
+C-- TAIL 0028
+      NW = NW + 1
+      HI(NW) = 7376901
+      LO(NW) = 8093598
+C-- TAIL 0029
+      NW = NW + 1
+      HI(NW) = 7376901
+      LO(NW) = 8126368
+C-- TAIL 0030
+      NW = NW + 1
+      HI(NW) = 16027645
+      LO(NW) = 122943
+C-- TAIL 0031
+      NW = NW + 1
+      HI(NW) = 15994877
+      LO(NW) = 589824
+C-- TAIL 0032
+      NW = NW + 1
+      HI(NW) = 16383994
+      LO(NW) = 32771
+C-- TAIL 0033
+      NW = NW + 1
+      HI(NW) = 131081
+      LO(NW) = 10356281
+C-- TAIL 0034
+      NW = NW + 1
+      HI(NW) = 10059778
+      LO(NW) = 32768
+C-- TAIL 0035
+      NW = NW + 1
+      HI(NW) = 7376916
+      LO(NW) = 7381013
+C-- TAIL 0036
+      NW = NW + 1
+      HI(NW) = 7376916
+      LO(NW) = 8126390
+C-- TAIL 0037
+      NW = NW + 1
+      HI(NW) = 10059777
+      LO(NW) = 32768
+C-- TAIL 0038
+      NW = NW + 1
+      HI(NW) = 7376916
+      LO(NW) = 7381013
+C-- TAIL 0039
+      NW = NW + 1
+      HI(NW) = 7376916
+      LO(NW) = 8126390
+C-- TAIL 0040
+      NW = NW + 1
+      HI(NW) = 10059778
+      LO(NW) = 32769
+C-- TAIL 0041
+      NW = NW + 1
+      HI(NW) = 15728641
+      LO(NW) = 10059777
+C-- TAIL 0042
+      NW = NW + 1
+      HI(NW) = 32769
+      LO(NW) = 126976
+C-- TAIL 0043
+      NW = NW + 1
+      HI(NW) = 15753217
+      LO(NW) = 7356438
+C-- TAIL 0044
+      NW = NW + 1
+      HI(NW) = 15994876
+      LO(NW) = 16027644
+C-- TAIL 0045
+      NW = NW + 1
+      HI(NW) = 126979
+      LO(NW) = 7356439
+C-- TAIL 0046
+      NW = NW + 1
+      HI(NW) = 7376920
+      LO(NW) = 7393305
+C-- TAIL 0047
+      NW = NW + 1
+      HI(NW) = 16056317
+      LO(NW) = 102464
+C-- TAIL 0048
+      NW = NW + 1
+      HI(NW) = 7381018
+      LO(NW) = 7356443
+C-- TAIL 0049
+      NW = NW + 1
+      HI(NW) = 15994877
+      LO(NW) = 9469952
+C-- TAIL 0050
+      NW = NW + 1
+      HI(NW) = 122968
+      LO(NW) = 131081
+C-- TAIL 0051
+      NW = NW + 1
+      HI(NW) = 10389031
+      LO(NW) = 589824
+C-- TAIL 0052
+      NW = NW + 1
+      HI(NW) = 16027645
+      LO(NW) = 16383995
+C-- TAIL 0053
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 589824
+C-- TAIL 0054
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0055
+      NW = NW + 1
+      HI(NW) = 131079
+      LO(NW) = 16449527
+C-- TAIL 0056
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- TAIL 0057
+      NW = NW + 1
+      HI(NW) = 36866
+      LO(NW) = 1048612
+C-- TAIL 0058
+      NW = NW + 1
+      HI(NW) = 16416775
+      LO(NW) = 139271
+C-- TAIL 0059
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- TAIL 0060
+      NW = NW + 1
+      HI(NW) = 7997061
+      LO(NW) = 5275648
+C-- TAIL 0061
+      NW = NW + 1
+      HI(NW) = 15994876
+      LO(NW) = 7405596
+C-- TAIL 0062
+      NW = NW + 1
+      HI(NW) = 122981
+      LO(NW) = 15728641
+C-- TAIL 0063
+      NW = NW + 1
+      HI(NW) = 7372829
+      LO(NW) = 15745025
+C-- TAIL 0064
+      NW = NW + 1
+      HI(NW) = 131077
+      LO(NW) = 5275648
+C-- TAIL 0065
+      NW = NW + 1
+      HI(NW) = 8093661
+      LO(NW) = 5275649
+C-- TAIL 0066
+      NW = NW + 1
+      HI(NW) = 16035836
+      LO(NW) = 8093662
+C-- TAIL 0067
+      NW = NW + 1
+      HI(NW) = 7372830
+      LO(NW) = 131084
+C-- TAIL 0068
+      NW = NW + 1
+      HI(NW) = 16027644
+      LO(NW) = 7405599
+C-- TAIL 0069
+      NW = NW + 1
+      HI(NW) = 122981
+      LO(NW) = 7393312
+C-- TAIL 0070
+      NW = NW + 1
+      HI(NW) = 15994877
+      LO(NW) = 589824
+C-- TAIL 0071
+      NW = NW + 1
+      HI(NW) = 7372829
+      LO(NW) = 15728642
+C-- TAIL 0072
+      NW = NW + 1
+      HI(NW) = 139269
+      LO(NW) = 15749122
+C-- TAIL 0073
+      NW = NW + 1
+      HI(NW) = 16011261
+      LO(NW) = 7376929
+C-- TAIL 0074
+      NW = NW + 1
+      HI(NW) = 15728641
+      LO(NW) = 7372829
+C-- TAIL 0075
+      NW = NW + 1
+      HI(NW) = 15745025
+      LO(NW) = 131077
+C-- TAIL 0076
+      NW = NW + 1
+      HI(NW) = 5275648
+      LO(NW) = 8093661
+C-- TAIL 0077
+      NW = NW + 1
+      HI(NW) = 5275649
+      LO(NW) = 16035836
+C-- TAIL 0078
+      NW = NW + 1
+      HI(NW) = 8093662
+      LO(NW) = 13600332
+C-- TAIL 0079
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 14286877
+C-- TAIL 0080
+      NW = NW + 1
+      HI(NW) = 139277
+      LO(NW) = 131084
+C-- TAIL 0081
+      NW = NW + 1
+      HI(NW) = 12615680
+      LO(NW) = 131077
+C-- TAIL 0082
+      NW = NW + 1
+      HI(NW) = 6162012
+      LO(NW) = 589824
+C-- TAIL 0083
+      NW = NW + 1
+      HI(NW) = 5275649
+      LO(NW) = 16035836
+C-- TAIL 0084
+      NW = NW + 1
+      HI(NW) = 8093662
+      LO(NW) = 5275651
+C-- TAIL 0085
+      NW = NW + 1
+      HI(NW) = 122959
+      LO(NW) = 131077
+C-- TAIL 0086
+      NW = NW + 1
+      HI(NW) = 6194776
+      LO(NW) = 589824
+C-- TAIL 0087
+      NW = NW + 1
+      HI(NW) = 7372834
+      LO(NW) = 15500692
+C-- TAIL 0088
+      NW = NW + 1
+      HI(NW) = 131077
+      LO(NW) = 12615680
+C-- TAIL 0089
+      NW = NW + 1
+      HI(NW) = 122929
+      LO(NW) = 5242883
+C-- TAIL 0090
+      NW = NW + 1
+      HI(NW) = 139269
+      LO(NW) = 12582912
+C-- TAIL 0091
+      NW = NW + 1
+      HI(NW) = 139264
+      LO(NW) = 5242880
+C-- TAIL 0092
+      NW = NW + 1
+      HI(NW) = 5242882
+      LO(NW) = 589824
+C-- TAIL 0093
+      NW = NW + 1
+      HI(NW) = 16027644
+      LO(NW) = 5242881
+C-- TAIL 0094
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0095
+      NW = NW + 1
+      HI(NW) = 131079
+      LO(NW) = 16449529
+C-- TAIL 0096
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- TAIL 0097
+      NW = NW + 1
+      HI(NW) = 40962
+      LO(NW) = 1081358
+C-- TAIL 0098
+      NW = NW + 1
+      HI(NW) = 15728645
+      LO(NW) = 16416776
+C-- TAIL 0099
+      NW = NW + 1
+      HI(NW) = 139271
+      LO(NW) = 143374
+C-- TAIL 0100
+      NW = NW + 1
+      HI(NW) = 15728640
+      LO(NW) = 7997061
+C-- TAIL 0101
+      NW = NW + 1
+      HI(NW) = 601864
+      LO(NW) = 14286876
+C-- TAIL 0102
+      NW = NW + 1
+      HI(NW) = 139277
+      LO(NW) = 131085
+C-- TAIL 0103
+      NW = NW + 1
+      HI(NW) = 13664256
+      LO(NW) = 122959
+C-- TAIL 0104
+      NW = NW + 1
+      HI(NW) = 7376931
+      LO(NW) = 15994877
+C-- TAIL 0105
+      NW = NW + 1
+      HI(NW) = 13664256
+      LO(NW) = 122974
+C-- TAIL 0106
+      NW = NW + 1
+      HI(NW) = 15994876
+      LO(NW) = 13664256
+C-- TAIL 0107
+      NW = NW + 1
+      HI(NW) = 131085
+      LO(NW) = 16027644
+C-- TAIL 0108
+      NW = NW + 1
+      HI(NW) = 16035835
+      LO(NW) = 8093678
+C-- TAIL 0109
+      NW = NW + 1
+      HI(NW) = 14583404
+      LO(NW) = 589824
+C-- TAIL 0110
+      NW = NW + 1
+      HI(NW) = 16027645
+      LO(NW) = 8159215
+C-- TAIL 0111
+      NW = NW + 1
+      HI(NW) = 15728641
+      LO(NW) = 589824
+C-- TAIL 0112
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0113
+      NW = NW + 1
+      HI(NW) = 131079
+      LO(NW) = 15761411
+C-- TAIL 0114
+      NW = NW + 1
+      HI(NW) = 16449528
+      LO(NW) = 15466496
+C-- TAIL 0115
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 3145737
+C-- TAIL 0116
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 3145729
+C-- TAIL 0117
+      NW = NW + 1
+      HI(NW) = 15728645
+      LO(NW) = 7372836
+C-- TAIL 0118
+      NW = NW + 1
+      HI(NW) = 15728646
+      LO(NW) = 139264
+C-- TAIL 0119
+      NW = NW + 1
+      HI(NW) = 15728647
+      LO(NW) = 139264
+C-- TAIL 0120
+      NW = NW + 1
+      HI(NW) = 15728648
+      LO(NW) = 139264
+C-- TAIL 0121
+      NW = NW + 1
+      HI(NW) = 15728649
+      LO(NW) = 7372837
+C-- TAIL 0122
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15508281
+C-- TAIL 0123
+      NW = NW + 1
+      HI(NW) = 8159231
+      LO(NW) = 589824
+C-- TAIL 0124
+      NW = NW + 1
+      HI(NW) = 4739409
+      LO(NW) = 11026640
+C-- TAIL 0125
+      NW = NW + 1
+      HI(NW) = 10858661
+      LO(NW) = 13651520
+C-- TAIL 0126
+      NW = NW + 1
+      HI(NW) = 13672877
+      LO(NW) = 4800576
+C-- TAIL 0127
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 245760
+C-- TAIL 0128
+      NW = NW + 1
+      HI(NW) = 512
+      LO(NW) = 0
+C-- TAIL 0129
+      NW = NW + 1
+      HI(NW) = 460551
+      LO(NW) = 460551
+C-- TAIL 0130
+      NW = NW + 1
+      HI(NW) = 3092528
+      LO(NW) = 3158063
+C-- TAIL 0131
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 2
+C-- TAIL 0132
+      NW = NW + 1
+      HI(NW) = 3158064
+      LO(NW) = 3153952
+C-- TAIL 0133
+      NW = NW + 1
+      HI(NW) = 7864320
+      LO(NW) = 0
+C-- TAIL 0134
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 7
+C-- TAIL 0135
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 5
+C-- TAIL 0136
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 16384
+C-- TAIL 0137
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 15
+C-- TAIL 0138
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 63
+C-- TAIL 0139
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 16762848
+C-- TAIL 0140
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1
+C-- TAIL 0141
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 262143
+C-- TAIL 0142
+      NW = NW + 1
+      HI(NW) = 262143
+      LO(NW) = 0
+C-- TAIL 0143
+      NW = NW + 1
+      HI(NW) = 16515072
+      LO(NW) = 16777215
+C-- TAIL 0144
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 131072
+C-- TAIL 0145
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 8388607
+C-- TAIL 0146
+      NW = NW + 1
+      HI(NW) = 1572864
+      LO(NW) = 0
+C-- TAIL 0147
+      NW = NW + 1
+      HI(NW) = 2097152
+      LO(NW) = 0
+C-- TAIL 0148
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 31
+C-- TAIL 0149
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 7
+C-- TAIL 0150
+      NW = NW + 1
+      HI(NW) = 8552448
+      LO(NW) = 0
+C-- TAIL 0151
+      NW = NW + 1
+      HI(NW) = 13631488
+      LO(NW) = 0
+C-- TAIL 0152
+      NW = NW + 1
+      HI(NW) = 131071
+      LO(NW) = 16777215
+C-- TAIL 0153
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 0
+C-- TAIL 0154
+      NW = NW + 1
+      HI(NW) = 32768
+      LO(NW) = 0
+C-- TAIL 0155
+      NW = NW + 1
+      HI(NW) = 98304
+      LO(NW) = 0
+C-- TAIL 0156
+      NW = NW + 1
+      HI(NW) = 984833
+      LO(NW) = 2
+C-- TAIL 0157
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 9752
+C-- TAIL 0158
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 32753
+C-- TAIL 0159
+      NW = NW + 1
+      HI(NW) = 1054750
+      LO(NW) = 65536
+C-- TAIL 0160
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4
+C-- TAIL 0161
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 2047
+C-- TAIL 0162
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4
+C-- TAIL 0163
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 32767
+C-- TAIL 0164
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1665
+C-- TAIL 0165
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 10541216
+C-- TAIL 0166
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 164079
+C-- TAIL 0167
+      NW = NW + 1
+      HI(NW) = 126979
+      LO(NW) = 131086
+C-- TAIL 0168
+      NW = NW + 1
+      HI(NW) = 15269888
+      LO(NW) = 32768
+C-- TAIL 0169
+      NW = NW + 1
+      HI(NW) = 24576
+      LO(NW) = 131086
+C-- TAIL 0170
+      NW = NW + 1
+      HI(NW) = 15269888
+      LO(NW) = 15761409
+C-- TAIL 0171
+      NW = NW + 1
+      HI(NW) = 131080
+      LO(NW) = 16027647
+C-- TAIL 0172
+      NW = NW + 1
+      HI(NW) = 131081
+      LO(NW) = 139277
+C-- TAIL 0173
+      NW = NW + 1
+      HI(NW) = 15269888
+      LO(NW) = 15728641
+C-- TAIL 0174
+      NW = NW + 1
+      HI(NW) = 15368194
+      LO(NW) = 589824
+C-- TAIL 0175
+      NW = NW + 1
+      HI(NW) = 15732741
+      LO(NW) = 589824
+C-- TAIL 0176
+      NW = NW + 1
+      HI(NW) = 15704638
+      LO(NW) = 16416769
+C-- TAIL 0177
+      NW = NW + 1
+      HI(NW) = 139273
+      LO(NW) = 8978432
+C-- TAIL 0178
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15499264
+C-- TAIL 0179
+      NW = NW + 1
+      HI(NW) = 126982
+      LO(NW) = 4096
+C-- TAIL 0180
+      NW = NW + 1
+      HI(NW) = 135181
+      LO(NW) = 14417920
+C-- TAIL 0181
+      NW = NW + 1
+      HI(NW) = 8004400
+      LO(NW) = 126979
+C-- TAIL 0182
+      NW = NW + 1
+      HI(NW) = 28672
+      LO(NW) = 1048586
+C-- TAIL 0183
+      NW = NW + 1
+      HI(NW) = 16416773
+      LO(NW) = 139271
+C-- TAIL 0184
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- TAIL 0185
+      NW = NW + 1
+      HI(NW) = 8004400
+      LO(NW) = 12198484
+C-- TAIL 0186
+      NW = NW + 1
+      HI(NW) = 11567104
+      LO(NW) = 7647220
+C-- TAIL 0187
+      NW = NW + 1
+      HI(NW) = 8093470
+      LO(NW) = 5275648
+C-- TAIL 0188
+      NW = NW + 1
+      HI(NW) = 11575296
+      LO(NW) = 8093470
+C-- TAIL 0189
+      NW = NW + 1
+      HI(NW) = 12222466
+      LO(NW) = 589824
+C-- TAIL 0190
+      NW = NW + 1
+      HI(NW) = 8159001
+      LO(NW) = 589824
+C-- TAIL 0191
+      NW = NW + 1
+      HI(NW) = 126979
+      LO(NW) = 5931007
+C-- TAIL 0192
+      NW = NW + 1
+      HI(NW) = 11685893
+      LO(NW) = 589824
+C-- TAIL 0193
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0194
+      NW = NW + 1
+      HI(NW) = 131079
+      LO(NW) = 16449531
+C-- TAIL 0195
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- TAIL 0196
+      NW = NW + 1
+      HI(NW) = 11569152
+      LO(NW) = 41995
+C-- TAIL 0197
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 43
+C-- TAIL 0198
+      NW = NW + 1
+      HI(NW) = 10520576
+      LO(NW) = 82955
+C-- TAIL 0199
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 45
+C-- TAIL 0200
+      NW = NW + 1
+      HI(NW) = 11550720
+      LO(NW) = 123403
+C-- TAIL 0201
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 42
+C-- TAIL 0202
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 131595
+C-- TAIL 0203
+      NW = NW + 1
+      HI(NW) = 4277316
+      LO(NW) = 4409390
+C-- TAIL 0204
+      NW = NW + 1
+      HI(NW) = 11028992
+      LO(NW) = 169995
+C-- TAIL 0205
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 47
+C-- TAIL 0206
+      NW = NW + 1
+      HI(NW) = 8913408
+      LO(NW) = 196683
+C-- TAIL 0207
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 10794
+C-- TAIL 0208
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 229387
+C-- TAIL 0209
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 40
+C-- TAIL 0210
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 262155
+C-- TAIL 0211
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 41
+C-- TAIL 0212
+      NW = NW + 1
+      HI(NW) = 4198400
+      LO(NW) = 3014699
+C-- TAIL 0213
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 64
+C-- TAIL 0214
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 262155
+C-- TAIL 0215
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 60
+C-- TAIL 0216
+      NW = NW + 1
+      HI(NW) = 8523776
+      LO(NW) = 295179
+C-- TAIL 0217
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 61
+C-- TAIL 0218
+      NW = NW + 1
+      HI(NW) = 8403456
+      LO(NW) = 2555979
+C-- TAIL 0219
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 12079
+C-- TAIL 0220
+      NW = NW + 1
+      HI(NW) = 8392192
+      LO(NW) = 2588683
+C-- TAIL 0221
+      NW = NW + 1
+      HI(NW) = 19525
+      LO(NW) = 5130067
+C-- TAIL 0222
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 393227
+C-- TAIL 0223
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 44
+C-- TAIL 0224
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 425995
+C-- TAIL 0225
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 58
+C-- TAIL 0226
+      NW = NW + 1
+      HI(NW) = 4198912
+      LO(NW) = 467467
+C-- TAIL 0227
+      NW = NW + 1
+      HI(NW) = 5065038
+      LO(NW) = 5591854
+C-- TAIL 0228
+      NW = NW + 1
+      HI(NW) = 9504256
+      LO(NW) = 495627
+C-- TAIL 0229
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 17745
+C-- TAIL 0230
+      NW = NW + 1
+      HI(NW) = 9504256
+      LO(NW) = 528395
+C-- TAIL 0231
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 20037
+C-- TAIL 0232
+      NW = NW + 1
+      HI(NW) = 8455168
+      LO(NW) = 559115
+C-- TAIL 0233
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 18260
+C-- TAIL 0234
+      NW = NW + 1
+      HI(NW) = 8455168
+      LO(NW) = 591883
+C-- TAIL 0235
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 18245
+C-- TAIL 0236
+      NW = NW + 1
+      HI(NW) = 8455168
+      LO(NW) = 624651
+C-- TAIL 0237
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 19540
+C-- TAIL 0238
+      NW = NW + 1
+      HI(NW) = 8455168
+      LO(NW) = 657419
+C-- TAIL 0239
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 19525
+C-- TAIL 0240
+      NW = NW + 1
+      HI(NW) = 4205056
+      LO(NW) = 688267
+C-- TAIL 0241
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 5132116
+C-- TAIL 0242
+      NW = NW + 1
+      HI(NW) = 9452544
+      LO(NW) = 721035
+C-- TAIL 0243
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4279876
+C-- TAIL 0244
+      NW = NW + 1
+      HI(NW) = 9452544
+      LO(NW) = 753803
+C-- TAIL 0245
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 20306
+C-- TAIL 0246
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 819339
+C-- TAIL 0247
+      NW = NW + 1
+      HI(NW) = 84
+      LO(NW) = 5395781
+C-- TAIL 0248
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 852107
+C-- TAIL 0249
+      NW = NW + 1
+      HI(NW) = 17985
+      LO(NW) = 5002053
+C-- TAIL 0250
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 917515
+C-- TAIL 0251
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4542291
+C-- TAIL 0252
+      NW = NW + 1
+      HI(NW) = 9452544
+      LO(NW) = 786571
+C-- TAIL 0253
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4542290
+C-- TAIL 0254
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 950283
+C-- TAIL 0255
+      NW = NW + 1
+      HI(NW) = 5525280
+      LO(NW) = 2105376
+C-- TAIL 0256
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 983051
+C-- TAIL 0257
+      NW = NW + 1
+      HI(NW) = 4607826
+      LO(NW) = 2105376
+C-- TAIL 0258
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 1015819
+C-- TAIL 0259
+      NW = NW + 1
+      HI(NW) = 5720137
+      LO(NW) = 4998432
+C-- TAIL 0260
+      NW = NW + 1
+      HI(NW) = 8391936
+      LO(NW) = 1049611
+C-- TAIL 0261
+      NW = NW + 1
+      HI(NW) = 83
+      LO(NW) = 5587539
+C-- TAIL 0262
+      NW = NW + 1
+      HI(NW) = 8391936
+      LO(NW) = 1082379
+C-- TAIL 0263
+      NW = NW + 1
+      HI(NW) = 65
+      LO(NW) = 4473938
+C-- TAIL 0264
+      NW = NW + 1
+      HI(NW) = 8399872
+      LO(NW) = 1114123
+C-- TAIL 0265
+      NW = NW + 1
+      HI(NW) = 4409427
+      LO(NW) = 4802382
+C-- TAIL 0266
+      NW = NW + 1
+      HI(NW) = 8530944
+      LO(NW) = 1146891
+C-- TAIL 0267
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 4279372
+C-- TAIL 0268
+      NW = NW + 1
+      HI(NW) = 8530944
+      LO(NW) = 1179659
+C-- TAIL 0269
+      NW = NW + 1
+      HI(NW) = 17217
+      LO(NW) = 5000262
+C-- TAIL 0270
+      NW = NW + 1
+      HI(NW) = 4197888
+      LO(NW) = 1212427
+      RETURN
+      END
+      SUBROUTINE EMT03
+      INTEGER HI(1100), LO(1100), NW
+      COMMON /EMBUF/ HI,LO,NW
+C-- TAIL 0019
+      NW = NW + 1
+      HI(NW) = 22081
+      LO(NW) = 5002565
+C-- TAIL 0020
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 1245195
+C-- TAIL 0021
+      NW = NW + 1
+      HI(NW) = 71
+      LO(NW) = 5198927
+C-- TAIL 0022
+      NW = NW + 1
+      HI(NW) = 8399872
+      LO(NW) = 1277963
+C-- TAIL 0023
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4281171
+C-- TAIL 0024
+      NW = NW + 1
+      HI(NW) = 8523264
+      LO(NW) = 1310795
+C-- TAIL 0025
+      NW = NW + 1
+      HI(NW) = 17223
+      LO(NW) = 5198927
+C-- TAIL 0026
+      NW = NW + 1
+      HI(NW) = 8523264
+      LO(NW) = 1343499
+C-- TAIL 0027
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4409172
+C-- TAIL 0028
+      NW = NW + 1
+      HI(NW) = 4206080
+      LO(NW) = 1376267
+C-- TAIL 0029
+      NW = NW + 1
+      HI(NW) = 73
+      LO(NW) = 4604242
+C-- TAIL 0030
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 5603595
+C-- TAIL 0031
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4343636
+C-- TAIL 0032
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 5636363
+C-- TAIL 0033
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4344916
+C-- TAIL 0034
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 5669131
+C-- TAIL 0035
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 16986
+C-- TAIL 0036
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 5701899
+C-- TAIL 0037
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4344901
+C-- TAIL 0038
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 5734667
+C-- TAIL 0039
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4343621
+C-- TAIL 0040
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 5767435
+C-- TAIL 0041
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4345434
+C-- TAIL 0042
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 1605963
+C-- TAIL 0043
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 16980
+C-- TAIL 0044
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 1638731
+C-- TAIL 0045
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 16966
+C-- TAIL 0046
+      NW = NW + 1
+      HI(NW) = 8527360
+      LO(NW) = 1671531
+C-- TAIL 0047
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 5259602
+C-- TAIL 0048
+      NW = NW + 1
+      HI(NW) = 4206080
+      LO(NW) = 1736715
+C-- TAIL 0049
+      NW = NW + 1
+      HI(NW) = 5391700
+      LO(NW) = 5591630
+C-- TAIL 0050
+      NW = NW + 1
+      HI(NW) = 8527360
+      LO(NW) = 1769835
+C-- TAIL 0051
+      NW = NW + 1
+      HI(NW) = 80
+      LO(NW) = 4280902
+C-- TAIL 0052
+      NW = NW + 1
+      HI(NW) = 8530944
+      LO(NW) = 1802251
+C-- TAIL 0053
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4804428
+C-- TAIL 0054
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 1835019
+C-- TAIL 0055
+      NW = NW + 1
+      HI(NW) = 82
+      LO(NW) = 4538692
+C-- TAIL 0056
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 1867787
+C-- TAIL 0057
+      NW = NW + 1
+      HI(NW) = 22354
+      LO(NW) = 4805701
+C-- TAIL 0058
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 1998859
+C-- TAIL 0059
+      NW = NW + 1
+      HI(NW) = 20562
+      LO(NW) = 4804180
+C-- TAIL 0060
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 2031627
+C-- TAIL 0061
+      NW = NW + 1
+      HI(NW) = 20565
+      LO(NW) = 5129032
+C-- TAIL 0062
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 2064395
+C-- TAIL 0063
+      NW = NW + 1
+      HI(NW) = 21059
+      LO(NW) = 4280900
+C-- TAIL 0064
+      NW = NW + 1
+      HI(NW) = 8531456
+      LO(NW) = 1900555
+C-- TAIL 0065
+      NW = NW + 1
+      HI(NW) = 5391703
+      LO(NW) = 4804164
+C-- TAIL 0066
+      NW = NW + 1
+      HI(NW) = 8531456
+      LO(NW) = 1933323
+C-- TAIL 0067
+      NW = NW + 1
+      HI(NW) = 4342083
+      LO(NW) = 4936528
+C-- TAIL 0068
+      NW = NW + 1
+      HI(NW) = 8531456
+      LO(NW) = 1966091
+C-- TAIL 0069
+      NW = NW + 1
+      HI(NW) = 4542020
+      LO(NW) = 4606284
+C-- TAIL 0070
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 2097163
+C-- TAIL 0071
+      NW = NW + 1
+      HI(NW) = 83
+      LO(NW) = 5525328
+C-- TAIL 0072
+      NW = NW + 1
+      HI(NW) = 8531456
+      LO(NW) = 2130251
+C-- TAIL 0073
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4344143
+C-- TAIL 0074
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 2162699
+C-- TAIL 0075
+      NW = NW + 1
+      HI(NW) = 19527
+      LO(NW) = 5198927
+C-- TAIL 0076
+      NW = NW + 1
+      HI(NW) = 8392192
+      LO(NW) = 2261003
+C-- TAIL 0077
+      NW = NW + 1
+      HI(NW) = 73
+      LO(NW) = 5129042
+C-- TAIL 0078
+      NW = NW + 1
+      HI(NW) = 4197888
+      LO(NW) = 2195467
+C-- TAIL 0079
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4346694
+C-- TAIL 0080
+      NW = NW + 1
+      HI(NW) = 8392192
+      LO(NW) = 2228235
+C-- TAIL 0081
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4543302
+C-- TAIL 0082
+      NW = NW + 1
+      HI(NW) = 4206080
+      LO(NW) = 2293771
+C-- TAIL 0083
+      NW = NW + 1
+      HI(NW) = 66
+      LO(NW) = 4413763
+C-- TAIL 0084
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 2326539
+C-- TAIL 0085
+      NW = NW + 1
+      HI(NW) = 69
+      LO(NW) = 4413763
+C-- TAIL 0086
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 2359371
+C-- TAIL 0087
+      NW = NW + 1
+      HI(NW) = 16963
+      LO(NW) = 5849905
+C-- TAIL 0088
+      NW = NW + 1
+      HI(NW) = 8400384
+      LO(NW) = 2392075
+C-- TAIL 0089
+      NW = NW + 1
+      HI(NW) = 16963
+      LO(NW) = 5849906
+C-- TAIL 0090
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 2424843
+C-- TAIL 0091
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4542019
+C-- TAIL 0092
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 2457611
+C-- TAIL 0093
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4474179
+C-- TAIL 0094
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 2490379
+C-- TAIL 0095
+      NW = NW + 1
+      HI(NW) = 82
+      LO(NW) = 4478790
+C-- TAIL 0096
+      NW = NW + 1
+      HI(NW) = 4337152
+      LO(NW) = 2523147
+C-- TAIL 0097
+      NW = NW + 1
+      HI(NW) = 87
+      LO(NW) = 5396294
+C-- TAIL 0098
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 885259
+C-- TAIL 0099
+      NW = NW + 1
+      HI(NW) = 21333
+      LO(NW) = 4342600
+C-- TAIL 0100
+      NW = NW + 1
+      HI(NW) = 4202496
+      LO(NW) = 346123
+C-- TAIL 0101
+      NW = NW + 1
+      HI(NW) = 3031894
+      LO(NW) = 5392686
+C-- TAIL 0102
+      NW = NW + 1
+      HI(NW) = 4210176
+      LO(NW) = 379403
+C-- TAIL 0103
+      NW = NW + 1
+      HI(NW) = 3031894
+      LO(NW) = 4805166
+C-- TAIL 0104
+      NW = NW + 1
+      HI(NW) = 4207104
+      LO(NW) = 2621451
+C-- TAIL 0105
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5654852
+C-- TAIL 0106
+      NW = NW + 1
+      HI(NW) = 8401920
+      LO(NW) = 2654219
+C-- TAIL 0107
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5654851
+C-- TAIL 0108
+      NW = NW + 1
+      HI(NW) = 4207104
+      LO(NW) = 2686987
+C-- TAIL 0109
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5657156
+C-- TAIL 0110
+      NW = NW + 1
+      HI(NW) = 8401920
+      LO(NW) = 2719755
+C-- TAIL 0111
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5657155
+C-- TAIL 0112
+      NW = NW + 1
+      HI(NW) = 4202496
+      LO(NW) = 2752523
+C-- TAIL 0113
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5653577
+C-- TAIL 0114
+      NW = NW + 1
+      HI(NW) = 4210176
+      LO(NW) = 2785291
+C-- TAIL 0115
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5653586
+C-- TAIL 0116
+      NW = NW + 1
+      HI(NW) = 8401920
+      LO(NW) = 2818059
+C-- TAIL 0117
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5653571
+C-- TAIL 0118
+      NW = NW + 1
+      HI(NW) = 4202496
+      LO(NW) = 2850827
+C-- TAIL 0119
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5653321
+C-- TAIL 0120
+      NW = NW + 1
+      HI(NW) = 4210176
+      LO(NW) = 2883595
+C-- TAIL 0121
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5653330
+C-- TAIL 0122
+      NW = NW + 1
+      HI(NW) = 4207104
+      LO(NW) = 2916363
+C-- TAIL 0123
+      NW = NW + 1
+      HI(NW) = 67
+      LO(NW) = 5653316
+C-- TAIL 0124
+      NW = NW + 1
+      HI(NW) = 8530944
+      LO(NW) = 2949131
+C-- TAIL 0125
+      NW = NW + 1
+      HI(NW) = 66
+      LO(NW) = 5129299
+C-- TAIL 0126
+      NW = NW + 1
+      HI(NW) = 8530944
+      LO(NW) = 2981899
+C-- TAIL 0127
+      NW = NW + 1
+      HI(NW) = 17224
+      LO(NW) = 4539211
+C-- TAIL 0128
+      NW = NW + 1
+      HI(NW) = 4330496
+      LO(NW) = 3047723
+C-- TAIL 0129
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 5068354
+C-- TAIL 0130
+      NW = NW + 1
+      HI(NW) = 4331008
+      LO(NW) = 3080491
+C-- TAIL 0131
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 5068378
+C-- TAIL 0132
+      NW = NW + 1
+      HI(NW) = 8526848
+      LO(NW) = 3113259
+C-- TAIL 0133
+      NW = NW + 1
+      HI(NW) = 66
+      LO(NW) = 5132116
+C-- TAIL 0134
+      NW = NW + 1
+      HI(NW) = 8526848
+      LO(NW) = 3146027
+C-- TAIL 0135
+      NW = NW + 1
+      HI(NW) = 66
+      LO(NW) = 4279876
+C-- TAIL 0136
+      NW = NW + 1
+      HI(NW) = 8526848
+      LO(NW) = 3178795
+C-- TAIL 0137
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4345682
+C-- TAIL 0138
+      NW = NW + 1
+      HI(NW) = 8526848
+      LO(NW) = 3211563
+C-- TAIL 0139
+      NW = NW + 1
+      HI(NW) = 66
+      LO(NW) = 4542290
+C-- TAIL 0140
+      NW = NW + 1
+      HI(NW) = 8526848
+      LO(NW) = 3244331
+C-- TAIL 0141
+      NW = NW + 1
+      HI(NW) = 16974
+      LO(NW) = 4279876
+C-- TAIL 0142
+      NW = NW + 1
+      HI(NW) = 8526848
+      LO(NW) = 3277099
+C-- TAIL 0143
+      NW = NW + 1
+      HI(NW) = 66
+      LO(NW) = 5132114
+C-- TAIL 0144
+      NW = NW + 1
+      HI(NW) = 8526848
+      LO(NW) = 3309867
+C-- TAIL 0145
+      NW = NW + 1
+      HI(NW) = 16974
+      LO(NW) = 5787474
+C-- TAIL 0146
+      NW = NW + 1
+      HI(NW) = 8527360
+      LO(NW) = 3342699
+C-- TAIL 0147
+      NW = NW + 1
+      HI(NW) = 86
+      LO(NW) = 5259602
+C-- TAIL 0148
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 229387
+C-- TAIL 0149
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 37
+C-- TAIL 0150
+      NW = NW + 1
+      HI(NW) = 8527360
+      LO(NW) = 3375467
+C-- TAIL 0151
+      NW = NW + 1
+      HI(NW) = 22096
+      LO(NW) = 4280902
+C-- TAIL 0152
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 917515
+C-- TAIL 0153
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 4935536
+C-- TAIL 0154
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 196616
+C-- TAIL 0155
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 5
+C-- TAIL 0156
+      NW = NW + 1
+      HI(NW) = 5515858
+      LO(NW) = 5262368
+C-- TAIL 0157
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 5
+C-- TAIL 0158
+      NW = NW + 1
+      HI(NW) = 5526058
+      LO(NW) = 5197344
+C-- TAIL 0159
+      NW = NW + 1
+      HI(NW) = 0
+      LO(NW) = 5
+C-- TAIL 0160
+      NW = NW + 1
+      HI(NW) = 5526058
+      LO(NW) = 5195334
+C-- TAIL 0161
+      NW = NW + 1
+      HI(NW) = 13247939
+      LO(NW) = 126983
+C-- TAIL 0162
+      NW = NW + 1
+      HI(NW) = 13401461
+      LO(NW) = 589824
+C-- TAIL 0163
+      NW = NW + 1
+      HI(NW) = 8388608
+      LO(NW) = 721525
+C-- TAIL 0164
+      NW = NW + 1
+      HI(NW) = 2105376
+      LO(NW) = 2105376
+C-- TAIL 0165
+      NW = NW + 1
+      HI(NW) = 135169
+      LO(NW) = 1867849
+C-- TAIL 0166
+      NW = NW + 1
+      HI(NW) = 15728669
+      LO(NW) = 16416799
+C-- TAIL 0167
+      NW = NW + 1
+      HI(NW) = 139276
+      LO(NW) = 143374
+C-- TAIL 0168
+      NW = NW + 1
+      HI(NW) = 15728640
+      LO(NW) = 13247939
+C-- TAIL 0169
+      NW = NW + 1
+      HI(NW) = 16027623
+      LO(NW) = 13368703
+C-- TAIL 0170
+      NW = NW + 1
+      HI(NW) = 139279
+      LO(NW) = 12599296
+C-- TAIL 0171
+      NW = NW + 1
+      HI(NW) = 12582983
+      LO(NW) = 139264
+C-- TAIL 0172
+      NW = NW + 1
+      HI(NW) = 12582989
+      LO(NW) = 12582988
+C-- TAIL 0173
+      NW = NW + 1
+      HI(NW) = 12615681
+      LO(NW) = 12582991
+C-- TAIL 0174
+      NW = NW + 1
+      HI(NW) = 13401479
+      LO(NW) = 589824
+C-- TAIL 0175
+      NW = NW + 1
+      HI(NW) = 16027644
+      LO(NW) = 12582983
+C-- TAIL 0176
+      NW = NW + 1
+      HI(NW) = 16027623
+      LO(NW) = 122985
+C-- TAIL 0177
+      NW = NW + 1
+      HI(NW) = 12603394
+      LO(NW) = 12582988
+C-- TAIL 0178
+      NW = NW + 1
+      HI(NW) = 16027623
+      LO(NW) = 122978
+C-- TAIL 0179
+      NW = NW + 1
+      HI(NW) = 12619779
+      LO(NW) = 12603394
+C-- TAIL 0180
+      NW = NW + 1
+      HI(NW) = 12582989
+      LO(NW) = 16027623
+C-- TAIL 0181
+      NW = NW + 1
+      HI(NW) = 122962
+      LO(NW) = 12619780
+C-- TAIL 0182
+      NW = NW + 1
+      HI(NW) = 12582991
+      LO(NW) = 589824
+C-- TAIL 0183
+      NW = NW + 1
+      HI(NW) = 16027644
+      LO(NW) = 12623877
+C-- TAIL 0184
+      NW = NW + 1
+      HI(NW) = 13368716
+      LO(NW) = 15508869
+C-- TAIL 0185
+      NW = NW + 1
+      HI(NW) = 139264
+      LO(NW) = 12848500
+C-- TAIL 0186
+      NW = NW + 1
+      HI(NW) = 12848499
+      LO(NW) = 12848498
+C-- TAIL 0187
+      NW = NW + 1
+      HI(NW) = 13401535
+      LO(NW) = 589824
+C-- TAIL 0188
+      NW = NW + 1
+      HI(NW) = 12615757
+      LO(NW) = 12603398
+C-- TAIL 0189
+      NW = NW + 1
+      HI(NW) = 13335952
+      LO(NW) = 12615757
+C-- TAIL 0190
+      NW = NW + 1
+      HI(NW) = 12599303
+      LO(NW) = 12582990
+C-- TAIL 0191
+      NW = NW + 1
+      HI(NW) = 13401490
+      LO(NW) = 589824
+C-- TAIL 0192
+      NW = NW + 1
+      HI(NW) = 12615687
+      LO(NW) = 12603469
+C-- TAIL 0193
+      NW = NW + 1
+      HI(NW) = 12582990
+      LO(NW) = 589824
+C-- TAIL 0194
+      NW = NW + 1
+      HI(NW) = 12615759
+      LO(NW) = 13368724
+C-- TAIL 0195
+      NW = NW + 1
+      HI(NW) = 12615681
+      LO(NW) = 12582991
+C-- TAIL 0196
+      NW = NW + 1
+      HI(NW) = 12615756
+      LO(NW) = 12607494
+C-- TAIL 0197
+      NW = NW + 1
+      HI(NW) = 13368727
+      LO(NW) = 12615687
+C-- TAIL 0198
+      NW = NW + 1
+      HI(NW) = 13401496
+      LO(NW) = 589824
+C-- TAIL 0199
+      NW = NW + 1
+      HI(NW) = 12615758
+      LO(NW) = 589824
+C-- TAIL 0200
+      NW = NW + 1
+      HI(NW) = 12599372
+      LO(NW) = 15728643
+C-- TAIL 0201
+      NW = NW + 1
+      HI(NW) = 12615758
+      LO(NW) = 12636168
+C-- TAIL 0202
+      NW = NW + 1
+      HI(NW) = 126976
+      LO(NW) = 16384
+C-- TAIL 0203
+      NW = NW + 1
+      HI(NW) = 15728642
+      LO(NW) = 15761411
+C-- TAIL 0204
+      NW = NW + 1
+      HI(NW) = 12636168
+      LO(NW) = 15785986
+C-- TAIL 0205
+      NW = NW + 1
+      HI(NW) = 126979
+      LO(NW) = 12599304
+C-- TAIL 0206
+      NW = NW + 1
+      HI(NW) = 12619785
+      LO(NW) = 12582992
+C-- TAIL 0207
+      NW = NW + 1
+      HI(NW) = 16027623
+      LO(NW) = 12619786
+C-- TAIL 0208
+      NW = NW + 1
+      HI(NW) = 12582993
+      LO(NW) = 13368739
+C-- TAIL 0209
+      NW = NW + 1
+      HI(NW) = 12615681
+      LO(NW) = 12582993
+C-- TAIL 0210
+      NW = NW + 1
+      HI(NW) = 13401508
+      LO(NW) = 589824
+C-- TAIL 0211
+      NW = NW + 1
+      HI(NW) = 12615681
+      LO(NW) = 12582992
+C-- TAIL 0212
+      NW = NW + 1
+      HI(NW) = 16027621
+      LO(NW) = 13205481
+C-- TAIL 0213
+      NW = NW + 1
+      HI(NW) = 40960
+      LO(NW) = 13368743
+C-- TAIL 0214
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15508869
+C-- TAIL 0215
+      NW = NW + 1
+      HI(NW) = 16027621
+      LO(NW) = 13335981
+C-- TAIL 0216
+      NW = NW + 1
+      HI(NW) = 12848498
+      LO(NW) = 139264
+C-- TAIL 0217
+      NW = NW + 1
+      HI(NW) = 12848500
+      LO(NW) = 12848499
+C-- TAIL 0218
+      NW = NW + 1
+      HI(NW) = 139264
+      LO(NW) = 15508848
+C-- TAIL 0219
+      NW = NW + 1
+      HI(NW) = 12615681
+      LO(NW) = 12848495
+C-- TAIL 0220
+      NW = NW + 1
+      HI(NW) = 13401517
+      LO(NW) = 589824
+C-- TAIL 0221
+      NW = NW + 1
+      HI(NW) = 16027622
+      LO(NW) = 12599297
+C-- TAIL 0222
+      NW = NW + 1
+      HI(NW) = 12582981
+      LO(NW) = 139264
+C-- TAIL 0223
+      NW = NW + 1
+      HI(NW) = 12582996
+      LO(NW) = 12582980
+C-- TAIL 0224
+      NW = NW + 1
+      HI(NW) = 16027623
+      LO(NW) = 122952
+C-- TAIL 0225
+      NW = NW + 1
+      HI(NW) = 12619780
+      LO(NW) = 12582982
+C-- TAIL 0226
+      NW = NW + 1
+      HI(NW) = 12881263
+      LO(NW) = 13368757
+C-- TAIL 0227
+      NW = NW + 1
+      HI(NW) = 12615681
+      LO(NW) = 12848495
+C-- TAIL 0228
+      NW = NW + 1
+      HI(NW) = 12848499
+      LO(NW) = 589824
+C-- TAIL 0229
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15508358
+C-- TAIL 0230
+      NW = NW + 1
+      HI(NW) = 12881268
+      LO(NW) = 13368760
+C-- TAIL 0231
+      NW = NW + 1
+      HI(NW) = 12615691
+      LO(NW) = 12582980
+C-- TAIL 0232
+      NW = NW + 1
+      HI(NW) = 16027624
+      LO(NW) = 13368762
+C-- TAIL 0233
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15508869
+C-- TAIL 0234
+      NW = NW + 1
+      HI(NW) = 16027624
+      LO(NW) = 13368765
+C-- TAIL 0235
+      NW = NW + 1
+      HI(NW) = 139264
+      LO(NW) = 12848500
+C-- TAIL 0236
+      NW = NW + 1
+      HI(NW) = 12848499
+      LO(NW) = 12848498
+C-- TAIL 0237
+      NW = NW + 1
+      HI(NW) = 12881263
+      LO(NW) = 13368767
+C-- TAIL 0238
+      NW = NW + 1
+      HI(NW) = 12615681
+      LO(NW) = 12848499
+C-- TAIL 0239
+      NW = NW + 1
+      HI(NW) = 15761408
+      LO(NW) = 135182
+C-- TAIL 0240
+      NW = NW + 1
+      HI(NW) = 131084
+      LO(NW) = 16449505
+C-- TAIL 0241
+      NW = NW + 1
+      HI(NW) = 15466496
+      LO(NW) = 589824
+C-- TAIL 0242
+      NW = NW + 1
+      HI(NW) = 65545
+      LO(NW) = 1048712
+C-- TAIL 0243
+      NW = NW + 1
+      HI(NW) = 16416782
+      LO(NW) = 139265
+C-- TAIL 0244
+      NW = NW + 1
+      HI(NW) = 143374
+      LO(NW) = 15728640
+C-- TAIL 0245
+      NW = NW + 1
+      HI(NW) = 12615681
+      LO(NW) = 13336139
+C-- TAIL 0246
+      NW = NW + 1
+      HI(NW) = 139264
+      LO(NW) = 15994876
+C-- TAIL 0247
+      NW = NW + 1
+      HI(NW) = 589824
+      LO(NW) = 15508829
+C-- TAIL 0248
+      NW = NW + 1
+      HI(NW) = 15994869
+      LO(NW) = 12615752
+C-- TAIL 0249
+      NW = NW + 1
+      HI(NW) = 12582977
+      LO(NW) = 12623884
+C-- TAIL 0250
+      NW = NW + 1
+      HI(NW) = 13336026
+      LO(NW) = 12623884
+C-- TAIL 0251
+      NW = NW + 1
+      HI(NW) = 12623885
+      LO(NW) = 13336028
+C-- TAIL 0252
+      NW = NW + 1
+      HI(NW) = 12623885
+      LO(NW) = 12623886
+C-- TAIL 0253
+      NW = NW + 1
+      HI(NW) = 13336040
+      LO(NW) = 12623886
+C-- TAIL 0254
+      NW = NW + 1
+      HI(NW) = 12623887
+      LO(NW) = 13336041
+C-- TAIL 0255
+      NW = NW + 1
+      HI(NW) = 12623887
+      LO(NW) = 12623888
+C-- TAIL 0256
+      NW = NW + 1
+      HI(NW) = 13336042
+      LO(NW) = 12623888
+C-- TAIL 0257
+      NW = NW + 1
+      HI(NW) = 12623889
+      LO(NW) = 13336043
+C-- TAIL 0258
+      NW = NW + 1
+      HI(NW) = 12623889
+      LO(NW) = 12623890
+C-- TAIL 0259
+      NW = NW + 1
+      HI(NW) = 13336045
+      LO(NW) = 12623890
+C-- TAIL 0260
+      NW = NW + 1
+      HI(NW) = 12623891
+      LO(NW) = 13336115
+C-- TAIL 0261
+      NW = NW + 1
+      HI(NW) = 12623891
+      LO(NW) = 12623892
+C-- TAIL 0262
+      NW = NW + 1
+      HI(NW) = 13336136
+      LO(NW) = 12623892
+C-- TAIL 0263
+      NW = NW + 1
+      HI(NW) = 12623893
+      LO(NW) = 13336132
+C-- TAIL 0264
+      NW = NW + 1
+      HI(NW) = 12623893
+      LO(NW) = 12623894
+C-- TAIL 0265
+      NW = NW + 1
+      HI(NW) = 13336138
+      LO(NW) = 589824
+C-- TAIL 0266
+      NW = NW + 1
+      HI(NW) = 139264
+      LO(NW) = 15994877
+C-- TAIL 0267
+      NW = NW + 1
+      HI(NW) = 12615703
+      LO(NW) = 13401570
+      RETURN
+      END
+      SUBROUTINE DUMP
+      INTEGER HI(1100), LO(1100), NW
+      COMMON /EMBUF/ HI,LO,NW
+      INTEGER OD(8)
+      COMMON /OCTBF/ OD
+      INTEGER I
+      PRINT 91, NW
+   91 FORMAT(1X,'O412DNW ',I4)
+      DO 10 I = 1, NW
+         CALL OCT8(HI(I))
+         PRINT 100, I, OD(8),OD(7),OD(6),OD(5),OD(4),OD(3),OD(2),OD(1)
+         CALL OCT8(LO(I))
+         PRINT 101, I, OD(8),OD(7),OD(6),OD(5),OD(4),OD(3),OD(2),OD(1)
+         PRINT 102, I, HI(I), LO(I)
+   10 CONTINUE
+  100 FORMAT(1X,'O412W ',I4,' HI ',8I1)
+  101 FORMAT(1X,'O412W ',I4,' LO ',8I1)
+  102 FORMAT(1X,'O412D ',I4,2I10)
+      RETURN
+      END
+      SUBROUTINE OCT8(X)
+      INTEGER X, OD(8), Q, I
+      COMMON /OCTBF/ OD
+      Q = X
+      DO 30 I = 1, 8
+         OD(I) = Q - (Q/8)*8
+         Q = Q/8
+   30 CONTINUE
+      RETURN
+      END
