@@ -1,0 +1,228 @@
+# Отчёт: MONSYS и FOREX 4.13 в SIMH БЭСМ-6
+
+Дата: 21.11.2026. Все эксперименты выполнены на КОПИЯХ в
+`/var/tmp/b1-f77-fix/413-monsys-simh/`. Репозиторий
+`/home/azizz/Yandex.Disk/re-forex` и `/home/azizz/Yandex.Disk/simh` НЕ изменялись.
+
+Итог: **DONE (конвертер работает); полная загрузка MONSYS заблокирована**
+(точная причина в §6).
+
+---
+
+## 1. Форматы: ФАКТЫ
+
+| # | Факт | Доказательство |
+|---|---|---|
+| 1 | Плотный образ ленты: 6 байт/слово, big-endian, 1024 слов/зона | `besm6.net/src/Besm6.Runtime/Storage/TapeImage.cs:9-11,43,53`; `dubna/disk.cpp:embedded_to_memory` |
+| 2 | Образ SIMH: 8 байт/слово, **little-endian `uint64`**, биты 0..47 = слово, биты 48..49 = тег (`PARITY_INSN=1`, `PARITY_NUMBER=2`) | `simh/BESM6/besm6_defs.h:49-57,53,108-113`; `besm6_disk.c:568,574` (`fseek(ZONE_SIZE*zone*8)`, `sim_fread(...,8,1024,...)`) |
+| 3 | Зона = 8 служебных слов + 1024 слова данных = 1032 слова = 8256 байт | `besm6_defs.h:53`; `dubna/besm6_arch.h:50`; размер `MD/2095` = 8 256 000 = 1000×8256 |
+| 4 | Логическая зона ленты N отображается в физическую зону диска N+4 (4 пред-зоны) | `dubna/besm6_arch.h:55` (`DISK_ZONE_OFFSET=4`); `dubna/disk.cpp:simh_to_memory` (`zone += DISK_ZONE_OFFSET`) |
+| 5 | В эталонном теговом образе `mons9.d9` все 294 912 слова данных имеют тег **1** (INSN), а 8 служебных слов зоны — тег 2 (NUMBER) | `/home/azizz/Yandex.Disk/besm6-new/DUBNA/BUILD/data/mons9.d9`, 2 377 728 байт = 288×1032×8; проверка Python: `Counter({1: 294912})` |
+| 6 | Готовый эталонный теговый образ MONSYS уже существует в дереве besm6-new | `DUBNA/BUILD/data/mons9.d9`; скрипт сборки `DUBNA/BUILD/data/mkdisk9.sh`: `cat cat.d9 mons9.d9 tail.d9...` |
+| 7 | Точная последовательность загрузки MONSYS известна | `besm6.net/src/Besm6.Runtime/Loading/MonsysBootstrapper.cs:34-52`; `dubna/machine.cpp:930-975` (`boot_ms_dubna`): монтировать ленту 9 на устройство 030 (24dec), `map_drum_to_disk(021,030)`, слова 02010..02023 и 03000..03010, старт 02010 |
+
+### 1.1. Декодирование управляющих слов MONSYS (ГИПОТЕЗА → подтверждено трассой)
+
+`union E70_Info` из `dubna/extracode.h:30-95`: tract = биты 0..4, sector = 6..7,
+unit = 12..17, paragraph = 24..25, page = 30..34, raw_sect = 35, phys_io = 38,
+read_op = 39, sect_io = 47. Примеры из `MonsysBootstrapper.cs:47-55`:
+
+```
+4014000000210201 -> unit=021, phys=1, read=1, sect=1, tract=1, sector=2  (инициатор монитора)
+0014000000210007 -> unit=021, phys=1, read=1, tract=7                    (каталоги)
+0014000000210010 -> unit=021, phys=1, read=1, tract=10                   (библиотеки)
+4014250300210101 -> unit=021, phys=1, read=1, page=25, sect=1            (статический загрузчик -> 53400)
+4014370000210301 -> unit=021, phys=1, read=1, page=37, sect=1            (динамический загрузчик -> 76000)
+```
+
+В dubna `e70()` (`extracode.cpp:127-190`) при `phys_io=1` и `unit >= mapped_drum(021)`
+перенаправляет обмен на диск 030: `zone = tract + (unit-021)*040`, затем
+`disk_io()` добавляет `DISK_ZONE_OFFSET=4`.
+
+---
+
+## 2. Конвертер (DONE)
+
+Файл: `/var/tmp/b1-f77-fix/413-monsys-simh/scripts/convert_dense_to_simh.py`.
+
+Алгоритм:
+1. Читаем `monsys.9` как 294 912 слов по 6 байт big-endian.
+2. Создаём образ на 1000 зон × 1032 слова × 8 байт = 8 256 000 байт.
+3. Для зоны i (0..287) пишем физическую зону i+4:
+   - 8 служебных слов берём из `mons9.d9` (заголовок зоны с номером, магией
+     `01370707` и контрольной суммой, тег 2);
+   - 1024 слова данных кодируем как `struct.pack('<Q', (1<<48) | word)`.
+
+Команда:
+
+```sh
+python3 /var/tmp/b1-f77-fix/413-monsys-simh/scripts/convert_dense_to_simh.py \
+  --dense /var/tmp/b1-f77-fix/413-monsys-simh/input/monsys.9 \
+  --out   /var/tmp/b1-f77-fix/413-monsys-simh/work/monsys2209.img \
+  --headers /var/tmp/b1-f77-fix/413-monsys-simh/input/mons9.d9
+```
+
+Результат: `wrote ... 8256000 bytes, 1000 zones, 288 tape zones at physical zones 4..291`.
+
+**Проверка 1 (побайтовая):** все 288 зон данных (`+64` байт от начала зоны,
+8192 байт) совпадают с эталоном `mons9.d9` — `data zones differing: 0`.
+
+**Проверка 2 (монтирование):** в `work/boot_monsys.ini` строка
+`attach -e md0 /var/tmp/.../work/monsys2209.img` выполняется SIMH без ошибок
+(оригинальный `BIN/besm6`, сборка `39ba4c9a+uncommitted-changes`).
+
+**Проверка 3 (чтение слова через SIMH):** с патченным копийным бинарником
+(§5) первый же `*70` прочитал с диска зону 1, сектор 2 в память 0..255;
+в `logs/console.txt`:
+
+```
+e70 cw=4014000000210201 unit=21 zone12=201 page=0 phys=1 read=1 sect=1 seek=0
+e70 io read file zone 1 sector 2 -> mem 00000 (256 words)
+```
+
+Содержимое физической зоны 5, сектор 2 в `monsys2209.img` — таблица имён
+резидентов (`5557565164576212` = «MONITOR*» в TEXT-кодировке и т.д.), то есть
+-read идёт по правильному адресу и с правильным тегом 1.
+
+---
+
+## 3. Ассемблирование bootstrap-слов
+
+- В репозитории `/home/azizz/Yandex.Disk/re-forex` **нет** ассемблера МАДЛЕН,
+  только дизассемблеры (`tools/dtran_wrap.py` и др.).
+- Годный ассемблер: `besm6-new/dubna/assembler.cpp` (`besm6_asm()`), зависит
+  только от `besm6_arch.h`. Скомпилирован помощник
+  `scripts/asmword.cpp` → `scripts/asmword`. Все 12 слов 02010..02023
+  собраны им (совпадают с исходниками `MonsysBootstrapper.cs`).
+- Альтернатива: `besm6.net/src/Besm6.Assembler` (C#), но `dotnet` в системе нет.
+
+Слова 03000..03010 подтверждены как точный octal из `dubna/machine.cpp:954-962`
+(проверка Python: все 9 десятичных констант C# совпадают с octal).
+
+### 3.1. Формат `.b6` для SIMH (ФАКТЫ, `besm6_sys.c:565-634,792-850`)
+
+- `b <oct>` — адрес (а не `v`; `v` отвергается);
+- `k <mnemonic>, <mnemonic>` — инструкция (тег 1);
+- `c <16 oct digits>` — данные (тег 2);
+- `p <oct>` — PC;
+- `get_alnum()` (`besm6_sys.c:285-294`) **не принимает `*`**, поэтому MADLEN-ное
+  `*70` надо писать как БЭМШ-ное `э70` (иначе `Invalid input line` + `Format error`).
+
+Готовый файл: `work/monsys_boot.b6`. Проверка загрузки:
+
+```sh
+cd /var/tmp/b1-f77-fix/413-monsys-simh/work
+/home/azizz/Yandex.Disk/simh/BIN/besm6 test_load.ini
+# 2010: 0647 7773 0070 3002
+# 2023: 7700 0000 0220 0000
+# 3000: 5156 6065 6443 4154
+```
+
+---
+
+## 4. Попытка загрузки в симховском BESM-6
+
+`work/boot_monsys.ini`: md0 = конвертированный образ, drums 0/1 = нулевые
+образы по 2 113 536 байт, prn0 = файл, `attach tty1 console`, `load ...`, `g`.
+
+### 4.1. С оригинальным `BIN/besm6` — БЛОКИРОВКА
+
+```
+--- (100570) instruction parity error
+--- (100500) instruction parity error   (далее миллионы повторов)
+```
+
+Причина (ФАКТ): `*70` в SIMH — экстракод, который передаёт управление по
+вектору `0500+070 = 0570` (`besm6_cpu.c:1499-1537`), а ячейки 0500..0577 при
+старте нулевые (тег 0) → `mmu_fetch()` (`besm6_mmu.c:691`) вызывает
+`STOP_INSN_CHECK`. В dubna `*70` обрабатывается хост-кодом
+`Processor::e70()` и guest-вектор не нужен. В SIMH нет ни нативного e70, ни
+`map_drum_to_disk()` (поиск по `BESM6/*.c` дал 0 совпадений).
+
+### 4.2. С патчем на КОПИИ SIMH — частичный успех
+
+Патч: `work/besm6_cpu.monsys.patch` (113 строк), применяется к копии
+`besm6_cpu.c`; добавляет нативный e70 по образцу `dubna/extracode.cpp:127-190`
+и возврат из экстракода. Сборка (все остальные файлы берутся из оригинального
+SIMH, только `besm6_cpu.c` из копии):
+
+```sh
+gcc -std=gnu99 -O2 -I /home/azizz/Yandex.Disk/simh \
+    -I /home/azizz/Yandex.Disk/simh/BESM6 -I .../simh_src \
+    -D_GNU_SOURCE -DUSE_INT64 -DUSE_READER_THREAD -DSIM_ASYNCH_IO \
+    -DHAVE_SEMAPHORE -DHAVE_SYS_IOCTL -DHAVE_LINUX_CDROM \
+    -DSIM_HAVE_DLOPEN=so -DHAVE_UTIME -DHAVE_GLOB -DHAVE_SHM_OPEN \
+    .../simh_src/besm6_cpu.c <остальные besm6_*.c и sim_*.c> \
+    -o work/besm6_monsys -lm -lrt -lpthread -ldl
+```
+
+Результат (`logs/console.txt`): загрузка прошла значительно дальше — прочитаны
+инициатор, каталоги, библиотеки, /MONTRAN, статический загрузчик в 53400,
+динамический загрузчик в 76000:
+
+```
+e70 io read file zone 1 sector 2 -> mem 00000 (256 words)
+e70 io read file zone 7 sector 0 -> mem 00000 (1024 words)
+e70 io read file zone 10 sector 0 -> mem 00000 (1024 words)
+e70 io read file zone 36 sector 0 -> mem 76000 (1024 words)
+```
+
+После этого процессор уходит в цикл (~97% CPU), но **баннера MONSYS и
+приглашения нет**, команды `*NAME WHATIS` / `*CALL WHATIS`, посланные в tty1,
+не обрабатываются; `prn0` пуст.
+
+---
+
+## 5. Почему не удалась полная загрузка (БЛОКИРОВКА — точная причина)
+
+1. Нативный e70 в нашей копии — упрощённый: он **пропускает все WRITE**
+   (например `cw=0000000000200000`, `cw=0000000000210000` — записи на барабаны
+   при инициализации), грубо сводит барабаны 020.. к md0 и не эмулирует
+   статус/GRP/прерывания КМД/МБ. Для честного порта нужен полный
+   `dubna/extracode.cpp:127-190` + `dubna/machine.cpp:disk_io()` с
+   `DISK_ZONE_OFFSET` и корректными `disk_ctl()`/`drum()` SIMH.
+2. SIMH имеет только 2 барабана (`besm6_drum.c:66-68`), а MONSYS работает с
+   барабаном 021 через физический обмен; отображения drum→disk в SIMH нет.
+3. Экстракоды MONSYS (`e57/e64/e70/e75`) в SIMH также идут через пустые
+   вектора 0550..0577; один e70 недостаточен для прикладной задачи.
+
+Это **не** проблема конвертера: конвертер побайтово совпадает с эталонным
+`mons9.d9`, а чтение с диска через SIMH подтверждено логами (§2).
+
+---
+
+## 6. Что осталось сделатьглавному агенту (если нужна рабочая MONSYS)
+
+1. Перенести в SIMH (в отдельной копии/форке) полный механизм `e70`/`disk_io`
+   из `besm6-new/dubna/extracode.cpp` и `machine.cpp`, включая
+   `map_drum_to_disk(021,030)` и запись (не только чтение).
+2. Либо загрузить резидент MONSYS (00423..00777) и его вектора 0500..0577
+   в память до старта, чтобы `*70` обрабатывался гостевым кодом.
+3. После появления приглашения подать задание из
+   `re-forex/reference/expect_whatis_monsys.txt` (`*NAME WHATIS`, `*TAPE:9/******,31`,
+   `*LIBRARY:23`, `*CALL WHATIS`) или `*forex` Hello и сверить баннер 4.13.
+
+---
+
+## 7. Файлы-артефакты
+
+```
+/var/tmp/b1-f77-fix/413-monsys-simh/
+  REPORT.md                         этот отчёт
+  input/monsys.9                    копия плотного образа (1 769 472 байт)
+  input/mons9.d9                    копия эталонного тегового образа (2 377 728 байт)
+  scripts/convert_dense_to_simh.py  конвертер 6 -> 8 байт
+  scripts/asmword.cpp               ассемблерный помощник (dubna besm6_asm)
+  scripts/asmword                   готовый бинарник
+  work/monsys2209.img               сконвертированный диск SIMH (8 256 000 байт)
+  work/monsys_boot.b6               bootstrap-слова 02010..02023, 03000..03010
+  work/boot_monsys.ini              сценарий загрузки
+  work/besm6_monsys                 патченный копийный симулятор
+  work/besm6_cpu.monsys.patch       diff патча e70
+  logs/console.txt                  лог e70/загрузки
+  logs/simh_stdout*.txt             лог консоли SIMH
+```
+
+DONE (конвертер проверен: побайтовая сверка с эталоном + mount + read через SIMH).
+Полная загрузка MONSYS: BLOCKED (нет нативного e70 и drum→disk mapping в SIMH;
+упрощённый патч доходит до загрузчика 76000, но до приглашения не доходит).
