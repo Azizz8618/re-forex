@@ -221,8 +221,8 @@ def assemble_source(name: str, path: Path, first: int, last: int,
     sys.path.insert(0, str(SIPROD_LIB.parent))
     import siprod_lib  # noqa: WPS433 (optional dependency, checked below)
 
-    tmp = Path(tempfile.mkdtemp(prefix="forex-perso-asm-",
-                                dir="/tmp/.private/azizz"))
+    # /tmp here is a small tmpfs (7.8G, often full); disk copies are ~31 MB each.
+    tmp = Path(tempfile.mkdtemp(prefix="forex-perso-asm-", dir="/var/tmp"))
     try:
         shutil.copy(ETALON, tmp / "2348")
         if source_file is not None:
