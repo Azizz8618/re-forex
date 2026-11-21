@@ -1,0 +1,275 @@
+# Отчёт: подключение `librar.12` / `monsys.9` к our simh BESM6 и вызов FOREX 4.13
+
+Дата: 21.11.2026. Работа велась только на КОПИЯХ в
+`/var/tmp/b1-f77-fix/lib12-mount/`. Репозитории не изменялись.
+
+## Итог
+
+**BLOCKED.** Живую FOREX 4.13 нельзя получить ни через `attach mgNN`, ни через
+`attach mdNN`, ни через директивы `*LIBRA:` / `*TRANS:` / `*forex` в нашем
+simh/DISPAK. Причины зафиксированы ниже с консольными протоколами и ссылками.
+
+---
+
+## 1. Формат образов: «лента = диск» верно только для `disp`, но не для simh
+
+### 1.1. Подтверждение главного агента (.published fact)
+
+- `besm6.net/src/Besm6.Runtime/Storage/TapeImage.cs:9-11`:
+  «Образ ленты/диска в SIMH-формате. Каждые 6 байт — одно 48-битное слово
+  (big-endian)», `NumZones = data.Length/1024/6`.
+- `disp` (host-side C): `disp/dispak/disk.h:28` — `#define ZONE_SIZE 6144`
+  (1024 слова × 6 байт); `disp/dispak/disk.c:388` читает зону как `read(...,ZONE_SIZE)`.
+
+Проверено на копиях (имена `12`, `9`):
+
+```
+$ BESM6_PATH=/var/tmp/b1-f77-fix/lib12-mount besmtool search 12 FOREX
+disk_readi: Success
+ Searching for 'FOREX' on disk 12/0000, 10000 zones
+$ BESM6_PATH=/var/tmp/b1-f77-fix/lib12-mount besmtool search 9 FOREX
+disk_readi: Success
+ Searching for 'FOREX' on disk 9/0000, 10000 zones
+```
+
+Размеры: `librar.12` = 1 966 080 = 320 × 6144 байт; `monsys.9` =
+1 769 472 = 288 × 6144 байт. Оба — плотные 6-байтовые слова без тегов.
+
+**Но наш simh BESM6 использует ДРУГОЙ формат:**
+- `simh/BESM6/README/README.md:343-346`: «zones of `8 + 1024` words …
+  each word is written as an 8-byte little-endian record»;
+- `simh/BESM6/besm6_disk.c:568,574`: `sim_fread(c->sysdata, 8, 8, …)`,
+  `sim_fread(&memory[…], 8, 1024, …)`;
+- `simh/BESM6/besm6_mg.c:342` → `sim_tape_attach()` → стандартный SIMH `.tap`
+  с 4-байтовымLittle-endian заголовком записи (`sim_tape.c:1306-1317`,
+  запись ML/208 = 1032 × (4+8256+4) = 8 528 448 байт).
+
+### 1.2. Эксперимент A: `attach` как МГ (лента)
+
+Конфиг `/var/tmp/b1-f77-fix/lib12-mount/attach-test.ini`, коп librar.12 →
+`librar12.copy`, коп ML/208 → `ML208.copy`:
+
+```
+sim> attach -r mg60 /var/tmp/b1-f77-fix/lib12-mount/librar12.copy
+%SIM-INFO: MG60: unit is read only
+%SIM-INFO: MG60: Tape Image '.../librar12.copy' scanned as SIMH format
+%SIM-INFO: After processing 0 bytes of tape data (0 records, 0 tapemarks)
+%SIM-INFO: Read Tape Record Returned Unexpected Status: invalid record length
+%SIM-INFO: 1966080 bytes of unexamined data remain in the tape image file
+MG60    attached to ./librar12.copy, read only
+
+sim> attach -r mg61 /var/tmp/b1-f77-fix/lib12-mount/ML208.copy
+%SIM-INFO: contains 8520192 bytes of tape data (1032 records, 0 tapemarks)
+MG61    attached to ./ML208.copy, read only
+```
+
+Первые 4 байта `librar12.copy` = `00 00 00 0c`; simh читает их как
+little-endian `0x0c000000` = 201 326 592 > `MTR_MAXLEN` (`sim_tape.h:57`
+= `0x00FFFFFF`) → `MTSE_INVRL`. **Вывод: `attach mgNN librar.12` не работает.**
+
+### 1.3. Эксперимент B: `attach` как МД (диск)
+
+```
+sim> attach -e md60 /var/tmp/b1-f77-fix/lib12-mount/librar12.copy
+MD60    7250KB, attached to ./librar12.copy
+sim> attach -e md61 /var/tmp/b1-f77-fix/lib12-mount/9
+MD61    7250KB, attached to ./9
+```
+
+`attach_unit()` не проверяет содержимое, поэтому команда проходит, но чтение
+зоны simh (`8` байт на слово, 1032 слова) сдвинуто относительно плотного
+6-байтового образа. Конвертера 6→8 в дереве simh нет:
+
+```
+$ find /home/azizz/Yandex.Disk/simh/BESM6 -iname '*convert*' -o -iname '*6to8*'
+(пусто)
+```
+
+**Вывод:** подключить как диск можно только на уровне файла; прочитать
+каталог/модули из него simh не сможет без отдельного конвертера (в задачу не
+входит и правит устройство simh, а не просто монтирует образ).
+
+---
+
+## 2. Эксперимент C: `disp` монтирует librar.12 как ленту — но FOREX от этого не меняется
+
+Копии эталонов (`2048`, `2053`, `2099`, `2348`) и образа `librar.12` (том 12)
+положены в рабочий каталог; `BESM6_PATH` указывает туда. Паспорт
+`лен 50(12)^` физически монти librar.12 как БЭСМ-ленту (`disp/dispak/extra.c:1654-1656`
+возвращает тип `051` = «лента типа БЭСМ» для томов < 2048).
+
+Дека-база (аналог `re-forex/tests/run-glissade-forex.sh:91-108`):
+
+```
+шифр 419999 зс5^
+лен 60(2348)^
+лен 50(12)^
+ееВ1а3
+*name HELLOF
+*call yesmemory
+*forex
+      PROGRAM HELLO
+      PRINT 100
+  100 FORMAT(1H ,5HHELLO)
+      STOP
+      END
+*execute
+*end file
+``````
+еконец
+```
+
+| Вариантdeck'а | Строка баннера в output |
+|---|---|
+| база (`лен 50(12)` без дополнит. карт) | `31:F О R Е Х   ИПМ АН СССР           ВЕРСИЯ  2.02 ОТ  15.07.80` |
+| + `*tape 012` | `33:F О R Е Х   ИПМ АН СССР           ВЕРСИЯ  2.02 ОТ  15.07.80` |
+| + `*LIBRA:12` | `32:F О R Е Х   ИПМ АН СССР           ВЕРСИЯ  2.02 ОТ  15.07.80` |
+| monsys.9 как `лен 50(9)` + `*tape 011` + `*LIBRA:21` | `34:F О R Е Х   ИПМ АН СССР           ВЕРСИЯ  2.02 ОТ  15.07.80` |
+| `*forx3` (вместо `*forex`) | `31:   ОТСУТСТВУЕТ  FОRЕХ3*` |
+
+`rc=0` во всех случаях, `stderr` пустой. **Ни одна MONSYS-карта не влияет на
+выбор транслятора: DISPAK по-прежнему использует системный FOREX 2.02 с диска 2048.**
+
+Дополнительно: `*tape 012` / `*LIBRA:12` не вызвали ошибок, то есть карты
+просто игнорируются контроллером Monitor-80 как неизвестные/не влияющие (ср.
+`monitor80-re/chekjob/g02407.f:45-49` — там есть `*ATAPE/*FTAPE/*LTAPE`, но
+нет MONSYS `*tape NNN`).
+
+---
+
+## 3. Где на самом деле лежит FOREX 4.13 (и почему это не librar.12)
+
+- `re-forex/docs/plan-f77-full/57-new-compiler-plan.md:24-26` (прямая цитата):
+  «живой 4.13 в besm6.net грузится с ленты **`monsys.9`** (ОС «Дубна») картой
+  `*forex` (`runtime-assets.md:14`, `MonsysBootstrapper.cs:34-52`), а `librar.12`
+  — это лишь LIBREFER-библиотека подпрограмм (`expect_library12.txt`: `DATAPR*`,
+  `OCTTDEC`, но не `FOREX*`/`LO*SYN`/`LO*GEN`). Разведка загрузки `monsys.9`
+  в наш simh ведётся отдельно.»
+- Корень 4.13: `re-forex/include/FOREX_ROOT.mad:7`
+  «`libra211.l21:15448-15528` — исходник версии 4.13 (Dubna)»;
+  `:219` «TAPE:9/320240», библиотека 21.
+- Каталог зоны 0 `librar12.copy` (декодер TEXT из
+  `re-forex/docs/14-perso-write.md:26-50`):
+  `LIBLIST, DUMMY, PROGRAM, LIBZ1, LIBV1, LIBS1, LIBN1, LIBG1, LIBF1,
+  LIBE1, LIBD1, LIBC1, LIBB1, LIBA1, LIB1, BESIK, EBESI0, BESI0, EBESI1, …`
+  — подбиблиотеки LIBREFER, **не FOREX\***.
+- В `monsys.9` найдены имена `FOREX*` в словах `050366`, `200010`,
+  `236341`, `277240`, `502130`, `510353`, `510425`, `512425` (oct).
+
+**Вывод:** даже если бы монтирование работало, librar.12 не содержит ядра
+FOREX 4.13. Нужна лента `monsys.9` + загрузчик MONSYS.
+
+---
+
+## 4. Почему ДИСПАК не может загрузить транслятор из `*LIBRA:` / `*TRANS:` (точная причина)
+
+Механизм выбора транслятора в Мониторе-80 (BESM-6 код, не host-C):
+
+1. `monitor80-re/permanent/ttable%.asm:22-23`:
+   `, ISO, 6Н*FOREX` → `, TEXT,8НFOREX*`; `:32-33` `*FORX3 → FOREX3*`.
+2. `re-forex/docs/plan-f77-full/57-new-compiler-plan.md:40-44`
+   (разбор `permanent/givtran%.asm:11-30`): карта `*FOREX` ищется в `TTABLE*`,
+   затем вызывается `STACOMP*` с найденным именем `FOREX*`.
+3. `stacomp%.asm:16-53,70-105`: `STACOMP*` запоминает имя в `TRNAME*`, ищет
+   его в каталоге `TRCAT*` и грузит запись экстракодом `*70 1` — загрузка
+   **по имени из системного каталога**, а не из произвольной МЛ.
+4. `*LIBRA:` обрабатывается в `monitor80-re/chekjob/g02407.f:188-190`
+   (`C *LIBRA` → `call CHECK(CARD,ERROR)`), а `CHECK` в
+   `monitor80-re/chekjob/g04640.asm:1-60` всего лишь ставит номер
+   логического устройства в ячейку `73B` (`LTAPES` — список библиотек
+   `loadlibr.asm:29,52`). Это **настройка LUN для DTRAN**, а не загрузка
+   компилятора с ленты.
+5. `*TRANS:` — прямая передача в фиксированную зону. Согласно
+   `re-forex/docs/plan-f77-full/54-perso-compiler-plan.md:26`:
+   «`*TRANS:FOREX3*,,411550` с сырым корнем в зоне `0o1550` даёт результат,
+   побайтово равный оригиналу → наша запись не используется.»
+
+**Ключевой блокер (F3 proof, там же `:3-8`):**
+
+> «наш релоцируемый корень из PERSO работает как wrapper (дата/время, загрузка
+> оверлеев, возврат); обнуление `LO*SYN/LO*GEN` не меняет 14/14 глиссады;
+> системный Фортран (`Ф О Р Т Р А Н /16.07.73/`) делает компиляцию; …
+> Цель «наш компилятор из PERSO» **не достигнута**; … M2 признан
+> заблокированным без системного загрузчика.»
+
+FOREX 4.13 — это сырой field-0 дамп с абсолютными адресами и оверлеями
+(`XTS 4031/4032`, `VJM 74022` → `LOADANGO` → `0o22654`;
+`54-perso-compiler-plan.md` таблица M0/M1). `LOADANGO` и linked-редактор
+живут на системном диске 2048 и грузят оверлеи из фиксированных зон.
+**Отсутствующая деталь:** загрузчик/релокатор, который принял бы модуль
+FOREX 4.13 с произвольной МЛ/PERSO и связал его оверлеи. В simh C-коде такого
+нет: `besm6_mg.c` реализует только контроллер МГ (SIMH `.tap` / ES-режим),
+`besm6_disk.c` — только 8-байтовые слова. В `disp` C-коде (`extra.c`) есть
+Э70/Э71 для_DISPAK-томов, но нет MONSYS-загрузчика трансляторов.
+
+---
+
+## 5. Нет загрузки MONSYS в нашем simh
+
+```
+$ grep -rli 'monsys' /home/azizz/Yandex.Disk/simh/BESM6 --include=*.ini --include=*.md --include=*.c
+(пусто; все совпадения '011' в tests/aout.ini и tests/esml.ini — не MONSYS)
+$ find /home/azizz/Yandex.Disk/simh/BESM6 -iname 'boot*'
+boot_dispak.b6, demo/boot_dispak.b6, old/boot_dispak.b6.old
+```
+
+`simh/BESM6/README/README.md:690-720` описывает только загрузку DISPAK.
+`disp` также грузит только DISPAK (`disp/dispak/dispak.c:301,327,384`;
+`--bootstrap` генерирует содержимое системного диска, не MONSYS).
+
+MONSYS-бут в besm6.net — отдельный C#-код
+`besm6.net/src/Besm6.Runtime/Loading/MonsysBootstrapper.cs:30-52`:
+монтирует `monsys.9` на устройство 24 (oct), мапит барабан 17 на этот диск,
+кладет код 1032–1043 (oct) и стартует с 1032. Перенести его в наш simh
+нельзя напрямую: simh-диск требует 8-байтовые слова, а образ 6-байтовые.
+
+---
+
+## 6. Локальный диск `MD/4023` — FOREX 4.13-модулей нет
+
+Копия `MD/4023` (8 511 936 байт) прочитана `besmtool` как диск:
+
+```
+$ besmtool search 4023 FOREX
+(KOI7) 0555.0755:  *NО ОР*ВЕМSН*FОRЕХ*RЕFАL*FТN ...
+(TEXT) 0555.0770:  ВЕМSН*  САТАLОG*СFОRЕХ  ЕDIТ*** ...
+(KOI7) 0631.0042:   *ТRАNS:FОRЕХ3*,,411240 ...
+(KOI7) 1265.1352:  -1177 ЗОНЫ  - FОRЕХ 3 ... - МОНИТОР-80
+$ besmtool search 4023 4.13
+(KOI7) 1471.0044:   4.13. ОПРЕДЕЛЕНИЕ ПРОЦЕДУРЫ   ← номер раздела документа
+$ besmtool search 4023 2.02
+(KOI7) 0572.0005:  -  : ВЕРС   2.02/3 =- ...
+```
+
+`MD/4023` — системный диск ДИСПАКа с **FOREX 3 / ВЕРС 2.02/3** и
+примерами `*TRANS:FOREX3*,,411240`. Строки «4.13» — номера параграфов в
+документации, не версия компилятора. Модулей FOREX 4.13 (`FOREX*` root,
+`LO*SYN`, `LO*GEN`) на нём нет — они есть только в `monsys.9`.
+
+---
+
+## Сводка доказательств
+
+| Проверка | Результат |
+|---|---|
+| `attach -r mg60 librar12.copy` | `invalid record length`, 0 записей |
+| `attach -r mg61 ML208.copy` | 1032 записи по 8256 байт — работает |
+| `attach -e md60 librar12.copy` | файл открыт, но формат слов несовместим (6 vs 8 байт) |
+| `besmtool search 12/9` | `disk_readi: Success` (disp-формат) |
+| `disp` + `лен 50(12)` + `*tape 012`/`*LIBRA:12` | баннер всё тот же `ВЕРСИЯ 2.02` |
+| `disp` + monsys.9 + `*tape 011`/`*LIBRA:21` | баннер `ВЕРСИЯ 2.02` |
+| `disp` + `*forx3` | `ОТСУТСТВУЕТ FОRЕХ3*` |
+| Каталог librar.12 zone 0 | LIBA1..LIBZ1, BESIK, BESI0 — LIBREFER, не FOREX* |
+| Каталог monsys.9 | `FOREX*` в 8 словах; корень 4.13 = zone 0o320240, lib 21 |
+| `MD/4023` | FOREX 3, `ВЕРС 2.02/3`; «4.13» — номера разделов |
+| MONSYS boot в simh/disp | отсутствует |
+
+**Итог: BLOCKED.** Путь к живой 4.13 лежит через MONSYS-загрузчик
+(besm6.net C# / MIT dubna `machine.cpp`), которого в нашем simh/DISPAK нет;
+`librar.12` содержит только LIBREFER-рантайм, а не ядро компилятора; DISPAK
+выбирает `*forex` по имени `FOREX*` из системного каталога диска 2048 и не
+умеет брать транслятор с примонтированной ленты. Единственный рабочий путь в
+нашей среде — уже существующий RE-FOREX 5.00 PERSO (диск 2348, зона 0o2300),
+но и он, по F3-proof, компиляцию выполняет системным компилятором.
+
+BLOCKED
