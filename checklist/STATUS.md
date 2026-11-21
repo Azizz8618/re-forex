@@ -26,7 +26,8 @@
 | 15 | Семантика имён | завершён | 0 авто-меток, 0 нумерованных TEXT, смещения в десятичных; 16 проверок rc=0 |
 | F77 | Приёмка F77-поддержки (E5) | завершён | `tests/run-f77-suite.sh`: 8/8 gold-пар, кросс-сверка `*FTN` 3/3, расхождений 0; `docs/plan-f77/12-acceptance.md`, `logs/f77_suite.txt` |
 | V500 | Версия изделия 5.00 / 19.11.2026 | завершён | версия зафиксирована в `src/*.mad`, `src/f77*/`, `tools/build_forex_perso.py` (TEXT-метка в хвосте PERSO), доках и ДРАКОН-схемах; системный баннер 2.02 внешний и непатчуемый — `docs/16-glissade-run.md` §6; логи `logs/version500_*.txt` |
-| V413 | Семантическая база FOREX 4.13 (Дубна) | завершена (эталон) | исходник корня `libra211.l21:15448-15528` = `reference/libra211.forex.inc`, `tools/build_forex_perso.py:146`; gold `reference/expect_forex.txt:28` (`4.13 ОТ 11.09.85`); CHARACTER*30/Dhrystone 48/48 — внешние etalons; исполняемого 4.13 в dispak нет, bootstrap — системный 2.02; лента `librar.12` для besm6.net разведывается отдельно |
+| V413 | Семантическая база FOREX 4.13 (Дубна) | завершена (эталон) | исходник корня `libra211.l21:15448-15528` = `reference/libra211.forex.inc`, `tools/build_forex_perso.py:146`; gold `reference/expect_forex.txt:28` (`4.13 ОТ 11.09.85`); CHARACTER*30/Dhrystone 48/48 — внешние etalons; исполняемого 4.13 в dispak нет, bootstrap — системный 2.02; лента `monsys.9`: компилятор только в C#-эмуляторе besm6.net (нужен .NET 8), `librar.12` — LIBREFER-библиотека |
+| V412 | Живой FOREX 4.12 (другая сборка, 25.06.85) | завершён | `tests/plan-f77/t412/run-4.12.sh`: `*TRANS:FOREX3*,,411550` → `NEWCOMP*` → тело на диске 41 зона `0o1550`; C-симулятор dispak (6-байтовые слова), диск `/usr/local/share/besm6/2148` (НЕ SIMH MD/2148); баннер `4.12 ОТ 25.06.85` + `HELLO 412`; отчёт `logs/f77_30_live_412_report.txt` |
 
 ## Итоговый состав реконструкции
 

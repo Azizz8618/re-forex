@@ -1,0 +1,13 @@
+шифр 419999 зс5^
+DIS 41(2148)^
+eeв1а3
+*name T412
+*TRANS:FOREX3*,,411550
+      PROGRAM MAIN
+      PRINT 100
+  100 FORMAT('HELLO 412')
+      END
+*execute
+*end file
+``````
+ЕКОНЕЦ
