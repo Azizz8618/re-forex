@@ -1,0 +1,26 @@
+--- /var/tmp/b1-f77-fix/59-c2/dispak-src/dispak/defs.h	2026-11-11 06:22:49.959663741 +0300
++++ src-dispak/dispak/defs.h	2026-11-21 20:52:34.181998160 +0300
+@@ -35,6 +35,10 @@
+ 
+ #define _(string)       gettext(string)
+ 
++/* C3: self-contained redirect: load OUR body words from disk 2148 zone 0o1745
++ * (words 9..19) into RAM 0o1770..0o1782.  Defined in cu.c. */
++extern void c3_install_our_words(void);
++
+ #define JHBSZ   16
+ #define JMP(addr)       { \
+         pc = (addr); \
+@@ -277,6 +281,12 @@
+                         where();\
+                         for (cmdflg = 1; cmdflg; command());\
+                 }\
++                /* C1: redirect Monitor-80 VJM 64002(15) at RAM 0o455 to our body 0o1770 */ \
++                if ((addr) == 00455 && (reg).l == 0xdc8002 && (reg).r == 0x090000) { \
++                        (reg).l = 0xdc9bf8; \
++                        c3_install_our_words(); \
++                        fprintf(stderr, "C3PATCH pc=%05o 0o455: 6710000202200000 -> 6711577002200000\n", pc); \
++                } \
+                 _l = (reg).l; \
+                 _cp[0] = _l >> 16; \
+                 _cp[1] = _l >> 8; \

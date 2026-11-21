@@ -1,0 +1,140 @@
+#
+# Download disk images from this site.
+#
+set(ARCHIVE "http://www.besm6.org/download/disks")
+
+#
+# Put disk images into this directory.
+#
+set(DISKDIR ${CMAKE_INSTALL_PREFIX}/share/besm6)
+
+#
+# List of disks to download.
+#
+set(DISKS 2048 2053 2148 2153 2113 2248 4001 2063 2086 2099)
+
+#
+# Create config.h.
+#
+configure_file(config.h.in config.h @ONLY)
+
+#
+# Include both source and build directories.
+#
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+#
+# Check for system include files.
+#
+include(CheckIncludeFile)
+check_include_file("string.h" HAVE_STRING_H)
+include(CheckSymbolExists)
+
+check_symbol_exists(getopt_long "getopt.h" HAVE_GETOPT_LONG)
+
+#
+# Need Bison parser.  When bison is not available (e.g. a minimal
+# build host), fall back to the checked-in hand-written debug.c.
+#
+find_package(BISON)
+if (BISON_FOUND)
+    bison_target(debug debug.y "${CMAKE_CURRENT_BINARY_DIR}/debug.c")
+    set(DEBUG_C "${CMAKE_CURRENT_BINARY_DIR}/debug.c")
+else ()
+    message(STATUS "Bison not found - using pregenerated debug.c")
+    set(DEBUG_C "${CMAKE_CURRENT_SOURCE_DIR}/debug.c")
+endif ()
+
+#
+# Build 'dispak' binary.
+#
+add_executable(dispak
+    dispak.c
+    cu.c
+    optab.c
+    arith.c
+    input.c
+    extra.c
+    disk.c
+    errtxt.c
+    vsinput.c
+    dpout.c
+    arfa.c
+    encoding.c
+    getopt.c
+    "${DEBUG_C}"
+)
+target_link_libraries(dispak PUBLIC m)
+target_compile_options(dispak PRIVATE
+    -Wall -g
+    -DHAVE_STRING_H=${HAVE_STRING_H}
+    -DHAVE_GETOPT_LONG=${HAVE_GETOPT_LONG}
+)
+#
+# Optimize aggressively for normal builds, but make a -DCMAKE_BUILD_TYPE=Debug
+# build actually debuggable: no optimization, keep the frame pointer and do not
+# turn warnings into errors.
+#
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(dispak PRIVATE -O0 -fno-omit-frame-pointer)
+else()
+    target_compile_options(dispak PRIVATE -O3 -Werror -ffast-math -fomit-frame-pointer)
+endif()
+install(TARGETS dispak DESTINATION bin)
+
+#
+# 'make 2099' builds image of disk 2099.
+#
+add_custom_target(2099 ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/2099)
+
+#
+# On 'make install', copy disk images to /usr/local/share/besm6/ directory.
+#
+install(CODE "execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/install_disks.sh ${DISKDIR} ${CMAKE_CURRENT_BINARY_DIR} ${DISKS})")
+
+#
+# Build disk 2099.
+#
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/2099
+    DEPENDS dispak make2099.b6 disp99.b6 e64.b6 ekdisp.b6 sostav.b6 spe66.b6 macros.b6
+        ${CMAKE_CURRENT_BINARY_DIR}/2053
+        ${CMAKE_CURRENT_BINARY_DIR}/2048
+        ${CMAKE_CURRENT_BINARY_DIR}/2248
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Creating 2099"
+    COMMAND rm -f 2099
+         && touch 2099
+         && ./dispak -q --bootstrap --path=. --input-encoding=utf8 ${CMAKE_CURRENT_SOURCE_DIR}/macros.b6
+         && ./dispak -q --bootstrap --path=. --input-encoding=utf8 ${CMAKE_CURRENT_SOURCE_DIR}/disp99.b6
+         && ./dispak -q --bootstrap --path=. --input-encoding=utf8 ${CMAKE_CURRENT_SOURCE_DIR}/e64.b6
+         && ./dispak -q --bootstrap --path=. --input-encoding=utf8 ${CMAKE_CURRENT_SOURCE_DIR}/ekdisp.b6
+         && ./dispak -q --bootstrap --path=. --input-encoding=utf8 ${CMAKE_CURRENT_SOURCE_DIR}/sostav.b6
+         && ./dispak -q --bootstrap --path=. --input-encoding=utf8 ${CMAKE_CURRENT_SOURCE_DIR}/spe66.b6
+         && ./dispak -q --bootstrap --path=. --input-encoding=utf8 ${CMAKE_CURRENT_SOURCE_DIR}/make2099.b6
+)
+
+#
+# Build disks 2053, 2048, 2248.
+#
+# Volume policy: the image is taken from $BESM6_PATH (colon search list,
+# first hit), then from the install share (${DISKDIR}); downloading from
+# besm6.org is opt-in via BESM6_FETCH_DISKS=1.  See fetch_disk.sh.
+#
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/2053
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Creating 2053"
+    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/fetch_disk.sh 2053 sbor2053.bin "${DISKDIR}" ${ARCHIVE}
+)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/2048
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Creating 2048"
+    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/fetch_disk.sh 2048 sbor2048.bin "${DISKDIR}" ${ARCHIVE}
+)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/2248
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Creating 2248"
+    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/fetch_disk.sh 2248 alt2048.bin "${DISKDIR}" ${ARCHIVE}
+)

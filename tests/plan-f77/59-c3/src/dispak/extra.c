@@ -1,0 +1,3081 @@
+/*
+ * Implementation of BESM-6 extracodes.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * You can redistribute this program and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation;
+ * either version 2 of the License, or (at your discretion) any later version.
+ * See the accompanying file "COPYING" for more details.
+ */
+#include <stdio.h>
+#include <sys/time.h>
+#include <time.h>
+#include <unistd.h>
+#include <errno.h>
+#include <stdint.h>
+#include <ctype.h>
+#include "defs.h"
+#include "disk.h"
+#include "iobuf.h"
+#include "gost10859.h"
+#include "encoding.h"
+
+#define SMALL_DISKS()   (getenv("BESM6_SMALL_DISKS") || disk_emulate_725)
+
+/* Отладочная трасса этапа 1 проекта ГЛИССАДА-6: дампы Э70/дд_обмена
+ * в stderr.  Включается переменной окружения BESM6_DD_DEBUG. */
+static int
+dd_debug (void)
+{
+    static int v = -1;
+    if (v < 0)
+        v = getenv ("BESM6_DD_DEBUG") != NULL;
+    return v;
+}
+
+#define IS_DIGIT(c)     (c >= '0' && c <= '9')
+#define IS_CHAR(c)      ((c >= 0101 && c <= 0132) || \
+                         (c >= 0140 && c <= 0176))
+
+#define INTERCEPT_E64 002
+#define INTERCEPT_E70 004
+#define INTERCEPT_E71 010
+#define INTERCEPT_E74 020
+
+static int
+intercept_ex(int mask) {
+    alureg_t t;
+    t.l = t.r = 0;
+    STORE(acc, intercept_addr-1);
+    t.r = reg[TRAPRETREG];
+    STORE(t, intercept_addr-2);
+    t.r = reg[016] | mask << 15;
+    STORE(t, intercept_addr-3);
+    intercept_mask &= ~mask;
+    JMP(intercept_addr);
+    return E_SUCCESS;
+}
+
+static void     exform(void);
+
+static inline uchar
+peekbyte(ptr *bp)
+{
+        return core[bp->p_w].w_b[bp->p_b];
+}
+
+uchar
+getbyte(ptr *bp)
+{
+        uchar   c = peekbyte(bp);
+
+        ++bp->p_b;
+        if (bp->p_b == 6) {
+                bp->p_b = 0;
+                ++bp->p_w;
+        }
+        return c;
+}
+
+void
+putbyte(ptr *bp, uchar c)
+{
+        core[bp->p_w].w_b[bp->p_b++] = c;
+
+        if (bp->p_b == 6) {
+                bp->p_b = 0;
+                ++bp->p_w;
+        }
+}
+
+uint64_t
+getword(ptr *bp)
+{
+        uint64_t        w = 0;
+        int             i;
+
+        if (bp->p_b) {
+                bp->p_b = 0;
+                ++bp->p_w;
+        }
+        for (i = 0; i < 6; ++i)
+                w = w << 8 | core[bp->p_w].w_b[i];
+
+        ++bp->p_w;
+
+        return w;
+}
+
+void
+cwadj(uinstr_t *ip)
+{
+        if (ip->i_opcode >= 0100) {
+                ip->i_opcode = (ip->i_opcode - 060) << 3;
+                ip->i_opcode |= ip->i_addr >> 12;
+                ip->i_addr &= 0xfff;
+        } else if (ip->i_addr & 070000) {
+                ip->i_addr &= 07777;
+                ip->i_opcode |= 0100;
+        }
+}
+
+void
+terminate(void)
+{
+        unsigned        u;
+
+        for (u = 030; u < 070; ++u)
+                if (disks[u].diskh)
+                        disk_close(disks[u].diskh);
+}
+
+static int
+lflush(uchar *line)
+{
+        int     i;
+
+        for (i = 127; i >= 0; --i)
+                if (line[i] != GOST_SPACE)
+                        break;
+
+        if (i < 0)
+                return 0;
+
+        gost_write (line, i + 1, stdout);
+        memset (line, GOST_SPACE, i + 1);
+        return 1;
+}
+
+void
+print_text_debug (ushort addr0, ushort addr1, int itm_flag, int pos)
+{
+        ptr             bp;
+        int             c;
+
+        printf ("*** E64  %s ", itm_flag ? "itm" : "gost");
+        bp.p_w = addr0;
+        bp.p_b = 0;
+        for (;;) {
+                if (! bp.p_w) {
+done:                   printf ("\n");
+                        return;
+                }
+                if (addr1 && bp.p_w == addr1 + 1)
+                        goto done;
+
+                c = getbyte(&bp);
+                printf ("-%03o", c);
+
+                /* end of information */
+                if (itm_flag)
+                        switch (c) {
+                        case 0140: /* end of information */
+                                goto done;
+                        case 0173: /* repeat last symbol */
+                                c = getbyte(&bp);
+                                printf ("-%03o", c);
+                                if (c == 040)
+                                        pos = 0;
+                                else
+                                        pos += c & 017;
+                                break;
+                        default:
+                                /* No space left on line. */
+                                if (! addr1)
+                                        goto done;
+                                ++pos;
+                                if (pos == 128) {
+                                        /* No space left on line. */
+                                        putchar('/');
+                                        pos = 0;
+                                }
+                                break;
+                        }
+                else {
+                        switch (c) {
+                        case GOST_END_OF_INFORMATION:
+                        case 0231:
+                        case GOST_EOF:
+                                goto done;
+                        case 0201: /* new page */
+                                if (pos > 0)
+                                        pos = 0;
+                                ++pos;
+                                break;
+                        case GOST_CARRIAGE_RETURN:
+                        case GOST_NEWLINE:
+                                pos = 0;
+                                break;
+                        case 0143: /* null width symbol */
+                        case 0341:
+                                break;
+                        case GOST_SET_POSITION:
+                        case 0200: /* set position */
+                                c = getbyte(&bp);
+                                printf ("-%03o", c);
+                                pos = c % 128;
+                                break;
+                        default:
+                                /* No space left on line. */
+                                ++pos;
+                                if (pos == 128) {
+                                        /* No space left on line. */
+                                        putchar('/');
+                                        if (addr1)
+                                                pos = 0;
+                                }
+                                break;
+                        }
+                }
+        }
+}
+
+/*
+ * Print string in GOST format.
+ * Return next data address.
+ */
+static ushort
+print_gost(ushort addr0, ushort addr1, uchar *line, int pos, int *need_newline)
+{
+        ptr             bp;
+        uchar           c, lastc = GOST_SPACE;
+
+        bp.p_w = addr0;
+        bp.p_b = 0;
+        for (;;) {
+                if (! bp.p_w)
+                        return 0;
+
+                /* No data to print. */
+                if (addr1 && bp.p_w == addr1 + 1)
+                        return bp.p_w;
+
+                c = getbyte(&bp);
+                switch (c) {
+                case GOST_EOF:
+                case GOST_END_OF_INFORMATION:
+                case 0231:
+                        if (pos==0 || pos==128)
+                                *need_newline = 0;
+                        if (bp.p_b)
+                                ++bp.p_w;
+                        return bp.p_w;
+                case 0201: /* new page */
+                        if (pos) {
+                                lflush(line);
+                                pos = 0;
+                        }
+                        if (! isatty (1))
+                                utf8_puts("\f", stdout);
+                        line[pos++] = GOST_SPACE;
+                        break;
+                case GOST_CARRIAGE_RETURN:
+                case GOST_NEWLINE:
+                        if (pos == 128) {
+                                pos = 0;
+                                break;
+                        }
+                        if (pos) {
+                                lflush(line);
+                                pos = 0;
+                        }
+                        utf8_puts("\n", stdout);
+                        break;
+                case 0143: /* null width symbol */
+                case 0341:
+                        break;
+                case GOST_SET_POSITION:
+                case 0200: /* set position */
+                        c = getbyte(&bp);
+                        pos = c % 128;
+                        break;
+                case 0174:
+                case 0265: /* repeat last symbol */
+                        c = getbyte(&bp);
+                        while (c-- > 0) {
+                                if (pos == 128) {
+                                        lflush(line);
+                                        putchar('\n');
+                                        pos = 0;
+                                }
+                                if (line[pos] == GOST_SPACE)
+                                        line[pos] = lastc;
+                                ++pos;
+                        }
+                        break;
+                case GOST_SPACE2: /* blank */
+                case 0242: /* used as space by forex */
+                        c = GOST_SPACE;
+                        /* fall through... */
+                default:
+                        if (pos == 128) {
+                                if (addr1)
+                                        pos = 0;
+                                else {
+                                        /* No space left on line. */
+                                        *need_newline = 0;
+                                        if (bp.p_b)
+                                                ++bp.p_w;
+                                        return bp.p_w;
+                                }
+                        }
+                        if (line[pos] != GOST_SPACE) {
+                                lflush(line);
+                                fputs("\\\n", stdout);
+                        }
+                        line[pos] = c;
+                        lastc = c;
+                        ++pos;
+                        if (pos == 128) {
+                                /* No space left on line. */
+                                lflush(line);
+                                putchar('\n');
+                        }
+                        break;
+                }
+        }
+}
+
+/*
+ * Print string in ITM format.
+ * Return next data address.
+ */
+static ushort
+print_itm(ushort addr0, ushort addr1, uchar *line, int pos)
+{
+        ptr             bp;
+        uchar           c, lastc = GOST_SPACE;
+
+        bp.p_w = addr0;
+        bp.p_b = 0;
+        for (;;) {
+                if (! bp.p_w)
+                        return 0;
+
+                /* No data to print. */
+                if (addr1 && bp.p_w == addr1 + 1)
+                        return bp.p_w;
+
+                /* No space left on line. */
+                if (pos == 128) {
+                        if (! addr1) {
+                                if (bp.p_b)
+                                        ++bp.p_w;
+                                return bp.p_w;
+                        }
+                        lflush(line);
+                        putchar('\n');
+                        pos = 0;
+                }
+                c = getbyte(&bp);
+                switch (c) {
+                case 0140: /* end of information */
+                        if (bp.p_b)
+                                ++bp.p_w;
+                        return bp.p_w;
+                case 040: /* blank */
+                        line[pos++] = GOST_SPACE;
+                        break;
+                case 0173: /* repeat last symbol */
+                        c = getbyte(&bp);
+                        if (c == 040) {
+                                /* fill line by last symbol (?) */
+                                memset (line, lastc, 128);
+                                lflush(line);
+                                putchar('\n');
+                                pos = 0;
+                        } else
+                                while (c-- & 017)
+                                        line[pos++] = lastc;
+                        break;
+                default:
+                        lastc = itm_to_gost [c];
+                        line[pos++] = lastc;
+                        break;
+                }
+        }
+}
+
+static void
+print_char (uchar *line, int *pos, int sym)
+{
+        if (*pos == 128) {
+                lflush (line);
+                putchar ('\n');
+        }
+        line [(*pos) & 127] = sym;
+        ++(*pos);
+}
+
+/*
+ * Print word(s) in octal format.
+ * Return next data address.
+ */
+static ushort
+print_octal(ushort addr0, ushort addr1, uchar *line, int pos,
+        int digits, int width, int repeat)
+{
+        uint64_t w;
+        int i;
+
+        if (digits > 16)
+                digits = 16;
+        for (;;) {
+                if (! addr0)
+                        return 0;
+
+                /* No data to print. */
+                if (addr1 && addr0 == addr1 + 1)
+                        return addr0;
+
+                /* No space left on line. */
+                if (pos >= 128) {
+                        if (! addr1)
+                                return 0;
+                        return addr0;
+                }
+                w = (uint64_t) core[addr0].w_b[0] << 40 |
+                        (uint64_t) core[addr0].w_b[1] << 32 |
+                        (uint) core[addr0].w_b[2] << 24 |
+                        (uint) core[addr0].w_b[3] << 16 |
+                        core[addr0].w_b[4] << 8 | core[addr0].w_b[5];
+                ++addr0;
+
+                w <<= 64 - digits * 3;
+                for (i=0; i<digits; ++i) {
+                        print_char (line, &pos, (int) (w >> 61) & 7);
+                        w <<= 3;
+                }
+
+                if (! repeat)
+                        return addr0;
+                --repeat;
+                if (width)
+                        pos += width - digits;
+        }
+}
+
+static void
+print_command1 (uchar *line, int *pos, unsigned long cmd)
+{
+        print_char (line, pos, cmd >> 23 & 1);
+        print_char (line, pos, cmd >> 20 & 7);
+        print_char (line, pos, GOST_SPACE);
+        if (cmd & 02000000) {
+                /* long address command */
+                print_char (line, pos, cmd >> 18 & 3);
+                print_char (line, pos, cmd >> 15 & 7);
+                print_char (line, pos, GOST_SPACE);
+                print_char (line, pos, cmd >> 12 & 7);
+        } else {
+                /* short address command */
+                print_char (line, pos, cmd >> 18 & 1);
+                print_char (line, pos, cmd >> 15 & 7);
+                print_char (line, pos, cmd >> 12 & 7);
+                print_char (line, pos, GOST_SPACE);
+        }
+        print_char (line, pos, cmd >> 9 & 7);
+        print_char (line, pos, cmd >> 6 & 7);
+        print_char (line, pos, cmd >> 3 & 7);
+        print_char (line, pos, cmd & 7);
+}
+
+/*
+ * Print CPU instruction(s).
+ * Return next data address.
+ */
+static ushort
+print_command(ushort addr0, ushort addr1, uchar *line, int pos,
+        int width, int repeat)
+{
+        unsigned long a, b;
+
+        for (;;) {
+                if (! addr0)
+                        return 0;
+
+                /* No data to print. */
+                if (addr1 && addr0 == addr1 + 1)
+                        return addr0;
+
+                /* No space left on line. */
+                if (pos >= 128) {
+                        if (! addr1)
+                                return 0;
+                        return addr0;
+                }
+                a = (unsigned long) core[addr0].w_b[0] << 16 |
+                        core[addr0].w_b[1] << 8 | core[addr0].w_b[2];
+                b = (unsigned long) core[addr0].w_b[3] << 16 |
+                        core[addr0].w_b[4] << 8 | core[addr0].w_b[5];
+                ++addr0;
+
+                print_command1 (line, &pos, a);
+                print_char (line, &pos, GOST_SPACE);
+                print_command1 (line, &pos, b);
+
+                if (! repeat)
+                        return addr0;
+                --repeat;
+                if (width)
+                        pos += width - 23;
+        }
+}
+
+/*
+ * Extract decimal exponent from the real value.
+ * Return value in range 0.1 - 0.9(9).
+ * Input value must be nonzero positive.
+ */
+static double
+real_exponent (double value, int *exponent)
+{
+        *exponent = 0;
+        if (value <= 0)
+                return 0; /* cannot happen */
+
+        while (value >= 1000000) {
+                *exponent += 6;
+                value /= 1000000;
+        }
+        while (value >= 1) {
+                ++*exponent;
+                value /= 10;
+        }
+        while (value < 0.0000001) {
+                *exponent -= 6;
+                value *= 1000000;
+        }
+        while (value < 0.1) {
+                --*exponent;
+                value *= 10;
+        }
+        return value;
+}
+
+/*
+ * Print real number(s).
+ * Return next data address.
+ */
+static ushort
+print_real(ushort addr0, ushort addr1, uchar *line, int pos,
+        int digits, int width, int repeat)
+{
+        int i, negative, exponent, digit;
+        double value;
+
+        if (digits > 20)
+                digits = 20;
+        for (;;) {
+                if (! addr0)
+                        return 0;
+
+                /* No data to print. */
+                if (addr1 && addr0 == addr1 + 1)
+                        return addr0;
+
+                /* No space left on line. */
+                if (pos >= 128) {
+                        if (! addr1)
+                                return 0;
+                        return addr0;
+                }
+
+                negative = (core[addr0].w_b[0] & 1);
+                if (! (core[addr0].w_b[0] >> 1) && ! core[addr0].w_b[0] &&
+                    ! core[addr0].w_b[1] && ! core[addr0].w_b[2] &&
+                    ! core[addr0].w_b[3] && ! core[addr0].w_b[4] &&
+                    ! core[addr0].w_b[5]) {
+                        value = 0;
+                        exponent = 0;
+                } else {
+                        value = fetch_real (addr0);
+                        if (value < 0)
+                                value = -value;
+                        value = real_exponent (value, &exponent);
+                }
+                ++addr0;
+
+                print_char (line, &pos, GOST_SPACE);
+                print_char (line, &pos, negative ? GOST_MINUS : GOST_PLUS);
+                for (i=0; i<digits-4; ++i) {
+                        value = value * 10;
+                        digit = (int) value;
+                        print_char (line, &pos, digit);
+                        value -= digit;
+                }
+                print_char (line, &pos, GOST_LOWER_TEN);
+                if (exponent >= 0)
+                        print_char (line, &pos, GOST_PLUS);
+                else {
+                        print_char (line, &pos, GOST_MINUS);
+                        exponent = -exponent;
+                }
+                print_char (line, &pos, exponent / 10);
+                print_char (line, &pos, exponent % 10);
+
+                if (! repeat)
+                        return addr0;
+                --repeat;
+                if (width)
+                        pos += width - digits - 2;
+        }
+}
+
+/*
+ * Extracode 64: printing.
+ *
+ * The information array has the following format
+ * - First word:
+ *   iiii ........ xxxxxxxxxxxx
+ *   jjjj ........ yyyyyyyyyyyy
+ * - Other words:
+ *   ffff bbbbbbbb dddddddddddd
+ *   esss wwwwwwww rrrrrrrrrrrr
+ *
+ * Here:
+ * x+Ri - start address of data
+ * y+Rj - end address of data
+ * f    - print format
+ * b    - starting position, 0 - most left
+ * d    - number of digits (for integer formats)
+ * e    - 1 for final word
+ * s    - skip this number of lines
+ * w    - total field width (for integer formats)
+ * r    - repetition counter (0-once, 1-twice etc)
+ *
+ * Print formats:
+ * 0    - text in GOST encoding
+ * 1    - CPU instruction
+ * 2    - octal number
+ * 3    - real number (mantissa=digits-4)
+ * 4    - text in ITM encoding
+ */
+int
+print(void)
+{
+        ushort          cwaddr = reg[016];
+        word_t          *wp0, *wp;
+        ushort          addr0, addr1;
+        uchar           line[128];
+        int             format, offset, digits, final, width, repeat;
+        int             need_newline;
+
+        if (intercept_mask & INTERCEPT_E64) {
+            return intercept_ex(INTERCEPT_E64);
+        }
+        if (! pout_enable)
+                return E_SUCCESS;
+        if (xnative)
+                return E_UNIMP;
+        if (cwaddr < 2)
+                return E_SUCCESS;
+
+        /* Get data pointers. */
+        wp0 = &core[cwaddr];
+        addr0 = ADDR(Laddr1(*wp0) + reg[Lreg(*wp0)]);
+        addr1 = ADDR(Raddr1(*wp0) + reg[Rreg(*wp0)]);
+        if (addr1 <= addr0)
+                addr1 = 0; /* No limit */
+
+        /* Execute every format word in order. */
+        memset(line, GOST_SPACE, sizeof(line));
+again:
+        wp = wp0;
+        for (;;) {
+                ++wp;
+                if (wp >= core+CORESZ || ! addr0)
+                        return E_NOTERM;
+
+                format = Lreg(*wp);
+                offset = wp->w_b[1] >> 4 | ((wp->w_b[0] << 4) & 0xf0);
+                digits = Laddr2(*wp);
+                final = Rreg(*wp);
+                width = wp->w_b[4] >> 4 | ((wp->w_b[3] << 4) & 0xf0);
+                repeat = Raddr2(*wp);
+                if (trace_e64) {
+                        printf ("*** E64  %05o-%05o  format=%d offset=%d", addr0, addr1, format, offset);
+                        if (digits) printf (" digits=%d", digits);
+                        if (width) printf (" width=%d", width);
+                        if (repeat) printf (" repeat=%d", repeat);
+                        if (final) printf (" FINAL=%#o", final);
+                        printf ("\n");
+                }
+                need_newline = 1;
+                switch (format) {
+                case 0: /* text in GOST encoding */
+                case 8:
+                        if (trace_e64)
+                                print_text_debug (addr0, addr1, 0, offset);
+                        addr0 = print_gost(addr0, addr1, line, offset,
+                                &need_newline);
+                        break;
+                case 1: /* CPU instruction */
+                case 5:
+                case 9:
+                case 13:
+                        addr0 = print_command(addr0, addr1, line, offset,
+                                width, repeat);
+                        break;
+                case 2: /* octal number */
+                case 10:
+                        addr0 = print_octal(addr0, addr1, line, offset,
+                                digits, width, repeat);
+                        break;
+                case 3: /* real number */
+                case 11:
+                        addr0 = print_real(addr0, addr1, line, offset,
+                                digits, width, repeat);
+                        break;
+                case 4: /* text in ITM encoding */
+                case 12:
+                        if (trace_e64)
+                                print_text_debug (addr0, addr1, 1, offset);
+                        addr0 = print_itm(addr0, addr1, line, offset);
+                        break;
+                case 6: /* hex number */
+                case 7:
+                case 14:
+                case 15:
+                        //TODO
+                        //addr0 = print_hex(addr0, addr1, line, offset,
+                        //      digits, width, repeat);
+                        break;
+                }
+                if (final & 8) {
+                        final &= 7;
+                        if (lflush(line) || (need_newline && ! final))
+                                ++final;
+                        if (addr1 && addr0 <= addr1) {
+                                /* Repeat printing task until all data expired. */
+                                putchar('\n');
+                                goto again;
+                        }
+                        while (final-- > 0)
+                                putchar('\n');
+                        break;
+                }
+                /* Check the limit of data pointer. */
+                if (addr1 && addr0 > addr1) {
+                        lflush(line);
+                        putchar('\n');
+                        break;
+                }
+        }
+        fflush(stdout);
+        return E_SUCCESS;
+}
+
+void
+restore_state() {
+        int addr = acc.r ? acc.r & 077777 : ehandler;
+        LOAD(acc, addr - 11);
+        LOAD(enreg, addr - 10);
+        enreg.l >>= 17;
+        dis_exc = enreg.l & 040;
+        G_LOG = enreg.o & 004;
+        G_MUL = enreg.o & 010;
+        G_ADD = enreg.o & 020;
+        dis_round = enreg.o & 002;
+        dis_norm = enreg.o & 001;
+        LOAD(accex, addr - 9);
+        LOAD(enreg, addr - 7);
+        reg[TRAPRETREG] = enreg.r & 077777;
+        LOAD(enreg, addr - 6);
+        right = enreg.r & 1;
+        LOAD(enreg, addr - 5);
+        reg[MODREG] = enreg.r & 077777;
+        LOAD(enreg, addr - 4);
+        reg[017] = enreg.r & 077777;
+        LOAD(enreg, addr - 3);
+        reg[016] = enreg.r & 077777;
+        LOAD(enreg, addr - 2);
+        reg[015] = enreg.r & 077777;
+        LOAD(enreg, addr - 8);
+        JMP(enreg.r & 077777);
+        eenab = 1;
+}
+
+int
+e53(void)
+{
+        switch (reg[016]) {
+        case 010: {     /* get time since midnight */
+                acc.r = ticks_since_midnight();
+                acc.l = 0;
+                return E_SUCCESS;
+        }
+        case 011:               /* set handler address          */
+                ehandler = ADDR(acc.r);
+                acc.l = acc.r = 0;
+                return E_SUCCESS;
+        case 012:               /* set event mask */
+                emask = acc.r & 0xffffff;
+                return E_SUCCESS;
+        case 013:               /* disable async processes */
+                eenab = 0;
+                return E_SUCCESS;
+        case 014:               /* enable async processes */
+                eenab = 1;
+                return E_SUCCESS;
+        case 015:
+                restore_state();
+                return E_SUCCESS;
+        case 017: {             /* wait for events      */
+                struct itimerval        itv = {{0, 0}, {0, 0}};
+
+                acc.l = 0;
+                if (!(emask & 1)) {
+                        acc.r = 2;
+                        return E_SUCCESS;
+                }
+                eenab = 1;
+                if (eraise(0)) {
+                        acc.r = 0;
+                        return E_SUCCESS;
+                }
+                getitimer(ITIMER_REAL, &itv);
+                if (!(itv.it_value.tv_sec | itv.it_value.tv_usec)) {
+                        itv.it_value.tv_usec = 040 * 80000;
+                        setitimer(ITIMER_REAL, &itv, NULL);
+                }
+                pause();
+                acc.r = 0;
+                return E_SUCCESS;
+        }
+        case 021:               /* clear or declare events      */
+                if (acc.l & 0x800000)   /* clear        */
+                        events &= ~acc.r;
+                else
+                        (void) eraise(acc.r & 0xffffff);
+                return E_SUCCESS;
+        case 000:
+                return elfun(EF_ARCTG);
+        default:
+                return E_UNIMP;
+        }
+}
+
+int
+e51(void)
+{
+        return elfun(reg[016] ? EF_COS : EF_SIN);
+}
+
+uint64_t userid() {
+        return (uint64_t) user.l << 24 | user.r;
+}
+
+/*
+ * Э50 12 - распознаватель текстовой строки (dесоdеr)
+ *
+ * А.П.Сапожников 22/12/80
+ */
+int
+e50_12(void)
+{
+        /*
+         * Строка подается в isо или в соsу. Признак конца - байт '000' или '012'.
+         * Информация для экстракода на сумматоре:
+         *     1-15, 21-24 разряды - индексированный адрес начала строки или 0, если работа с
+         *          текущего места строки.
+         *     16 - признак поглощения пробелов
+         *     17 - символы '*' и '/' суть буквы.
+         *     18 - восьмеричные числа задаются без суффикса "в"
+         *     19 - посимвольное сканирование
+         *
+         * Результатом работы является тип фрагмента в индекс-регистре 14
+         * и сам фрагмент. Пробелы в начале фрагмента типа "число"
+         * всегда сглатываются. Если фрагмент - число, то это число
+         * выдается на сумматоре, а в РМР выдается (1-8 разряды) код
+         * ограничителя и (25-33 разряды) позиция этого ограничителя во
+         * входной строке. Если фрагмент - идентификатор или текст,
+         * заключенный в апострофы, то он выдается на сумматоре (начало) и
+         * в РМР (продолжение). Хвост текста заполняется пробелами. Если
+         * текст более 12 символов, то этот факт запоминается, и остаток
+         * текста будет выдан при следующем обращении.
+         *
+         * Возможные значения индекс-регистра 14:
+         *     0 - ошибка, фрагмент не распознан
+         *     1 - восьмеричное (123в, 99d, -10в)
+         *     2 - целое (8000, -999)
+         *     3 - вещественное (3.62, -3.141е-3)
+         *     4 - идентификатор или текст в апострофах
+         *     5 - то же, но длиной > 12 символов
+         *     6 - пустой фрагмент
+         */
+        int addr = acc.r & 077777;
+        //int skip_spaces = (acc.r >> 15) & 1;
+        int star_slash_flag = (acc.r >> 16) & 1;
+        //int octal_flag = (acc.r >> 17) & 1;
+        int char_mode = (acc.r >> 18) & 1;
+        int m = (acc.r >> 20) & 15;
+        static ptr bp;
+        static int index;
+        static char ident[128];
+        static int ident_len;
+        unsigned long long value;
+        int negate = 0;
+
+        //printf ("*** e50_12: acc = %08o%08o\n", acc.l, acc.r);
+        if (m)
+                addr += reg[m];
+
+        if (addr != 0) {
+                bp.p_w = addr;
+                bp.p_b = 0;
+                index = 0;
+        } else {
+                /* Continue from current place. */
+                if (bp.p_w == 0) {
+                        /* Parse error. */
+                        reg[14] = 0;
+                        acc.r = acc.l = 0;
+                        //printf ("    --- Parse error\n");
+                        return E_SUCCESS;
+                }
+        }
+#if 0
+        ptr tp = bp;
+        while (tp.p_w != 0) {
+                int c = getbyte(&tp);
+                //printf ("-%03o", c);
+                printf ("%c", c ? c : '@');
+
+                if (c == 0 || c == 012)
+                        break;
+        }
+        printf ("\n");
+#endif
+        if (char_mode) {
+                /*
+                 * В режиме посимвольного сканирования текущий символ строки выдается на
+                 * сумматоре (прижат влево и дополнен пробелами) и в 1-8 разряды РМР.
+                 * В 25-33 разрядах РМР выдается номер позиции символа в строке.
+                 * Пробелы при необходимости поглощаются.
+                 *
+                 * Тип символа выдается в индекс-регистре 14:
+                 *     0 - конец строки ('000','012')
+                 *     1 - цифра (0 - 9)
+                 *     2 - буква (а-z-я, по заказу: /, *)
+                 *     3 - разделитель (не цифра и не буква)
+                 */
+                for (;;) {
+                        if (bp.p_w == 0) {
+                                /* Error */
+                                reg[14] = 0;
+                                acc.l = acc.r = 0;
+                                accex.l = index;
+                                accex.r = 0;
+                                //printf ("    --- Error\n");
+                                return E_SUCCESS;
+                        }
+                        int c = getbyte(&bp);
+                        index++;
+                        switch (c) {
+                        case 0:
+                        case 012:
+                                /* End of line */
+                                //printf ("    --- End of line, index = %u\n", index);
+                                reg[14] = 0;
+ret:
+                                acc.l = c<<16 | ' '<<8 | ' ';
+                                acc.r = ' '<<16 | ' '<<8 | ' ';
+                                accex.l = index;
+                                accex.r = c;
+                                return E_SUCCESS;
+
+                        case '0': case '1': case '2': case '3': case '4':
+                        case '5': case '6': case '7': case '8': case '9':
+                                /* Digit */
+                                reg[14] = 1;
+                                //printf ("    --- Digit = %d, index = %u\n", c-'0', index);
+                                goto ret;
+
+                        case '*':
+                        case '/':
+                                if (star_slash_flag)
+                                        goto letter;
+                                goto delimiter;
+
+                        default:
+                                if (IS_CHAR(c)) {
+letter:                                 reg[14] = 2;
+                                        //printf ("    --- Letter = '%c', index = %u\n", c, index);
+                                        goto ret;
+                                }
+delimiter:                      reg[14] = 3;
+                                //printf ("    --- Delimiter = '%c', index = %u\n", c, index);
+                                goto ret;
+                        }
+                }
+        }
+
+        for (;;) {
+                if (bp.p_w == 0) {
+                        /* Error */
+                        reg[14] = 0;
+                        acc.l = acc.r = 0;
+                        //printf ("    --- Error\n");
+                        return E_SUCCESS;
+                }
+                int c = getbyte(&bp);
+                index++;
+                switch (c) {
+                case 0:
+                case 012:
+                        /* Empty fragment */
+empty:                  reg[14] = 6;
+                        acc.l = 0;
+                        acc.r = c;
+                        //printf ("    --- Delimiter = '%c'\n", c);
+                        return E_SUCCESS;
+
+                case ' ':
+                        continue;
+
+                case '0': case '1': case '2': case '3': case '4':
+                case '5': case '6': case '7': case '8': case '9':
+number:                 value = c - '0';
+                        for (;;) {
+                                c = getbyte(&bp);
+                                index++;
+
+                                if (!IS_DIGIT(c))
+                                        break;
+
+                                /* Currently only octal numbers are supported. */
+                                value = (value << 3) + (c - '0');
+                        }
+                        if (negate)
+                                value = -value;
+
+                        /* Return value, delimiter and it's index */
+                        reg[14] = 1;
+                        acc.l = value >> 24;
+                        acc.r = value & 0xffffff;
+                        accex.l = index;
+                        accex.r = c;
+                        //printf ("    --- Number = %#jo, delimiter = '%c', index = %u\n", (intmax_t)value, c, index);
+                        return E_SUCCESS;
+
+                case '-':
+                        c = peekbyte(&bp);
+                        if (IS_DIGIT(c)) {
+                                negate = 1;
+                                goto number;
+                        }
+                        c = '-';
+                        goto empty;
+
+                case '*':
+                case '/':
+                        if (star_slash_flag)
+                                goto ident;
+                        goto empty;
+
+                default:
+                        if (!IS_CHAR(c))
+                                goto empty;
+
+                        /* Get identifier */
+ident:                  ident[0] = c;
+                        ident_len = 1;
+                        memset(ident + 1, ' ', sizeof(ident) - 1);
+                        while (ident_len < sizeof(ident)) {
+                                c = getbyte(&bp);
+                                index++;
+
+                                if (!IS_CHAR(c) && !IS_DIGIT(c) &&
+                                    (!star_slash_flag || (c != '*' && c != '/')))
+                                        break;
+
+                                /* Currently only octal numbers are supported. */
+                                ident[ident_len++] = c;
+                        }
+
+                        /* Only short identifier are supported for now */
+                        reg[14] = 4;
+                        acc.l = ident[0] << 16 | ident[1] << 8 | ident[2];
+                        acc.r = ident[3] << 16 | ident[4] << 8 | ident[5];
+                        accex.l = ident[6] << 16 | ident[7] << 8 | ident[8];
+                        accex.r = ident[9] << 16 | ident[10] << 8 | ident[11];
+                        //printf ("    --- Identifier = '%.*s'\n", ident_len, ident);
+                        return E_SUCCESS;
+                }
+        }
+}
+
+/*
+ * Э50 К, где К = 13, 14, 15 - форматные преобразования из двоичного кода в ISO.
+ *
+ * Информация на сумматоре:
+ *      25-39, 45-48 - индексир.адрес binary
+ *      1-15, 21-24 - индексир.адрес выходной строки или 0, если результат
+ *              пишется с текущей позиции выходной строки.
+ *      40-44 - N: число позиций для размещения полученного текстового фрагмента.
+ *      16-19 - М: число цифр мантиссы.
+ *      20    - Т: тип нормализации текста числа внутри своего N-поля
+ *              (1 - вправо, 0 - влево).
+ *
+ * Результат работы для всех трех экстракодов: сумматор - длина
+ * выходной строки в символах, и.р.14 = 1, если превышен размер поля,
+ * иначе и.р.14 = 0. В каждый момент времени последнее
+ * слово выходной строки дополнено до конца пробелами.
+ */
+int
+e50_13(void)
+{
+        /*
+         * К=13 - спецификация Н: перенос в выходную строку N символов входной
+         * строки вinаrу. Т несущественно. При М=0 символы с кодами <40в
+         * заменяются на пробелы.
+         */
+        int src_addr = acc.l & 077777;
+        int dst_addr = acc.r & 077777;
+        int src_r = (acc.l >> 20) & 15;
+        int dst_r = (acc.r >> 20) & 15;
+        int n = (acc.l >> 15) & 0x1f;
+        int m = (acc.r >> 15) & 0x0f;
+
+        if (src_r)
+                src_addr += reg[src_r];
+        if (dst_r)
+                dst_addr += reg[dst_r];
+
+        printf ("*** e50_13: acc = %08o%08o, src = %05o, dst = %05o, n/m/t = %d/%d\n",
+                acc.l, acc.r, src_addr, dst_addr, n, m);
+        //TODO
+        return E_UNIMP;
+}
+
+int
+e50_14(void)
+{
+        /*
+         * К=14 - спецификация О: преобразование вinаrу по формату О<n>
+         * со вставкой одного пробела после каждых м восьмеричных цифр.
+         */
+        int src_addr = acc.l & 077777;
+        int dst_addr = acc.r & 077777;
+        int src_r = (acc.l >> 20) & 15;
+        int dst_r = (acc.r >> 20) & 15;
+        int n = (acc.l >> 15) & 0x1f;
+        //TODO: int m = (acc.r >> 15) & 0x0f;
+        int right_align = (acc.r >> 19) & 1;
+        char buf[64];
+        int i;
+        static ptr bp;
+
+        if (src_r)
+                src_addr += reg[src_r];
+        if (dst_r)
+                dst_addr += reg[dst_r];
+
+        //printf ("*** e50_14: acc = %08o%08o, src = %05o, dst = %05o, n/m/t = %d/%d/%d\n",
+        //      acc.l, acc.r, src_addr, dst_addr, n, m, right_align);
+
+        if (dst_addr != 0) {
+                bp.p_w = dst_addr;
+                bp.p_b = 0;
+        } else {
+                /* Continue from current place. */
+                if (bp.p_w == 0) {
+                        /* Error. */
+                        reg[14] = 1;
+                        acc.r = acc.l = 0;
+                        //printf ("    --- Error\n");
+                        return E_SUCCESS;
+                }
+        }
+
+        word_t *wp = &core[src_addr];
+        uint64_t w = (uint64_t) wp->w_b[0] << 40 | (uint64_t) wp->w_b[1] << 32 |
+                (uint) wp->w_b[2] << 24 | (uint) wp->w_b[3] << 16 |
+                wp->w_b[4] << 8 | wp->w_b[5];
+
+        snprintf(buf, sizeof(buf), "%016jo", (intmax_t)w);
+        //printf ("    --- value = %s\n", buf);
+
+        /* Right align */
+        if (right_align)
+                for (i=16; i<n; i++)
+                        putbyte(&bp, ' ');
+
+        /* Print N digits */
+        char *p = buf;
+        if (n < 16)
+                p += 16 - n;
+        for (i=0; i<n && i<16; i++)
+                putbyte(&bp, *p++);
+
+        /* Left align */
+        if (!right_align)
+                for (i=16; i<n; i++)
+                        putbyte(&bp, ' ');
+
+        /* Fill last word with spaces */
+        while (bp.p_b != 0)
+                putbyte(&bp, ' ');
+
+        reg[14] = 0;
+        acc.r = n;
+        acc.l = 0;
+        return E_SUCCESS;
+}
+
+int
+e50_15(void)
+{
+        /*
+         * К=15 - спецификация G: преобразование по формату I<N> если М=0,
+         * иначе по формату F<N>.<М>, а если не влезаем в размер поля, то
+         * по формату Е<N>.<М>. Если задано М>12, число безусловно
+         * выдается по Е-формату.
+         */
+        int src_addr = acc.l & 077777;
+        int dst_addr = acc.r & 077777;
+        int src_r = (acc.l >> 20) & 15;
+        int dst_r = (acc.r >> 20) & 15;
+        int n = (acc.l >> 15) & 0x1f;
+        int m = (acc.r >> 15) & 0x0f;
+        int right_align = (acc.r >> 19) & 1;
+
+        if (src_r)
+                src_addr += reg[src_r];
+        if (dst_r)
+                dst_addr += reg[dst_r];
+
+        printf ("*** e50_15: acc = %08o%08o, src = %05o, dst = %05o, n/m/t = %d/%d/%d\n",
+                acc.l, acc.r, src_addr, dst_addr, n, m, right_align);
+        //TODO
+        return E_UNIMP;
+}
+
+
+
+int
+e50_76(void)
+{
+        int addr = acc.r & 077777;
+        static ptr tp;
+
+        tp.p_w = addr;
+        tp.p_b = 0;
+        int c;
+
+        while (tp.p_w != 0) {
+                c = getbyte(&tp);
+                c = toupper(c);
+
+                printf ("%c", (c > 037) ? c : '@');
+
+                if (c == 0 || c == 012)
+                        break;
+        }
+        printf ("\n");
+        return (E_SUCCESS);
+}
+
+/*
+ * Тома, захваченные экстракодом Э50 0157 в монопольное владение.
+ * Захват относится к набору данных и держится до конца задачи или до
+ * явного освобождения Э50 0116, поэтому отказ от МЛ/МД (Э72 с кодом 020)
+ * его не снимает.
+ */
+static uchar e50_157_locked[NDISKS];
+
+/*
+ * Разбор номера тома из младших 16 разрядов acc.r (двоично-десятичный).
+ * Возвращает 0 и записывает номер в *diskno либо -1 при ошибке.
+ */
+static int
+bcd_volume(int *diskno)
+{
+        unsigned bcd = acc.r & 0xffff;
+
+        if (((bcd >> 12) & 0xf) > 9 || ((bcd >> 8) & 0xf) > 9 ||
+            ((bcd >> 4) & 0xf) > 9 || (bcd & 0xf) > 9)
+                return -1;
+        *diskno = ((bcd >> 12) & 0xf) * 1000 + ((bcd >> 8) & 0xf) * 100 +
+                ((bcd >> 4) & 0xf) * 10 + (bcd & 0xf);
+        if (*diskno < 1 || *diskno > 4095)
+                return -1;
+        return 0;
+}
+
+int
+e50_157(void)
+{
+        /*
+         * Э50 0157 — запрос тома в монопольное владение с кодом ответа.
+         * Информационное слово в ACC: младшие 16 разрядов (acc.r & 0xffff) —
+         * номер тома в двоично-десятичном виде.  Пакетный диспак
+         * однопользовательский: конкурирующих задач нет, поэтому захват
+         * всегда успешен, если том существует.
+         * Ответ: 0 — том захвачен текущей задачей, 1 — ошибка.
+         */
+        unsigned u;
+        int diskno;
+
+        if (bcd_volume(&diskno))
+                goto bad;
+
+        /* Том уже привязан к какому-либо логическому каналу? */
+        for (u = 030; u < 070; ++u) {
+                if (disks[u].diskno == diskno) {
+                        e50_157_locked[u] = 1;
+                        acc.l = 0;
+                        acc.r = 0;
+                        return E_SUCCESS;
+                }
+        }
+
+        /* Ищем свободный логический канал. */
+        for (u = 030; u < 070; ++u)
+                if (!disks[u].diskh && !disks[u].diskno)
+                        break;
+        if (u >= 070)
+                goto bad;
+
+        if (!(disks[u].diskh = disk_open(diskno, DISK_READ_WRITE)))
+                goto bad;
+        disk_close(disks[u].diskh);
+        disks[u].diskh = 0;
+        disks[u].diskno = diskno;
+        disks[u].offset = 0;
+        disks[u].mode = DISK_READ_WRITE;
+        e50_157_locked[u] = 1;
+
+        acc.l = 0;
+        acc.r = 0;
+        return E_SUCCESS;
+
+bad:
+        acc.l = 0;
+        acc.r = 1;
+        return E_SUCCESS;
+}
+
+/*
+ * Э50 0116 — освобождение набора данных (отказ от монопольного
+ * владения).  Идентификатор НД — тот же BCD-номер тома в младших
+ * 16 разрядах acc.r, что и у 0157.  Для незахваченного НД экстракод
+ * игнорируется; сам том остаётся привязанным к каналу.
+ */
+int
+e50_116(void)
+{
+        unsigned u;
+        int diskno;
+
+        if (bcd_volume(&diskno))
+                return E_SUCCESS;
+        for (u = 030; u < 070; ++u)
+                if (disks[u].diskno == diskno)
+                        e50_157_locked[u] = 0;
+        return E_SUCCESS;
+}
+
+/*
+ * Признак архивного тома (Э50 0166).
+ *
+ * В ОС ДИСПАК том, занесённый в состав архива, несёт в паспорте
+ * признак, защищающий его от прямого обращения экстракодом обмена
+ * (руководство системного программиста, п. 8.6.1 "УСТСНЯ"); установка,
+ * снятие и выдача признака выполняются экстракодом Э50 0166
+ * (ИР 050, АИСП=166(8), И15 = 0/1/2, номер тома в 16-1 разрядах СМ).
+ *
+ * В паспорте тома (логическая зона 0) признак хранится байтом 4
+ * слова 0007: 0 - не архивный, 2 - архивный (значение в реальных
+ * томах АРФА 2095/2096).  Экстракод обмена Э70 с томом, имеющим
+ * признак, завершается ошибкой E_CWERR.
+ */
+#define ARFA_PASS_BYTE  (6*0007 + 4)    /* байт признака в зоне 0 */
+#define ARFA_PASS_SET   0x02            /* признак установлен */
+
+static unsigned arfa_flag_disk;         /* том, для которого известен признак */
+static uchar    arfa_flag_val;
+static uchar    arfa_flag_known;
+
+/* Чтение признака архивного тома из паспорта (зона 0).  0 - успех. */
+static int
+arfa_flag_get (unsigned diskno, unsigned char *flag)
+{
+        void * disk = disk_open (diskno, DISK_READ_ONLY);
+        unsigned char data [ZONE_SIZE];
+
+        if (! disk)
+                return -1;
+        if (disk_readi (disk, 0, (char*) data, NULL, NULL,
+                        DISK_MODE_QUIET) != DISK_IO_OK) {
+                disk_close (disk);
+                return -1;
+        }
+        disk_close (disk);
+        *flag = data [ARFA_PASS_BYTE];
+        return 0;
+}
+
+/* Признак установлен?  (с кэшированием последнего чтения) */
+static int
+arfa_protected (unsigned diskno)
+{
+        if (! arfa_flag_known || arfa_flag_disk != diskno) {
+                if (arfa_flag_get (diskno, &arfa_flag_val))
+                        arfa_flag_val = 0;
+                arfa_flag_disk = diskno;
+                arfa_flag_known = 1;
+        }
+        return arfa_flag_val == ARFA_PASS_SET;
+}
+
+/*
+ * Э50 0166 - занесение/уничтожение/выдача признака архивного тома.
+ * СМ (16-1 разряды) - номер тома в двоично-десятичном виде;
+ * И15: 0 - занести признак, 1 - уничтожить, 2 - выдать.
+ * Ответ на запрос (И15=2): СМ = 0 (не архивный) или 1 (архивный).
+ */
+static int
+e50_166 (void)
+{
+        unsigned char data [ZONE_SIZE], convol [1024];
+        int num, op = reg [15] & 3;
+        void * disk;
+
+        if (getenv ("BESM6_ARFA_DEBUG"))
+                fprintf (stderr, "Э50 0166: И15=%o СМ=%o_%o\n",
+                        reg [15], acc.l, acc.r);
+        if (bcd_volume (& num))
+                return E_CWERR;
+        if (op == 2) {                  /* выдача признака */
+                unsigned char flag = 0;
+                if (! arfa_flag_get (num, &flag))
+                        arfa_flag_val = flag, arfa_flag_disk = num,
+                        arfa_flag_known = 1;
+                acc.l = 0;
+                acc.r = (flag == ARFA_PASS_SET) ? 1 : 0;
+                return E_SUCCESS;
+        }
+        /* занести / уничтожить признак: правка паспорта (зона 0) */
+        if (! (disk = disk_open (num, DISK_READ_WRITE)))
+                return E_SUCCESS;       /* том недоступен - правки нет */
+        if (disk_readi (disk, 0, (char*) data, NULL, NULL,
+                        DISK_MODE_QUIET) != DISK_IO_OK) {
+                disk_close (disk);
+                return E_SUCCESS;
+        }
+        data [ARFA_PASS_BYTE] = (op == 0) ? ARFA_PASS_SET : 0;
+        memset (convol, 1, sizeof (convol));    /* слова данных */
+        if (disk_writei (disk, 0, (char*) data, (char*) convol, NULL,
+                        DISK_MODE_QUIET) != DISK_IO_OK) {
+                disk_close (disk);
+                return E_INT;
+        }
+        disk_close (disk);
+        arfa_flag_val = data [ARFA_PASS_BYTE];
+        arfa_flag_disk = num;
+        arfa_flag_known = 1;
+        return E_SUCCESS;
+}
+
+int
+e50(void)
+{
+        switch (reg[016]) {
+        case 0:
+                return elfun(EF_SQRT);
+        case 1:
+                return elfun(EF_SIN);
+        case 2:
+                return elfun(EF_COS);
+        case 3:
+                return elfun(EF_ARCTG);
+        case 4:
+                return elfun(EF_ARCSIN);
+        case 5:
+                return elfun(EF_ALOG);
+        case 6:
+                return elfun(EF_EXP);
+        case 7:
+                return elfun(EF_ENTIER);
+        case 014:       /* Text line decoder, OS Dubna specific */
+                return e50_12();
+        case 015:       /* Binary to string, OS Dubna specific */
+                return e50_13();
+        case 016:       /* Binary to octal string, OS Dubna specific */
+                return e50_14();
+        case 017:       /* Binary to decimal/float string, OS Dubna specific */
+                return e50_15();
+        case 067:       /* DATE*, OS Dubna specific */
+                acc.l = 077077774; /* mask */
+                acc.r = 0;
+                return E_SUCCESS;
+        case 074:       /* OS Dubna specific */
+                /* Looks like setting up an address to jump on error. */
+                return E_SUCCESS;
+
+        case 076:       /* OS Dubna specific */
+                /* Term OUTPUT */
+                return e50_76();
+
+        case 0100:      /* get account id */
+                acc = user;
+                return E_SUCCESS;
+        case 0101:      /* get error code */
+                acc.ml = 0;
+                acc.mr = lasterr;
+                return E_SUCCESS;
+        case 0102:      /* set number of exceptions to catch */
+                ninter = (acc.r & 0177) + 1;
+                return E_SUCCESS;
+        case 0103:      /* set exception handler address */
+                intercept = ADDR(acc.r);
+                ninter = 1;
+                return E_SUCCESS;
+        case 0104:
+        case 0106:
+        case 0107:      /*  get user name from user ID */
+            return E_UNIMP;
+        case 0105:      /* get volume number by handle */
+                acc.l = 0;
+                {
+                        unsigned        u = (acc.r >> 12) & 077;
+                        if (disks[u].diskno)
+                                acc.r = to_2_10(disks[u].diskno);
+                        else if (!disks[u].diskh)
+                                acc.r = 0;
+                        else
+                                acc.r = 077777;
+                }
+                return E_SUCCESS;
+        case 0112: {    /* set volume offset */
+                uint unit = (acc.r >> 12) & 077;
+                /* set volume offset in zones for tapes,
+                 * in chunks of 040 blocks for disks
+                 */
+                disks[unit].offset =
+                        (SMALL_DISKS() || disks[unit].diskno < 2048 ? acc.r : acc.r << 5) & 07777;
+                return E_SUCCESS;
+        }
+        case 0113: {    /* get current offset */
+                uint unit = (acc.r >> 12) & 077;
+                acc.l = disks[unit].offset;
+                if (disks[unit].diskno >= 2048 && !SMALL_DISKS())
+                        acc.l >>= 5;
+                acc.r = 0;
+                return E_SUCCESS;
+        }
+        case 0114: {    /* get date */
+                time_t t;
+                struct tm * d;
+                time(&t);
+                d = localtime(&t);
+                ++d->tm_mon;
+                acc.l = (d->tm_mday / 10) << 9 |
+                        (d->tm_mday % 10) << 5 |
+                        (d->tm_mon / 10) << 4  |
+                        (d->tm_mon % 10);
+                acc.r = (d->tm_year % 10) << 20 |
+                        ((d->tm_year / 10) % 10) << 16 |
+                        1;
+                return E_SUCCESS;
+        }
+        case 0115: case 0116:   /* grab/release a volume */
+                return E_SUCCESS;
+        case 0121:              /* specify volume password */
+                return E_SUCCESS;
+        case 0127:              /* query presence of passwords */
+                acc.r = acc.l = 0;
+                return E_SUCCESS;
+        case 0130: {            /* read control words of a zone; imitation */
+            ushort addr = ADDR(((acc.l >> 6) & 037) * 02000);
+                alureg_t t;
+                t.l = t.r = 0;
+                STORE(t, addr + 2);
+                STORE(t, addr + 3);
+                STORE(t, addr + 6);
+                STORE(t, addr + 7);
+                t.l = 01370707;
+#define BCDDISK(d)      (((d)/1000) << 12 | ((d)/100%10) << 8 | \
+                        ((d)/10%10) << 4  | (d)%10)
+                t.r = BCDDISK(disks[(acc.r >> 12) &077].diskno) << 12;
+                STORE(t, addr + 1);
+                STORE(t, addr + 5);
+                t.r = 0;
+                t.l = ((acc.r & 07777)+4) << 13;
+                STORE(t, addr);
+                t.l = ((acc.r & 07777)+4) << 13 | (1 << 12);
+                STORE(t, addr+4);
+        }       return E_SUCCESS;
+        case 0131: {            /* attach volume to handle */
+                unsigned        u;
+
+                u = acc.l >> 18;
+                if ((((acc.l >> 12) &  077) != 077) | (u < 030) | (u > 067))
+                        return E_CWERR;
+                acc.l = 0;
+                if (disks[u].diskh || disks[u].diskno) {
+                        acc.r = 3;
+                        return E_SUCCESS;
+                }
+                disks[u].diskno = NDISK(acc.r);
+                disks[u].mode = acc.r & 0x10000 ? DISK_READ_ONLY : DISK_READ_WRITE;
+                if (!(disks[u].diskh = disk_open(disks[u].diskno, disks[u].mode))) {
+                        acc.r = 1;
+                        disks[u].diskno = 0;
+                        return E_SUCCESS;
+                }
+                disk_close(disks[u].diskh);
+                disks[u].diskh = 0;
+                disks[u].offset = 0;
+                acc.r = 0;
+                return E_SUCCESS;
+        }
+        case 0135:      /* get phys. number of a console */
+                return E_SUCCESS;
+        case 0136:      /* undocumented */
+                return E_SUCCESS;
+        case 0137:      /* undocumented */
+                return E_SUCCESS;
+
+        case 0156: { /* get volume type */
+                int i = disks[(acc.r >> 12) & 077].diskno;
+                acc.l = 0;
+                if (i == 0)
+                        acc.r = 077777;
+                else if (i >= 2048)
+                        /* pretend that the disks are 29.5 Mb */
+                        acc.r = 1;
+                else
+                        /* BESM-6 tape, type code 41 decimal (051 octal) -
+                         * as returned by the real ДИСПАК monitor; the golden
+                         * GOST program checks tip=41 for "лента типа БЭСМ" */
+                        acc.r = 051;
+                return E_SUCCESS;
+        }
+        case 0157:      /* request volume in exclusive ownership, with answer code */
+                return e50_157();
+        case 0165:      /* BESM owner + version + sys. disk info */
+                acc.l = GOST_B << 8 | GOST_EL;
+                acc.r = GOST_A << 16 | GOST_DE << 8 | GOST_E;
+                accex.l = GOST_EL << 16 | GOST_E << 8 | GOST_TSE;
+                accex.r = GOST_REVERSE_E << 16 | GOST_B << 8 | GOST_M;
+                reg[016] = 0x222;
+                reg[015] = 2053;
+                return E_SUCCESS;
+        case 0166:      /* признак архивного тома */
+                return e50_166 ();
+        case 0177:      /* resource request     */
+                acc.l = acc.r = 0;
+                return E_SUCCESS;
+        case 0200:      /* page status  */
+                acc.l = acc.r = 0;      /* present */
+                return E_SUCCESS;
+        case 0202:      /* get error description */
+                {
+                        uchar           *sp, *dp;
+                        unsigned        di;
+
+                        if (acc.r > E_MAX)
+                                acc.r = 0;
+                        sp = (uchar*) _(errtxt[acc.r]);
+                        dp = core[reg[015]].w_b;
+                        for (di = 0; di < 18; ++di)
+                                *dp++ = *sp ? utf8_to_gost(&sp) : GOST_SPACE;
+                }
+                return E_SUCCESS;
+        case 01206: {
+                void * h = disk_open(NDISK(acc.r), DISK_READ_ONLY);
+                if (h) {
+                        acc.r = 1;
+                        disk_close(h);
+                } else acc.r = 0;
+        }        return E_SUCCESS;
+        case 01207:
+                return E_SUCCESS;
+        case 01211:     /* plotter output (64 words starting from the address on acc) */
+               if (reg[3] == 071717) {
+                static FILE * plot = NULL;
+                int i;
+                ptr txt;
+                txt.p_w = ADDR(acc.r);
+                txt.p_b = 0;
+                if (plot == NULL) {
+                        plot = fopen("plot.dat", "w");
+                        if (!plot) {
+                                perror("Cannot open plot.dat\n");
+                                exit(1);
+                        }
+                }
+                for (i = 0; i < 64; ++i) {
+                        unsigned long long v = getword(&txt);
+                        int j;
+                        for (j = 7; j >= 0; --j) {
+                                int val = (v >> (j*6)) & 077;
+                                fprintf(plot, "%02o ", val);
+                        }
+                        fputc('\n', plot);
+                }
+                fflush(plot);
+        } return E_SUCCESS;
+        case 01212:     /* discard print stream */
+                return E_SUCCESS;
+        case 07700:     /* set alarm */
+                if (!(acc.r & 0x7fff)) {
+                        struct itimerval        itv = {{0, 0}, {0, 0}};
+                        setitimer(ITIMER_REAL, &itv, NULL);
+                        return E_SUCCESS;
+                }
+                if (!ehandler || (acc.l != 0xffffff))
+                        usleep((acc.r & 0x7fff) * 80000);
+                else {
+                        struct itimerval        itv = {{0, 0}, {0, 0}};
+                        itv.it_value.tv_usec = (acc.r & 0x7fff) * 80000;
+                        setitimer(ITIMER_REAL, &itv, NULL);
+                }
+                return E_SUCCESS;
+        case 07701:     /* form new task */
+                exform();
+                return E_SUCCESS;
+        case 07702:     /* where am I? for position-independent code */
+                acc.l = 0;
+                acc.r = reg[016] = pc;
+                return E_SUCCESS;
+        default:
+                fprintf(stderr, "E50 %04o\n", reg[016]);
+                return E_UNIMP;
+        }
+}
+
+int
+eexit(void)
+{
+    if (intercept_mask & INTERCEPT_E74) {
+        return intercept_ex(INTERCEPT_E74);
+    }
+        if (exitaddr) {
+                JMP(exitaddr);
+                return E_SUCCESS;
+        }
+        return E_TERM;
+}
+
+int
+e62(void)
+{
+        unsigned        u;
+        alureg_t        r;
+        int             e;
+
+        switch (reg[016]) {
+        case 0:         /* unconditional termination */
+                return E_TERM;
+        case 0042:      /* flush output stream, but we don't */
+                return E_SUCCESS;
+        case 0044:      /* cancel output stream, but we don't */
+                return E_SUCCESS;
+        case 0053:      /* set extracode intercept mask, we feign sucess */
+                acc.l = 0;
+                acc.r = 077777;
+                return E_SUCCESS;
+        case 0055:      /* get error catcher address */
+                acc.l = 0;
+                acc.r = 040000000;
+                return E_SUCCESS;
+        case 0057:      /* acquire a terminal by number */
+                if (dd_debug ())
+                        fprintf(stderr, "Acquiring terminal %08o %08o\n", acc.l, acc.r);
+                acc.l = 0;
+                acc.r = 077777;
+                return E_SUCCESS;
+        case 0076:      /* drop incognito */
+                return E_SUCCESS;
+        case 0102:      /* stop reading from terminal */
+                return E_SUCCESS;
+        case 0103:      /* get logical console number by physical */
+                acc.l = acc.r = 0;
+                return E_SUCCESS;
+        case 0120:      /* undocumented */
+                return E_SUCCESS;
+        case 0123:      /* enable-disable punching */
+                return E_SUCCESS;
+        case 0124:      /* as e70 but with control word in ACC (unsafe) */
+                LOAD(r, 1);
+                STORE(acc, 1);
+                reg[016] = 1;
+                e = ddio();
+                STORE(r, 1);
+                return e;
+        case 0131:      /* system volume information */
+                acc.l = 2;
+                acc.r = (5<<8)+3;
+                accex = acc;
+                return E_SUCCESS;
+        default:        /* set volume offset or close volume */
+                u = reg[016] >> 9;
+                if ((u >= 030) && (u < 070)) {
+                        if (!disks[u].diskno)
+                                return E_SUCCESS;
+                        if ((disks[u].offset = reg[016] & 0777) == 0777) {
+                                if (disks[u].diskh)
+                                        disk_close(disks[u].diskh);
+                                disks[u].diskh = 0;
+                                disks[u].diskno = 0;
+                        }
+                        return E_SUCCESS;
+                }
+                return E_UNIMP;
+        }
+}
+
+/*
+ * Константа 'КЛЮЧАР' в коде УПП (ГОСТ-10859):
+ * К=052 Л=053 Ю=075 Ч=067 А=040 Р=060.
+ */
+#define ARFA_KEY_L      052053075
+#define ARFA_KEY_R      067040060
+
+/* Текст "777777" (отмена ограничения времени) в коде УПП. */
+#define E63_CANCEL_L    0007007007
+#define E63_CANCEL_R    0007007007
+
+/* Установленное ограничение времени решения (Э63 2 и 3). */
+static int    e63_limit_set;
+static double e63_limit;
+
+/*
+ * Разбор текста "ЧЧММСС" с сумматора (шесть ГОСТ-цифр).
+ * Возвращает интервал в секундах или -1 при ошибке.
+ */
+static int
+e63_parse_time (void)
+{
+        int dig [6], i;
+        uint v [2] = { acc.l, acc.r };
+
+        for (i = 0; i < 6; ++i) {
+                int byte = i < 3 ? (int) (v [0] >> (16 - 8*i)) :
+                        (int) (v [1] >> (16 - 8*(i-3)));
+                byte &= 0xff;
+                if (byte < GOST_0 || byte > GOST_9)
+                        return -1;
+                dig [i] = byte - GOST_0;
+        }
+        if (dig [1] > 5 || dig [3] > 5)
+                return -1;
+        return ((dig [0] * 10 + dig [1]) * 3600 +
+                (dig [2] * 10 + dig [3]) * 60 +
+                dig [4] * 10 + dig [5]);
+}
+
+/*
+ * Установка/смена/снятие ограничения времени решения (Э63 2 и 3).
+ * Возбуждение авоста ИСТЕКЛО ВРЕМЯ ПО ЭК не эмулируется.
+ */
+static void
+e63_set_limit (int t, int reserve)
+{
+        struct timeval ct;
+        double now;
+
+        gettimeofday (&ct, NULL);
+        now = TIMEDIFF (start_time, ct) - excuse;
+        if (t < 0 || (double) t > 3600.0 - now) {
+                acc.l = acc.r = 0;         /* превышает оставшееся */
+                return;
+        }
+        e63_limit_set = 1;
+        e63_limit = reserve ? 3600.0 - t : now + t;
+}
+
+int
+arfa(void)
+{
+    int addr = reg[016];
+    alureg_t arg;
+    LOAD(arg, addr);
+    reg[016] = 0;
+    switch (arg.l >> 18) {
+    case 016:                   /* admin password confirmation */
+        break;
+    case 065: {                 /* reading main archive volume */
+        void * h;
+        int page, zone, r;
+        h = disk_open(2248, DISK_READ_ONLY);
+        if (!h) {
+            if (dd_debug ())
+                fprintf(stderr, "No archive volume 2248\n");
+            return E_UNIMP;
+        }
+        page = (arg.l >> 6) & 037;
+        zone = arg.r & 07777;
+        r = disk_readi(h, zone, (char *)(core + page*02000), (char *)convol + (page*02000), NULL, DISK_MODE_QUIET);
+        disk_close(h);
+        return r == DISK_IO_OK ? E_SUCCESS : E_DISKERR;
+    } break;
+    default:
+        return E_UNIMP;
+    }
+    return E_SUCCESS;
+}
+
+int
+e63(void)
+{
+        struct timeval  ct;
+
+        /* Архивная система: на СМ - константа 'КЛЮЧАР',
+         * в адресной части - адрес информационных слов. */
+        if (acc.l == ARFA_KEY_L && acc.r == ARFA_KEY_R)
+                return arfa_e63 ();
+
+        switch (reg[016]) {
+        case 0: /* время до конца решения задачи в виде float */
+                acc.l = 0xd00000;
+                acc.r = 3600;
+                return E_SUCCESS;
+        case 1: {     /* печать времени счета задачи */
+                char    buf [80];
+                uchar   gbuf [80];
+                uchar   *p;
+                int     n = 0;
+                double  used;
+                uint    secs, intr;
+
+                if (! pout_enable)
+                        return E_SUCCESS;
+                gettimeofday(&ct, NULL);
+                used = TIMEDIFF(start_time, ct) - excuse;
+                if (used < 0)
+                        used = 0;
+                /* целые секунды - для детерминированности выдачи */
+                secs = (uint) used;
+                intr = secs * 50;   /* число прерываний по 20 мс */
+                snprintf (buf, sizeof (buf),
+                        "ВРЕМЯ СЧЕТА: %02d.%02d.%02d %o",
+                        secs / 3600, secs / 60 % 60, secs % 60, intr);
+                /* Перекодировка UTF-8 -> ГОСТ и печать. */
+                for (p = (uchar*) buf; *p && n < (int) sizeof (gbuf) - 1; )
+                        gbuf [n++] = utf8_to_gost (&p);
+                gost_write (gbuf, n, stdout);
+                putchar ('\n');
+                fflush (stdout);
+                return E_SUCCESS;
+        }
+        case 2:       /* ограничение времени решения / его отмена */
+                if (acc.l == E63_CANCEL_L && acc.r == E63_CANCEL_R) {
+                        e63_limit_set = 0;   /* отмена по "777777" */
+                        return E_SUCCESS;
+                }
+                if (e63_limit_set) {       /* прежнее не отменено */
+                        e63_limit_set = 0;
+                        return E_SUCCESS;
+                }
+                e63_set_limit (e63_parse_time (), 0);
+                return E_SUCCESS;
+        case 3:       /* резервирование времени на обработку авоста */
+                if (e63_limit_set)
+                        return E_SUCCESS;   /* игнорируется */
+                e63_set_limit (e63_parse_time (), 1);
+                return E_SUCCESS;
+        case 4:
+                gettimeofday(&ct, NULL);
+                acc.l = 0;
+                acc.r = (uint) (TIMEDIFF(start_time, ct) - excuse) * 50;
+                return E_SUCCESS;
+        default:
+                if (reg[016] > 7)
+                        return physaddr();
+                return E_UNIMP;
+        }
+}
+
+int parity(int byte)
+{
+        byte = (byte ^ (byte >> 4)) & 0xf;
+        byte = (byte ^ (byte >> 2)) & 0x3;
+        byte = (byte ^ (byte >> 1)) & 0x1;
+        return !byte;
+}
+
+/* get front panel switches */
+int
+e61(void)
+{
+        int             i;
+        ushort          addr;
+
+        for (addr = reg[016], i = 0; i < 7; ++i, ++addr)
+                STORE(zeroword, addr);
+        return E_SUCCESS;
+}
+
+int
+deb(void)
+{
+        alureg_t        r;
+
+        LOAD(r, reg[016]);
+        JMP(ADDR(r.l));
+        return E_SUCCESS;
+}
+
+void
+put_check_words(ushort u, ushort zone, ushort addr, int copy2_req) {
+        int i;
+        alureg_t t;
+        t.l = t.r = 0;
+        STORE(t, 010);  /* unit id + date */
+        STORE(user, 011); /* writing user id, use current */
+        /* volume numbers - assigned and physical */
+        t.l = disks[u].diskno << 6;
+        t.r = disks[u].diskno;
+        STORE(t, 012);
+        /* zone numbers and a magic key are duplicated */
+        t.l = 070707;
+        t.r = (2*zone + 010) << 12 | (2*zone + 010 + copy2_req);
+        STORE(t, 013);
+        STORE(t, 016);
+        /* last word of the zone - tech. legacy reasons */
+        LOAD(t, addr + 01777);
+        STORE(t, 015);
+        t.l = t.r = 0;
+        for (i = 0; i < 02000; i++) {
+                uint carry;
+                alureg_t s;
+                LOAD(s, addr + i);
+                t.r = (carry = t.r + s.r) & 0xffffff;
+                carry >>= 24;
+                t.l = (carry = t.l + s.l + carry) & 0xffffff;
+                carry >>= 24;
+                t.r = (carry = t.r + carry) & 0xffffff;
+                carry >>= 24;
+                t.l = (carry = t.l + carry) & 0xffffff;
+        }
+        STORE(t, 017);  /* checksum */
+}
+
+int
+ddio(void)
+{
+        ushort          addr = reg[016], u, zone;
+        ushort          sector = 0;
+        uinstr_t        uil, uir;
+        int             r;
+        static uchar    buf[6144];
+        static char     cvbuf[1024];
+        ushort          mask = getenv("BESM6_SMALL_DISKS") ? 01777 : 07777;
+        if (intercept_mask & INTERCEPT_E70) {
+            return intercept_ex(INTERCEPT_E70);
+        }
+        LOAD(acc, addr);
+        unpack(addr);
+        uil = uicore[addr][0];
+        uir = uicore[addr][1];
+        cwadj(&uil);
+        cwadj(&uir);
+        addr = (uil.i_addr & 03700) << 4;   // адрес листа
+        u = uir.i_opcode & 077;             // номер диска
+        /* Том с признаком архивного закрыт для прямого обмена (Э50 0166).
+         * Исключение - лог.номер, к которому Э63 подключил ОБЛАСТЬ архива:
+         * это санкционированный АРФОЙ доступ, он разрешён. */
+        if (u >= 030 && u < 070 && disks[u].diskno &&
+            ! arfa_area_unit (u) &&
+            arfa_protected (disks[u].diskno))
+                return E_CWERR;
+        if ((u < 030) || (u >= 070))
+                zone = uir.i_addr & 037;    // тракт барабана
+        else
+                zone = uir.i_addr & 07777;  // зона диска
+
+        ddisk_t * dd = disks + u;
+        if (dd_debug ())
+        {   /* отладка этапа 1: каждое УС Э70 с расшифровкой */
+            static int dumped45 = 0;
+            fprintf (stderr, "DD pc=%05o%c r016=%05o u=%02o z=%04o %s "
+                     "uil=%o/%o/%o uir=%o/%o/%o\n",
+                     pc, right ? 'R' : 'L', reg[016], u, zone,
+                     (uil.i_reg & 8) ? "SEC" : (uil.i_opcode & 010) ? "RD" : "WR",
+                     uil.i_opcode, uil.i_reg, uil.i_addr,
+                     uir.i_opcode, uir.i_reg, uir.i_addr);
+            if (u == 045 && !dumped45) {
+                int q;
+                dumped45 = 1;
+                fprintf (stderr, "--- CW 75500..75520 ---\n");
+                for (q = 075500; q < 075520; ++q) {
+                    unsigned long long v = 0;
+                    int b;
+                    for (b = 0; b < 6; ++b)
+                        v = (v << 8) | core[q].w_b [b];
+                    fprintf (stderr, "CW %05o %016llo\n", q, v);
+                }
+                fprintf (stderr, "--- CORE 12000..13400 (МОNRЕАD* pc 12203..) ---\n");
+                for (q = 012000; q < 013400; ++q) {
+                    unsigned long long v = 0;
+                    int b;
+                    for (b = 0; b < 6; ++b)
+                        v = (v << 8) | core[q].w_b [b];
+                    fprintf (stderr, "%05o %016llo\n", q, v);
+                }
+            }
+        }
+        /* Шаг 2ж (ГЛИССАДА): перенаправление чтения входного потока
+         * задачи (монread% идёт по шаблону УИР 45/0 на диск) на
+         * барабан-спул МОНЫ, куда та уже положила колоду с картами
+         * данных (Шаг 2е: буфер 76000 = спул, ISO-8бит, EOR).
+         * BESM6_LUN45_DRUM=барабан (восьм.), BESM6_LUN45_TRACT=тракт. */
+        {
+            static int l45_drum = -1, l45_tract = -1;
+            if (l45_drum < 0) {
+                const char *d = getenv ("BESM6_LUN45_DRUM");
+                const char *t = getenv ("BESM6_LUN45_TRACT");
+                l45_drum  = d ? (int) strtol (d, NULL, 8) : -1;
+                l45_tract = t ? (int) strtol (t, NULL, 8) : 0;
+            }
+            if (l45_drum >= 0 && u == 045) {
+                /* Шаг 6 (ГЛИССАДА): подсадка лист-конверта в барабан-спул
+                 * МОНЫ - в момент ПЕРВОГО redirect: спулирование МОНЫ
+                 * к этому времени завершено, конверт не затирается.
+                 * BESM6_DRUM_SEED=файл-заготовка; формат записи:
+                 * 1024 слова по 6 байт (BE) + 1024 байта конволюции;
+                 * запись k подсаживается на тракт (tract+k) барабана
+                 * BESM6_DRUM_SEED_DRUM (восьм., умолч. = LUN45_DRUM). */
+                static int seeded = 0;
+                if (! seeded) {
+                    /* Шаг 6-бис (ГЛИССАДА, план А2 п.11.9-2): позиционировать
+                     * указатель входного потока КCOUNT*[0600] на начало
+                     * конверта в буфере 76000 - МОНИТОР при старте задачи по
+                     * *execute НЕ ставит его на карты данных (п.11.7).
+                     * BESM6_LUN45_KCOUNT=адрес (восьм.). */
+                    const char *kc = getenv ("BESM6_LUN45_KCOUNT");
+                    if (kc) {
+                        ushort kv = (ushort) strtol (kc, NULL, 8);
+                        core [0600].w_b [4] = (kv >> 8) & 0xFF;
+                        core [0600].w_b [5] = kv & 0xFF;
+                        fprintf (stderr, "KCOUNT [0600] := %05o\n", kv);
+                    }
+                    const char *sf = getenv ("BESM6_DRUM_SEED");
+                    seeded = 1;
+                    if (sf) {
+                        const char *sd = getenv ("BESM6_DRUM_SEED_DRUM");
+                        int sdrum = sd ? (int) strtol (sd, NULL, 8) : l45_drum;
+                        int k, applied = 0;
+                        FILE *fp = fopen (sf, "rb");
+                        if (! fp)
+                            fprintf (stderr, "DRUM_SEED: cannot open %s\n", sf);
+                        else {
+                            char sbuf [6144], scvbuf [1024];
+                            for (k = 0; ; ++k) {
+                                if (fread (sbuf, 1, 6144, fp) != 6144 ||
+                                    fread (scvbuf, 1, 1024, fp) != 1024)
+                                    break;
+                                disk_writei (drumh,
+                                        disks [sdrum].offset + l45_tract + k,
+                                        sbuf, scvbuf, NULL, DISK_MODE_QUIET);
+                                ++applied;
+                            }
+                            fclose (fp);
+                            fprintf (stderr, "DRUM_SEED: %d tracts applied "
+                                     "(drum %02o tract %02o+)\n",
+                                     applied, sdrum, l45_tract);
+                        }
+                    }
+                }
+                u = l45_drum;
+                zone = l45_tract;
+                dd = disks + u;     /* dd уже назначен по старому u */
+                if (dd_debug ())
+                    fprintf (stderr, "LUN45 redirect -> u=%02o z=%04o\n",
+                             u, zone);
+            }
+        }
+        if (uil.i_opcode & 4) {         /* физобмен */
+                zone += (u - phdrum) * 040;
+                if (phys_dd.diskh) {
+                    // The disk LUN associated with the phys. drum has been relinquished.
+                    dd = &phys_dd;
+                } else {
+                    dd = disks + phys_dd.diskno; /* diskno is LUN here */
+                }
+        }
+        if (!dd->diskh) {
+            if (!dd->diskno) {
+                if (dd_debug ())
+                {
+                    /* отладка этапа 1: дамп МОNRЕАD* из памяти задачи */
+                    int q;
+                    fprintf (stderr, "ddio: E_CWERR u=%02o zone=%04o "
+                             "uil=%o reg=%o addr=%o / uir=%o addr=%o / "
+                             "pc=%05o right=%d r016=%05o\n",
+                             u, zone, uil.i_opcode, uil.i_reg, uil.i_addr,
+                             uir.i_opcode, uir.i_addr,
+                             pc, right, reg[016]);
+                    {
+                        int s0 = reg[016];
+                        int b2;
+                        for (b2 = 0; b2 < 4; ++b2) {
+                            unsigned long long v = 0;
+                            int b;
+                            for (b = 0; b < 6; ++b)
+                                v = (v << 8) | core[s0 + b2].w_b [b];
+                            fprintf (stderr, "CW %05o %012llo\n", s0 + b2, v);
+                        }
+                    }
+                    fprintf (stderr, "--- CORE 12000..13400 (МОNRЕАД* pc 12203..) ---\n");
+                    for (q = 012000; q < 013400; ++q) {
+                        unsigned long long v = 0;
+                        int b;
+                        for (b = 0; b < 6; ++b)
+                            v = (v << 8) | core[q].w_b [b];
+                        fprintf (stderr, "%05o %012llo\n", q, v);
+                    }
+                    fprintf (stderr, "--- CORE SUP 100000..177777 ---\n");
+                    for (q = 0100000; q < 0200000; ++q) {
+                        unsigned long long v = 0;
+                        int b;
+                        for (b = 0; b < 6; ++b)
+                            v = (v << 8) | core[q].w_b [b];
+                        fprintf (stderr, "%05o %012llo\n", q - 0100000, v);
+                    }
+                }
+                return E_CWERR;
+            } else {
+                if (!(dd->diskh = disk_open(dd->diskno, dd->mode)))
+                        return E_INT;
+            }
+        }
+
+        if (uil.i_reg & 8) {                // секторный обмен
+               /* согласно ВЗУ и ХЛАМу, 36-й разряд означает, что номер "зоны"
+                * есть не номер тракта, а номер сектора (обмен по КУС).
+                */
+               if (uil.i_addr & 04000) {
+                 zone = uir.i_addr & 0177;
+                 sector = zone & 3;
+                 zone >>= 2;
+               } else {
+                 sector = (uir.i_addr >> 6) & 3;
+               }
+                r = disk_readi(dd->diskh,
+                        (zone + dd->offset) & 0xfff,
+                               (char *)buf, cvbuf, NULL, DISK_MODE_QUIET);
+                if (!(uil.i_opcode & 010)) {
+                        memcpy(
+                                buf + sector * 256 * 6,
+                                core + addr + (uil.i_addr & 3) * 256,
+                                256 * 6
+                        );
+                        memcpy(
+                               cvbuf + sector * 256,
+                               convol + addr + (uil.i_addr & 3) * 256,
+                               256
+                               );
+                        r = disk_writei(dd->diskh,
+                                (zone + dd->offset) & 0xfff,
+                                        (char *)buf, cvbuf, NULL, DISK_MODE_QUIET);
+                }
+        } else if (uil.i_opcode & 010) {    // чтение целой зоны
+                char cwords[48];
+                int iomode = DISK_MODE_QUIET;
+                if (uil.i_addr & 04000 && dd->diskno >= 2048) {
+                        /* листовой обмен с диском по КУС - физический номер зоны */
+                        iomode = DISK_MODE_PHYS;
+                }
+                r = disk_readi(dd->diskh,
+                        (zone + dd->offset) & mask,
+                               (char *)(core + addr), (char *)convol + addr, cwords, iomode);
+                if (uil.i_opcode & 1 && dd->diskno < 2048) {
+                        /* check words requested for tape */
+                        put_check_words(u, zone, addr, 0 != (uir.i_opcode & 0200));
+                } else if (uil.i_addr & 04000 && dd->diskno >= 2048) {
+                        /* copy disk check words to requested page */
+                        /* what should happen to the zone data? */
+                        memcpy((char*)(core + addr), cwords, 48);
+                }
+        } else {                            // запись целой зоны
+            r = disk_writei(dd->diskh,
+                            (zone + dd->offset) & mask,
+                            (char *)(core + addr), (char *)convol + addr, NULL, DISK_MODE_QUIET);
+        }
+        if (dd->diskno) {
+                disk_close(dd->diskh);
+                dd->diskh = 0;
+        }
+        if (r != DISK_IO_OK)
+                return E_DISKERR;
+        if (uil.i_reg & 8 && uil.i_opcode & 010) {
+                memcpy(core + addr + (uil.i_addr & 3) * 256,
+                       buf + sector * 256 * 6,
+                       256 * 6);
+                memcpy(convol + addr + (uil.i_addr & 3) * 256,
+                       cvbuf + sector * 256,
+                       256);
+                for (u = addr + (uil.i_addr & 3) * 256;
+                     u < addr + (uil.i_addr & 3) * 256 + 256; ++u)
+                        cflags[u] &= ~C_UNPACKED;
+        } else if (uil.i_opcode & 010) {
+                for (u = addr; u < addr + 1024; ++u)
+                        cflags[u] &= ~C_UNPACKED;
+                if (uil.i_opcode & 1)
+                        for (u = 010; u < 020; ++u)
+                                cflags[u] &= ~C_UNPACKED;
+        }
+        return E_SUCCESS;
+}
+
+#define E71BUFSZ (324*6)
+#define PUTB(c) *dp++ = (c)
+
+int
+ttout(uchar flags, ushort a1, ushort a2)
+{
+        uchar   *sp, *start;
+        start = sp = core[a1].w_b;
+        if (flags == 0220) {
+                /* output to operator's console - first char is channel num */
+                putchar(' ');
+                ++sp;
+        }
+        while ((sp - start < E71BUFSZ) && (sp - start < (a2 - a1 + 1) * 6)) {
+                if (flags & 1) {
+                        if (*sp == 0)
+                                break;
+                        /* bit 37 means raw I/O, but convert control chars to ANSI escapes */
+                        switch (*sp &0x7f) {
+                        case '\037': fputs("\033[H\033[J", stdout); break;      // clrscr
+                        case '\014': fputs("\033[H", stdout); break;            // home
+                        case '\031': fputs("\033[A", stdout); break;            // up
+                        case '\032': fputs("\033[B", stdout); break;            // down
+                        case '\030': fputs("\033[C", stdout); break;            // right
+                        case '\010': fputs("\033[D", stdout); break;            // left
+                        default:
+                                koi7_putc(*sp & 0x7f, stdout);
+                        }
+                } else
+                switch (*sp) {
+                case GOST_END_OF_INFORMATION:
+                case GOST_EOF:
+                        if (!(flags & 010)) {
+                                /* if not a prompt */
+                                putchar('\n');
+                        }
+                        goto done;
+                case GOST_CARRIAGE_RETURN:
+                        /* maybe should output backslash here ? */
+                case GOST_NEWLINE:
+                        putchar('\n');
+                        break;
+                case 0136:
+                        putchar('?');
+                        break;
+                case 0141:
+                case 0142:
+                        /* zero-width space */
+                        usleep (100000);
+                        break;
+                case 0143:
+                        /* ignored */
+                        break;
+                case 0146:
+                case 0170:
+                        /* non-destructive backspace */
+                        /* assuming ANSI compatibility */
+                        fputs("\033[D", stdout);
+                        break;
+                case 0171:
+                        /* move right - assuming ANSI compatibility */
+                        fputs("\033[C", stdout);
+                        break;
+                case 0176:
+                        /* move up - assuming ANSI compatibility */
+                        fputs("\033[A", stdout);
+                        break;
+                case 0177:
+                        /* move down - assuming ANSI compatibility */
+                        fputs("\033[B", stdout);
+                        break;
+                case 0162:
+                        /* erase */
+                        fputs("\033[H\033[J", stdout);
+                        break;
+                case 0167:
+                        /* home */
+                        fputs("\033[H", stdout);
+                        break;
+                case 021:
+                        if (flags == 0220) {
+                                /* up arrow is end of text for op. console */
+                                putchar('\n');
+                                goto done;
+                        }
+                        /* fall thru */
+                default:
+                        if (*sp <= 0134)
+                                gost_putc(*sp, stdout);
+                        else {
+                                printf("[%03o]", *sp);
+                        }
+                        break;
+                }
+                fflush(stdout);
+                ++sp;
+        }
+done:
+        fflush(stdout);
+
+        if (!(flags & 010))
+                (void) eraise(010);
+        return E_SUCCESS;
+}
+
+int
+ttin(uchar flags, ushort a1, ushort a2)
+{
+        uchar   buf[0324 * 6], *sp, *dp;
+
+        if (flags & 4)          /* non-standard prompt */
+                ttout(flags, a1, a2);
+        else
+                fputs("-\r", stdout);
+        fflush(stdout);
+        if (! fgets((char*) buf, sizeof(buf), stdin)) {
+                if (feof(stdin))
+                        return E_TERM;
+                perror("stdin");
+                return E_INT;
+        }
+        dp = core[a1].w_b;
+        sp = buf;
+        while (dp - core[a1].w_b < (a2 - a1 + 1) * 6) {
+                if (*sp == '\n') {
+                        /* End of line. */
+                        PUTB(flags & 1 ? 0 : GOST_EOF);
+                        break;
+                }
+                if (flags & 1) {
+                        /* Raw input. */
+                        PUTB (utf8_to_koi7(&sp));
+                } else
+                        PUTB (utf8_to_gost (&sp));
+        }
+        while ((dp - core[a1].w_b) % 6)
+                PUTB(0);
+        eraise(4);
+        return E_SUCCESS;
+}
+
+void punch_braille(FILE * fd, unsigned char * sp, int left) {
+    // Print 3 lines of 40 Braille characters per line representing a punchcard.
+    unsigned char bytes[3][40];
+    int line, col;
+    memset(bytes, 0, 120);
+    for (line = 0; line < 12; ++line) {
+        for (col = 0; col < 80; ++col) {
+            int idx = 1 + 12*line + (col>=40) + col/8;
+            int bit = idx >= left ? 0 : (sp[idx] >> (7-col%8)) & 1;
+            if (bit)
+                bytes[line/4][col/2] |= "\x01\x08\x02\x10\x04\x20\x40\x80"[line%4*2+col%2];
+        }
+    }
+    for (line = 0; line < 3; ++line) {
+        for (col = 0; col < 40; ++col) {
+            fprintf(fd, "\342%c%c", 0240+(bytes[line][col] >> 6), 0200 + (bytes[line][col] & 077));
+        }
+        putc('\n', fd);
+    }
+    putc('\n', fd);
+}
+
+int punch(ushort a1, ushort a2)
+{
+        static FILE * fd = 0;
+        unsigned char * sp;
+        int bytecnt = 0, max;
+        if (!punchfile)
+                return E_SUCCESS;
+        if (!fd) {
+                if (!(fd = fopen(punchfile, "w"))) {
+                        perror(punchfile);
+                        punchfile = 0;
+                        return E_UNIMP;
+                }
+                /* fputs("P4 80 N\n", fd); */
+        }
+        sp = core[a1].w_b;
+        max = (a2 - a1 + 1) * 6;
+        if (punch_unicode) {
+            while (bytecnt < max) {
+                punch_braille(fd, sp, max-bytecnt);
+                sp += 144;
+                bytecnt += 144;
+            }
+        } else {
+            while (bytecnt < max) {
+                if (bytecnt % 6) {
+                        if (punch_binary)
+                                fputc(*sp, fd);
+                        else if (bytecnt % 6) {
+#if 1
+                                fputc(*sp & 0x80 ? 'O' : '.', fd);
+                                fputc(*sp & 0x40 ? 'O' : '.', fd);
+                                fputc(*sp & 0x20 ? 'O' : '.', fd);
+                                fputc(*sp & 0x10 ? 'O' : '.', fd);
+                                fputc(*sp & 0x08 ? 'O' : '.', fd);
+                                fputc(*sp & 0x04 ? 'O' : '.', fd);
+                                fputc(*sp & 0x02 ? 'O' : '.', fd);
+                                fputc(*sp & 0x01 ? 'O' : '.', fd);
+#else
+                                int curcnt = bytecnt % 144;
+                                fprintf(fd, *sp & 0x80 ? "\342\226\213" : "%c", curcnt < 24 ? ' ' : '0' + curcnt/12-2);
+                                fprintf(fd, *sp & 0x40 ? "\342\226\213" : "%c", curcnt < 24 ? ' ' : '0' + curcnt/12-2);
+                                fprintf(fd, *sp & 0x20 ? "\342\226\213" : "%c", curcnt < 24 ? ' ' : '0' + curcnt/12-2);
+                                fprintf(fd, *sp & 0x10 ? "\342\226\213" : "%c", curcnt < 24 ? ' ' : '0' + curcnt/12-2);
+                                fprintf(fd, *sp & 0x08 ? "\342\226\213" : "%c", curcnt < 24 ? ' ' : '0' + curcnt/12-2);
+                                fprintf(fd, *sp & 0x04 ? "\342\226\213" : "%c", curcnt < 24 ? ' ' : '0' + curcnt/12-2);
+                                fprintf(fd, *sp & 0x02 ? "\342\226\213" : "%c", curcnt < 24 ? ' ' : '0' + curcnt/12-2);
+                                fprintf(fd, *sp & 0x01 ? "\342\226\213" : "%c", curcnt < 24 ? ' ' : '0' + curcnt/12-2);
+#endif
+                        }
+                }
+                sp++;
+                bytecnt++;
+                if (! punch_binary) {
+                        if (bytecnt % 12 == 0)
+                                fputc('\n', fd);
+                        if (bytecnt % 144 == 0)
+                                fputc('\n', fd);
+                }
+            }
+            /* if a partial card was punched, flush it */
+            if ((a2 - a1 + 1) % 24 != 0) {
+                int remain = 24 - (a2 - a1 + 1) % 24;
+                while (remain--) {
+                        if (punch_binary)
+                                fwrite("\0\0\0\0\0", 5, 1, fd);
+                        else {
+                                fwrite("........................................", 40, 1, fd);
+                                if (remain % 2 == 0)
+                                        fputc('\n', fd);
+                        }
+                }
+                if (! punch_binary)
+                        fputc('\n', fd);
+            }
+    }
+    return E_SUCCESS;
+}
+
+int
+term(void)
+{
+        ushort          addr = reg[016];
+        alureg_t        r;
+        uinstr_t        uil, uir;
+        int             err;
+
+        if(intercept_mask & INTERCEPT_E71) {
+            return intercept_ex(INTERCEPT_E71);
+        }
+        reg[016] = 0;   /* Function key code    */
+        if (addr == 0) {
+                if (notty)
+                        acc.r = acc.l = 0;
+                else
+                        acc.r = acc.l = 0x004000;
+                return E_SUCCESS;
+        }
+        LOAD(r, addr);
+        if ((r.l == 0xffffff && r.r == 0xffffff) ||
+            (r.l == 0x040000 && r.r == 0xffffff)) {     /* for POPLAN */
+                if (notty)
+                        acc.r = acc.l = 0;
+                else {
+                        acc.l = 0x004000;               /* terminal 12(8) */
+                        acc.r = 0;
+                }
+                return E_SUCCESS;
+        }
+        for (;;++addr) {
+                unpack(addr);
+                uil = uicore[addr][0];
+                uir = uicore[addr][1];
+                cwadj(&uil);
+                cwadj(&uir);
+                switch (uil.i_opcode & 0360) {
+                case 020:       /* i/o */
+                        err = (uil.i_opcode & 010 ? ttin : ttout)
+                                (uil.i_opcode,
+                                        ADDR(reg[uil.i_reg] + uil.i_addr),
+                                        ADDR(reg[uir.i_reg] + uir.i_addr));
+                        if (err != E_SUCCESS)
+                                return err;
+                        break;
+                case 0120:      /* status/release */
+oporos:
+                        acc.l = 010000002;
+                        acc.r = 012;
+                        return E_SUCCESS;
+                case 0220:
+                        ttout(uil.i_opcode,
+                                        ADDR(reg[uil.i_reg] + uil.i_addr),
+                                        ADDR(reg[uir.i_reg] + uir.i_addr));
+                        return E_SUCCESS;
+                default:
+                        if (uil.i_opcode == 010) {      /* punchcards */
+                                return punch(ADDR(reg[uil.i_reg] + uil.i_addr),
+                                 ADDR(reg[uir.i_reg] + uir.i_addr));
+                        }
+printf ("e71: unknown op %#o\n", uil.i_opcode);
+                        return E_UNIMP;
+                }
+                if (uir.i_opcode & 0100)
+                        goto oporos;
+        }
+}
+
+#define IPZ     062121
+
+int
+physaddr(void)
+{
+        ushort          addr = reg[016];
+
+        switch (addr) {                 /* GUS  */
+        case 0:
+                acc.l = 046000000;
+                acc.r = IPZ;
+                break;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+                LOAD(acc, addr | 0100000);
+                break;
+        case IPZ + 076:                 /* ??? */
+                acc.l = 0;
+                acc.r = 0;
+                break;
+        case IPZ + 077:
+                acc = user;
+                break;
+        case IPZ + 040:
+                acc.l = 0;
+                acc.r = 077;
+                break;
+        case IPZ + 071:                 /* общтом */
+                acc.l = 0;
+                acc.r = 0;
+                break;
+        case 0221:                      /* GOD */
+                acc.l = 0;
+                acc.r = 1;
+                break;
+        case 0322:
+                acc.l = 040500000;      /* EXP0 */
+                acc.r = 0;
+                break;
+        case 0476:
+                acc.l = 0; acc.r = 077740000; /* МОНИТ */
+                break;
+        case 0603:
+        case 0604:
+                acc.l = 077777777; acc.r = 077777777; /* НОММБ, НОММБ1 */
+                break;
+        case 0500: /* для МС ДУБНА */
+        case 0765:
+        case 01026:
+                acc.l = acc.r = 0;
+                break;
+        case 0522:
+                acc.l = 0777; acc.r = 0; /* E33П25 */
+                break;
+        case 01413:                     /* ВРЕМЯ */
+                reg[016] = 010;
+                return e53();
+        case 02040:                     /* ПРЕДЕЛ БЭСМ-6 ? */
+        case 02100:                     /* ПРЕДЕЛ, 16р = есть архив */
+                acc.l = acc.r = 0;
+                break;
+        default:
+                return E_UNIMP;
+        }
+        return E_SUCCESS;
+}
+
+int
+resources(void)
+{
+        ushort          addr = reg[016];
+        alureg_t        r;
+        uchar           arg[8];
+        int             i;
+
+        LOAD(r, addr);
+        if ((acc.l == 022642531) && (acc.r == 021233462)) {     /* KEYE72 */
+            if ((r.l >> 18) != 07) {
+                // The word @EA does not have the proper key,
+                // use EA as the address of the intercept routine.
+                exitaddr = addr;
+            } else {
+                // The word @EA has the key, use the mask and the address as indicated.
+                intercept_mask = r.r & 03777;
+                intercept_addr = r.l & 077777;
+            }
+            return E_SUCCESS;
+        }
+        for (i = 0; i < 4; ++i) {
+                arg[i] = (r.l >> ((3 - i) * 6)) & 077;
+                arg[i + 4] = (r.r >> ((3 - i) * 6)) & 077;
+        }
+        switch (arg[0]) {
+        case 020:                               /* close tape/disk */
+                for (i = 1; i < 7; ++i) {
+                    int u = arg[i];
+                    if (u == 077)
+                        break;
+                    if (!disks[u].diskno)
+                        continue;
+                    if (e50_157_locked[u])
+                        continue;
+                    if (disks[u].diskh)
+                        disk_close(disks[u].diskh);
+
+                    if (u == phys_dd.diskno) {
+                        phys_dd = disks[u]; /* Using the current disk offset */
+                        phys_dd.diskh = disk_open(phys_dd.diskno, phys_dd.mode);
+                        // Handle this descriptor as a "drum".
+                        phys_dd.diskno = 0;
+                    }
+
+                    disks[u].diskno = 0;
+                    disks[u].diskh = 0;
+                }
+                return E_SUCCESS;
+        case 047:                               /* free drums/tracks */
+        case 040:                               /* free unused tracks */
+                return E_SUCCESS;
+        case 037:                               /* rename tape/disk */
+#define USRC    (arg[i])
+#define UDST    (arg[i + 2])
+                for (i = 1; i < 7; i += 3) {
+                        if (USRC == 077)
+                                return E_SUCCESS;
+                        if (!disks[USRC].diskno || disks[UDST].diskno)
+                                return E_RESOP;
+                        disks[UDST].diskno = disks[USRC].diskno;
+                        disks[UDST].mode =
+                                arg[i + 1] ? DISK_READ_ONLY : DISK_READ_WRITE;
+                        disks[UDST].offset = 0;
+                        disks[USRC].diskno = 0;
+                }
+                return E_SUCCESS;
+#undef USRC
+#undef UDST
+        case 030:                               /* exchange tape/disk */
+#define USRC    (arg[i])
+#define UDST    (arg[i + 2])
+                for (i = 1; i < 7; i += 3) {
+                        ddisk_t tmp;
+                        if (USRC == 077)
+                                return E_SUCCESS;
+                        if (!disks[USRC].diskno || !disks[UDST].diskno)
+                                return E_RESOP;
+                        tmp = disks[USRC];
+                        disks[USRC] = disks[UDST];
+                        disks[UDST] = tmp;
+                        disks[UDST].mode =
+                                arg[i + 1] & 1 ? DISK_READ_ONLY : DISK_READ_WRITE;
+                        disks[USRC].mode =
+                                arg[i + 1] & 2 ? DISK_READ_ONLY : DISK_READ_WRITE;
+                }
+                return E_SUCCESS;
+#undef USRC
+#undef UDST
+        case 010:                               /* exchange RAM pages */
+#define USRC    (arg[i])
+#define UDST    (arg[i + 1])
+                for (i = 1; i < 7; i += 2) {
+                        int j;
+                        uchar tmp[6144];
+                        if (USRC == 077)
+                                return E_SUCCESS;
+
+                        if (USRC > 037 || UDST > 037)
+                                return E_CWERR;
+
+                        memcpy(tmp, &core[USRC * 02000], 6144);
+                        memcpy(&core[USRC * 02000], &core[UDST * 02000], 6144);
+                        memcpy(&core[UDST * 02000], tmp, 6144);
+                        memcpy(tmp, &convol[USRC * 02000], 1024);
+                        memcpy(&convol[USRC * 02000], &convol[UDST * 02000], 1024);
+                        memcpy(&convol[UDST * 02000], tmp, 1024);
+                        for (j = 0; j < 02000; j++) {
+                                cflags[j + USRC * 02000] &= ~C_UNPACKED;
+                                cflags[j + UDST * 02000] &= ~C_UNPACKED;
+                        }
+                }
+                return E_SUCCESS;
+        case 000:                               /* free RAM pages */
+                return E_SUCCESS;
+        case 050:                               /* exchange drum tracks */
+                return E_UNIMP;
+        default:
+                return E_UNIMP;
+        }
+}
+
+extern uchar
+eraise(uint newev)
+{
+        events |= newev & 0xffffff;
+        return goahead |= ehandler && eenab && (events & emask);
+}
+
+void
+alrm_handler(int sig)
+{
+        (void) signal(SIGALRM, alrm_handler);
+        (void) eraise(1);
+}
+
+static ptr      txt;
+
+static unsigned
+uget(void)
+{
+        uchar   c;
+rpt:
+        c = getbyte(&txt);
+        switch (c) {
+        case GOST_CARRIAGE_RETURN:
+        case 0341:
+                c = GOST_NEWLINE;
+                break;
+        case 0143:
+                goto rpt;
+        case 0342:
+                c = GOST_LEFT_QUOTATION;
+                break;
+        }
+        return c;
+}
+
+uint64_t
+nextw(void)
+{
+        return getword(&txt);
+}
+
+static ushort   diagaddr;
+
+static void
+diag(const char *s)
+{
+        uchar    *cp, *dp;
+
+        if (diagaddr) {
+                dp = (uchar*) (core + diagaddr + 1);
+                for (cp=(uchar*)s; *cp; )
+                        *dp++ = utf8_to_gost (&cp);
+                *dp = GOST_END_OF_INFORMATION;
+                enreg.l = 0;
+                enreg.r = strlen(s) / 6 + 1;
+                STORE(enreg, diagaddr);
+                fputs(s, stderr);
+        } else
+                fputs(s, stderr);
+}
+
+static char *extptr;
+
+static unsigned
+extget(void)
+{
+        uchar   c;
+rpt:
+        c = *extptr++;
+        switch (c) {
+        case GOST_CARRIAGE_RETURN:
+        case 0341:
+                c = GOST_NEWLINE;
+                break;
+        case 0143:
+                goto rpt;
+        case 0342:
+                c = GOST_LEFT_QUOTATION;
+                break;
+        }
+        return c;
+}
+
+static void
+exform(void)
+{
+        uint64_t        w;
+        int             r;
+        uchar           c;
+
+        txt.p_w = ADDR(acc.r);
+        txt.p_b = 0;
+
+        do {
+                c = getbyte(&txt);
+                gost_putc(c, stdout);
+        } while(c != GOST_TSE);
+        putchar('\n');
+        txt.p_w = ADDR(acc.r);
+        txt.p_b = 0;
+        w = getword(&txt);
+        diagaddr = 0;
+        if ((acc.l & 077700000) == 077200000) {
+            // loading from a drum or a disk
+            uint64_t myacc = ((uint64_t)acc.l << 24) | acc.r;
+            int u = (myacc >> 33) & 077;
+            int zone = (myacc >> 21) & 07777;
+            int nzon = (myacc >> 15) & 077;
+            int startw = reg[015];
+            int curzone = 0;
+            char *buf = malloc(nzon * 6144);
+            diagaddr = ADDR(w);
+            do {
+                r = disk_readi(disks[u].diskh,
+                               (zone + disks[u].offset + curzone) & 0xfff,
+                               (char *)buf + curzone * 6144, NULL, NULL, DISK_MODE_QUIET);
+                if (r != DISK_IO_OK) {
+                    acc.r = 0100077777;
+                    acc.l = 0;
+                    return;
+                }
+            } while (++curzone < nzon);
+            extptr = buf + startw*6;
+            if (diagaddr) {
+                r = vsinput(extget, diag, 1);
+            } else {
+                r = vsinput(extget, diag, 0);
+            }
+            free(buf);
+        } else if ((w & 0xffffff000000ull) == TKH000) {
+                diagaddr = ADDR(w);
+                r = vsinput(uget, diag, 1);
+        } else {
+                --txt.p_w;
+                r = vsinput(uget, diag, 0);
+        }
+        if (r < 0) {
+                acc.r = -r;
+                acc.l = 0;
+        } else
+                reg[016] = r;
+}
+
+int
+emu_call(void)
+{
+        switch (reg[016] ^ 040000) {
+        case 0: {               /* phys i/o */
+                unsigned        u;
+                ushort          zone;
+                char            *addr;
+                int             r;
+
+                u = (acc.l >> 22 & 7) | (acc.r >> 7 & 7);
+                if (u >= OSD_NUM)
+                        return E_INT;
+                u += OSD_OFF;
+                if (!disks[u].diskh)
+                        return E_INT;
+                if (!(acc.r & 01000000))  /* page/paragraph */
+                        return E_INT;
+                addr = (char *) (core + (accex.r & 0176000));
+                zone = acc.l & 01777;
+                r = acc.r & 0400000 ? disk_read(disks[u].diskh, zone, addr)
+                                    : disk_write(disks[u].diskh, zone, addr);
+                if (r != DISK_IO_OK)
+                        return E_DISKERR;
+                return E_SUCCESS;
+        }
+        case 'b':       /* break on first cmd */
+                breakflg = acc.r & 1;
+                break;
+        case 'v':       /* visual on */
+                visual = acc.r & 1;
+                break;
+        case 't':       /* trace on */
+                trace = acc.r & 1;
+                break;
+        case 's':       /* statistics on */
+                stats = acc.r & 1;
+                break;
+        case 'p':
+                pout_enable = acc.r & 1;
+                break;
+        case 'x':       /* native xcodes */
+                xnative = acc.r & 1;
+                break;
+        default:
+                return E_INT;
+        }
+        return E_SUCCESS;
+}
+
+#define FUWORD(a)       ((core[a].w_b[2] << 24) | (core[a].w_b[3] << 16) | \
+                        (core[a].w_b[4] << 8) | core[a].w_b[5])
+
+int
+usyscall(void)
+{
+        ushort  ap = reg[016];
+        int     r;
+        uint   ftn, a0, a1, a2;
+
+        ftn = FUWORD(ap); ap = ADDR(ap + 1);
+        a0 = FUWORD(ap); ap = ADDR(ap + 1);
+        a1 = FUWORD(ap); ap = ADDR(ap + 1);
+        a2 = FUWORD(ap);
+
+        switch (ftn) {
+        case 0: /* open(path, flags, mode) */
+                r = open((char *) core + a0, a1, a2);
+                break;
+        case 1: /* close(fd) */
+                r = close(a0);
+                break;
+        case 2: /* read(fd, buf, size) */
+                r = read(a0, (char *) core + a1, a2);
+                break;
+        case 3: /* write(fd, buf, size) */
+                r = write(a0, (char *) core + a1, a2);
+                break;
+        case 4: /* lseek(fd, offset, whence) */
+                r = lseek(a0, a1, a2);
+                break;
+        default:
+                return E_CWERR;
+        }
+        acc.l = r >> 24;
+        acc.r = r & 0xffffff;
+        reg[016] = errno;
+        return E_SUCCESS;
+}
+
+uint
+to_2_10(uint src)
+{
+        uint   dst = 0;
+        int     i;
+
+        for (i = 0; i < 6; ++i) {
+                if (!src)
+                        break;
+                dst |= (src % 10) << (i * 4);
+                src /= 10;
+        }
+        return dst;
+}
