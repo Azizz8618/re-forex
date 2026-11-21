@@ -1,0 +1,133 @@
+C     O412 -- EMIT MINIMAL FOREX-4.12 MAIN-SECTION OBJECT MODULE
+C=======================================================================
+C Copy-only extension of src/newcomp/EMIT.FTN (repo file is untouched).
+C Fifth program unit, added to the existing /EMBUF/ common area.
+C Copy-only change: HI(8)/LO(8) -> HI(32)/LO(32) in all units.
+C Slots 1..8 keep their meaning; NW stays last in /EMBUF/.
+C logical place at the end of the block in every unit.
+C
+C Output word order (1-based /EMBUF/ indices):
+C   1..4  catalog zone N: MONITOR*, 0o370, OURMRK*, desc f0=0o1760
+C   5..    body zone N+1   : B0 service, B1 w0, B2 w1, B3 w2 (cmd=NC),
+C                            B4 marker 0o73461, B5 1760/M16 stub, code,
+C                            then the one-word head section (TEXT name).
+C NC is derived from emitted code length, never hardcoded.
+C 48-bit constants are written directly into HI/LO; machine words
+C go through the proven EMIT48. F77 subset: no IMPLICIT, no CHARACTER,
+C names <= 6 chars, fixed form <= 72 cols, no nH literals.
+C=======================================================================
+      SUBROUTINE O412
+      INTEGER HI(32), LO(32), NW
+      COMMON /EMBUF/ HI,LO,NW
+      INTEGER OD(8)
+      COMMON /OCTBF/ OD
+      INTEGER I, NC, NBASE
+      PRINT 90
+   90 FORMAT(1X,'O412-7391')
+      NW = 0
+C-- K0: TEXT 'MONITOR*' = 0o5557565164576212 ---------------------------
+      CALL EMIT48(0,0,0, 0,0,0)
+      HI(NW) = 11991977
+      LO(NW) = 13827210
+C-- K1: MONITOR descriptor 0o370 -------------------------------------
+      CALL EMIT48(0,0,0, 0,0,248)
+C-- K2: TEXT 'OURMRK*' = 0o5765625562531200 ---------------------------
+      CALL EMIT48(0,0,0, 0,0,0)
+      HI(NW) = 12541101
+      LO(NW) = 13283968
+C-- K3: main descriptor 0o400402757101760 (f0=0o1760) -----------------
+      CALL EMIT48(0,0,0, 0,0,0)
+      HI(NW) = 1050647
+      LO(NW) = 12354544
+C-- B0..B2: body service word and 3-word DMS header ------------------
+      CALL EMIT48(0,0,0, 0,0,0)
+      CALL EMIT48(0,0,0, 0,0,1)
+      CALL EMIT48(0,0,0, 0,0,0)
+C-- B3 placeholder: filled with the real NC after the code is emitted -
+      NBASE = NW + 1
+      CALL EMIT48(0,0,0, 0,0,0)
+C-- B4: 4.12 start marker 0o73461 = 30513 ----------------------------
+      CALL EMIT48(0,0,0, 0,0,30513)
+C-- B5: 4.12 entry stub = UIA 1760(M16)/PB 464 ------------------------
+      CALL EMIT48(7,20,1008, 0,24,308)
+C-- Our code: 13,UJ, return word (IR=6 KOP=70 / IR=0 KOP=22)
+      CALL EMIT48(6,56,0, 0,18,0)
+C-- NC = marker + stub + all code words actually emitted -------------
+      NC = NW - NBASE
+      LO(NBASE) = NC
+      HI(NBASE) = 0
+C-- head section: one TEXT word with our module name -----------------
+      CALL EMIT48(0,0,0, 0,0,0)
+      HI(NW) = 12541101
+      LO(NW) = 13283968
+      PRINT 91, NW, NC, NBASE
+   91 FORMAT(1X,'O412NW ',I3,' NC ',I3,' B3 ',I3)
+      DO 10 I = 1, NW
+         CALL OCT8(HI(I))
+         PRINT 100, I, OD(8),OD(7),OD(6),OD(5),OD(4),OD(3),OD(2),OD(1)
+         CALL OCT8(LO(I))
+         PRINT 101, I, OD(8),OD(7),OD(6),OD(5),OD(4),OD(3),OD(2),OD(1)
+         PRINT 102, I, HI(I), LO(I)
+   10 CONTINUE
+  100 FORMAT(1X,'O412W ',I2,' HI ',8I1)
+  101 FORMAT(1X,'O412W ',I2,' LO ',8I1)
+  102 FORMAT(1X,'O412D ',I2,2I10)
+      RETURN
+      END
+      SUBROUTINE EMIT48(IR1,K1,A1,IR2,K2,A2)
+      INTEGER IR1,K1,A1,IR2,K2,A2
+      INTEGER HI(32), LO(32), NW
+      COMMON /EMBUF/ HI,LO,NW
+      NW = NW + 1
+      HI(NW) = IR1*2097152 + K1*32768 + A1
+      LO(NW) = IR2*2097152 + K2*32768 + A2
+      RETURN
+      END
+      SUBROUTINE GOSTEN
+      INTEGER IA(12), NI
+      COMMON /TXTBF/ IA,NI
+      INTEGER HI(32), LO(32), NW
+      COMMON /EMBUF/ HI,LO,NW
+      INTEGER GT(64), B(6)
+      INTEGER I, IC, K, NP, HIW, LOW
+      DATA GT /15,0,0,0,0,0,0,0,
+     1         18,19,25,10,13,11,14,12,
+     2         0,1,2,3,4,5,6,7,
+     3         8,9,0,0,0,0,0,0,
+     4         0,32,34,49,63,37,64,65,
+     5         45,66,67,42,68,44,69,46,
+     6         48,70,71,72,50,73,74,75,
+     7         53,51,76,0,0,0,0,0/
+      NP = 0
+      DO 20 I = 1, NI
+         IC = IA(I) - 31
+         IF (IC .LT. 1) GOTO 20
+         IF (IC .GT. 64) GOTO 20
+         K = GT(IC)
+         NP = NP + 1
+         B(NP) = K
+         IF (NP .LT. 6) GOTO 20
+         NW = NW + 1
+C-- step-by-step Horner avoids nested array expressions on FOREX 2.02
+         HIW = B(1)
+         HIW = HIW*256 + B(2)
+         HIW = HIW*256 + B(3)
+         LOW = B(4)
+         LOW = LOW*256 + B(5)
+         LOW = LOW*256 + B(6)
+         HI(NW) = HIW
+         LO(NW) = LOW
+         NP = 0
+   20 CONTINUE
+      RETURN
+      END
+      SUBROUTINE OCT8(X)
+      INTEGER X, OD(8), Q, I
+      COMMON /OCTBF/ OD
+      Q = X
+      DO 30 I = 1, 8
+         OD(I) = Q - (Q/8)*8
+         Q = Q/8
+   30 CONTINUE
+      RETURN
+      END
