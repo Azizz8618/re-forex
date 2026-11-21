@@ -1,0 +1,106 @@
+--- /var/tmp/b1-f77-fix/59-c2/dispak-src/dispak/cu.c	2026-11-21 20:29:03.621452477 +0300
++++ src-dispak/dispak/cu.c	2026-11-21 20:52:39.919080908 +0300
+@@ -18,6 +18,42 @@
+ #include "defs.h"
+ #include "optab.h"
+ #include "encoding.h"
++#include "disk.h"
++
++/* C3: the monitor assembles the VJM at RAM 0o455 from page 0o64000 at boot.
++ * At that exact moment we put OUR code (body words 9..19 of disk 2148 zone
++ * 0o1745) into RAM 0o1770..0o1782, so the patched VJM jumps to real code.
++ * The words come from the on-disk body, not from an env var or a literal. */
++void
++c3_install_our_words(void)
++{
++        static int done = 0;
++        void *dh;
++        char buf[ZONE_SIZE];
++        int i, k;
++
++        if (done)
++                return;
++        done = 1;
++        dh = disk_open(2148, DISK_READ_ONLY);
++        if (!dh) {
++                fprintf(stderr, "C3: cannot open disk 2148 for body words\n");
++                return;
++        }
++        if (disk_readi(dh, 01745, buf, NULL, NULL, DISK_MODE_QUIET) != DISK_IO_OK) {
++                fprintf(stderr, "C3: cannot read body zone 01745 from disk 2148\n");
++                disk_close(dh);
++                return;
++        }
++        disk_close(dh);
++        for (i = 0; i < 11; ++i) {
++                for (k = 0; k < 6; ++k)
++                        core[01770 + i].w_b[k] = buf[(9 + i) * 6 + k];
++                cflags[01770 + i] &= ~C_UNPACKED;
++        }
++        fprintf(stderr, "C3: loaded 11 body words from disk 2148 zone 01745 "
++                        "into RAM 01770..01782\n");
++}
+ 
+ /* Отладочная трасса этапа 1 проекта ГЛИССАДА-6: дампы Э70/Э50/Э62
+  * и окна МОНА-80 в stderr.  Включается переменной BESM6_DD_DEBUG. */
+@@ -344,60 +380,6 @@
+                     }
+                 }
+             }
+-            /* === C2 REDIRECT (local simulation of C1 patched boot image) ===
+-             * BESM6_REDIRECT_PC  : octal PC to intercept (e.g. 455, the VJM 64002)
+-             * BESM6_REDIRECT_TO  : octal target PC (e.g. 1770, our code)
+-             * BESM6_REDIRECT_WORDS: file of 6-byte big-endian words to load
+-             *                      into core starting at REDIRECT_TO (our body
+-             *                      words 9..); loaded once before the jump.
+-             * This models a boot image that puts OUR body code into RAM and
+-             * redirects the monitor's VJM 64002 to it. */
+-            {
+-                static int redir_pc = -1, redir_to = 0, redir_loaded = 0;
+-                if (redir_pc < 0) {
+-                    const char *rp = getenv ("BESM6_REDIRECT_PC");
+-                    const char *rt = getenv ("BESM6_REDIRECT_TO");
+-                    redir_pc = rp ? (int) strtol (rp, NULL, 8) : 0;
+-                    redir_to = rt ? (int) strtol (rt, NULL, 8) : 0;
+-                }
+-                if (redir_pc > 0 && abpc == redir_pc) {
+-                    if (!redir_loaded) {
+-                        const char *wpath = getenv ("BESM6_REDIRECT_WORDS");
+-                        redir_loaded = 1;
+-                        if (wpath) {
+-                            FILE *wf = fopen (wpath, "rb");
+-                            if (wf) {
+-                                int q = redir_to, n = 0;
+-                                unsigned char b[6];
+-                                while (fread (b, 1, 6, wf) == 6) {
+-                                    int k;
+-                                    for (k = 0; k < 6; ++k)
+-                                        core[q].w_b[k] = b[k];
+-                                    cflags[q] &= ~C_UNPACKED;
+-                                    ++q; ++n;
+-                                }
+-                                fclose (wf);
+-                                fprintf (stderr, "REDIRECT-WORDS loaded %d words at %05o\n",
+-                                         n, redir_to);
+-                            } else
+-                                fprintf (stderr, "REDIRECT-WORDS open FAILED: %s\n", wpath);
+-                        }
+-                    }
+-                    {
+-                        unsigned long long rv = 0;
+-                        int b;
+-                        for (b = 0; b < 6; ++b)
+-                            rv = (rv << 8) | core[redir_to].w_b[b];
+-                        fprintf (stderr, "REDIRECT pc=%05o -> %05o supmode=%o "
+-                                 "core[%05o]=%016llo cfl=%o\n",
+-                                 abpc, redir_to, supmode, redir_to, rv,
+-                                 cflags[redir_to]);
+-                    }
+-                    pc = redir_to;
+-                    right = 0;
+-                    NEXT;   /* skip the decoded VJM; fetch from redirect target */
+-                }
+-            }
+             if (dbg && montrace > 0) {
+                 unsigned long long mv = ((unsigned long long)acc.l << 24) | acc.r;
+                 fprintf(stderr, "MTR %05o%c %-6s %o(%o) AU=%013llo",
