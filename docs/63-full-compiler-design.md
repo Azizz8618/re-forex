@@ -5,7 +5,11 @@
 > все три теста дают VERDICT=PASS, так что риск R1 снят для конфигурации этих
 > тестов; вычисляемый вывод (R2/M4) разрабатывается отдельным субагентом фазы 3.
 > Первый независимый шаг после этого документа — M2 (подключение вывода O412D
-> вместо живого root-хвоста тела 19..1023).
+> вместо живого root-хвоста тела 19..1023). M2 выполнен: `tests/plan-f77/69-full-emitted-body/`.
+> По решению пользователя новый компилятор устанавливается в зону `0o2350`
+> (дека `*TRANS:OURMRK*,,412350`); зоны `0o2300..0o2347` зарезервированы за
+> старыми PERSO-экспериментами. Все числа `0o1744/0o1745` ниже — историческая
+> конфигурация доказательства, рабочие тесты 69/70 используют 2350.
 
 **Status:** design only. No repo edits, no git writes, no dispak C patches, no live disks/tmux/processes. All reads were of repository files and the two design documents listed in the task; all numerical claims below are traced to those files. Writes confined to `/tmp/.private/azizz/opencode/re-forex-phase4-design/`.
 
