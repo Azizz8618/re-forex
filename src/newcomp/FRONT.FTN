@@ -1,4 +1,4 @@
-C     FRONT v0.1 -- N1 SKELETON OF THE NEW FOREX COMPILER FRONT END
+C     FRONT v0.2 -- N1 + M1 BASE77 RULE TABLE FOR THE NEW FOREX COMPILER
 C=======================================================================
 C Compiled by SYSTEM FOREX 2.02 (PERSO 0o2300), fixed form, 72 columns.
 C Proven subset of src/f77prep/F77PREP.FTN: INTEGER arrays, DATA,
@@ -18,10 +18,14 @@ C N1.2 card_codes layout: ASCII codes in INTEGER C(LL,NLV), PAT token table.
 C N1.3 label allocator: record markers 777001..777004 + monotone source
 C      label from the reserved 90000..99999 zone, collision scan.
 C N1.4 IR emission: 777001/777002/777003/777004, all numeric, PRINT + I8.
+C M1  rules 30..37: 30 PROGRAM, 31 assignment, 32 counted DO,
+C     33 labelled CONTINUE, 34 numbered PRINT, 35 FORMAT, 36 STOP, 37 END.
+C     Rules 31/32/34/35 stream the whole logical line into 777002
+C     (trimmed at the last nonblank); rules 32/35 request a 777004 label.
 C
 C IR records (same contract as F77PREP.FTN:14-22):
 C   777001 <seq> <rule> <itype>       rule per logical line
-C   777002 <seq> <pos> <code>         PRINT * variable list, ASCII code
+C   777002 <seq> <pos> <code>         ASCII stream (rule 3: variable list)
 C   777003 <nlines> <nrewrites>       summary
 C   777004 <seq> <kind> <pos> <code>  kind 21 = reserved label request
 C=======================================================================
@@ -32,12 +36,26 @@ C@@DECL@@
       INTEGER IRULE, ITYPE, LAB
       INTEGER MR1, MR2, MR3, MR4, NEXT
       INTEGER PATPRN(7)
+      INTEGER PAT30(7)
+      INTEGER PAT32(2)
+      INTEGER PAT33(8)
+      INTEGER PAT34(5)
+      INTEGER PAT35(6)
+      INTEGER PAT36(4)
+      INTEGER PAT37(3)
       DATA MR1 /777001/
       DATA MR2 /777002/
       DATA MR3 /777003/
       DATA MR4 /777004/
       DATA NEXT /90000/
       DATA PATPRN /80,82,73,78,84,32,42/
+      DATA PAT30 /80,82,79,71,82,65,77/
+      DATA PAT32 /68,79/
+      DATA PAT33 /67,79,78,84,73,78,85,69/
+      DATA PAT34 /80,82,73,78,84/
+      DATA PAT35 /70,79,82,77,65,84/
+      DATA PAT36 /83,84,79,80/
+      DATA PAT37 /69,78,68/
 C@@DATA@@
 C-- N1.1: physical cards -> logical lines, SEQ and continuation ------------
       NL = 0
@@ -62,7 +80,7 @@ C-- N1.1: physical cards -> logical lines, SEQ and continuation ------------
             C(J,I) = 32
   141    CONTINUE
   140 CONTINUE
-C-- classify logical lines (N1.2: PAT token matching) ----------------------
+C-- classify logical lines (N1.2 PAT + M1 rules 30..37) ---------------------
       NR = 0
       DO 200 I = 1, NL
          IRULE = 0
@@ -78,7 +96,7 @@ C-- classify logical lines (N1.2: PAT token matching) ----------------------
          DO 221 J = 1, 7
             IF (C(IFIRST+J-1,I) .NE. PATPRN(J)) MATCH = 0
   221    CONTINUE
-         IF (MATCH .EQ. 0) GOTO 250
+         IF (MATCH .EQ. 0) GOTO 400
          IRULE = 3
          K = IFIRST + 7
   231    IF (K .GT. LL) GOTO 233
@@ -87,7 +105,7 @@ C-- classify logical lines (N1.2: PAT token matching) ----------------------
          GOTO 233
   232    K = K + 1
          GOTO 231
-  233    IF (K .GT. LL) GOTO 250
+  233    IF (K .GT. LL) GOTO 240
          ITYPE = 2
          IF (C(K,I) .GE. 73 .AND. C(K,I) .LE. 78) ITYPE = 1
   234    IF (K .GT. LL) GOTO 240
@@ -97,13 +115,92 @@ C-- classify logical lines (N1.2: PAT token matching) ----------------------
   235    K = K + 1
          GOTO 234
   240    IF (LV .LE. 0) IRULE = 0
+         IF (IRULE .NE. 0) GOTO 250
+C-- M1 rule 30: PROGRAM -----------------------------------------------------
+  400    MATCH = 1
+         DO 401 J = 1, 7
+            IF (C(IFIRST+J-1,I) .NE. PAT30(J)) MATCH = 0
+  401    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 30
+C-- M1 rule 31: assignment, one-letter LHS followed by '=' -----------------
+  402    IF (IRULE .NE. 0) GOTO 403
+         IF (C(IFIRST+1,I) .NE. 61) GOTO 403
+         IF (C(IFIRST,I) .LT. 65 .OR. C(IFIRST,I) .GT. 90) GOTO 403
+         IRULE = 31
+         ITYPE = 2
+         IF (C(IFIRST,I) .GE. 73 .AND. C(IFIRST,I) .LE. 78) ITYPE = 1
+C-- M1 rule 32: counted DO --------------------------------------------------
+  403    IF (IRULE .NE. 0) GOTO 404
+         IF (C(IFIRST,I) .NE. 68) GOTO 404
+         IF (C(IFIRST+1,I) .NE. 79) GOTO 404
+         IRULE = 32
+         ITYPE = 1
+C-- M1 rule 33: labelled CONTINUE ------------------------------------------
+  404    IF (IRULE .NE. 0) GOTO 406
+         MATCH = 1
+         DO 405 J = 1, 8
+            IF (C(IFIRST+3+J-1,I) .NE. PAT33(J)) MATCH = 0
+  405    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 33
+  406    IF (IRULE .NE. 0) GOTO 408
+         MATCH = 1
+         DO 407 J = 1, 8
+            IF (C(IFIRST+J-1,I) .NE. PAT33(J)) MATCH = 0
+  407    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 33
+C-- M1 rule 34/3: PRINT, numbered or legacy PRINT * ------------------------
+  408    IF (IRULE .NE. 0) GOTO 412
+         MATCH = 1
+         DO 409 J = 1, 5
+            IF (C(IFIRST+J-1,I) .NE. PAT34(J)) MATCH = 0
+  409    CONTINUE
+         IF (MATCH .NE. 1) GOTO 412
+         IF (C(IFIRST+6,I) .EQ. 42) GOTO 411
+         IRULE = 34
+         GOTO 412
+  411    IRULE = 3
+C-- M1 rule 35: FORMAT ------------------------------------------------------
+  412    IF (IRULE .NE. 0) GOTO 414
+         MATCH = 1
+         DO 413 J = 1, 6
+            IF (C(IFIRST+J-1,I) .NE. PAT35(J)) MATCH = 0
+  413    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 35
+C-- M1 rule 36: STOP --------------------------------------------------------
+  414    IF (IRULE .NE. 0) GOTO 416
+         MATCH = 1
+         DO 415 J = 1, 4
+            IF (C(IFIRST+J-1,I) .NE. PAT36(J)) MATCH = 0
+  415    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 36
+C-- M1 rule 37: END ---------------------------------------------------------
+  416    IF (IRULE .NE. 0) GOTO 418
+         MATCH = 1
+         DO 417 J = 1, 3
+            IF (C(IFIRST+J-1,I) .NE. PAT37(J)) MATCH = 0
+  417    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 37
+C-- M1: full trimmed ASCII stream for rules 31/32/34/35 --------------------
+  418    IF (IRULE .NE. 31 .AND. IRULE .NE. 32 .AND.
+     1      IRULE .NE. 34 .AND. IRULE .NE. 35) GOTO 250
+         K = LNL(I)
+  419    IF (K .LT. 1) GOTO 420
+         IF (C(K,I) .NE. 32) GOTO 420
+         K = K - 1
+         GOTO 419
+  420    LV = K
+         DO 421 K = 1, LV
+            IV(K) = C(K,I)
+  421    CONTINUE
 C-- N1.4: IR records for this logical line ---------------------------------
   250    PRINT 9001, MR1, SEQ(I), IRULE, ITYPE
-         IF (IRULE .NE. 0) NR = NR + 1
-         IF (IRULE .NE. 3) GOTO 260
+         IF (IRULE .GE. 31 .AND. IRULE .LE. 36) NR = NR + 1
+         IF (IRULE .NE. 3 .AND. IRULE .NE. 31 .AND. IRULE .NE. 32
+     1      .AND. IRULE .NE. 34 .AND. IRULE .NE. 35) GOTO 260
          DO 251 K = 1, LV
             PRINT 9002, MR2, SEQ(I), K, IV(K)
   251    CONTINUE
+         IF (IRULE .EQ. 31 .OR. IRULE .EQ. 34) GOTO 260
 C-- N1.3: collision-free label allocator, 777004 kind 21 -------------------
          LAB = NEXT
   300    IF (LAB .GT. 99999) GOTO 320
