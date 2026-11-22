@@ -1,0 +1,8 @@
+idx2     rc=0      printed='61 1.00 3.00'     end=True  note=A(2)=3, sub live
+   {'index': 2, 'a_body': 34, 'a_adr': 1041, 'val': 3, 'sub': 1024}
+idx3     rc=0      printed='51 1.00 3.00'     end=True  note=A(3)=5 (index changed)
+   {'index': 3, 'a_body': 35, 'a_adr': 1042, 'val': 5, 'sub': 1024}
+zeroA    rc=0      printed='01 1.00 3.00'     end=True  note=A(2)=0
+   {'index': 2, 'a_body': 34, 'a_adr': 1041, 'val': 0, 'sub': 1024}
+zerosub  rc=0      printed=None               end=True  note=subroutine first word zeroed
+   {'index': 2, 'a_body': 34, 'a_adr': 1041, 'val': 3, 'sub': 1024}
