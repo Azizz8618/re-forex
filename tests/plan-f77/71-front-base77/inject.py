@@ -20,7 +20,8 @@ ROOT = HERE.parent.parent.parent
 WS = Path(os.environ.get(
     'FRONT1_WORK', tempfile.mkdtemp(prefix='front1-',
                                     dir=os.environ.get('TMPDIR', '/tmp'))))
-DECK = ROOT / 'docs/plan-f77-full/logs/f77_30_base77_deck_forex.txt'
+DECK = Path(os.environ.get(
+    'FRONT1_DECK', ROOT / 'docs/plan-f77-full/logs/f77_30_base77_deck_forex.txt'))
 FTN = ROOT / 'src/newcomp/FRONT.FTN'
 LW, LL = 72, 132
 
