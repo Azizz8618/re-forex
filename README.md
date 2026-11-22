@@ -22,7 +22,8 @@
 Отдельные отчёты: `docs/06-address-map.md` (карта абсолютных адресов),
 `docs/06-core-modules.md` (ядро), `docs/07-runtime.md`, `docs/08-forex3.md`,
 `docs/62-newcomp-re.md` (RE загрузчика `NEWCOMP*`: процедуры, индексные регистры,
-контракт `*TRANS`).
+контракт `*TRANS`), `docs/63-full-compiler-design.md` (проект полного фронт-энда
+в контуре `*TRANS`).
 
 Дизассемблирование в МАДЛЕН выполнено `dtran` через `tools/dtran_wrap.py`
 (синтетический DMS-модуль с числовой симтаблицей), по образцу `re-siprod`.
