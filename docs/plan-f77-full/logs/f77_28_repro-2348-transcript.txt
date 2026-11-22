@@ -1,0 +1,44 @@
+[10:50:44] CMD: tmux new-session -s p7c-2348b: cd /var/tmp/p7c-hang/work &&  /home/azizz/Yandex.Disk/simh/BIN/besm6 /var/tmp/p7c-hang/dispak-copy.ini 2>/var/tmp/p7c-hang/run-2348b/stderr.txt
+[10:50:44] STEP 1: wait for OS prompt CM1П
+[10:50:49] STEP 1 result: OK
+[10:50:49] SNAP 01-boot: /var/tmp/p7c-hang/run-2348b/pane-01-boot.txt
+[10:50:49] STEP 2: НОМ (list queue)
+[10:50:51] SNAP 02-nom: /var/tmp/p7c-hang/run-2348b/pane-02-nom.txt
+[10:50:51] STEP 3: ДАЙ А0 / ДАЙ А1
+[10:50:53] SNAP 03-day: /var/tmp/p7c-hang/run-2348b/pane-03-day.txt
+[10:50:53] STEP 4: НОМ + ВЦП before deck
+[10:50:56] SNAP 04-pre-vcp: /var/tmp/p7c-hang/run-2348b/pane-04-pre-vcp.txt
+[10:50:56] STEP 5: Ctrl+G -> sim>, attach deck + FS8
+[10:50:56] SNAP 05-sim: /var/tmp/p7c-hang/run-2348b/pane-05-sim.txt
+[10:50:56]   SIMH: at vu0 /var/tmp/p7c-hang/p7ct-passport2348.txt
+[10:50:57]   SIMH: d 6 1
+[10:50:58]   SIMH: d 5 10
+[10:50:58]   SIMH: set cpu req
+[10:50:59]   SIMH: go
+[10:50:59] SNAP 06-fed: /var/tmp/p7c-hang/run-2348b/pane-06-fed.txt
+[10:50:59] STEP 5b: job accepted (B075/410300/ЗMЛ0) = True
+[10:50:59] SNAP 06b-accepted: /var/tmp/p7c-hang/run-2348b/pane-06b-accepted.txt
+[10:50:59] STEP 6: observe 25s after acceptance
+[10:51:24] SNAP 07-after-accept: /var/tmp/p7c-hang/run-2348b/pane-07-after-accept.txt
+[10:51:24] STEP 7: Ctrl+G -> sim> and read registers
+[10:51:25] SNAP 09-break: /var/tmp/p7c-hang/run-2348b/pane-09-break.txt
+[10:51:25]   SIMH: ex REG PC
+[10:51:25]   SIMH: ex REG RK
+[10:51:26]   SIMH: ex REG M16
+[10:51:26]   SIMH: ex REG M17
+[10:51:26]   SIMH: ex REG M20
+[10:51:26]   SIMH: ex REG M21
+[10:51:27]   SIMH: ex REG M27
+[10:51:27]   SIMH: ex REG M32
+[10:51:27]   SIMH: ex REG M33
+[10:51:27]   SIMH: ex REG M34
+[10:51:28]   SIMH: ex REG M35
+[10:51:28]   SIMH: ex REG GRP
+[10:51:28]   SIMH: ex REG MGRP
+[10:51:28]   SIMH: ex REG PRP
+[10:51:29]   SIMH: ex REG MPRP
+[10:51:29]   SIMH: ex REG RUU
+[10:51:29] SNAP 10-registers: /var/tmp/p7c-hang/run-2348b/pane-10-registers.txt
+[10:51:29] STEP 7c: go + ВЦП (job in solution?)
+[10:51:32] SNAP 11-vcp: /var/tmp/p7c-hang/run-2348b/pane-11-vcp.txt
+[10:51:32] DONE: session left alive for forensics

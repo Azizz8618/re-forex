@@ -1,0 +1,222 @@
+===============================================================================
+N0 CONTRACT — план 57, этап «Заморозка и контракт» (подэтапы N0.1-N0.4)
+===============================================================================
+Дата записи : 2026-11-20T22:26:43Z (UTC), локально 21.11.2026
+Репозиторий : /home/azizz/Yandex.Disk/re-forex
+Ветка/HEAD  : main / b7f162be05e7656e9eed9e7755ae39ad28cd0648
+              (F0 freeze log фиксировал HEAD 14c0f604...; с того времени HEAD
+               ушёл вперёд другими работами, но все 9 эталонов побайтово те же)
+Область     : READ-ONLY для существующих отслеживаемых файлов.
+Разрешённые записи (и только они):
+  - docs/plan-f77-full/logs/f77_30_n0_contract.txt  (этот файл)
+  - tests/plan-f77/own_compiler_gold.txt            (gold N0.3)
+Git-записей, коммитов, переключений веток не делалось. Секреты не открывались.
+Исходный эталонный диск /usr/local/share/besm6/2348 не трогался.
+
+-------------------------------------------------------------------------------
+N0.1 — F0 BASELINE: Подтверждённые гейты и SHA эталонов
+-------------------------------------------------------------------------------
+Источник: docs/plan-f77-full/logs/f77_30_f0_etalon_freeze.txt:18-69, :168-183.
+
+(a) Четыре «замороженных» гейта F0 (оригинальные rc из freeze log):
+  [1a] bash tests/verify-dumps.sh                     RC = 0  (log:22-29)
+  [1b] python3 tests/check-source-words.py            RC = 0  (log:31-34)
+  [1c] bash tests/run-glissade-forex.sh               RC = 0  (log:36-44)
+  [1d] python3 tests/check-f77-matrix-200.py          RC = 0  (log:46-51)
+  Итог F0: «all four baseline gates returned rc=0» (log:53).
+  check-disasm.sh НЕ входит в замороженную четвёрку (log:179-182), её rc
+  в F0 не зафиксирован — отдельно не запускалась.
+
+(b) Повторно выполнены в этой сессии (дешёвые, read-only):
+  $ python3 tests/check-f77-matrix-200.py
+    MATRIX docs/plan-f77-full/01-f77-standard-matrix.md
+    строк: 200 (ожидается 200); уникальных ID: 200
+    счётчик: OK=200 NO=0 PARTIAL=0 UNKNOWN=0
+    OK: 200/200 ...               => RC = 0
+  $ bash tests/verify-dumps.sh
+    LO_SYN offset=0o241500 size=6144 sha256=83a7e962...8459366  (сверка OK)
+    LO_GEN offset=0o277500 size=6144 sha256=4f4d8e4c...2cbfd   (сверка OK)
+    OK: оверлеи ... выгружены и сверены => RC = 0
+  Не перезапускались намеренно:
+  - check-source-words.py — чисто read-only сравнение 1024/1024, уже rc=0;
+  - run-glissade-forex.sh — перезаписывает два ОТСЛЕЖИВАЕМЫХ сгенерированных
+    файла (tests/forex-glissade/output.new.txt, logs/glissade_run_full.txt,
+    freeze log:41-44), что запрещено режимом READ-ONLY этой задачи.
+
+(c) Сверка SHA256 эталонов «сейчас» против F0 (log:56-69). Все 9 совпадают:
+  build/CORE_ROOT.words         3861ee47dab0952a7c6d68c7803e1543dd8f0473657348f98466ee8405bd749f
+  build/LO_SYN.words            83a7e962a9db89e62b856b7461ce2aba91239957931a03e1520fb4d228459366
+  build/LO_GEN.words            4f4d8e4cc8fff1ec9742fe8be0a0c5f797716ab1bd085a1625d37569d222cbfd
+  build/FOREX_PERSO_2300.bin    0bd8e5862d61a4b30358534260cf7cd06029966e4504821d4fc4d078e8a9d53b
+  src/LO_SYN.mad                66e2acb80f9a577536e68bfb9900cc742c214242d14aab3a9de30774d147f80f
+  src/LO_GEN.mad                19e57c22dcb91dedae8361348078bfa9dad3e341547b0830ca3a84e1aca00471
+  src/FOREX_CORE.mad            70d849e02d7e6d7ed5b5d79f0b96b92fd164b1a07c0d2a28fa651e36a40340d6
+  include/FOREX_ROOT.mad        a72fef40c17cdecfd1c26428cbfb3c70a4937f28c80d082f2db718cae18870c6
+  disasm/CORE_ROOT.bemsh.lst    171bd4c59b5a7ef4058579d4f9a71b9cdb15a7b054a1315fc19e70d3b9a4f64a
+  `git diff --name-only -- <эти 9 файлов>` => пусто (etalons не изменены).
+
+(d) ОПРЕДЕЛЕНИЕ ГЕЙТА N0 (инвариант для всех последующих фаз):
+  BASE77_GATE := (
+       verify-dumps.sh rc=0
+    AND check-source-words.py rc=0 (1024/1024 обе зоны)
+    AND run-glissade-forex.sh rc=0 (14/14 после нормализации даты)
+    AND check-f77-matrix-200.py rc=0 (200/200)
+    AND sha256(9 эталонов) == таблица (c)
+    AND git diff по 9 эталонам пуст
+  )
+  Текущее состояние: ВЫПОЛНЯЕТСЯ (2 гейта перезапущены => rc=0, 2 зафиксированы
+  F0 => rc=0, 9 SHA совпадают, diff пуст).
+
+-------------------------------------------------------------------------------
+N0.2 — МИНИМАЛЬНЫЙ ПРОФИЛЬ BASE77
+-------------------------------------------------------------------------------
+Источник — успешный F3-прогон (не репозиторный файл, но стабильная копия):
+  дека:    /var/tmp/b1-f77-fix/f3-run4/deck.b6  (= /var/tmp/b1-f77-fix/f2b-nostand/deck.b6
+           и /var/tmp/b1-f77-fix/f3-proof/deck.b6, sha всех трёх совпадает по содержимому)
+  вывод:   /var/tmp/b1-f77-fix/f3-run4/out.txt
+  репозиторная копия той же Fortran-программы без PERSO-строк:
+           tests/plan-f77/f3-deck.b6:9-19
+  более старый «as given» вариант (0o2320 + 0o2300, *stand + *forex):
+           docs/plan-f77-full/logs/f77_30_base77_deck_as_given.txt:11-22
+           docs/plan-f77-full/logs/f77_30_base77_deck_forex.txt:11-22
+
+Точное тело_DECK BASE77 — 15 строк /var/tmp/b1-f77-fix/f3-run4/deck.b6:9-23:
+   9  c---- BASE: INTEGER/REAL arithmetic, counted DO, explicit FORMAT.
+  10        PROGRAM BASE77
+  11        N=0
+  12        DO 10 I=1,6
+  13           N=N+I
+  14     10 CONTINUE
+  15        X=1.0
+  16        Y=X+2.0
+  17        PRINT 100,N,X,Y
+  18    100 FORMAT(1X,I4,2F10.2)
+  19        STOP
+  20        END
+  21  *execute
+  22  *end file
+  23  ``````
+Из них Fortran-программа proper — 11 строк (deck.b6:10-20); строки 4-8 дека —
+управление: *name BASE77, *call yesmemory, *perso:602400, *full list,
+*call forex* (deck.b6:4-8). В f3-deck.b6:9-19 тот же текст без c-комментария.
+
+Профиль языка (минимум для N1-N3): INTEGER/REAL, counted DO (DO 10 I=1,6),
+PRINT с явным FORMAT(1X,I4,2F10.2), STOP/END; новых внешних SUBP нет
+(решение F2b: всё локально, 13,VJM,local).
+
+ОЖИДАЕМЫЙ ВЫВОД:
+      21      1.00      3.00
+  /var/tmp/b1-f77-fix/f3-run4/out.txt:149
+  /var/tmp/b1-f77-fix/f3-proof/runs/M1/out.txt:151
+  /var/tmp/b1-f77-fix/f3-proof/REPORT.md:74
+  Контрольные баннеры этого же прогона: out.txt:35-36 «Ф О Р Т Р А Н /16.07.73/»,
+  out.txt:54 «АВТОКОД МАDLЕН (1.10.72)» — системный компилятор, не наш.
+
+КРИТЕРИЙ N0.2: собственный листинг нашего модуля + '21 1.00 3.00'.
+Число само по себе НЕ достаточно: его дают и системный *forex (f3-control/out.txt:146)
+и F3 wrapper (f3-run4/out.txt:149).
+
+-------------------------------------------------------------------------------
+N0.3 — СОБСТВЕННЫЙ GOLD
+-------------------------------------------------------------------------------
+Файл: tests/plan-f77/own_compiler_gold.txt (создан этой задачей, новый).
+
+Маркер (GOST-литерал, проверен в F3):
+    OMTEXT:,GOST,23HFOREX5 OWN CORE ACTIVE'231'
+  /var/tmp/b1-f77-fix/f3-proof/REPORT.md:40-49
+  `'231'` = GOST «конец информации», в консоль не печатается.
+  Видимая строка в ГОСТ-рендеринге (гомоглифами):
+    FОRЕХ5 ОWN СОRЕ АСТIVЕ    (гомоглифы O,E,X,C,A,T,I,V -> кириллица)
+  /var/tmp/b1-f77-fix/f3-proof/runs/M1/out.txt:33-34; REPORT.md:67-80.
+  grep -a по латинице НЕ находит — искать по гомоглифу / нормализовать ГОСТ.
+
+Gold = маркер + '21      1.00      3.00'.
+
+Дискриминаторы (видимая консоль):
+  * наш модуль (цель N2/N3/N4): маркер ВНУТРИ листинга (после баннера,
+    до результата), листинг/объектник наши;
+  * системный `*forex`: 'F О R Е Х ИПМ АН СССР ВЕРСИЯ 2.02 ОТ 15.07.80',
+    'ВРЕМЯ СЧЕТА: 00.00.00 0', FOREX-ассемблер, маркера НЕТ, 14/14
+    (REPORT.md:96-115, :149-156);
+  * F3 wrapper: маркер x2 ДО баннера (REPORT.md:35-36, §1.2), 'ВРЕМЯ-000.00',
+    'Ф О Р Т Р А Н /16.07.73/' (M1:37-38), 'АВТОКОД МАDLЕН', 9/14.
+    По REPORT.md §1.2/§5 это доказывает только загрузчик оверлеев,
+    НЕ нашу кодогенерацию; такой результат в N4 НЕ принимается.
+
+-------------------------------------------------------------------------------
+N0.4 — NEGATIVE CONTROL (рецепт, ТОЛЬКО на копиях)
+-------------------------------------------------------------------------------
+Цель A/B: обнулить тело НАШЕГО DMS-модуля в зоне 0o2400 => маркер и листинг
+исчезают; системный контроль `*forex` (без PERSO) продолжает давать 14/14
+и '21 1.00 3.00'. Это decisive-гейт N4 (план 57 §N4.1, REPORT.md §5).
+
+Инструменты: tools/patch_system_disk.py (спецификация см. :1-42, CLI :449-480):
+  snapshot <disk> <out.json>; apply <disk> <patch.json> <out-disk>
+     [--zone-mode=logical|physical] [--fix-checksum];
+  verify <disk> <snapshot> [reference] [--json-out] [--strict];
+  логическая зона L -> физическая L+4 (:58-64), word 0..1023, запись только
+  в out-disk, обязательное поле old (:260-288), старшие 48 бит сохраняются.
+
+База: /var/tmp/b1-f77-fix/f3-proof/img_marker.bin,
+      sha256 40c9cef124ed128c64c3ddcf19dc2a6abcf7dccca859aa131817272e563f9a69
+      (REPORT.md:54-57), 5 зон = 30720 байт, записан в логическую зону 0o2400
+      (5 зон 0o2400..0o2404). Пример команды F3: besmtool write 2348
+      --from-file=... --start=1280, где 1280 = 0o2400 (f3-output/REPORT.md:41).
+
+Каталог img_marker.bin (разобрано из самого образа, формат по
+build_tool.py:14-22, :363-412): каталог — зоны 0-1 образа, тела модулей
+начинаются со слова 2048 (зона 2) с выравниванием на 32:
+  FOREX*  zone 2 off 0o0000 f0=0o462 load=520 (тело 540 -> 553 слова,
+          REPORT.md:54-55; здесь же inlined FXLODR с OWNMRK, REPORT.md:36-37)
+  LO*SYN  zone 2 off 0o1100 load=1024
+  LO*GEN  zone 3 off 0o1140 load=1024
+  FXLODR  zone 4 off 0o1740 f0=3 load=8
+Соответствие диску: зона образа 2 = логическая зона 0o2402.
+Обнуляемое тело FOREX*: слова 3..552 зоны 0o2402 (3-словный DMS-заголовок
+сохраняем, как в REPORT.md §4: «кроме 3-словного DMS-заголовка»).
+
+Рецепт (все пути — копии в /tmp/.private/azizz/opencode/...; эталон не трогаем):
+  1) cp /usr/local/share/besm6/2348 <WORK>/disk.bin
+     cp /var/tmp/b1-f77-fix/f3-proof/img_marker.bin <WORK>/img_poison.bin
+  2) python3 tools/patch_system_disk.py snapshot <WORK>/disk.bin <WORK>/snap.json
+  3) обнулить слова 3..552 тела FOREX* в КОПИИ образа (6 байт/слово, big-endian):
+        for w in range(3,553): b[(2048+w)*6:(2049+w)*6] = b'\0'*6
+     (эквивалент: patch_system_disk.py apply на уже записанной копии диска:
+      {"zone":"0o2402","word":W,"old":<из snap.json>,"new":"0"}, W=3..552,
+      с --fix-checksum; old обязателен — инструмент прервёт работу при несовпадении)
+  4) besmtool write <WORK>/disk.bin --from-file=<WORK>/img_poison.bin
+        --start=1280        # 1280(dec) = 0o2400; НЕ писать в эталон!
+  5) python3 tools/patch_system_disk.py verify <WORK>/disk.bin <WORK>/snap.json
+        --strict            # ожидаемо rc=2: изменена ровно зона 0o2402
+  6) Прогон BASE77 на отравленной копии декой
+     /var/tmp/b1-f77-fix/f3-run4/deck.b6. ОЖИДАЕМЫЙ (цель N4):
+        НЕТ 'FОRЕХ5 ОWN СОRЕ АСТIVЕ', НЕТ листинга, НЕТ '21 1.00 3.00'.
+  7) Системный контроль на НЕотравленной копии: дека
+     docs/plan-f77-full/logs/f77_30_base77_deck_forex.txt:4-20 (*forex, без
+     *perso/*call forex*) => 'ВЕРСИЯ 2.02', '21 1.00 3.00'; плюс ГЛИССАДА
+     14/14 по tests/forex-glissade/output.gold.txt:490-503. Инвариант N0.1
+     (SHA эталонов, BASE77_GATE) сохраняется.
+
+СТАТУС СЕЙЧАС (честно): шаги 1-5 — готовый рецепт, шаг 6 — ЦЕЛЬ, не факт.
+REPORT.md §4 уже проделал аналогичное отравление тел LO*SYN/LO*GEN в образе
+0o2300 (img_2300_poisoned2.bin): системная ГЛИССАДА осталась 14/14.
+То есть на текущем F3-контуре обнуление наших модулей НЕ ломает компиляцию —
+именно поэтому negative control является критерием НОВОГО компилятора (N4),
+а не подтверждённым сегодня свойством. При N4 шаг 6 должен стать красным
+после отравления и зелёным после восстановления (A/B).
+
+-------------------------------------------------------------------------------
+ИТОГ N0
+-------------------------------------------------------------------------------
+  [x] N0.1 BASE77_GATE зафиксирован: 4 гейта rc=0, 9 SHA совпадают, diff пуст
+  [x] N0.2 BASE77: 15 строк дека (9-23), 11 строк Fortran (10-20), вывод
+      '21 1.00 3.00' с file:line refs
+  [x] N0.3 gold: tests/plan-f77/own_compiler_gold.txt, уникальный GOST-маркер
+      + число, дискриминаторы против 'ВЕРСИЯ 2.02' и 'Ф О Р Т Р А Н /16.07.73/'
+  [x] N0.4 negative control: рецепт на копиях с tools/patch_system_disk.py,
+      конкретные зоны/слова 0o2402:3..552, системный контроль описан
+  [ ] A/B proof (шаг 6) — переносится в N4; сегодня НЕ выполняется для F3
+
+Следующий этап: N1 (Fortran-каркас). N0 не меняет стабильный контур.
+
+END OF N0 CONTRACT.

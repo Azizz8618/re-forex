@@ -1,0 +1,24 @@
+[10:41:55] CMD: tmux new-session -s p7c-vu0: cd /var/tmp/p7c-hang/work &&  /home/azizz/Yandex.Disk/simh/BIN/besm6 /var/tmp/p7c-hang/dispak-copy.ini 2>/var/tmp/p7c-hang/run-vu0/stderr.txt
+[10:41:55] STEP 1: wait for OS prompt CM1П
+[10:42:00] STEP 1 result: OK
+[10:42:00] SNAP 01-boot: /var/tmp/p7c-hang/run-vu0/pane-01-boot.txt
+[10:42:00] STEP 2: НОМ (list queue)
+[10:42:02] SNAP 02-nom: /var/tmp/p7c-hang/run-vu0/pane-02-nom.txt
+[10:42:02] STEP 3: ДАЙ А0 / ДАЙ А1
+[10:42:04] SNAP 03-day: /var/tmp/p7c-hang/run-vu0/pane-03-day.txt
+[10:42:04] STEP 4: НОМ + ВЦП before deck
+[10:42:07] SNAP 04-pre-vcp: /var/tmp/p7c-hang/run-vu0/pane-04-pre-vcp.txt
+[10:42:07] STEP 5: Ctrl+G -> sim>, attach deck + FS8
+[10:42:08] SNAP 05-sim: /var/tmp/p7c-hang/run-vu0/pane-05-sim.txt
+[10:42:08]   SIMH: at vu0 /var/tmp/p7c-hang/p7ct.txt
+[10:42:08]   SIMH: d 6 1
+[10:42:09]   SIMH: d 5 10
+[10:42:10]   SIMH: set cpu req
+[10:42:10]   SIMH: go
+[10:42:11] SNAP 06-fed: /var/tmp/p7c-hang/run-vu0/pane-06-fed.txt
+[10:42:11] STEP 5b: job accepted (B075/410300/ЗMЛ0) = True
+[10:42:11] SNAP 06b-accepted: /var/tmp/p7c-hang/run-vu0/pane-06b-accepted.txt
+[10:42:11] STEP 6: wait up to 90s for КОНЕЦ ЗАДАЧИ ...
+[10:43:41] STEP 6: TIMEOUT - no КОНЕЦ ЗАДАЧИ (hang reproduced)
+[10:43:41] SNAP 07-after-wait: /var/tmp/p7c-hang/run-vu0/pane-07-after-wait.txt
+[10:43:41] STEP 7: ВЦП (is the job still in solution?)

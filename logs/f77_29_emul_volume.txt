@@ -1,0 +1,95 @@
+=== A3 / read-only: как dispak находит том АРФА и связывает его с логическим номером ===
+Источник: /home/azizz/Yandex.Disk/dispak/dispak/ . Эмулятор НЕ запускался.
+
+--- arfa.c:34-39 (заголовок: три способа поиска) ---
+34: * Том архива отыскивается так:
+35: *   - переменная среды BESM6_ARFA задает десятичный номер тома;
+36: *   - иначе просматриваются тома, подключенные логическим номерам
+37: *     030..067;
+38: *   - иначе просматриваются каталоги пути поиска образов (BESM6_PATH);
+39: *     берется первый том с меткой "АRFA" в слове 030 зоны 1.
+
+--- arfa.c:60-65, 87-88 ---
+61: #define ARFA_LBL_WORD   0030    /* метка "АRFA" */
+62: #define ARFA_FIRST_REC  0100    /* первое слово записей каталога */
+63: #define ARFA_REC_WORDS  13      /* слот записи: 12 слов + разделитель */
+64: #define ARFA_DATA_MIN   0030
+65: #define ARFA_MAX_AREAS  60
+87: #define ARF_LN_MIN      030
+88: #define ARF_LN_MAX      067
+
+--- arfa.c:368-379 (метка; байты ГОСТ: А=040, R=0107 (латиница), F=0100 (латиница), А=040) ---
+374:         if (disk_read (disk, 1, (char*) data) != DISK_IO_OK)
+376:         w = data + ARFA_LBL_WORD*6;
+377-378: return w[0] == GOST_A && w[1] == GOST_R && w[2] == GOST_F && w[3] == GOST_A;
+
+--- arfa.c:385-494 (arfa_volume) ---
+394:         if (arfa_disk)  return 0;                 /* кэш на весь процесс */
+398:         env = getenv ("BESM6_ARFA");
+401-406: num = strtoul(env,&tail,10); if (*tail) return -1;
+        try disk_open(num,RW) else disk_open(num,RO)
+407:         arfa_ro = ! disk_open (num, DISK_READ_WRITE);   /* 3-й open, дескриптор не закрывается */
+411:         arfa_diskno = num; goto found;
+416-429: for (u = 030; u <= 067; ++u) {
+           if (!disks[u].diskno) continue;
+           arfa_disk = disk_open(disks[u].diskno, RW);
+           if (arfa_labeled(arfa_disk)) { arfa_diskno = disks[u].diskno; ... goto found; }
+        }
+432-435: if (!disk_path) disk_find_path(pathbuf,0);    /* BESM6_PATH или HOME + PATH_DEFAULT */
+439-472: while (p && !arfa_disk) { ...opendir/readdir... num=strtoul(e->d_name,&tail,10);
+           if (*tail || !num || num>4095) continue;
+           disk_open(num,RW); if (arfa_labeled) { arfa_diskno=num; break; } }
+476-485: for (z=1; z<=023; ++z) if (label in word 030) copies[ncopy++] = z;
+486-490: if (!ncopy) { disk_close; arfa_disk=0; return -1; }
+491-492: memcpy(arfa_copy_zones, copies); arfa_ncopy=ncopy;
+
+--- arfa.c:241-299 (каталог читается только из copy_zones[0]) ---
+248: if (disk_read (arfa_disk, arfa_copy_zones[0], (char*) data) != DISK_IO_OK) return -1;
+254-297: for (i=4; i<1020 && nareas<60; ++i) { is_zone_word(data+i*6) && is_name_word(data+(i-4)*6) -> areas[nareas] }
+273-295: in-memory поля переносятся по имени из prev[]; owner=0 после перезапуска эмулятора.
+
+--- vsinput.c:320-375 (паспорт ЛЕН/ДИС/DEC TAP) ---
+324: /* ЛЕН <octal> ( <decimal> [ C | -ЗП | - <octal> ] ) / ДИС ... */
+334-336: if (psp.nvol >= 12) inperr("ЛЕНТ >= 12");
+338-341: u = get_octal(cp); if (cp[2] != '(' || u < 030 || u >= 070) goto fs;
+342-343: psp.vol[n].u = u; offset = 0;
+346-350: u = get_decimal(cp); if (!u || u>=4096) inperr("ПЛОХ ТОМ");
+353-369: C -> wr=2 (chunk), -ЗП/-WR -> wr=1, -<octal> -> offset
+370: psp.vol[n].volno = u; 373: ++psp.nvol;
+
+--- input.c:48-79 (паспорт ->_disks[]) ---
+48: user = psp.user;
+61-79: for i<nvol: u=psp.vol[i].u; no=psp.vol[i].volno; flg=...;
+       disks[u].mode=flg; disks[u].offset=...; disks[u].diskno=no;
+       disk_open(no,flg) -- только проверка существования файла, сразу close.
+
+--- disk.c:45-144 (имя файла = десятичный номер) ---
+50-55: HOME + "/.besm6"
+63: if (!disk_path) disk_path = getenv("BESM6_PATH") else HOME+PATH_DEFAULT
+77-96: path elements ':' -> sprintf(fname+len,"/%d",diskno); access(R_OK)
+104-144: disk_open: disk_find_path(fname,diskno); access; open(fname,O_RDWR/O_RDONLY)
+
+--- arfa.c:654-689 (сопоставление с логическим номером в ИС) ---
+661-669: if (W48_37(is)) { u=W48_37(is); if (u<030||u>067) return -2;
+          ia=unit_area[u]; if (ia>0 && ia<=nareas && disks[u].diskno==arfa_diskno) return ia-1;
+          return -1; }
+675-679: W4_1==010 -> parse_name_new -> find_area; 680-681: W4_1==0 -> parse_ident
+671-674: W4_1==014 -> -2; >010 -> -2
+
+--- arfa.c:1132-1178 (Э63 12 дозаказ: кто заполняет unit_area/disks[]) ---
+1145-1149: count disks[u].diskno for u=030..067; if nbusy>=12 -> ARF_VIRT_N
+1161-1176: первая свободная из шкалы РМР: disks[u].diskno = arfa_diskno;
+           disks[u].mode = W12?RO:RW; disks[u].offset = area.zone+area.shift;
+           disks[u].diskh=0; unit_area[u]=idx+1; acc.r=u; return OK;
+
+--- arfa.c:144-148 ---
+145: arfa_area_unit(u) { return u<64 ? unit_area[u] : 0; }
+900-905: при destroy ссылки юнитов сдвигаются/обнуляются.
+
+--- Эмпирика из docs/plan-f77-full/40-hang-repro.md ---
+63: run-orig: дис 45(2048)^ -> B075-1, зависание, PC 066643
+64: run-2348: дис 45(2348)^ -> B075-1 410300000000 2348, цикла 066642 нет
+65: run-m2048: файл переименован в 2048 -> опять цикл 066642/066643
+68-69: "Подмена имени файла на 2048 не помогает: внутри образа по-прежнему метка 2348".
+Вывод: ОС (БЕМШ-код с диска 2348) сверяет ВНУТРЕННИЙ номер тома (бобину),
+а эмулятор disk_open() смотрит только имя файла; BESM6_ARFA обходит обе проверки.

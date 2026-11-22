@@ -1,0 +1,22 @@
+[10:48:17] start: cd /var/tmp/p7c-hang/work && /home/azizz/Yandex.Disk/simh/BIN/besm6 /var/tmp/p7c-hang/dispak-copy.ini 2>/var/tmp/p7c-hang/run-orig/stderr.txt
+[10:48:22] boot prompt: True
+[10:48:22] SNAP 01-boot
+[10:48:25] SNAP 02-config
+[10:48:26] SNAP 03-sim
+[10:48:26] SIMH: at vu0 /var/tmp/p7c-hang/p7ct-orig.txt
+[10:48:26] SIMH: d 6 1
+[10:48:27] SIMH: d 5 10
+[10:48:27] SIMH: set cpu req
+[10:48:28] SIMH: go
+[10:48:29] B075 accepted: True
+[10:48:29] SNAP 04-accepted
+[10:48:32] Ctrl+G -> inspect PC before trace
+[10:48:32] SNAP 05-break-before
+[10:48:35] SNAP 06-regs-before
+[10:48:35] enable CPU trace: set debug <file> / set cpu debug
+[10:48:35] trace 3s ...
+[10:48:39] SNAP 07-break-after
+[10:48:41] SNAP 08-regs-after
+[10:48:41] set cpu nodebug / set pult=<touched>
+[10:48:42] SNAP 09-touched
+[10:48:42] DONE
