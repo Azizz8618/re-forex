@@ -1,0 +1,420 @@
+C     FRONT v0.2 -- N1 + M1 BASE77 RULE TABLE FOR THE NEW FOREX COMPILER
+C=======================================================================
+C Compiled by SYSTEM FOREX 2.02 (PERSO 0o2300), fixed form, 72 columns.
+C Proven subset of src/f77prep/F77PREP.FTN: INTEGER arrays, DATA,
+C PARAMETER dimensions, DO loops, computed control flow, numbered PRINT.
+C No IMPLICIT/SAVE/CHARACTER/PRINT */READ inside this program.
+C
+C HOST INJECTION (two standalone marker lines, as in F77PREP.FTN:30,54):
+C   first marker: PARAMETER (NC=..,NLV=..,LL=132,LW=72)
+C                 INTEGER RAW(LW,NC)  -- ASCII codes of PHYSICAL cards
+C                 INTEGER C(LL,NLV)   -- logical lines (built here)
+C                 INTEGER SEQ(NLV)    -- SEQ of first physical card
+C   second marker: DATA RAW /.../     -- host: card_codes() of the BASE77 text
+C
+C N1.1 logical_lines: continuation when PHYSICAL column 6 is nonblank;
+C      columns 7..72 are glued, LL=132, SEQ = first card number.
+C N1.2 card_codes layout: ASCII codes in INTEGER C(LL,NLV), PAT token table.
+C N1.3 label allocator: record markers 777001..777004 + monotone source
+C      label from the reserved 90000..99999 zone, collision scan.
+C N1.4 IR emission: 777001/777002/777003/777004, all numeric, PRINT + I8.
+C M1  rules 30..37: 30 PROGRAM, 31 assignment, 32 counted DO,
+C     33 labelled CONTINUE, 34 numbered PRINT, 35 FORMAT, 36 STOP, 37 END.
+C     Rules 31/32/34/35 stream the whole logical line into 777002
+C     (trimmed at the last nonblank); rules 32/35 request a 777004 label.
+C
+C IR records (same contract as F77PREP.FTN:14-22):
+C   777001 <seq> <rule> <itype>       rule per logical line
+C   777002 <seq> <pos> <code>         ASCII stream (rule 3: variable list)
+C   777003 <nlines> <nrewrites>       summary
+C   777004 <seq> <kind> <pos> <code>  kind 21 = reserved label request
+C
+C EXTENSION (copy only): rule 38 BESM(hi,lo) emits a raw 48-bit machine word:
+C   777006 <seq> 1 <hi> <lo>   full word = hi*2**24 + lo, both <= 2**24-1
+C FOREX 2.02 INTEGER mantissa is 40 bits, so the 48-bit word is carried as
+C two 24-bit decimal halves. All rules 30..37 / records 777001..777005 stay
+C byte-identical; no existing FORMAT/DATA/statement is modified.
+C=======================================================================
+C@@DECL@@
+      INTEGER LNL(NLV)
+      INTEGER IV(132)
+      INTEGER NL, NR, IC, I, J, K, L, M, IFIRST, LV, MATCH
+      INTEGER IRULE, ITYPE, LAB
+      INTEGER MR1, MR2, MR3, MR4, NEXT
+      INTEGER MR5
+      INTEGER MR6
+      INTEGER HI, LO
+      INTEGER PAT38(5)
+      INTEGER TK(64), TO(64), TA(64), TB(64), ST(32)
+      INTEGER NTK, NSP, P, CH, OP, PR, PRT, TOP, VIDX, LAST
+      INTEGER VAL, FRAC, SC
+      INTEGER PATPRN(7)
+      INTEGER PAT30(7)
+      INTEGER PAT32(2)
+      INTEGER PAT33(8)
+      INTEGER PAT34(5)
+      INTEGER PAT35(6)
+      INTEGER PAT36(4)
+      INTEGER PAT37(3)
+      DATA MR1 /777001/
+      DATA MR2 /777002/
+      DATA MR3 /777003/
+      DATA MR4 /777004/
+      DATA MR5 /777005/
+      DATA MR6 /777006/
+      DATA PAT38 /66,69,83,77,40/
+      DATA NEXT /90000/
+      DATA PATPRN /80,82,73,78,84,32,42/
+      DATA PAT30 /80,82,79,71,82,65,77/
+      DATA PAT32 /68,79/
+      DATA PAT33 /67,79,78,84,73,78,85,69/
+      DATA PAT34 /80,82,73,78,84/
+      DATA PAT35 /70,79,82,77,65,84/
+      DATA PAT36 /83,84,79,80/
+      DATA PAT37 /69,78,68/
+C@@DATA@@
+C-- N1.1: physical cards -> logical lines, SEQ and continuation ------------
+      NL = 0
+      DO 100 IC = 1, NC
+         IF (RAW(6,IC) .EQ. 32) GOTO 110
+         IF (NL .EQ. 0) GOTO 110
+         DO 120 J = 7, LW
+            IF (LNL(NL) .GE. LL) GOTO 120
+            LNL(NL) = LNL(NL) + 1
+            C(LNL(NL),NL) = RAW(J,IC)
+  120    CONTINUE
+         GOTO 100
+  110    NL = NL + 1
+         SEQ(NL) = IC
+         LNL(NL) = LW - 6
+         DO 130 J = 7, LW
+            C(J-6,NL) = RAW(J,IC)
+  130    CONTINUE
+  100 CONTINUE
+      DO 140 I = 1, NL
+         DO 141 J = LNL(I)+1, LL
+            C(J,I) = 32
+  141    CONTINUE
+  140 CONTINUE
+C-- classify logical lines (N1.2 PAT + M1 rules 30..37) ---------------------
+      NR = 0
+      DO 200 I = 1, NL
+         IRULE = 0
+         ITYPE = 0
+         LV = 0
+         IFIRST = 1
+  210    IF (IFIRST .GT. LL) GOTO 220
+         IF (C(IFIRST,I) .EQ. 32) GOTO 215
+         GOTO 220
+  215    IFIRST = IFIRST + 1
+         GOTO 210
+  220    MATCH = 1
+         DO 221 J = 1, 7
+            IF (C(IFIRST+J-1,I) .NE. PATPRN(J)) MATCH = 0
+  221    CONTINUE
+         IF (MATCH .EQ. 0) GOTO 400
+         IRULE = 3
+         K = IFIRST + 7
+  231    IF (K .GT. LL) GOTO 233
+         IF (C(K,I) .EQ. 32) GOTO 232
+         IF (C(K,I) .EQ. 44) GOTO 232
+         GOTO 233
+  232    K = K + 1
+         GOTO 231
+  233    IF (K .GT. LL) GOTO 240
+         ITYPE = 2
+         IF (C(K,I) .GE. 73 .AND. C(K,I) .LE. 78) ITYPE = 1
+  234    IF (K .GT. LL) GOTO 240
+         IF (C(K,I) .EQ. 32) GOTO 235
+         LV = LV + 1
+         IV(LV) = C(K,I)
+  235    K = K + 1
+         GOTO 234
+  240    IF (LV .LE. 0) IRULE = 0
+         IF (IRULE .NE. 0) GOTO 250
+C-- M1 rule 30: PROGRAM -----------------------------------------------------
+  400    MATCH = 1
+         DO 401 J = 1, 7
+            IF (C(IFIRST+J-1,I) .NE. PAT30(J)) MATCH = 0
+  401    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 30
+C-- M1 rule 31: assignment, one-letter LHS followed by '=' -----------------
+  402    IF (IRULE .NE. 0) GOTO 403
+         IF (C(IFIRST+1,I) .NE. 61) GOTO 403
+         IF (C(IFIRST,I) .LT. 65 .OR. C(IFIRST,I) .GT. 90) GOTO 403
+         IRULE = 31
+         ITYPE = 2
+         IF (C(IFIRST,I) .GE. 73 .AND. C(IFIRST,I) .LE. 78) ITYPE = 1
+C-- M1 rule 32: counted DO --------------------------------------------------
+  403    IF (IRULE .NE. 0) GOTO 404
+         IF (C(IFIRST,I) .NE. 68) GOTO 404
+         IF (C(IFIRST+1,I) .NE. 79) GOTO 404
+         IRULE = 32
+         ITYPE = 1
+C-- M1 rule 33: labelled CONTINUE ------------------------------------------
+  404    IF (IRULE .NE. 0) GOTO 406
+         MATCH = 1
+         DO 405 J = 1, 8
+            IF (C(IFIRST+3+J-1,I) .NE. PAT33(J)) MATCH = 0
+  405    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 33
+  406    IF (IRULE .NE. 0) GOTO 408
+         MATCH = 1
+         DO 407 J = 1, 8
+            IF (C(IFIRST+J-1,I) .NE. PAT33(J)) MATCH = 0
+  407    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 33
+C-- M1 rule 34/3: PRINT, numbered or legacy PRINT * ------------------------
+  408    IF (IRULE .NE. 0) GOTO 412
+         MATCH = 1
+         DO 409 J = 1, 5
+            IF (C(IFIRST+J-1,I) .NE. PAT34(J)) MATCH = 0
+  409    CONTINUE
+         IF (MATCH .NE. 1) GOTO 412
+         IF (C(IFIRST+6,I) .EQ. 42) GOTO 411
+         IRULE = 34
+         GOTO 412
+  411    IRULE = 3
+C-- M1 rule 35: FORMAT ------------------------------------------------------
+  412    IF (IRULE .NE. 0) GOTO 414
+         MATCH = 1
+         DO 413 J = 1, 6
+            IF (C(IFIRST+J-1,I) .NE. PAT35(J)) MATCH = 0
+  413    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 35
+C-- M1 rule 36: STOP --------------------------------------------------------
+  414    IF (IRULE .NE. 0) GOTO 416
+         MATCH = 1
+         DO 415 J = 1, 4
+            IF (C(IFIRST+J-1,I) .NE. PAT36(J)) MATCH = 0
+  415    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 36
+C-- M1 rule 37: END ---------------------------------------------------------
+  416    IF (IRULE .NE. 0) GOTO 418
+         MATCH = 1
+         DO 417 J = 1, 3
+            IF (C(IFIRST+J-1,I) .NE. PAT37(J)) MATCH = 0
+  417    CONTINUE
+         IF (MATCH .EQ. 1) IRULE = 37
+C-- M1 rule 38: BESM(hi,lo) raw 48-bit machine word -------------------------
+ 4180 IF (IRULE .NE. 0) GOTO 418
+         MATCH = 1
+         DO 4181 J = 1, 5
+            IF (C(IFIRST+J-1,I) .NE. PAT38(J)) MATCH = 0
+ 4181 CONTINUE
+         IF (MATCH .NE. 1) GOTO 418
+         P = IFIRST + 5
+         HI = 0
+ 4182 CH = C(P,I)
+         IF (CH .LT. 48 .OR. CH .GT. 57) GOTO 4183
+         HI = HI*10 + CH - 48
+         P = P + 1
+         GOTO 4182
+ 4183 IF (CH .NE. 44) GOTO 4186
+         P = P + 1
+         LO = 0
+ 4184 CH = C(P,I)
+         IF (CH .LT. 48 .OR. CH .GT. 57) GOTO 4185
+         LO = LO*10 + CH - 48
+         P = P + 1
+         GOTO 4184
+ 4185 IRULE = 38
+         ITYPE = 1
+ 4186 CONTINUE
+C-- M1: full trimmed ASCII stream for rules 31/32/34/35 --------------------
+  418    IF (IRULE .NE. 31 .AND. IRULE .NE. 32 .AND.
+     1      IRULE .NE. 34 .AND. IRULE .NE. 35) GOTO 250
+         K = LNL(I)
+  419    IF (K .LT. 1) GOTO 420
+         IF (C(K,I) .NE. 32) GOTO 420
+         K = K - 1
+         GOTO 419
+  420    LV = K
+         DO 421 K = 1, LV
+            IV(K) = C(K,I)
+  421    CONTINUE
+C-- N1.4: IR records for this logical line ---------------------------------
+  250    PRINT 9001, MR1, SEQ(I), IRULE, ITYPE
+C-- N1.8: 777006 raw machine word for rule 38 -------------------------------
+      IF (IRULE .NE. 38) GOTO 555
+      PRINT 9006, MR6, SEQ(I), 1, HI, LO
+      GOTO 260
+  555 CONTINUE
+         IF (IRULE .GE. 31 .AND. IRULE .LE. 36) NR = NR + 1
+         IF (IRULE .NE. 3 .AND. IRULE .NE. 31 .AND. IRULE .NE. 32
+     1      .AND. IRULE .NE. 34 .AND. IRULE .NE. 35) GOTO 260
+         DO 251 K = 1, LV
+            PRINT 9002, MR2, SEQ(I), K, IV(K)
+  251    CONTINUE
+C-- N1.7: structured RHS IR 777005 for rule 31 (postfix/eval order) ----------
+      IF (IRULE .NE. 31) GOTO 560
+      NTK = 0
+      NSP = 0
+      LAST = 0
+      P = 1
+  500 IF (P .GT. LV) GOTO 505
+         IF (IV(P) .NE. 61) GOTO 501
+         P = P + 1
+         GOTO 505
+  501    P = P + 1
+         GOTO 500
+  505 IF (P .GT. LV) GOTO 530
+         CH = IV(P)
+         IF (CH .EQ. 32) GOTO 520
+         IF (CH .EQ. 40) GOTO 522
+         IF (CH .EQ. 41) GOTO 523
+         IF (CH .EQ. 43 .OR. CH .EQ. 45 .OR. CH .EQ. 42 .OR.
+     1      CH .EQ. 47) GOTO 524
+         IF (CH .EQ. 46) GOTO 510
+         IF (CH .LT. 48 .OR. CH .GT. 57) GOTO 515
+         GOTO 510
+  515 IF (CH .LT. 65 .OR. CH .GT. 90) GOTO 520
+         GOTO 516
+  520 P = P + 1
+         GOTO 505
+C-- numeric literal: digits [.digits], scaled INTEGER = real*100 -------------
+  510 VAL = 0
+         FRAC = 1
+  511 IF (P .GT. LV) GOTO 514
+         CH = IV(P)
+         IF (CH .LT. 48 .OR. CH .GT. 57) GOTO 512
+         VAL = VAL*10 + CH - 48
+         P = P + 1
+         GOTO 511
+  512 IF (CH .NE. 46) GOTO 514
+         P = P + 1
+         IF (P .GT. LV) GOTO 514
+         CH = IV(P)
+  513 IF (CH .LT. 48 .OR. CH .GT. 57) GOTO 514
+         VAL = VAL*10 + CH - 48
+         FRAC = FRAC*10
+         P = P + 1
+         IF (P .GT. LV) GOTO 514
+         CH = IV(P)
+         GOTO 513
+  514 SC = VAL*100/FRAC
+         NTK = NTK + 1
+         TK(NTK) = 1
+         TO(NTK) = 0
+         TA(NTK) = SC
+         TB(NTK) = 0
+         LAST = 1
+         GOTO 505
+C-- variable: X=1 Y=2 N=3 I=4, other upper-case letters ASCII-60 -------------
+  516 VIDX = 0
+         IF (CH .EQ. 88) VIDX = 1
+         IF (CH .EQ. 89) VIDX = 2
+         IF (CH .EQ. 78) VIDX = 3
+         IF (CH .EQ. 73) VIDX = 4
+         IF (VIDX .NE. 0) GOTO 517
+         VIDX = CH - 60
+  517 NTK = NTK + 1
+         TK(NTK) = 2
+         TO(NTK) = 0
+         TA(NTK) = VIDX
+         TB(NTK) = 0
+         LAST = 1
+         P = P + 1
+         GOTO 505
+C-- parentheses ---------------------------------------------------------------
+  522 NSP = NSP + 1
+         ST(NSP) = 8
+         LAST = 0
+         P = P + 1
+         GOTO 505
+  523 IF (NSP .LE. 0) GOTO 520
+         IF (ST(NSP) .EQ. 8) GOTO 529
+         TOP = ST(NSP)
+         NTK = NTK + 1
+         TK(NTK) = 3
+         IF (TOP .GE. 6 .AND. TOP .LE. 7) TK(NTK) = 4
+         TO(NTK) = TOP
+         TA(NTK) = 0
+         TB(NTK) = 0
+         NSP = NSP - 1
+         GOTO 523
+  529 NSP = NSP - 1
+         LAST = 1
+         P = P + 1
+         GOTO 505
+C-- operator: shunting-yard, precedence *=2 /=2 +=1 -=1, unary hi -----------
+  524 OP = 1
+         PR = 1
+         IF (CH .EQ. 45) OP = 2
+         IF (CH .EQ. 42) OP = 3
+         IF (CH .EQ. 47) OP = 4
+         IF (OP .GE. 3) PR = 2
+         IF (LAST .EQ. 1) GOTO 526
+         IF (CH .EQ. 45) GOTO 525
+         P = P + 1
+         GOTO 505
+  525    NSP = NSP + 1
+         ST(NSP) = 6
+         P = P + 1
+         GOTO 505
+  526 IF (NSP .LE. 0) GOTO 528
+         TOP = ST(NSP)
+         IF (TOP .EQ. 8) GOTO 528
+         PRT = 1
+         IF (TOP .GE. 3 .AND. TOP .LE. 4) PRT = 2
+         IF (TOP .GE. 6 .AND. TOP .LE. 7) PRT = 3
+         IF (PRT .LT. PR) GOTO 528
+         NTK = NTK + 1
+         TK(NTK) = 3
+         IF (TOP .GE. 6 .AND. TOP .LE. 7) TK(NTK) = 4
+         TO(NTK) = TOP
+         TA(NTK) = 0
+         TB(NTK) = 0
+         NSP = NSP - 1
+         GOTO 526
+  528 NSP = NSP + 1
+         ST(NSP) = OP
+         LAST = 0
+         P = P + 1
+         GOTO 505
+C-- flush remaining operators to output ---------------------------------------
+  530 IF (NSP .LE. 0) GOTO 540
+         TOP = ST(NSP)
+         IF (TOP .EQ. 8) GOTO 531
+         NTK = NTK + 1
+         TK(NTK) = 3
+         IF (TOP .GE. 6 .AND. TOP .LE. 7) TK(NTK) = 4
+         TO(NTK) = TOP
+         TA(NTK) = 0
+         TB(NTK) = 0
+  531    NSP = NSP - 1
+         GOTO 530
+C-- emit 777005 <seq> <kind> <op> <arg1> <arg2> -------------------------------
+  540 IF (NTK .LE. 0) GOTO 560
+         DO 541 K = 1, NTK
+            PRINT 9005, MR5, SEQ(I), TK(K), TO(K), TA(K), TB(K)
+  541    CONTINUE
+  560 CONTINUE
+         IF (IRULE .EQ. 31 .OR. IRULE .EQ. 34) GOTO 260
+C-- N1.3: collision-free label allocator, 777004 kind 21 -------------------
+         LAB = NEXT
+  300    IF (LAB .GT. 99999) GOTO 320
+         DO 305 J = 1, NC
+            M = 0
+            DO 301 K = 1, 5
+               L = RAW(K,J)
+               IF (L .LT. 48 .OR. L .GT. 57) GOTO 302
+               M = M*10 + L - 48
+  301       CONTINUE
+  302       IF (M .NE. LAB) GOTO 305
+            LAB = LAB + 1
+            GOTO 300
+  305    CONTINUE
+  320    NEXT = LAB + 1
+         PRINT 9004, MR4, SEQ(I), 21, 0, LAB
+  260    CONTINUE
+  200 CONTINUE
+      PRINT 9003, MR3, NL, NR
+ 9001 FORMAT(1X,4I8)
+ 9002 FORMAT(1X,4I8)
+ 9003 FORMAT(1X,3I8)
+ 9004 FORMAT(1X,5I8)
+ 9005 FORMAT(1X,6I8)
+ 9006 FORMAT(1X,5I8)
+      STOP
+      END
