@@ -1,0 +1,113 @@
+C     N3.6/M3-M5 -- BASE77 DO-BOUND -> RAW ARX -> GOST DIGIT WORD STREAM
+C=======================================================================
+C FOREX 2.02 subset: fixed form, 72 columns, INTEGER arrays, COMMON, DATA,
+C numbered PRINT/FORMAT. No CHARACTER, no PRINT *, no SAVE, no IMPLICIT.
+C
+C WIRING (design 63 sections 3.2-3.4, 6 P3-A):
+C   FRONT.FTN (M1, separate subagent) emits IR 777002 with the BASE77
+C   counted-DO bound B (6 or 5). This deck does not edit FRONT.FTN.
+C   CODEGEN.deck N3D word `вч 107 / пе 20` names the bound cell 0107;
+C   B is the value of that cell. N3E's floating `сл` is replaced by the
+C   proven raw `слц`/ARX prefix 0o130000 (docs/corrections.md). N3P's
+C   FT*571/002/003 calls are replaced by the proven *64+descriptor idiom.
+C   EMIT.FTN's EMIT48 storage contract (/N3COM/ IH,IL,NW) and GOSTEN table
+C   (authoritative monitor80-re/tools/encoding.cpp) are reused verbatim.
+C   EMIT48's KOP grid cannot encode opcode 013, so the ARX half is supplied
+C   as the proven raw prefix 45056 decimal; every ADR is BASE+body offset.
+C
+C BOUND INTERFACE: body[0o41] = (B-4)<<40, body[0o42] = (24-4B)<<32.
+C These are the two decimal digits of T_B=B(B+1)/2 at B=6,5: 21 and 15.
+C=======================================================================
+      SUBROUTINE N3EMIT(H, L)
+      INTEGER IH(256), IL(256), NW
+      COMMON /N3COM/ IH, IL, NW
+      INTEGER H, L
+      NW = NW + 1
+      IH(NW) = H
+      IL(NW) = L
+      RETURN
+      END
+      SUBROUTINE N3G6
+      INTEGER IA(12), NI
+      COMMON /TXTBF/ IA, NI
+      INTEGER IH(256), IL(256), NW
+      COMMON /N3COM/ IH, IL, NW
+      INTEGER GT(64), B(6)
+      INTEGER I, IC, K, NP, HIW, LOW
+      DATA GT /15,0,0,0,0,0,0,0,
+     1         18,19,25,10,13,11,14,12,
+     2         0,1,2,3,4,5,6,7,
+     3         8,9,0,0,0,0,0,0,
+     4         0,32,34,49,63,37,64,65,
+     5         45,66,67,42,68,44,69,46,
+     6         48,70,71,72,50,73,74,75,
+     7         53,51,76,0,0,0,0,0/
+      NP = 0
+      DO 20 I = 1, NI
+         IC = IA(I) - 31
+         IF (IC .LT. 1) GOTO 20
+         IF (IC .GT. 64) GOTO 20
+         K = GT(IC)
+         NP = NP + 1
+         B(NP) = K
+         IF (NP .LT. 6) GOTO 20
+         NW = NW + 1
+         HIW = B(1)
+         HIW = HIW*256 + B(2)
+         HIW = HIW*256 + B(3)
+         LOW = B(4)
+         LOW = LOW*256 + B(5)
+         LOW = LOW*256 + B(6)
+         IH(NW) = HIW
+         IL(NW) = LOW
+         NP = 0
+    20 CONTINUE
+      RETURN
+      END
+      SUBROUTINE N3M35(B)
+      INTEGER B, NB, IT, IU
+      INTEGER IH(256), IL(256), NW
+      COMMON /N3COM/ IH, IL, NW
+      INTEGER IA(12), NI
+      COMMON /TXTBF/ IA, NI
+      DATA IA /48,49,32,49,46,48,0,0,0,0,0,0/
+      DATA NI /6/
+      NB = 1007
+      IT = B - 4
+      IU = 24 - 4*B
+C-- word 1: XTA GOST; ARX bound-tens ---------------------------------
+      CALL N3EMIT(32768 + NB + 23, 45056 + NB + 33)
+C-- word 2: ARX bound-units; STO GOST ---------------------------------
+      CALL N3EMIT(45056 + NB + 34, NB + 23)
+C-- words 3-4: proven *64 2004 and uj 0(15) ----------------------------
+      CALL N3EMIT(214020, 589824)
+      CALL N3EMIT(14417920, 589824)
+C-- words 5-6: proven descriptor pair ---------------------------------
+      CALL N3EMIT(1030, 1030)
+      CALL N3EMIT(4096, 8388608)
+C-- word 7: GOST "01 1.0" -> digits overwritten at run time ------------
+      CALL N3G6
+C-- words 8-9: proven GOST tail " 3.00" + terminator -------------------
+      CALL N3EMIT(3843, 917504)
+      CALL N3EMIT(10030863, 986895)
+C-- words 10-11: bound table, the M1 IR plug-in point -----------------
+C   (B-4)<<40 -> HI=(B-4)*65536; (24-4B)<<32 -> HI=(24-4B)*256
+      CALL N3EMIT(IT*65536, 0)
+      CALL N3EMIT(IU*256, 0)
+      RETURN
+      END
+      PROGRAM N3MD35
+      INTEGER IH(256), IL(256), NW
+      COMMON /N3COM/ IH, IL, NW
+      INTEGER J, B
+      B = 6
+      NW = 0
+      CALL N3M35(B)
+      PRINT 100, NW
+  100 FORMAT(1X,'N3M35 BASE77 BOUND STREAM NW=',I4)
+      DO 20 J = 1, NW
+         PRINT 120, J, IH(J), IL(J)
+   20 CONTINUE
+  120 FORMAT(I4,':',I12,',',I12)
+      STOP
+      END
