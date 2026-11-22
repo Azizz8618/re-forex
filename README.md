@@ -20,7 +20,9 @@
 | рантайм (`FORMAT`, `FORTLIBR`, `DATAPR*`, `OCTTDEC`) | `src/FOREX_RUNTIME.mad` | `include/FOREX_RUNTIME.xref.md` | `include/FOREX_RUNTIME.registers.md` |
 
 Отдельные отчёты: `docs/06-address-map.md` (карта абсолютных адресов),
-`docs/06-core-modules.md` (ядро), `docs/07-runtime.md`, `docs/08-forex3.md`.
+`docs/06-core-modules.md` (ядро), `docs/07-runtime.md`, `docs/08-forex3.md`,
+`docs/62-newcomp-re.md` (RE загрузчика `NEWCOMP*`: процедуры, индексные регистры,
+контракт `*TRANS`).
 
 Дизассемблирование в МАДЛЕН выполнено `dtran` через `tools/dtran_wrap.py`
 (синтетический DMS-модуль с числовой симтаблицей), по образцу `re-siprod`.
