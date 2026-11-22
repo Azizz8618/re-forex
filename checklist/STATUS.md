@@ -24,7 +24,7 @@
 | 13 | Библиотека 21 | завершён | 358/358 dtran-листингов (55168 строк), 45 аннотированных модулей, структура (601 каталожная запись, 243 псевдонима), 871 символ, 600 рёбер — `docs/lib21/` |
 | 14 | Экстракоды | завершён | 173 пары из `rukava.be`, 612 комментариев, свод `docs/lib21/04-extract-codes.md`, `tests/check-extract-codes.sh` OK |
 | 15 | Семантика имён | завершён | 0 авто-меток, 0 нумерованных TEXT, смещения в десятичных; 16 проверок rc=0 |
-| F77 | Приёмка F77-поддержки (E5) | завершён | `tests/run-f77-suite.sh`: 8/8 gold-пар, кросс-сверка `*FTN` 3/3, расхождений 0; `docs/plan-f77/12-acceptance.md`, `logs/f77_suite.txt` |
+| F77 | Приёмка F77-поддержки (E5) + матрица 200 | завершён | `tests/run-f77-suite.sh`: 8/8 gold, кросс `*FTN` 3/3; `tests/check-f77-matrix-200.py`: 200/200 (OK=200 NO=0 PARTIAL=0 UNKNOWN=0), стратификация 143/56/1; 6/6 гейтов rc=0 — `docs/68-f77-verification.md`, `docs/69-f77-stratification.md`, `logs/f77_suite.txt` |
 | V500 | Версия изделия 5.00 / 19.11.2026 | завершён | версия зафиксирована в `src/*.mad`, `src/f77*/`, `tools/build_forex_perso.py` (TEXT-метка в хвосте PERSO), доках и ДРАКОН-схемах; системный баннер 2.02 внешний и непатчуемый — `docs/16-glissade-run.md` §6; логи `logs/version500_*.txt` |
 | V413 | Семантическая база FOREX 4.13 (Дубна) | завершена (эталон) | исходник корня `libra211.l21:15448-15528` = `reference/libra211.forex.inc`, `tools/build_forex_perso.py:146`; gold `reference/expect_forex.txt:28` (`4.13 ОТ 11.09.85`); CHARACTER*30/Dhrystone 48/48 — внешние etalons; исполняемого 4.13 в dispak нет, bootstrap — системный 2.02; лента `monsys.9`: компилятор только в C#-эмуляторе besm6.net (нужен .NET 8), `librar.12` — LIBREFER-библиотека |
 | V412 | Живой FOREX 4.12 (другая сборка, 25.06.85) | завершён | `tests/plan-f77/t412/run-4.12.sh`: `*TRANS:FOREX3*,,411550` → `NEWCOMP*` → тело на диске 41 зона `0o1550`; C-симулятор dispak (6-байтовые слова), диск `/usr/local/share/besm6/2148` (НЕ SIMH MD/2148); баннер `4.12 ОТ 25.06.85` + `HELLO 412`; отчёт `logs/f77_30_live_412_report.txt` |
@@ -38,7 +38,7 @@
 | `src/FOREX_RUNTIME.mad` | `FORMAT`, `FORTLIBR`, `DATAPR*`, `OCTTDEC` |
 | `include/FOREX_ROOT.mad` | исходник корня + `GIV/PG` + `TAK/PG` |
 | `include/*xref.md`, `include/*registers.md` | перекрёстные ссылки и регистры M1..M17 по всем частям |
-| `docs/03-symbols.md`, `docs/04-register-conventions.md`, `docs/06-*.md`, `docs/07-*.md`, `docs/08-*.md` | символьный чек-лист, соглашения, карта адресов, отчёты |
+| `docs/03-symbols.md`, `docs/04-register-conventions.md`, `docs/06-*.md`, `docs/07-*.md`, `docs/08-*.md`, `docs/68..73` | символьный чек-лист, соглашения, карта адресов, отчёты, включая финальный `docs/73-release-report.md` |
 | `include/*.labels.md`, `docs/09-crossrefs.md`, `docs/10-naming-conventions.md`, `tools/xref_all.py` | осмысленные имена меток, все литералы в `EQU`, глобальный свод ссылок, правила именования |
 | `reference/`, `tests/`, `tools/` | эталоны, 7 регрессионных сценариев, утилиты |
 
@@ -93,3 +93,4 @@
 | 22.11.2026 | Широкий вывод 4+2 | Четыре GOST-слова от `0o2006`, дескриптор `*64` без изменений; 4 ARX-веса исполняются до печати; 10/10 A/B включая `1234.56`, отрицательные и `9999.99`. `tests/plan-f77/84-wide-output/` → PASS |
 | 22.11.2026 | Финальная приёмка 66–83 | 6/6 гейтов rc=0; 17/18 тестов исполнено и PASS, 1 N/A (report-only 79), обе команды 72 PASS. `git status` до/после одинаков; 184 файла перезаписаны байт-в-байт. `docs/72-final-acceptance.md` |
 | 22.11.2026 | Цепочка BESM + Fortran-присваивание | `BESM(hi,lo)` и `V = BESM(hi,lo)` → IR `777006`/`777007`; четыре слова в зоне `N+3` (`0o30114..0o30122`), вход из `body[14]`; 9/9 A/B, CORE/MTR. `tests/plan-f77/85-multi-besm/` → PASS |
+| 22.11.2026 | P9: финальный релиз | Сводный отчёт `docs/73-release-report.md`: продукт, цепочка Fortran→IR→CODEGEN→`*TRANS` 2350, 6/6 гейтов, тесты 66–85 (19 PASS + 1 report-only 79), F77 200/200 (143/56/1), границы 58 слов / однословная вставка / системные DO-FORMAT-F77LIBR / P7 `NEEDS-RUNTIME-REBUILD`. README и STATUS обновлены |
