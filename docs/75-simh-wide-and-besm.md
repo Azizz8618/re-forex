@@ -5,11 +5,11 @@
 > печатает две строки, `comb_operand` меняет вторую на `4470.12`, `comb_zero_acc`
 > и `comb_zero_ins4` — на `3470.12`, `no_install` даёт `ОТСУТСТВУЕТ OURMRK*`.
 >
-> **Внимание про живой диск:** SHA `~/.besm6/2348` в момент проверки отличался
-> от эталонного (`d45a2ac1…` против `f15f2513…`). Субагент не подключал живой
-> файл ни в одном из 15 ini; причина изменения не установлена (ранее уже фиксировались
-> отложенные записи SIMH). Восстановление живого файла не выполнялось без
-> отдельного решения пользователя — все доказательства получены на копиях.
+> Про живой диск: SHA `~/.besm6/2348` в момент проверки отличался от эталонного
+> (`d45a2ac1…` против `f15f2513…`). Пользователь подтвердил, что это результат
+> его действий; к SIMH-прогонам отношение не имеет. Субагент не подключал живой
+> файл ни в одном из 15 ini, все доказательства получены на копиях. Восстановление
+> не выполнялось и не требуется.
 
 Workspace: `/tmp/.private/azizz/opencode/re-forex-simh-wide`
 Isolated tmux socket: `TMUX_TMPDIR=/tmp/.private/azizz/opencode/re-forex-simh-wide/tmux`
@@ -59,11 +59,11 @@ BEFORE  f15f25133294c2c3a894f50c85c9c9c7567c0a3eef8ef01b34d1dd2792cc31cd  disks/
 AFTER   f15f25133294c2c3a894f50c85c9c9c7567c0a3eef8ef01b34d1dd2792cc31cd  disks/md_2348
 ```
 
-No SIMH process is alive at handoff and no process holds either file. The
-previous SIMH task's report already documented repeated delayed writes to this
-same live file by earlier sessions; the cause of this change is not established
-in this task, and it did not come from any attached image used for the evidence
-below. I did not write to, restore, or otherwise touch the live file.
+No SIMH process is alive at handoff and no process holds either file. The user
+later confirmed this change is the result of HIS actions and is unrelated to the
+SIMH runs; no restoration is needed. None of the 15 attached images used for the
+evidence below referenced the live file, and the live file was not touched by
+this verification.
 
 ### 1.2 Other safety facts
 
