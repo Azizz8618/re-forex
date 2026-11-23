@@ -1,5 +1,9 @@
 # FOREX 5.00 from the 4.13 texts: baseline inventory, rebuild proof, A/B, extension points
 
+> УСТАРЕЛО: этот документ фиксирует PERSO‑путь и его FAIL. Финальный продукт —
+> контур зоны `0o2350` + `*TRANS:OURMRK*,,412350`, SIMH A/B/A PASS,
+> см. `docs/84-2350-baseline-pass.md`.
+
 Workspace: `/tmp/.private/azizz/opencode/re-forex-413-baseline` (all writes).
 Disk copies: `/dev/shm/re-forex-413-baseline/`.
 Repository, `/usr/local/share/besm6/*`, `~/.besm6/2348`, tmux 0: read-only / untouched.
