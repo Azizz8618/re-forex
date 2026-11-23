@@ -1,0 +1,13 @@
+ШИФР 410300 ЗС5^
+ДИС 41(2048)^
+ОЗУ 32^АЦП 32^
+ЕЕВ1А3
+*NAME OURMRK
+*TRANS:OURMRK*,,412350
+      PROGRAM MAIN
+      X=34.0
+      END
+*EXECUTE
+*END FILE
+``````
+ЕКОНЕЦ
