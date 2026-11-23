@@ -97,7 +97,7 @@ def main():
     (WS / ('build_%s.deck' % tag)).write_text(
         'шифр 419999 зс5^\n'
         'лен 41(2048)^\n'
-        'лен 60(2348-wr)^\n'
+        'лен 60(2048-wr)^\n'
         'ееВ1а3\n'
         '*name FRONBLD\n'
         '*call yesmemory\n'
@@ -112,7 +112,7 @@ def main():
     (WS / ('call_%s.deck' % tag)).write_text(
         'шифр 419999 зс5^\n'
         'лен 41(2048)^\n'
-        'лен 60(2348)^\n'
+        'лен 60(2048)^\n'
         'ееВ1а3\n'
         '*name FRONCAL\n'
         '*call yesmemory\n'

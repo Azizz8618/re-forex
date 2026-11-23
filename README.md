@@ -37,7 +37,8 @@
 `docs/70-f77-on-contour.md`, `docs/71-besm-insert-research.md`,
 `docs/72-final-acceptance.md`, `docs/73-release-report.md`,
 `docs/74-simh-verification.md`, `docs/75-simh-wide-and-besm.md`,
-`docs/76-simh-method.md` (методика SIMH‑проверок), `docs/77-onmachine-format-limit.md`, `docs/78-intrinsics-besm-limit.md` (границы ручного контура 2350).
+`docs/76-simh-method.md` (методика SIMH‑проверок), `docs/77-onmachine-format-limit.md`, `docs/78-intrinsics-besm-limit.md` (границы ручного контура 2350),
+`docs/79-413-io-map.md`, `docs/80-deck-2048.md` (карты пишут `2048`, не `2348`).
 
 Дизассемблирование в МАДЛЕН выполнено `dtran` через `tools/dtran_wrap.py`
 (синтетический DMS-модуль с числовой симтаблицей), по образцу `re-siprod`.

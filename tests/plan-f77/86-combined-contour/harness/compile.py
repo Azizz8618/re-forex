@@ -39,8 +39,8 @@ def main():
               SHARE / '2148', SHARE / '2348'):
         if not Path(f).exists():
             raise SystemExit('FAIL: missing %s' % f)
-    for name in ('2048', '2053', '2099', '2148', '2348', '2348-wr'):
-        src = SHARE / ('2348' if name == '2348-wr' else name)
+    for name in ('2048', '2053', '2099', '2148', '2048-wr'):
+        src = SHARE / ('2348' if name in ('2048', '2048-wr') else name)
         dst = work / name
         if not dst.exists():
             shutil.copy(src, dst)

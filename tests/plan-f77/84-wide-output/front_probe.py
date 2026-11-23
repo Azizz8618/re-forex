@@ -47,7 +47,7 @@ def front(tag, x_src, y_src, bound=6):
     ir = (d / 'ir_spec10.txt').read_text()
     # Disk copies are large; keep only the textual IR evidence.
     for f in (d / 'work/spec10').iterdir():
-        if f.is_file() and f.name in {'2048', '2053', '2099', '2148', '2348', '2348-wr', 'dispak'}:
+        if f.is_file() and f.name in {'2048', '2053', '2099', '2148', '2348', '2048-wr', 'dispak'}:
             f.unlink()
     recs = []
     for line in call.splitlines():

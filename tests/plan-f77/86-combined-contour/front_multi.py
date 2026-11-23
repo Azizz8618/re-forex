@@ -61,7 +61,7 @@ def front(tag, extra_cards=(), src=None, mode='spec10'):
     # Keep only textual evidence; disk copies are large.
     for f in (d / ('work/%s' % mode)).iterdir():
         if f.is_file() and f.name in {'2048', '2053', '2099', '2148',
-                                      '2348', '2348-wr', 'dispak'}:
+                                      '2348', '2048-wr', 'dispak'}:
             f.unlink()
     recs6, recs7 = [], []
     for line in call.splitlines():

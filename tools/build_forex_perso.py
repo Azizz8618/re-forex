@@ -224,7 +224,7 @@ def assemble_source(name: str, path: Path, first: int, last: int,
     # /tmp here is a small tmpfs (7.8G, often full); disk copies are ~31 MB each.
     tmp = Path(tempfile.mkdtemp(prefix="forex-perso-asm-", dir="/var/tmp"))
     try:
-        shutil.copy(ETALON, tmp / "2348")
+        shutil.copy(ETALON, tmp / "2048")
         if source_file is not None:
             lines = source_file.read_text(errors="replace").splitlines()
         else:
@@ -258,7 +258,7 @@ def assemble_source(name: str, path: Path, first: int, last: int,
             lines = [ln.replace(",CALL,OCTTDEC", ",CALL,OCTTDE*")
                      for ln in lines]
         deck = [
-            "шифр 419999 зс5^", "лен 40(2348-wr)^", "eeв1а3",
+            "шифр 419999 зс5^", "лен 40(2048-wr)^", "eeв1а3",
             "*name", "*call yesmemory", "*assembler",
         ] + lines + ["*to perso:402400", "*end file", "``````", "еконец"]
         (tmp / "asm.b6").write_text("\n".join(deck) + "\n", encoding="utf-8")
@@ -270,7 +270,7 @@ def assemble_source(name: str, path: Path, first: int, last: int,
             raise RuntimeError(f"dispak failed for {name}: {r.stderr[:400]}")
         libfile = tmp / "lib.bin"
         subprocess.run(
-            ["besmtool", "dump", "2348", "--start=1280", "--length=3",
+            ["besmtool", "dump", "2048", "--start=1280", "--length=3",
              "--to-file=" + str(libfile)],
             cwd=tmp, env=env, capture_output=True, check=True)
         lib = siprod_lib.Library(str(libfile))

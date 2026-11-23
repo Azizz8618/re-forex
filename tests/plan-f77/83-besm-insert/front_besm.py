@@ -66,7 +66,7 @@ def front(tag, besm_hi=None, besm_lo=None, with_besm=True, placement='after_end'
     errs = len(re.findall(r'\bERR\b|\bОШИБК', build + call, re.I))
     # Disk copies are large; retain only the textual IR evidence.
     for f in (d / 'work/spec10').iterdir():
-        if f.is_file() and f.name in {'2048', '2053', '2099', '2148', '2348', '2348-wr', 'dispak'}:
+        if f.is_file() and f.name in {'2048', '2053', '2099', '2148', '2348', '2048-wr', 'dispak'}:
             f.unlink()
     recs6 = []
     for line in call.splitlines():
