@@ -1,10 +1,12 @@
 # F77 intrinsics in the FOREX 4.13 reconstruction texts (FOREX 5.00)
 
-> Предисловие главного агента: C‑часть действительно собрана из наших текстов и
-> даёт A/B 4/4, но SIMH‑гейт не пройден. Возможная причина hang’а — старые карты
-> с `2348`; все три субагента перезапущены с картами `2048`/`2048-wr` и исправленным
-> `attach -n prn0/prn1`. Пока SIMH A/B не получен, результат считается FAIL по
-> главной цели («только наш компилятор»). Ни один host‑результат в счёт не идёт.
+> Обновление главного агента: после карт `2048` SIMH‑дек завершается и печатает
+> корректные значения `4.0000 3.0000 1.0000 / 4.00000000+000`. Но causal A/B
+> под SIMH не получен: четыре варианта PERSO дают тот же результат, хотя тот же
+> образ под C dispak меняет печать на `104/203/301/404`. Значит SIMH резолвит
+> имена `ABS/SQRT/MOD/DSQRT` из системной библиотеки. Запущен эксперимент с
+> уникальными именами `OURABS/OURSQR/OURMOD/OURDSQ`, чтобы заставить SIMH
+> взять модули из нашего PERSO; verdict будет добавлен.
 
 Date: 23.11.2026. All authored files, disk copies and evidence live only under
 `/tmp/.private/azizz/opencode/re-forex-413-intrinsics/` (texts) and
@@ -21,13 +23,15 @@ attached to SIMH were workspace copies; the live `~/.besm6/2348` and
 | Intrinsic library text patched on a COPY and compiled by SYSTEM FOREX from OUR PERSO 0o2300 | PASS (§3) |
 | Installed into working 2348 copies at PERSO 0o2300 + 0o2400 | PASS (§3) |
 | Real Fortran deck with `ABS/SQRT/MOD/DSQRT`, C `dispak`: correct values + A/B | **PASS 4/4** (§4) |
-| Same deck under full BESM-6 SIMH | **FAIL** (§5): no `КОНЕЦ ЗАДАЧИ`, ACPU contains only the system footer |
-| SIMH control deck (`HELLO`, no PERSO) | PASS: `HELLO WORLD` + `КОНЕЦ ЗАДАЧИ` (proves the harness, ACPU and system compiler path are healthy) |
-| SIMH A/B for the four intrinsics | **NOT OBTAINABLE**: every deck containing `*PERSO:602300` hangs in this SIMH OS build (§5) |
+| Same deck under full BESM-6 SIMH, after the `2048` volume-card fix | **COMPLETES**: `КЗ(075)`, ACPU `4.0000 3.0000 1.0000 / 4.00000000+000` + `КОНЕЦ ЗАДАЧИ` |
+| SIMH control deck (`HELLO`, no PERSO) | PASS: `HELLO WORLD` + `КОНЕЦ ЗАДАЧИ` |
+| SIMH A/B (4 -> 104 etc.) | **FAIL / not demonstrated**: every SIMH variant printed the good values, although the identical disk image under C `dispak` gives the A/B values (§5) |
 
-Therefore the C-side implementation is complete and causal, but the mandatory
-SIMH acceptance gate is **not** met. This is reported as FAIL, not papered over
-with the C result.
+The earlier SIMH hang was caused by using host volume `2348` in the deck cards.
+After the lead's fix (`docs/80-deck-2048.md`) and seeding a host file named
+`2048`, the deck completes under SIMH and prints the correct four values.
+However, changing OUR intrinsic implementation does not change the SIMH output,
+so the SIMH A/B gate is **not** met. C results are not substituted for it.
 
 ## 1. Exact extension points in the 4.13 texts
 
@@ -154,6 +158,21 @@ efd94817...8104957  work/deck_simh.b6          (SIMH deck)
 Full 64-hex values are in `evidence/final_shas.txt` and
 `evidence/artifact_shas.txt`.
 
+For the SIMH `2048`-label re-run, the same compiled modules were also merged
+into the base PERSO 0o2300 image (so only one `*PERSO` card is needed) and
+written into a legal SIMH tagged image:
+
+```sh
+python3 work/merge_intr_into_base.py --libzone /tmp/fulltext_zone2400.bin \
+    --out work/FOREX_INTR_2300_good.bin      # SHA 1634521c...7fce3f489
+python3 work/merge_intr_into_base.py --libzone /tmp/fulltext_ab_zone2400.bin \
+    --out work/FOREX_INTR_2300_ab.bin        # SHA c5759918...55dcc842582
+python3 work/write_simh_zone.py --image work/FOREX_INTR_2300_good.bin \
+    --out work/simh_intr_good_2048           # SHA 2a53de5d...a888dba4cb
+python3 work/write_simh_zone.py --image work/FOREX_INTR_2300_ab.bin \
+    --out work/simh_intr_ab_2048             # SHA ac7c948c...a840dc51c
+```
+
 ## 4. C `dispak` acceptance (built with the system compiler, executed by `dispak`)
 
 Deck `work/intr_deck3.b6` (excerpt): `*perso:602300`, `*perso:602400,cont`,
@@ -186,38 +205,75 @@ truncated-series approximation (PARTIAL); `LOG(2.0)` prints `0.0000` with all
 three attempted bodies (`ALOG`, `ALOG10`, direct series) and is FAIL. None of
 these five was re-run under SIMH.
 
-## 5. Full BESM-6 SIMH acceptance: FAIL
+## 5. Full BESM-6 SIMH acceptance after the `2048` card fix
 
-Driver: `work/drive_simh.py` (isolated `TMUX_TMPDIR`, capture-pane only,
-`send-keys`, `ДATA:` boot marker, no `CM1П`/`sim>` boot wait). Ini generator:
-`work/make_simh_ini.py`. Fixed ini lines actually used (stock `-n` form kept,
-per the operator fix):
+### 5.1 What was wrong and what was changed
+The lead's correction (`docs/80-deck-2048.md`) is decisive: the OS-visible volume
+label is `2048`; `2348` is only a host filename. With deck cards naming `2348`,
+the PERSO path hung and no job completed. The SIMH deck was rewritten to
 
 ```
-attach -e md41 /var/tmp/re-forex-413-intrinsics-simh/finalgood/disks/sys2048_on_md41   # COPY of /usr/local/share/besm6/2048
-attach -e md45  /var/tmp/re-forex-413-intrinsics-simh/finalgood/disks/work2348_on_md45  # COPY of work/fulltext/2348
-attach -n prn0 /var/tmp/re-forex-413-intrinsics-simh/finalgood/disks/output.txt
-attach -n prn1 /var/tmp/re-forex-413-intrinsics-simh/finalgood/disks/output1.txt
-load /var/tmp/re-forex-413-intrinsics-simh/finalgood/boot_dispak.b6
+ДИС 41(2048)^
+ЛЕН 60(2048)^          (variant: ДИС 45(2048)^ + *PERSO:452300)
+*PERSO:602300
+*EXECUTE
 ```
 
-Boot/deck sequence (from `evidence/simh_finalgood.log`):
-`ДATA:23.11.26 BPEMЯ:06.51.00` seen; `ДАЙ А0` -> `ECTЬ`, `ДАЙ А1` -> `ECTЬ`,
-`НОМВ` -> `HET` (empty output queue); `Ctrl+G`, `at vu0 <deck>`, `d 6 1`,
-`d 5 10`, `set cpu req`, `go`; console then shows only
-`B075-1 410300000000  2348`, then `НОМВ` -> `HET`, and **no** `КОНЕЦ ЗАДАЧИ`,
-`КЗ(...)` or `СБОЙ` line. prn0 = 1669 bytes containing only the system footer
-(`... ИТМ И ВТ ... *АЦПУ-0 ... 555...`), no result block.
+and the md45 host file is named `2048`, seeded from our working image. The
+stock `attach -n prn0/prn1` lines were kept unchanged. Before and after the
+deck the driver issues `ДАЙ А0`, `ДАЙ А1`, `НОМВ` (both ACPU acknowledged
+`ECTЬ`, `НОМВ` reported `HET`), and reads the device that actually printed
+(`disks/output.txt`, prn0). The boot marker is `ДATA:` via `capture-pane`
+only; input via `send-keys`; no live disk, tmux 0 or C patch.
 
-Control: the same harness with `work/hello.b6` (no `*perso`) printed
-`HELLO WORLD` and `КОНЕЦ ЗАДАЧИ` (`evidence/simh_hello.log`). Decreasing
-diagnostics: `work/simple_perso.b6` (`*perso:602300` only) and
-`work/simple_perso_noyes.b6` (no `*call yesmemory`) both hang the same way.
-So the blocker is the `*PERSO:602300` path in this SIMH OS build, not our
-intrinsic library, the ACPU devices or the deck reader. The same failure was
-observed independently in `/tmp/.private/azizz/opencode/re-forex-413-baseline/report.md`
-§5. Consequently SIMH A/B for `ABS/SQRT/MOD/DSQRT` could not be produced; the
-C A/B in §4 is the only causal evidence, and it is **not** substituted for SIMH.
+### 5.2 Good build: SIMH COMPLETES with correct values
+Case `v2048_good` (image `work/fulltext/2348` seeded as host file `2048`,
+PERSO 0o2300 + 0o2400), console:
+
+```
+ ДATA:23.11.26 BPEMЯ:07.01.00
+ ДАЙ А0 / ECTЬ ; ДАЙ А1 / ECTЬ ; НОМВ / HET
+ sim> at vu0 .../deck_simh_2048.b6 ; d 6 1 ; d 5 10 ; set cpu req ; go
+ B075-1 410300000000
+ KЗ(075) 410300000000 07.01 M=108
+```
+
+ACPU (`evidence/simh_v2048_good.acpu.txt`):
+
+```
+     4.0000    3.0000    1.0000
+   4.00000000+000
+ КОНЕЦ ЗАДАЧИ        +000000000000⏨+00    0000000000001041
+```
+
+So the earlier "hang" verdict is superseded: with the correct volume card the
+full SIMH OS compiles our deck and prints the right intrinsic values.
+
+### 5.3 SIMH A/B: FAIL
+The A/B image was tried in four independent ways, all on copies:
+
+| case | md45 image / PERSO placement | deck | result |
+|:--|:--|:--|:--|
+| `v2048_ab` | `work/fulltext_ab/2348` (A/B library at 0o2400) | `*perso:602300` + `*perso:602400,cont`, LUN 60 | `4 3 1 / 4.00000000+000` |
+| `v45_ab` | same | `ДИС 45(2048)^`, `*perso:452300/452400,cont` | `4 3 1 / 4.00000000+000` |
+| `base_ab` | A/B modules merged into 0o2300, dense image written to md45 | single `*perso:602300` | `4 3 1 / 4.00000000+000` |
+| `tagged_ab` | same merge written with a valid SIMH tagged zone header at logical 0o2300 | `ДИС 45(2048)^`, single `*perso:452300` | `4 3 1 / 4.00000000+000` |
+
+Every case reached `KЗ(075)` and `КОНЕЦ ЗАДАЧИ`; the ACPU result is identical
+to the good build instead of the expected `104 203 301 / 404`. Link map entries
+(`ABS E 01076`, `SQRТ E 01107`, `МОD 01125`, `DSQRТ 01153`) are identical
+between the good and A/B SIMH runs. Control proof that the images themselves
+are correct: the **same** `v45_ab/disks/2048` file under C `dispak` prints
+`104.0000 203.0000 301.0000 / 4.04000000+002`
+(`work/c_from_simh/run.out`). Therefore the SIMH OS build resolves these
+intrinsic calls to its own implementations and does not route them through the
+PERSO library we installed, regardless of LUN or PERSO placement; the C-side
+A/B is causal but cannot be reproduced under SIMH.
+
+Raw evidence: `evidence/simh_v2048_good.log`, `simh_v2048_ab.log`,
+`simh_v45_ab.log`, `simh_base_good.log`, `simh_base_ab.log`,
+`simh_tagged_ab.log` and the corresponding `acpu.txt` files under
+`/var/tmp/re-forex-413-intrinsics-simh/<case>/`.
 
 ## 6. Word-budget evidence (why no overlay edit was needed or possible)
 
@@ -264,4 +320,4 @@ digit-weight cell, high-RAM constant or `*50 15` is involved.
   0 or dispak source was touched. All SIMH/tmux processes started by this task
   were stopped at handoff; obsolete scratch disk copies were removed.
 
-BLOCKED: SIMH acceptance of the PERSO-based intrinsic deck fails in this OS build (no КОНЕЦ ЗАДАЧИ, ACPU only system footer), so SIMH A/B for ABS/SQRT/MOD/DSQRT could not be obtained; C-dispak build and A/B are PASS 4/4.
+BLOCKED: SIMH deck now completes with correct ABS/SQRT/MOD/DSQRT values after the 2048 volume-card fix, but SIMH A/B (4 -> 104 etc.) does not change with our library, so the SIMH causal gate is not met; C-dispak A/B is PASS 4/4.
