@@ -35,7 +35,9 @@
 контракт `*TRANS`), `docs/63-full-compiler-design.md` (проект полного фронт-энда
 в контуре `*TRANS`), `docs/68-f77-verification.md`, `docs/69-f77-stratification.md`,
 `docs/70-f77-on-contour.md`, `docs/71-besm-insert-research.md`,
-`docs/72-final-acceptance.md`, `docs/73-release-report.md`.
+`docs/72-final-acceptance.md`, `docs/73-release-report.md`,
+`docs/74-simh-verification.md`, `docs/75-simh-wide-and-besm.md`,
+`docs/76-simh-method.md` (методика SIMH‑проверок).
 
 Дизассемблирование в МАДЛЕН выполнено `dtran` через `tools/dtran_wrap.py`
 (синтетический DMS-модуль с числовой симтаблицей), по образцу `re-siprod`.
