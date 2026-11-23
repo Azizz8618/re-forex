@@ -39,6 +39,8 @@
 `docs/74-simh-verification.md`, `docs/75-simh-wide-and-besm.md`,
 `docs/76-simh-method.md` (методика SIMH‑проверок), `docs/77-onmachine-format-limit.md`, `docs/78-intrinsics-besm-limit.md` (границы ручного контура 2350),
 `docs/79-413-io-map.md`, `docs/80-deck-2048.md` (карты пишут `2048`, не `2348`).
+Канонический продукт: `docs/105`, `docs/107`; границы: `docs/106`.
+Сборщик: `tools/build_zone2350_contour.py`, `tools/forex500-ir4sign/`.
 
 Дизассемблирование в МАДЛЕН выполнено `dtran` через `tools/dtran_wrap.py`
 (синтетический DMS-модуль с числовой симтаблицей), по образцу `re-siprod`.
