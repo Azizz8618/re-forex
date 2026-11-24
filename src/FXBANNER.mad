@@ -10,5 +10,5 @@ C (BLEXPRIN/ERR). GOST 10859 has no lowercase: the console shows homoglyphs.
           ,,BANTXT
           :,001,
           8,,.
-  BANTXT:,GOST,35HFOREX 5.00 / 19.11.2026 (RE-FOREX)'231'
+  BANTXT:,GOST,35HFOREX 5.00 / 19.11.2026 (RE-FOREX)'231'  ; DEKOD GOST 'FOREX 5.00 / 19.11.2026 (RE-FOREX)'231'' / TEXT 'FOREX 5.00 / 19.11.2026 (RE-FOREX)'231'' / ISO 'FOREX 5.00 / 19.11.2026 (RE-FOREX)'231'' [источник: src/FXBANNER.mad:13; confidence: high]
   ,END,FXBANNER

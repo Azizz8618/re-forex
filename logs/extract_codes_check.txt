@@ -674,3 +674,13 @@ OK: мнёмоники APX/AUX/EXT/ASN, классы аргументов 020/02
   S5:7724 ИЮНИЮЛ       0o1203645512036453  -D gost: |ИЮНИЮЛ|  наш 'ИЮНИЮЛ' OK   (-D text: |*ЦTM*ЦTK| — неприменимо)
   S5:7723 АПРМАЯ       0o1002746013020076  -D gost: |АПРМАЯ|  наш 'АПРМАЯ' OK   (-D text: |(БЭPЙБ Ч| — неприменимо)
 проверено GOST: 4, расхождений: 0
+
+КРОСС-ПРОВЕРКА dtran -D (tools/dtran_text.py --audit)
+  File "/home/z/.local/share/uv/python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z/.local/share/uv/python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/home/z/.local/share/uv/python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/azizz/Yandex.Disk/dtran/dtran'

@@ -45,6 +45,7 @@ src/FOREX_RUNTIME_DISASM.mad:388 | 'ERROR                   | ISO/GOST | OK
 src/FOREX_RUNTIME_DISASM.mad:390 | 'IN                      | ISO/GOST | OK
 src/FOREX_RUNTIME_DISASM.mad:391 | 'NDART                   | ISO/GOST | OK
 src/FOREX_RUNTIME_DISASM.mad:392 | 'ARRAY                   | ISO/GOST | OK
+src/FXBANNER.mad:13          | FOREX                    | GOST/TEXT/ISO | OK
 src/LO_GEN.mad:503           | LO*GEN                   | TEXT/GOST/ISO | OK
 src/LO_GEN.mad:504           | POWER                    | TEXT/GOST/ISO | OK
 src/LO_GEN.mad:505           | A/RHOCHI                 | TEXT/GOST/ISO | OK
@@ -544,7 +545,7 @@ src/lib21/XREF.mad:1115      | CER.                     | ISO/GOST/TEXT | OK
 src/lib21/XREF.mad:1116      | 2.9.79                   | ISO/GOST/TEXT | OK
 src/lib21/XREF.mad:1117      | .                        | ISO/GOST/TEXT | OK
 ------------------------------+----------------------------+----------+--------
-ИТОГО констант: 539  OK: 539  FAIL: 0  ОЖИДАЕТСЯ: 0
+ИТОГО констант: 540  OK: 540  FAIL: 0  ОЖИДАЕТСЯ: 0
 
 CONTROL-КОНСТАНТЫ (должны иметь DEKOD-расшифровку)
 ФАЙЛ:СТРОКА | КОНСТАНТ | КОДИРОВКА | СТАТУС
