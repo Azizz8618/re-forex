@@ -191,6 +191,10 @@ def main():
         tmux(env, "kill-session", "-t", session, check=False)
 
     prn_path = RUNS / f"localprn_{a.case}.txt"
+    prn1_path = RUNS / f"localprn1_{a.case}.txt"
+    for stale in (prn_path, prn1_path):
+        if stale.is_file():
+            stale.unlink()
     prn = prn_path.read_text(encoding="utf-8", errors="replace") if prn_path.is_file() else ""
     prn1_path = RUNS / f"localprn1_{a.case}.txt"
     prn1 = prn1_path.read_text(encoding="utf-8", errors="replace") if prn1_path.is_file() else ""
