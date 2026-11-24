@@ -1,0 +1,17 @@
+ШИФР 410300 ЗС5^
+ДИС 41(2048)^
+ОЗУ 32^АЦП 32^
+ЕЕВ1А3
+*NAME FRX5XX
+*TRANS:FRX5*,,412350
+      PROGRAM MAIN
+      READ 100,X
+      PRINT 200,X
+  100 FORMAT(F8.2)
+  200 FORMAT(1X,F8.2)
+      END
+   12.34
+*EXECUTE
+*END FILE
+``````
+ЕКОНЕЦ
