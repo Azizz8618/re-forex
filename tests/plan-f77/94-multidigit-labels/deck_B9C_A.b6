@@ -1,0 +1,22 @@
+ШИФР 410300 ЗС5^
+ДИС 41(2048)^
+ОЗУ 32^АЦП 32^
+ЕЕВ1А3
+*NAME FRX5XX
+*TRANS:FRX5*,,412350
+      PROGRAM MAIN
+      CALL SUB
+      PRINT 400,X
+  400 FORMAT(1X,F4.2)
+      GOTO 500
+      SUBROUTINE SUB
+      X=56.78
+      RETURN
+      SUBROUTINE OTHER
+      X=78.90
+      RETURN
+  500 END
+*EXECUTE
+*END FILE
+``````
+ЕКОНЕЦ
